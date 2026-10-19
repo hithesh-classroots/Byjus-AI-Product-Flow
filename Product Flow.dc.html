@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Byjus.AI — Product Flow</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<style>
+html,body{margin:0;height:100%;background:#f1f0f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:#211a4a;}
+a{color:#5f3dc4;text-decoration:none;} a:hover{color:#4c2fa3;text-decoration:underline;}
+</style>
+</helmet>
+<div style="height:100vh;display:flex;flex-direction:column;">
+  <header style="flex:none;display:flex;align-items:center;gap:16px;padding:10px 16px;background:#ffffff;box-shadow:0 1px 0 rgba(33,26,74,.08);">
+    <div style="display:flex;align-items:center;gap:10px;flex:none;">
+      <img src="logo.png" alt="Byjus.AI" style="height:26px;width:auto;display:block;">
+      <span style="font-size:13px;font-weight:600;color:#6b6591;">Product flow</span>
+    </div>
+    <nav style="flex:1;min-width:0;display:flex;align-items:center;gap:4px;overflow-x:auto;">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="7">
+        <button onClick="{{ s.go }}" style="{{ s.style }}">
+          <span style="{{ s.numStyle }}">{{ s.n }}</span>
+          <span>{{ s.name }}</span>
+        </button>
+      </sc-for>
+    </nav>
+    <div style="flex:none;display:flex;align-items:center;gap:8px;">
+      <sc-if value="{{ hasDark }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ toggleDark }}" title="Toggle dark variant" style="{{ darkStyle }}"><i class="ti ti-moon" style="font-size:16px;"></i>Dark</button>
+      </sc-if>
+      <button onClick="{{ prev }}" title="Previous (←)" style="width:34px;height:34px;border:0;border-radius:17px;background:#f1f0f7;color:#211a4a;cursor:pointer;display:flex;align-items:center;justify-content:center;"><i class="ti ti-chevron-left" style="font-size:18px;"></i></button>
+      <button onClick="{{ next }}" title="Next (→)" style="width:34px;height:34px;border:0;border-radius:17px;background:#7048e8;color:#ffffff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(112,72,232,.35);"><i class="ti ti-chevron-right" style="font-size:18px;"></i></button>
+      <a href="{{ curHref }}" target="_blank" title="Open this page on its own" style="width:34px;height:34px;border-radius:17px;background:#f1f0f7;color:#211a4a;display:flex;align-items:center;justify-content:center;"><i class="ti ti-external-link" style="font-size:17px;"></i></a>
+    </div>
+  </header>
+  <div style="flex:none;display:flex;align-items:center;gap:10px;padding:8px 20px;background:#faf9fd;font-size:13px;color:#4a4470;">
+    <span style="font-weight:700;color:#211a4a;">{{ cur.n }}. {{ cur.name }}</span>
+    <span style="text-wrap:pretty;">{{ cur.role }}</span>
+  </div>
+  <main style="flex:1;min-height:0;position:relative;background:#ffffff;">
+    <iframe src="{{ curSrc }}" title="{{ cur.name }}" style="position:absolute;inset:0;width:100%;height:100%;border:0;display:block;"></iframe>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  STEPS = [
+    { key:'onb', name:'Onboarding', src:'Onboarding.dc.html', role:'Login / sign-up (password or mobile + OTP), grade, board, school, textbook, then a short diagnostic.' },
+    { key:'home', name:'Home', src:'Home Page.dc.html', dark:'Home Page - Dark.dc.html', role:'Daily landing — Vyom, Ask Vyom composer, resume tiles, goals, XP and orbs.' },
+    { key:'gl', name:'Goals', src:'Goal Page.dc.html', role:'The current goal: study blocks streak, progress so far, and a Vyom-curated path of the next hour of lessons, videos and tests.' },
+    { key:'cj', name:'Chapter Journey', src:'Chapter Journey - L&P.dc.html', dark:'Chapter Journey - Dark.dc.html', role:'Chapters as islands on three lanes. Open one for Learning Journey, Library and Practice modes.' },
+    { key:'tr', name:'Teaching Room', src:'Teaching Room Spark.dc.html', dark:'Teaching Room - Dark.dc.html', role:'The lesson: 16:9 board, Vyom and Spark, video, keystone check, 10-question quiz and confidence map.' },
+    { key:'pr', name:'Practice Room', src:'Practice Room.dc.html', role:'Timed shootout — pick a clock, answer as many as you can, Vyom adapts as you go.' },
+    { key:'as', name:'Assessment', src:'Assessment.dc.html', role:'Product-wide hub: timed papers, subjective papers marked from photos, chapter practice, past attempts.' },
+    { key:'pf', name:'Profile', src:'Profile.dc.html', role:'Profile and courses, study group, rewards, stats, and goals set by chatting with Vyom.' },
+  ];
+  state = (() => { let i = 0, d = false; try { i = +(localStorage.getItem('pflow.step') || 0); d = localStorage.getItem('pflow.dark') === '1'; } catch (e) {} return { i: Math.min(Math.max(i, 0), 7), dark: d }; })();
+  componentDidMount() {
+    this._key = e => { if (e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return; if (e.key === 'ArrowRight') this.go(this.state.i + 1); if (e.key === 'ArrowLeft') this.go(this.state.i - 1); };
+    window.addEventListener('keydown', this._key);
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this._key); }
+  go(i) { if (i < 0 || i >= this.STEPS.length) return; this.setState({ i }); try { localStorage.setItem('pflow.step', String(i)); } catch (e) {} }
+  renderVals() {
+    const css = str => { const o = {}; str.split(';').forEach(d => { const k = d.indexOf(':'); if (k < 0) return; const p = d.slice(0, k).trim().replace(/-([a-z])/g, (m, c) => c.toUpperCase()); o[p] = d.slice(k + 1).trim(); }); return o; };
+    const { i, dark } = this.state;
+    const cur = this.STEPS[i];
+    const useDark = dark && !!cur.dark;
+    const src = useDark ? cur.dark : cur.src;
+    const steps = this.STEPS.map((s, k) => {
+      const on = k === i, done = k < i;
+      return {
+        n: k + 1, name: s.name, go: () => this.go(k),
+        style: css('flex:none;display:flex;align-items:center;gap:8px;height:34px;padding:0 12px 0 5px;border:0;border-radius:17px;cursor:pointer;font:600 13px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;white-space:nowrap;' + (on ? 'background:#ede7ff;color:#4c2fa3;' : 'background:transparent;color:' + (done ? '#211a4a' : '#6b6591') + ';')),
+        numStyle: css('width:24px;height:24px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;' + (on ? 'background:#7048e8;color:#ffffff;' : done ? 'background:#d3f9d8;color:#1f6f35;' : 'background:#f1f0f7;color:#6b6591;')),
+      };
+    });
+    return {
+      steps, cur: { n: i + 1, name: cur.name + (useDark ? ' — Dark' : ''), role: cur.role },
+      curSrc: encodeURI(src), curHref: encodeURI(src),
+      hasDark: !!cur.dark, darkStyle: css('display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border:0;border-radius:17px;font-weight:600;font-size:13px;font-family:inherit;cursor:pointer;background:' + (useDark ? '#211a4a' : '#f1f0f7') + ';color:' + (useDark ? '#ffffff' : '#211a4a')),
+      toggleDark: () => { const d = !this.state.dark; this.setState({ dark: d }); try { localStorage.setItem('pflow.dark', d ? '1' : '0'); } catch (e) {} },
+      prev: () => this.go(i - 1), next: () => this.go(i + 1),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/colors.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/semantic.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/typography.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/base.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<script src="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/_ds_bundle.js"></script>
+<link rel="stylesheet" href="canvas-bg.css">
+<style>
+  html,body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;background:var(--cv-base);}
+  *{box-sizing:border-box;}
+  a{color:#1971c2;text-decoration:none;} a:hover{color:#1864ab;}
+  @keyframes pxIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes pxPop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+  .px-scroll{scrollbar-width:thin;scrollbar-color:#dcd8e6 transparent;}
+  .px-scroll::-webkit-scrollbar{width:9px;}
+  .px-scroll::-webkit-scrollbar-thumb{background:#dcd8e6;border-radius:999px;}
+  .px-goalw{position:relative;display:flex;align-items:flex-start;gap:9px;cursor:pointer;border-radius:14px;outline:none;}
+  .px-goalw::before{content:"";position:absolute;inset:-10px -14px;border-radius:14px;z-index:-1;
+    pointer-events:none;transition:opacity .26s ease,inset .26s ease,background .26s ease,box-shadow .26s ease;
+    background:transparent;box-shadow:0 8px 14px -10px rgba(70,46,146,.34);}
+  /* The expanded list used to grow the widget IN FLOW, which pushed the page down and
+     reflowed the chrome row that carries XP and orbs. The summary row now keeps a fixed
+     44px slot at all times and the full list floats above it, so nothing else moves. */
+  .px-goalw-rows{height:44px;overflow:hidden;}
+  .px-goalw-pop{position:absolute;left:-18px;top:-16px;z-index:60;width:376px;padding:16px 18px;overflow:hidden;
+    border-radius:16px;background:var(--cv-linear);
+    box-shadow:0 18px 38px -14px rgba(70,46,146,.42);animation:pxGoalIn .2s ease both;}
+  .px-goalw:not(.px-goalw-open):focus-visible{box-shadow:0 0 0 2px #228be6;}
+  .px-goalw-track{width:340px;height:5px;margin-top:7px;border-radius:999px;background:rgba(33,26,74,.13);overflow:hidden;}
+  .px-goalw-fill{height:100%;background:#d9480f;border-radius:999px;transition:width .7s cubic-bezier(.2,.8,.3,1);}
+  .px-goalw-row{animation:pxGoalIn .3s ease both;}
+  .px-goalw-row + .px-goalw-row{margin-top:12px;padding-top:12px;border-top:1px solid rgba(120,90,200,.18);}
+  .px-goal-line{overflow:hidden;text-overflow:ellipsis;animation:pxGoalIn .5s cubic-bezier(.2,.8,.3,1) both;}
+  @keyframes pxGoalIn{from{opacity:0}to{opacity:1}}
+  .px-jump:hover{background:#e7f5ff;color:#1864ab;}
+  /* Reward pulse, lifted from the Teaching Room so an award reads the same in both rooms */
+  @keyframes pxRwPulse{0%{transform:scale(1)}30%{transform:scale(1.22)}55%{transform:scale(.97)}100%{transform:scale(1)}}
+  .px-rw-pulse{animation:pxRwPulse .6s cubic-bezier(.34,1.4,.5,1) 2;box-shadow:0 0 0 3px rgba(255,193,7,.55),0 8px 26px rgba(250,176,5,.5);}
+  .px-venn-r{cursor:pointer;transition:fill .16s ease;}
+  /* Rows, not cards: a card is reserved for the one thing you act on. */
+  .px-list{border-top:1px solid rgba(120,90,200,.18);}
+  .px-row{display:flex;align-items:center;gap:20px;padding:17px 12px;margin:0 -12px;
+    border-bottom:1px solid rgba(120,90,200,.18);cursor:pointer;transition:background .16s ease;}
+  .px-row:hover{background:rgba(255,255,255,.62);}
+  .px-row:hover .px-go{color:#1971c2;transform:translateX(3px);}
+  .px-go{flex:none;font-size:14px;font-weight:700;white-space:nowrap;color:#6b6786;transition:color .16s ease,transform .16s ease;}
+  .px-disc{display:inline-flex;align-items:center;gap:9px;cursor:pointer;font-size:14px;font-weight:700;color:#5d5880;white-space:nowrap;transition:color .16s ease;}
+  .px-disc:hover{color:#1971c2;}
+  .px-trow{display:flex;align-items:center;gap:20px;padding:15px 12px;margin:0 -12px;border-bottom:1px solid rgba(255,255,255,.1);cursor:pointer;transition:background .16s ease;}
+  .px-trow:hover{background:rgba(255,255,255,.06);}
+  /* Surfaces are avoided the way the Teaching Room avoids them: content sits on the
+     ambient gradient, grouped by whitespace and hairlines that fade at both ends.
+     Only genuinely floating things (the leave dialog) get a real surface. */
+  .px-hair{height:1px;background:linear-gradient(90deg,rgba(120,90,200,0),rgba(120,90,200,.22) 5%,rgba(120,90,200,.22) 95%,rgba(120,90,200,0));}
+  .px-vhair{width:1px;align-self:stretch;background:linear-gradient(180deg,rgba(120,90,200,0),rgba(120,90,200,.2) 6%,rgba(120,90,200,.2) 94%,rgba(120,90,200,0));}
+  .px-nav{display:flex;align-items:center;gap:13px;padding:12px 14px;border-radius:11px;cursor:pointer;
+    font-size:14.5px;font-weight:700;white-space:nowrap;color:#5d5880;transition:background .14s ease,color .14s ease;}
+  .px-nav i{flex:none;font-size:20px;}
+  .px-nav:hover{color:#211a4a;background:rgba(255,255,255,.55);}
+  .px-nav-on,.px-nav-on:hover{background:rgba(231,241,255,.9);color:#1864ab;}
+  /* One row grammar for every list on the page. No card, no border, no shadow. */
+  .px-r{position:relative;display:grid;gap:14px;align-items:center;padding:19px 14px;margin:0 0 0 -14px;
+    border-radius:14px;transition:background .16s ease;}
+  .px-r::before{content:"";position:absolute;left:14px;right:0;top:0;height:1px;pointer-events:none;
+    background:linear-gradient(90deg,rgba(120,90,200,0),rgba(120,90,200,.2) 4%,rgba(120,90,200,.2) 96%,rgba(120,90,200,0));}
+  .px-r-act{cursor:pointer;}
+  .px-r-act:hover{background:rgba(255,255,255,.58);}
+  .px-r-act:hover .px-go{color:#1971c2;}
+  .px-go{flex:none;font-size:13.5px;font-weight:700;white-space:nowrap;color:#6b6786;transition:color .16s ease;}
+  .px-th{display:grid;gap:14px;align-items:center;padding:0 14px 11px;margin:0 0 0 -14px;
+    font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#6b6786;}
+  .px-cols{grid-template-columns:minmax(150px,1.4fr) 80px 78px 126px 58px 132px;}
+  .px-hist{grid-template-columns:minmax(150px,1.4fr) 128px 78px 118px 88px;}
+  .px-split{grid-template-columns:minmax(0,1fr) auto;}
+  @media (max-width:1180px){
+    .px-cols{grid-template-columns:minmax(130px,1.4fr) 76px 122px 122px;}
+    .px-hist{grid-template-columns:minmax(120px,1.4fr) 118px 88px;}
+    .px-c-topics,.px-c-trend,.px-c-type,.px-c-date{display:none;}
+  }
+  .px-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:16px;}
+  .px-tile{border-radius:16px;overflow:hidden;background:rgba(255,255,255,.34);border:1px solid rgba(255,255,255,.6);cursor:pointer;box-shadow:0 1px 2px rgba(33,26,74,.05),0 8px 20px -16px rgba(33,26,74,.3);transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease;}
+  .px-tile:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.95);box-shadow:0 2px 4px rgba(33,26,74,.06),0 14px 28px -18px rgba(33,26,74,.42);}
+  .px-thumb{position:relative;aspect-ratio:16/9;display:grid;place-items:center;}
+  .px-thumb>i{font-size:30px;color:#fff;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));}
+  .px-tile-tag{position:absolute;top:8px;right:8px;padding:3px 9px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap;background:rgba(255,255,255,.94);color:#211a4a;box-shadow:0 1px 3px rgba(28,18,74,.2);}
+  .px-tile-body{padding:12px 14px 14px;}
+  .px-tile-title{font-size:14px;font-weight:700;color:#211a4a;line-height:1.3;margin-bottom:6px;}
+  .px-tile-bar{display:block;height:5px;border-radius:999px;background:rgba(33,26,74,.10);overflow:hidden;margin:0 0 7px;}
+  .px-tile-meta{font-size:12px;font-weight:700;color:#6b6786;}
+  .px-tile-cta{display:flex;align-items:center;gap:5px;margin-top:9px;font-size:12px;font-weight:800;}
+  /* finished work reads as settled, not offered */
+  .px-tile-new{display:grid;place-items:center;min-height:168px;border-radius:16px;cursor:pointer;
+    background:rgba(255,255,255,.22);border:2px dashed rgba(120,90,200,.38);
+    transition:border-color .16s ease,background .16s ease,transform .16s ease;}
+  .px-tile-new:hover{border-color:#1c7ed6;background:rgba(231,245,255,.6);transform:translateY(-3px);}
+  .px-tile-new i{font-size:26px;color:#1864ab;}
+  .px-tile-new span{display:block;margin-top:8px;font-size:13.5px;font-weight:800;color:#1864ab;}
+  .px-chapchip{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;cursor:pointer;
+    border:1.5px solid #dee2e6;background:#fff;transition:border-color .14s ease,background .14s ease;}
+  .px-chapchip:hover{border-color:#c3c9d2;}
+  .px-chapchip.on{border-color:#228be6;background:#e7f5ff;}
+  .px-chapbox{width:18px;height:18px;flex:none;border-radius:5px;border:2px solid #c6c2d6;display:grid;place-items:center;color:#fff;font-size:11px;}
+  .px-chapchip.on .px-chapbox{background:#228be6;border-color:#228be6;}
+  .px-tile-done{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.42);box-shadow:0 1px 2px rgba(33,26,74,.04),0 6px 14px -14px rgba(33,26,74,.22);}
+  .px-tile-done .px-thumb{filter:saturate(.55) opacity(.72);}
+  .px-badge{display:inline-flex;align-items:center;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700;white-space:nowrap;}
+  .px-btn{display:inline-flex;align-items:center;justify-content:center;height:36px;padding:0 18px;border-radius:10px;
+    background:#228be6;color:#ffffff;font-size:13.5px;font-weight:700;white-space:nowrap;cursor:pointer;transition:background .14s ease;}
+  .px-btn:hover{background:#1c7ed6;}
+  .px-btn-q{background:rgba(120,90,200,.12);color:#3f3a63;}
+  .px-btn-q:hover{background:rgba(120,90,200,.2);color:#211a4a;}
+  .px-link{font-size:13.5px;font-weight:700;white-space:nowrap;color:#1971c2;cursor:pointer;}
+  .px-link:hover{color:#1864ab;text-decoration:underline;text-underline-offset:3px;}
+  .px-radio{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;font-weight:600;white-space:nowrap;color:#5d5880;transition:color .14s ease;}
+  .px-radio:hover{color:#211a4a;}
+  .px-radio-dot{width:17px;height:17px;flex:none;border-radius:50%;border:2px solid #c6c2d6;display:grid;place-items:center;transition:border-color .14s ease;}
+  .px-radio-on{color:#1971c2;}
+  .px-radio-on .px-radio-dot{border-color:#228be6;}
+  .px-radio-on .px-radio-dot::after{content:"";width:9px;height:9px;border-radius:50%;background:#228be6;}
+  .px-exp{padding:6px 0 20px 38px;animation:pxIn .26s cubic-bezier(.2,.8,.3,1) both;}
+  .px-tline{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:5px 0;font-size:13px;font-weight:600;color:#6b6786;}
+  .px-meter{height:4px;border-radius:999px;background:rgba(33,26,74,.12);overflow:hidden;}
+  .px-meter > div{height:100%;border-radius:999px;}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;}}
+</style>
+<script src="./mobile-nav.js"></script>
+</helmet>
+
+<mobile-nav active="practice"></mobile-nav>
+
+<div class="px-scroll" style="position:relative;width:100%;height:100vh;overflow-y:auto;background-image:radial-gradient(rgba(96,74,190,.13) 1px,transparent 1px),linear-gradient(180deg,#eee9fd 0%,#f8f5fe 46%,#fdfaf0 100%);background-size:24px 24px,100% 100%;background-attachment:fixed;">
+
+  <div style="position:relative;z-index:30;display:flex;align-items:flex-start;gap:40px;padding:24px 28px 0;">
+    <div onClick="{{ goHome }}" title="Home" role="button" tabindex="0" style="width:40px;height:40px;flex:none;border-radius:12px;overflow:hidden;display:grid;place-items:center;cursor:pointer;"><img src="logo.png" alt="Byjus.AI" style="width:100%;height:100%;object-fit:contain;"></div>
+
+    <div style="position:relative;top:-2px;min-width:0;">
+      <div class="px-goalw {{ goalsOpenCls }}" onClick="{{ toggleGoals }}" onKeyDown="{{ goalsKey }}" role="button" tabindex="0" aria-expanded="{{ goalsOpen }}">
+        <div class="px-goalw-rows" style="width:340px;min-width:0;">
+            <div style="position:relative;width:340px;height:26px;overflow:hidden;">
+              <sc-for list="{{ goalRow }}" as="g" hint-placeholder-count="1">
+                <div class="px-goal-line" style="position:absolute;left:0;bottom:0;width:340px;font-size:14px;font-weight:700;color:#211a4a;line-height:1.4;white-space:nowrap;"><span style="color:#d9480f;font-weight:800;font-size:18px;">{{ g.pctLabel }}</span> {{ g.label }}</div>
+              </sc-for>
+            </div>
+            <div class="px-goalw-track"><div class="px-goalw-fill" style="width:{{ goalPct }}%;"></div></div>
+        </div>
+        <sc-if value="{{ goalsOpen }}" hint-placeholder-val="{{ false }}">
+          <div class="px-goalw-pop">
+              <sc-for list="{{ openGoals }}" as="g" hint-placeholder-count="3">
+                <div class="px-goalw-row">
+                  <div style="max-width:340px;font-size:14px;font-weight:700;color:#211a4a;line-height:1.4;white-space:normal;text-wrap:pretty;"><span style="color:#d9480f;font-weight:800;font-size:18px;">{{ g.pctLabel }}</span> {{ g.label }}</div>
+                  <div class="px-goalw-track"><div class="px-goalw-fill" style="width:{{ g.pctLabel }};"></div></div>
+                </div>
+              </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <div style="flex:1;"></div>
+
+    <div style="display:flex;align-items:center;flex:none;gap:8px;align-self:center;">
+      <div class="{{ xpPulseClass }}" style="display:flex;align-items:center;gap:8px;padding:8px 15px 8px 12px;border-radius:12px;" title="Experience points">
+        <i class="ti ti-star-filled" style="font-size:20px;color:#fab005;filter:drop-shadow(0 1px 2px rgba(180,120,0,.35));"></i>
+        <span style="font-weight:800;color:#7a4700;font-size:18px;letter-spacing:-.01em;">{{ xpDisp }}</span>
+      </div>
+      <span aria-hidden="true" style="width:1px;height:20px;flex:none;margin:0 6px;background:linear-gradient(180deg,rgba(120,90,200,0),rgba(120,90,200,.22) 30%,rgba(120,90,200,.22) 70%,rgba(120,90,200,0));"></span>
+      <div class="{{ orbPulseClass }}" style="display:flex;align-items:center;gap:8px;padding:8px 16px 8px 13px;border-radius:12px;" title="Energy orbs">
+        <span style="width:18px;height:18px;flex:none;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff,#ffe066 42%,#ff922b 78%,#e8590c);box-shadow:0 0 10px rgba(255,193,7,.95),0 0 3px rgba(255,255,255,.9);"></span>
+        <span style="font-weight:800;color:#7a4700;font-size:18px;letter-spacing:-.01em;">{{ orbsDisp }}</span>
+      </div>
+    </div>
+
+    <div class="px-prof" style="position:relative;flex:none;align-self:center;">
+      <div onClick="{{ toggleProf }}" style="display:flex;align-items:center;gap:7px;padding:5px 9px 5px 5px;border-radius:{{ profRadius }};cursor:pointer;background:#ffffff;border:1px solid {{ profBorder }};border-bottom-color:{{ profBorderB }};box-shadow:0 1px 3px rgba(0,0,0,.05);transition:border-color .15s ease;">
+        <div style="width:40px;height:40px;flex:none;border-radius:50%;overflow:hidden;background:#e7f5ff;"><img src="aarav-avatar.png" alt="Aarav" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <i class="ti {{ profChevron }}" style="font-size:18px;color:#868e96;"></i>
+      </div>
+      <sc-if value="{{ profOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;right:0;top:100%;z-index:41;width:236px;background:#ffffff;border:1px solid #dee2e6;border-radius:12px 0 12px 12px;box-shadow:0 16px 34px -14px rgba(70,46,146,.4);overflow:hidden;padding:7px;">
+          <div class="px-jump" onClick="{{ openProfile }}" role="button" tabindex="0" style="padding:10px 12px 12px;border-radius:8px;cursor:pointer;">
+            <div style="font-size:14px;font-weight:700;line-height:1.2;color:#212529;">Aarav</div>
+            <div style="font-size:12px;font-weight:500;color:#868e96;margin-top:2px;">Class 10 · CBSE</div>
+          </div>
+          <div style="height:1px;background:#dee2e6;margin:5px 0;"></div>
+          <sc-for list="{{ jump }}" as="j" hint-placeholder-count="4">
+            <div class="px-jump" onClick="{{ j.onClick }}" style="display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:8px;cursor:pointer;color:#343a40;font-size:14px;font-weight:700;white-space:nowrap;">
+              <i class="ti {{ j.icon }}" style="flex:none;font-size:19px;"></i>{{ j.label }}
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <sc-if value="{{ showBack }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:20px 28px 0 108px;">
+      <div onClick="{{ goBack }}" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;color:#6b6786;cursor:pointer;transition:color .16s ease;" style-hover="color:#1971c2;"><i class="ti ti-arrow-left" style="font-size:16px;"></i>{{ crumb }}</div>
+    </div>
+  </sc-if>
+
+  <!-- ============ PRODUCT-LEVEL HUB ============ -->
+  <sc-if value="{{ isHub }}" hint-placeholder-val="{{ true }}">
+  <div style="padding:22px 28px 96px 108px;animation:pxIn .4s cubic-bezier(.2,.8,.3,1) both;">
+
+    <div style="display:flex;align-items:flex-end;gap:28px;flex-wrap:wrap;margin-bottom:24px;">
+      <div style="flex:1;min-width:260px;">
+        <h1 style="margin:0;font-size:38px;font-weight:700;line-height:1.08;letter-spacing:-.02em;color:#211a4a;">Assessments</h1>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:22px;flex-wrap:wrap;flex:none;">
+        <sc-for list="{{ week }}" as="w" hint-placeholder-count="2">
+          <div style="display:flex;align-items:baseline;gap:6px;white-space:nowrap;">
+            <span style="font-size:20px;font-weight:800;letter-spacing:-.014em;color:{{ w.fg }};">{{ w.value }}</span>
+            <span style="font-size:13px;font-weight:600;color:#6b6786;">{{ w.label }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:flex-start;gap:24px;margin-top:22px;">
+
+      <aside style="position:sticky;top:0;flex:none;width:206px;">
+        <sc-for list="{{ panes }}" as="p" hint-placeholder-count="4">
+          <div class="px-nav {{ p.cls }}" onClick="{{ p.pick }}" role="tab" aria-selected="{{ p.on }}" tabindex="0">
+            <i class="ti {{ p.icon }}"></i>{{ p.label }}
+          </div>
+        </sc-for>
+        <div class="px-hair" style="margin:14px 10px;"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 14px;">
+          <span style="font-size:13px;font-weight:800;white-space:nowrap;color:#ad4d0a;">Class 10 · CBSE</span>
+          <span class="px-link" style="font-size:12.5px;">Change</span>
+        </div>
+      </aside>
+
+      <div class="px-vhair" style="min-height:340px;"></div>
+
+      <div style="flex:1;min-width:0;">
+
+        <!-- Pane: subjective papers -->
+        <sc-if value="{{ isSubjective }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-bottom:18px;">
+            <h2 style="margin:0 0 5px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">Subjective papers</h2>
+            <span style="font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;">Written by hand on paper, against a clock. No options to choose from — you show your working.</span>
+          </div>
+          <!-- The loop is what makes these different from every other pane, so it stays. -->
+          <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding:0 0 20px;">
+            <sc-for list="{{ subSteps }}" as="s" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:9px;min-width:0;">
+                <span style="width:26px;height:26px;flex:none;border-radius:50%;display:grid;place-items:center;background:#e7f1ff;color:#1864ab;font-size:12px;font-weight:800;">{{ s.n }}</span>
+                <span style="font-size:13.5px;font-weight:600;color:#3f3a63;white-space:nowrap;">{{ s.t }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div class="px-grid">
+              <div class="px-tile-new" onClick="{{ newSubjective }}" role="button" tabindex="0">
+                <div style="text-align:center;">
+                  <i class="ti ti-plus"></i>
+                  <span>Create new</span>
+                </div>
+              </div>
+            <sc-for list="{{ subPapers }}" as="p" hint-placeholder-count="3">
+              <div class="px-tile {{ p.tileCls }}" onClick="{{ p.start }}">
+                <div class="px-thumb" style="background:{{ p.tint }};"><i class="ti ti-camera"></i>
+                  <sc-if value="{{ p.hasTag }}" hint-placeholder-val="{{ false }}"><span class="px-tile-tag">{{ p.tag }}</span></sc-if>
+                </div>
+                <div class="px-tile-body">
+                  <div class="px-tile-title">{{ p.name }}</div>
+                  <div class="px-tile-meta">{{ p.meta }}</div>
+                  <div class="px-tile-cta" style="color:{{ p.ctaFg }};"><i class="ti {{ p.ctaIcon }}" style="font-size:11px;"></i>{{ p.cta }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- Pane: timed papers -->
+        <sc-if value="{{ isPapers }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-bottom:18px;">
+            <h2 style="margin:0 0 5px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">Timed papers</h2>
+            <span style="font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;">One attempt, no hints, a clock running down.</span>
+          </div>
+          <div class="px-grid">
+              <div class="px-tile-new" onClick="{{ newTimed }}" role="button" tabindex="0">
+                <div style="text-align:center;">
+                  <i class="ti ti-plus"></i>
+                  <span>Create new</span>
+                </div>
+              </div>
+            <sc-for list="{{ tests }}" as="t" hint-placeholder-count="3">
+              <div class="px-tile {{ t.tileCls }}" onClick="{{ t.start }}">
+                <div class="px-thumb" style="background:{{ t.tint }};"><i class="ti ti-stopwatch"></i>
+                  <sc-if value="{{ t.hasTag }}" hint-placeholder-val="{{ false }}"><span class="px-tile-tag">{{ t.tag }}</span></sc-if>
+                </div>
+                <div class="px-tile-body">
+                  <div class="px-tile-title">{{ t.name }}</div>
+                  <span class="px-tile-bar"><span style="display:block;height:100%;width:{{ t.coverage }};border-radius:999px;background:{{ t.covFg }};"></span></span>
+                  <div class="px-tile-meta">{{ t.meta }}</div>
+                  <div class="px-tile-cta" style="color:{{ t.ctaFg }};"><i class="ti {{ t.ctaIcon }}" style="font-size:11px;"></i>{{ t.cta }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- Pane: chapter progress -->
+        <sc-if value="{{ isChapters }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:18px;">
+            <div style="flex:1;min-width:200px;">
+              <h2 style="margin:0 0 5px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">Chapter practice</h2>
+              <span style="font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;">Pick a chapter and work up its ladder.</span>
+            </div>
+            <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+              <div class="px-radio {{ f.cls }}" onClick="{{ f.pick }}" role="radio" aria-checked="{{ f.on }}" tabindex="0">
+                <span class="px-radio-dot"></span>{{ f.label }}
+              </div>
+            </sc-for>
+          </div>
+          <div class="px-grid">
+            <sc-for list="{{ rows }}" as="r" hint-placeholder-count="8">
+              <div class="px-tile {{ r.tileCls }}" onClick="{{ r.open }}">
+                <div class="px-thumb" style="background:{{ r.tint }};"><i class="ti {{ r.icon }}"></i>
+                  <sc-if value="{{ r.hasTag }}" hint-placeholder-val="{{ false }}"><span class="px-tile-tag">{{ r.perfLabel }}</span></sc-if>
+                </div>
+                <div class="px-tile-body">
+                  <div class="px-tile-title">{{ r.name }}</div>
+                  <span class="px-tile-bar"><span style="display:block;height:100%;width:{{ r.progressLabel }};border-radius:999px;background:{{ r.progressFill }};"></span></span>
+                  <div class="px-tile-meta">{{ r.tileMeta }}</div>
+                  <div class="px-tile-cta" style="color:{{ r.ctaFg }};"><i class="ti {{ r.ctaIcon }}" style="font-size:11px;"></i>{{ r.ctaLabel }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:15px;font-weight:600;color:#6b6786;padding:20px 0;">No chapters match that filter.</div>
+          </sc-if>
+        </sc-if>
+
+        <!-- Pane: goal sets -->
+        <sc-if value="{{ isRecommended }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-bottom:18px;">
+            <h2 style="margin:0 0 5px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">Working towards your goals</h2>
+            <span style="font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;">One set per goal. Hints when you miss, two tries, no clock.</span>
+          </div>
+          <div class="px-grid">
+            <sc-for list="{{ sets }}" as="s" hint-placeholder-count="3">
+              <div class="px-tile" onClick="{{ s.start }}">
+                <div class="px-thumb" style="background:{{ s.tint }};"><i class="ti ti-target-arrow"></i>
+                  <span class="px-tile-tag">{{ s.goalPctLabel }}</span>
+                </div>
+                <div class="px-tile-body">
+                  <div class="px-tile-title">{{ s.title }}</div>
+                  <span class="px-tile-bar"><span style="display:block;height:100%;width:{{ s.goalPctLabel }};border-radius:999px;background:#d9480f;"></span></span>
+                  <div class="px-tile-meta">{{ s.meta }}</div>
+                  <div class="px-tile-cta" style="color:#1864ab;"><i class="ti ti-player-play-filled" style="font-size:11px;"></i>{{ s.cta }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- Pane: past attempts -->
+        <sc-if value="{{ isHistory }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-bottom:18px;">
+            <h2 style="margin:0 0 5px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">Past attempts</h2>
+            <span style="font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;">Every set and paper you have finished, newest first.</span>
+          </div>
+          <div class="px-grid">
+            <sc-for list="{{ history }}" as="h" hint-placeholder-count="6">
+              <div class="px-tile px-tile-done">
+                <div class="px-thumb" style="background:{{ h.tint }};"><i class="ti {{ h.icon }}"></i>
+                  <span class="px-tile-tag">{{ h.score }}</span>
+                </div>
+                <div class="px-tile-body">
+                  <div class="px-tile-title">{{ h.name }}</div>
+                  <div class="px-tile-meta">{{ h.date }}</div>
+                  <div class="px-tile-cta" style="color:{{ h.perfFg }};"><i class="ti ti-rotate" style="font-size:11px;"></i>{{ h.pctLabel }} · Review</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ CHAPTER-LEVEL ============ -->
+  <sc-if value="{{ isChapter }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:22px 28px 96px 108px;animation:pxIn .4s cubic-bezier(.2,.8,.3,1) both;">
+    <h1 style="margin:0 0 6px;font-size:38px;font-weight:700;line-height:1.08;letter-spacing:-.02em;color:#211a4a;">{{ chName }}</h1>
+    <p style="margin:0 0 32px;font-size:16px;font-weight:500;color:#5d5880;max-width:520px;line-height:1.5;text-wrap:pretty;">Work up the ladder, then take the chapter test when all three tiers feel comfortable.</p>
+
+    <div style="max-width:900px;">
+      <div style="margin-bottom:18px;">
+        <h2 style="margin:0 0 5px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">Difficulty ladder</h2>
+        <span style="font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;">Practice sets — hints when you miss, two tries, no clock.</span>
+      </div>
+
+      <sc-for list="{{ tiers }}" as="t" hint-placeholder-count="3">
+        <div class="px-r px-split px-r-act" onClick="{{ t.start }}" style="align-items:flex-start;">
+          <div style="min-width:0;">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;">
+              <i class="ti {{ t.icon }}" style="flex:none;font-size:17px;color:{{ t.fg }};"></i>
+              <span style="font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;color:{{ t.fg }};">Tier {{ t.n }}</span>
+            </div>
+            <div style="font-size:18px;font-weight:700;color:#211a4a;letter-spacing:-.012em;line-height:1.3;">{{ t.label }}</div>
+            <div style="font-size:14px;font-weight:500;color:#5d5880;line-height:1.45;margin-top:6px;max-width:420px;text-wrap:pretty;">{{ t.desc }}</div>
+            <div style="max-width:320px;margin-top:14px;">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px;">
+                <span style="font-size:13px;font-weight:800;white-space:nowrap;color:{{ t.fg }};">{{ t.doneLabel }}</span>
+                <span style="font-size:12.5px;font-weight:600;white-space:nowrap;color:#6b6786;">{{ t.perSet }} per set</span>
+              </div>
+              <div class="px-meter"><div style="width:{{ t.pct }};background:{{ t.fill }};"></div></div>
+            </div>
+          </div>
+          <div class="px-btn">Practice</div>
+        </div>
+      </sc-for>
+
+      <div class="px-hair" style="margin:36px 0 30px;"></div>
+
+      <div style="margin-bottom:18px;">
+        <h2 style="margin:0 0 5px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">Chapter test</h2>
+        <span style="font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;">A test, not a practice set: one sitting, one attempt, no hints.</span>
+      </div>
+      <div class="px-r px-split" style="align-items:flex-start;">
+        <div style="min-width:0;">
+          <div style="font-size:18px;font-weight:700;color:#211a4a;letter-spacing:-.012em;line-height:1.3;">{{ testQs }} questions, graded out of 100</div>
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:7px;">
+            <span style="font-size:13.5px;font-weight:600;white-space:nowrap;color:#6b6786;">{{ testMins }} minutes</span>
+            <span style="width:4px;height:4px;flex:none;border-radius:50%;background:rgba(120,90,200,.4);"></span>
+            <span style="font-size:13.5px;font-weight:600;white-space:nowrap;color:#6b6786;">Goes on the chapter record</span>
+          </div>
+          <div style="max-width:320px;margin-top:14px;">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px;">
+              <span style="font-size:13px;font-weight:700;color:#3f3a63;"><span style="font-size:15px;font-weight:800;color:{{ chCovFg }};">{{ chCoverage }}</span> of this chapter covered</span>
+              <span style="font-size:12.5px;font-weight:800;white-space:nowrap;color:{{ chCovFg }};">{{ chReadiness }}</span>
+            </div>
+            <div class="px-meter"><div style="width:{{ chCoverage }};background:{{ chCovFg }};"></div></div>
+          </div>
+        </div>
+        <div class="px-btn" onClick="{{ startTest }}" style="background:#6741d9;">Take the test</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ SESSION ============ -->
+  <sc-if value="{{ isSession }}" hint-placeholder-val="{{ false }}">
+  <div style="max-width:968px;padding:0 28px 96px 108px;">
+
+    <!-- sticky, so progress and the clock stay readable on a long item -->
+    <div style="position:sticky;top:0;z-index:20;padding:18px 0 14px;background:linear-gradient(180deg,#f3effc 62%,rgba(243,239,252,0) 100%);">
+      <div style="display:flex;gap:6px;margin-bottom:10px;">
+        <sc-for list="{{ rail }}" as="r" hint-placeholder-count="6">
+          <div style="flex:1;height:6px;border-radius:999px;background:{{ r.bg }};transition:background .3s ease;"></div>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;">
+        <span style="font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;color:#6b6786;">Question {{ qNum }} of {{ qTotal }}</span>
+        <span style="font-size:12px;font-weight:800;white-space:nowrap;color:#2f9e44;">{{ correctCount }} correct</span>
+        <div style="flex:1;"></div>
+        <sc-if value="{{ isTimed }}" hint-placeholder-val="{{ false }}">
+          <span style="display:inline-flex;align-items:center;gap:7px;font-size:15px;font-weight:800;white-space:nowrap;color:{{ clockColor }};"><i class="ti ti-clock" style="font-size:17px;"></i>{{ clock }}</span>
+        </sc-if>
+      </div>
+    </div>
+
+    <div style="border-radius:20px;padding:32px;background:#ffffff;box-shadow:0 10px 22px -10px rgba(70,46,146,.26);animation:pxPop .28s cubic-bezier(.2,.8,.3,1) both;">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;">
+        <span style="font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#1971c2;">{{ item.kindLabel }}</span>
+        <sc-if value="{{ isRetry }}" hint-placeholder-val="{{ false }}">
+          <span style="font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;color:#d9480f;padding:4px 10px;border-radius:999px;background:#fff4e6;">Second try</span>
+        </sc-if>
+      </div>
+      <div style="font-size:24px;font-weight:700;color:#211a4a;line-height:1.32;letter-spacing:-.012em;margin-bottom:26px;text-wrap:pretty;">{{ item.prompt }}</div>
+
+      <!-- multiple choice -->
+      <sc-if value="{{ item.isMcq }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;gap:10px;">
+          <sc-for list="{{ options }}" as="o" hint-placeholder-count="4">
+            <div onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:14px;background:{{ o.bg }};cursor:{{ o.cursor }};transition:background .16s ease;">
+              <span style="flex:none;width:28px;height:28px;border-radius:50%;background:{{ o.badgeBg }};color:{{ o.badgeFg }};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;">{{ o.letter }}</span>
+              <span style="flex:1;min-width:0;font-size:17px;font-weight:700;color:#1b1442;">{{ o.text }}</span>
+              <i class="ti {{ o.icon }}" style="flex:none;font-size:19px;color:{{ o.iconColor }};"></i>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- numeric -->
+      <sc-if value="{{ item.isNumeric }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+          <input value="{{ typed }}" onChange="{{ onType }}" placeholder="Your answer" style="width:200px;height:56px;padding:0 18px;border-radius:13px;border:1px solid #d9d5e8;background:#fbfaff;font-size:22px;font-weight:700;color:#1b1442;font-family:inherit;outline:none;"/>
+          <div onClick="{{ submitNumeric }}" style="padding:0 26px;height:56px;border-radius:13px;background:linear-gradient(180deg,#339af0,#1c7ed6);color:#ffffff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap;cursor:pointer;">Check</div>
+          <span style="font-size:14px;font-weight:500;color:#6b6786;">{{ item.unitHint }}</span>
+        </div>
+      </sc-if>
+
+      <!-- construct: shade the Venn -->
+      <sc-if value="{{ item.isConstruct }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:20px;align-items:flex-start;">
+          <svg viewBox="0 0 260 180" width="330" height="228" role="img" aria-label="Two overlapping sets, A and B">
+            <sc-for list="{{ regions }}" as="r" hint-placeholder-count="3">
+              <path class="px-venn-r" d="{{ r.d }}" fill="{{ r.fill }}" onClick="{{ r.toggle }}"></path>
+            </sc-for>
+            <circle cx="100" cy="90" r="62" fill="none" stroke="#7048e8" stroke-width="2" pointer-events="none"></circle>
+            <circle cx="160" cy="90" r="62" fill="none" stroke="#1c7ed6" stroke-width="2" pointer-events="none"></circle>
+            <text x="62" y="96" text-anchor="middle" font-size="20" font-weight="800" fill="#5f3dc4" pointer-events="none">A</text>
+            <text x="198" y="96" text-anchor="middle" font-size="20" font-weight="800" fill="#1864ab" pointer-events="none">B</text>
+          </svg>
+          <div onClick="{{ submitConstruct }}" style="padding:0 26px;height:52px;border-radius:13px;background:linear-gradient(180deg,#339af0,#1c7ed6);color:#ffffff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap;cursor:pointer;">Check my shading</div>
+        </div>
+      </sc-if>
+
+      <!-- ordering -->
+      <sc-if value="{{ item.isOrder }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:20px;align-items:stretch;">
+          <div style="display:grid;gap:10px;">
+            <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+              <div onClick="{{ s.pick }}" title="{{ s.title }}" style="display:flex;align-items:center;gap:14px;padding:15px 18px;border-radius:14px;background:{{ s.bg }};cursor:{{ s.cursor }};transition:background .16s ease;">
+                <span style="flex:none;width:28px;height:28px;border-radius:9px;background:{{ s.numBg }};color:{{ s.numFg }};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;">{{ s.order }}</span>
+                <span style="flex:1;min-width:0;font-size:16px;font-weight:700;color:#1b1442;">{{ s.text }}</span>
+                <i class="ti {{ s.icon }}" style="flex:none;font-size:17px;color:#6b6786;"></i>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <div onClick="{{ submitOrder }}" style="padding:0 26px;height:52px;border-radius:13px;background:linear-gradient(180deg,#339af0,#1c7ed6);color:#ffffff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap;cursor:pointer;">Check order</div>
+            <div onClick="{{ resetOrder }}" style="font-size:14px;font-weight:700;white-space:nowrap;color:#5d5880;cursor:pointer;">Clear all</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- worked example -->
+      <sc-if value="{{ item.isWorked }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:12px;align-items:stretch;">
+          <sc-for list="{{ workedSteps }}" as="w" hint-placeholder-count="3">
+            <div style="padding:16px 18px;border-radius:14px;background:{{ w.bg }};opacity:{{ w.opacity }};transition:opacity .3s ease;">
+              <div style="font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;color:#6b6786;margin-bottom:6px;">Step {{ w.n }}</div>
+              <div style="font-size:17px;font-weight:700;color:#1b1442;line-height:1.4;">{{ w.text }}</div>
+            </div>
+          </sc-for>
+          <div onClick="{{ nextWorked }}" style="align-self:flex-start;white-space:nowrap;margin-top:8px;padding:0 26px;height:52px;border-radius:13px;background:linear-gradient(180deg,#339af0,#1c7ed6);color:#ffffff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;cursor:pointer;">{{ workedCta }}</div>
+        </div>
+      </sc-if>
+
+      <!-- verdict -->
+      <sc-if value="{{ showVerdict }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:26px;padding:20px 22px;border-radius:16px;background:{{ verdictBg }};animation:pxIn .26s ease both;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+            <i class="ti {{ verdictIcon }}" style="font-size:20px;color:{{ verdictFg }};"></i>
+            <span style="font-size:17px;font-weight:800;color:{{ verdictFg }};">{{ verdictText }}</span>
+          </div>
+          <div style="font-size:15px;font-weight:500;color:#3f3a63;line-height:1.5;text-wrap:pretty;">{{ verdictBody }}</div>
+        </div>
+      </sc-if>
+
+      <!-- Vyom hint: earns its place on the first miss, when a retry is still possible -->
+      <sc-if value="{{ showHint }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:14px;display:flex;gap:14px;align-items:flex-start;padding:18px 20px;border-radius:16px;background:#f4f1fe;animation:pxIn .3s ease .08s both;">
+          <div style="flex:none;width:36px;height:36px;border-radius:50%;background:linear-gradient(180deg,#9775fa,#6741d9);display:flex;align-items:center;justify-content:center;color:#ffffff;font-size:17px;"><i class="ti ti-sparkles"></i></div>
+          <div>
+            <div style="font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;color:#6741d9;margin-bottom:5px;">Vyom</div>
+            <div style="font-size:15px;font-weight:500;color:#3f3a63;line-height:1.5;text-wrap:pretty;">{{ hintText }}</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+        <sc-if value="{{ showRetry }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ retry }}" style="margin-top:24px;display:inline-flex;align-items:center;white-space:nowrap;gap:9px;padding:0 28px;height:52px;border-radius:13px;background:linear-gradient(180deg,#ffa94d,#e8590c);color:#ffffff;font-size:16px;font-weight:700;cursor:pointer;transition:transform .18s cubic-bezier(.2,.8,.3,1);" style-hover="transform:translateY(-2px);"><i class="ti ti-rotate" style="font-size:17px;"></i>Try again</div>
+        </sc-if>
+        <sc-if value="{{ showReveal }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ reveal }}" style="margin-top:24px;font-size:14px;font-weight:700;white-space:nowrap;color:#5d5880;cursor:pointer;text-decoration:underline;text-underline-offset:3px;">Show me the answer</div>
+        </sc-if>
+        <sc-if value="{{ showNext }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ next }}" style="margin-top:24px;display:inline-flex;align-items:center;white-space:nowrap;gap:9px;padding:0 28px;height:52px;border-radius:13px;background:#211a4a;color:#ffffff;font-size:16px;font-weight:700;cursor:pointer;transition:transform .18s cubic-bezier(.2,.8,.3,1);" style-hover="transform:translateY(-2px);">{{ nextLabel }}<i class="ti ti-arrow-right" style="font-size:17px;"></i></div>
+        </sc-if>
+      </div>
+    </div>
+
+    <div style="margin-top:18px;font-size:13px;font-weight:500;color:#6b6786;">Keyboard: <strong style="font-weight:800;color:#6b6786;">1–4</strong> to answer, <strong style="font-weight:800;color:#6b6786;">Enter</strong> to continue.</div>
+  </div>
+  </sc-if>
+
+  <!-- ============ RESULT ============ -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+  <div style="max-width:748px;padding:60px 28px 96px 108px;animation:pxIn .4s cubic-bezier(.2,.8,.3,1) both;">
+    <div class="px-hair" style="margin-bottom:34px;"></div>
+    <div style="padding:0 4px;text-align:center;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#2b8a3e;margin-bottom:16px;">{{ resultKicker }}</div>
+      <div style="font-size:58px;font-weight:800;color:#211a4a;line-height:1;letter-spacing:-.02em;margin-bottom:10px;">{{ correctCount }}<span style="font-size:30px;font-weight:700;color:#5d5880;">/{{ qTotal }}</span></div>
+      <div style="font-size:18px;font-weight:700;color:#3f3a63;margin-bottom:28px;">{{ resultLine }}</div>
+      <div style="display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;">
+        <span style="display:inline-flex;align-items:center;gap:7px;font-size:16px;font-weight:800;white-space:nowrap;color:#7a4700;"><i class="ti ti-star-filled" style="font-size:18px;color:#fab005;"></i>+{{ earnedXp }} XP</span>
+        <span style="display:inline-flex;align-items:center;gap:7px;font-size:16px;font-weight:800;white-space:nowrap;color:#7a4700;"><span style="width:16px;height:16px;flex:none;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff,#ffe066 42%,#ff922b 78%,#e8590c);"></span>+{{ earnedOrbs }} orbs</span>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <div onClick="{{ again }}" style="padding:0 26px;height:52px;border-radius:13px;background:linear-gradient(180deg,#339af0,#1c7ed6);color:#ffffff;font-size:16px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap;cursor:pointer;">Another set</div>
+        <div onClick="{{ toHub }}" class="px-btn-q" style="padding:0 26px;height:52px;border-radius:13px;font-size:16px;font-weight:700;display:inline-flex;align-items:center;white-space:nowrap;cursor:pointer;">Back to practice</div>
+      </div>
+    </div>
+    <div class="px-hair" style="margin-top:34px;"></div>
+  </div>
+  </sc-if>
+
+  <!-- build a paper: pick the chapters it should cover -->
+  <sc-if value="{{ buildOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeBuild }}" style="position:fixed;inset:0;z-index:60;background:rgba(33,26,74,.42);display:flex;align-items:center;justify-content:center;padding:28px;animation:pxIn .2s ease both;">
+      <div onClick="{{ stopProp }}" style="width:100%;max-width:640px;max-height:82vh;display:flex;flex-direction:column;border-radius:20px;background:#ffffff;box-shadow:0 24px 60px -20px rgba(33,26,74,.6);animation:pxPop .24s cubic-bezier(.2,.8,.3,1) both;">
+        <div style="flex:none;padding:26px 28px 16px;">
+          <div style="font-size:22px;font-weight:700;color:#211a4a;letter-spacing:-.014em;line-height:1.3;">{{ buildTitle }}</div>
+          <div style="font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;margin-top:6px;">Choose the chapters it should cover. We build the paper from those.</div>
+        </div>
+        <div style="flex:1;min-height:0;overflow-y:auto;padding:0 28px;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;padding-bottom:8px;">
+            <sc-for list="{{ buildChapters }}" as="c" hint-placeholder-count="8">
+              <div class="px-chapchip {{ c.cls }}" onClick="{{ c.toggle }}" role="checkbox" aria-checked="{{ c.on }}" tabindex="0">
+                <span class="px-chapbox"><i class="ti ti-check"></i></span>
+                <span style="min-width:0;font-size:13.5px;font-weight:600;color:#211a4a;line-height:1.3;">{{ c.name }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="flex:none;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:18px 28px 24px;border-top:1px solid #eceaf4;margin-top:16px;">
+          <div style="flex:1;min-width:0;font-size:13.5px;font-weight:700;color:#3f3a63;">{{ buildSummary }}</div>
+          <span class="px-go" onClick="{{ closeBuild }}" style="cursor:pointer;">Cancel</span>
+          <div class="px-btn {{ buildCtaCls }}" onClick="{{ confirmBuild }}">Create and start</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- leave confirmation: a set in progress is never dropped silently -->
+  <sc-if value="{{ leaveOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ cancelLeave }}" style="position:fixed;inset:0;z-index:60;background:rgba(33,26,74,.42);display:flex;align-items:center;justify-content:center;padding:28px;animation:pxIn .2s ease both;">
+      <div style="width:100%;max-width:436px;border-radius:20px;padding:30px;background:#ffffff;box-shadow:0 24px 60px -20px rgba(33,26,74,.6);animation:pxPop .24s cubic-bezier(.2,.8,.3,1) both;">
+        <div style="font-size:22px;font-weight:700;color:#211a4a;letter-spacing:-.014em;line-height:1.3;margin-bottom:10px;">Leave this set?</div>
+        <div style="font-size:15px;font-weight:500;color:#5d5880;line-height:1.5;margin-bottom:26px;text-wrap:pretty;">You are on question {{ qNum }} of {{ qTotal }}. We will keep your place so you can pick it up from the practice page.</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <div onClick="{{ confirmLeave }}" style="flex:1;min-width:150px;height:50px;border-radius:12px;background:#211a4a;color:#ffffff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;white-space:nowrap;cursor:pointer;">Save and leave</div>
+          <div onClick="{{ cancelLeave }}" style="flex:1;min-width:150px;height:50px;border-radius:12px;background:#f4f1fe;color:#5d5880;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;white-space:nowrap;cursor:pointer;">Keep going</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+/* The same three goals the Home and Chapter Journey chrome rotate through. */
+const GOALS = [
+  { pct:68, label:'of scoring 90%+ in the year-end exam' },
+  { pct:45, label:'of acing the Fractions unit test' },
+  { pct:80, label:'of finishing adding unlike fractions today' },
+];
+
+const RESUME_KEY = 'byjusPracticeSession';
+const XP_BASE = 4820, ORB_BASE = 32;
+
+/* Venn geometry, computed once: circles A(100,90) and B(160,90) at r=62 meet at
+   x=130, y=90±54.26, so the three regions are exact arc pairs rather than boxes. */
+const VENN = [
+  { id:0, label:'A only',  d:'M 130 35.74 A 62 62 0 1 0 130 144.26 A 62 62 0 0 1 130 35.74 Z' },
+  { id:1, label:'A and B', d:'M 130 35.74 A 62 62 0 0 1 130 144.26 A 62 62 0 0 1 130 35.74 Z' },
+  { id:2, label:'B only',  d:'M 130 35.74 A 62 62 0 1 1 130 144.26 A 62 62 0 0 0 130 35.74 Z' },
+];
+
+/* Real topic lists per chapter — the table's rows expand into these, so they cannot be filler. */
+const TOPICS = {
+  1:['Euclid\u2019s division lemma','Fundamental theorem of arithmetic','Irrational numbers','Decimal expansions'],
+  2:['Zeroes of a polynomial','Zeroes and coefficients','Division algorithm','Graphical meaning'],
+  3:['Graphical method','Substitution method','Elimination method','Word problems with two variables'],
+  4:['Standard form','Factorisation method','The quadratic formula','Nature of roots'],
+  5:['Identifying an AP','nth term of an AP','Sum of n terms','Word problems'],
+  6:['Distance formula','Section formula','Midpoint of a segment','Area of a triangle'],
+  7:['Similarity criteria','Basic proportionality theorem','Areas of similar triangles','Pythagoras theorem'],
+  8:['Tangent to a circle','Number of tangents','Tangent from an external point','Tangent properties'],
+  9:['Dividing a line segment','Constructing similar triangles','Tangents to a circle','Working with a scale factor'],
+  10:['Trigonometric ratios','Ratios of specific angles','Complementary angles','Trigonometric identities'],
+  11:['Line of sight','Angle of elevation','Angle of depression','Heights and distances'],
+  12:['Perimeter and area of a circle','Area of a sector','Area of a segment','Combinations of figures'],
+  13:['Combination of solids','Frustum of a cone','Conversion of solids','Surface area problems'],
+  14:['Mean of grouped data','Mode of grouped data','Median of grouped data','Cumulative frequency and ogives'],
+  15:['Theoretical probability','Simple events','Complementary events','Dice and card problems'],
+};
+
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+/* Deterministic, so a re-render never reshuffles a student's numbers. */
+function hsh(a,b,salt){ return (((a * 73 + b * 151 + (salt || 0) * 29 + 17) * 37) % 101 + 101) % 101; }
+
+function perfBand(p){
+  if (p <= 0)  return { word:'Not started', bg:'#f1f0f8', fg:'#6b6786' };
+  if (p >= 80) return { word:'Excellent',   bg:'#ebfbee', fg:'#237032' };
+  if (p >= 60) return { word:'Good',        bg:'#eef7ff', fg:'#1864ab' };
+  if (p >= 40) return { word:'Average',     bg:'#fff9db', fg:'#7a5200' };
+  return         { word:'Needs work', bg:'#fff5f5', fg:'#c92a2a' };
+}
+
+const BANK = [
+  { kind:'mcq', kindLabel:'Multiple choice', prompt:'Which pair of linear equations has exactly one solution?',
+    options:['2x + 3y = 7 and 4x + 6y = 14','x + y = 5 and x − y = 1','3x + 2y = 8 and 6x + 4y = 9','x + 2y = 4 and 2x + 4y = 8'],
+    answer:1, why:'The ratios of the coefficients differ, so the lines meet at a single point.',
+    hint:'Compare a₁/a₂ with b₁/b₂. A unique solution needs those two ratios to be unequal.' },
+  { kind:'numeric', kindLabel:'Numeric answer', prompt:'Solve for x:  3x − 7 = 2x + 9', answer:'16', unitHint:'A whole number',
+    why:'Move 2x left and −7 right: x = 16.', hint:'Collect the x terms on one side first, then the constants on the other.' },
+  { kind:'construct', kindLabel:'Shade the region', prompt:'Shade the region that represents A ∩ B.', answer:[1],
+    why:'The intersection is only the overlap — elements in both sets.', hint:'∩ means “and”. Only what belongs to both sets survives.' },
+  { kind:'order', kindLabel:'Put in order', prompt:'Order the steps for solving by substitution.',
+    steps:['Make x the subject in one equation','Substitute that into the other equation','Solve the single-variable equation','Back-substitute to find the second variable'],
+    answer:[0,1,2,3], why:'Substitution reduces two unknowns to one, solves it, then recovers the other.',
+    hint:'You cannot solve for a value until only one unknown is left in the equation.' },
+  { kind:'worked', kindLabel:'Worked example', prompt:'Two numbers sum to 30 and differ by 8. Find them.',
+    workedSteps:['Let the numbers be x and y, so x + y = 30 and x − y = 8.','Add the equations: 2x = 38, so x = 19.','Substitute back: y = 30 − 19 = 11. The numbers are 19 and 11.'] },
+  { kind:'mcq', kindLabel:'Multiple choice', prompt:'For which value of k do 2x + ky = 5 and 6x + 9y = 15 have infinitely many solutions?',
+    options:['1','3','6','9'], answer:1,
+    why:'Every ratio must match: 6/2 = 3, so k must be 3 to keep 9/k = 3 as well.',
+    hint:'Infinitely many solutions means a₁/a₂, b₁/b₂ and c₁/c₂ are all equal.' },
+  { kind:'numeric', kindLabel:'Numeric answer', prompt:'Two numbers sum to 45 and differ by 9. What is the larger one?',
+    answer:'27', unitHint:'A whole number', why:'Adding the equations gives 2x = 54, so x = 27.',
+    hint:'Add the two equations to eliminate the smaller unknown.' },
+  { kind:'construct', kindLabel:'Shade the region', prompt:'Shade the region that represents A ∪ B.', answer:[0,1,2],
+    why:'The union takes everything that belongs to either set.', hint:'∪ means “or” — nothing is left out if it sits in either set.' },
+];
+
+class Component extends DCLogic {
+  state = { view:'hub', chapterId:3, idx:0, answered:[], attempts:0, picked:null, typed:'', shaded:[], seq:[],
+            workedAt:1, verdict:null, total:6, mode:'practice', setLabel:'', secsLeft:null,
+            leaveOpen:false, resume:null, xpDisp:XP_BASE, orbsDisp:ORB_BASE, xpPulse:false, orbPulse:false,
+            pane:'papers', buildMode:null, buildPick:[], expanded:null, tableFilter:'all', topicFilter:'all',
+            goalIdx:0, goalsOpen:false, profOpen:false };
+
+  /* One row per chapter, with its topics; row figures are aggregates of the topic
+     figures rather than separate numbers that could disagree with them. */
+  _rows(){
+    return this.chapters().map(c => {
+      const [num, name, , status, unlockAfter] = c;
+      const names = TOPICS[num] || [];
+      const topics = names.map((tn,i) => {
+        const h1 = hsh(num,i,1), h2 = hsh(num,i,2), h3 = hsh(num,i,3);
+        let progress = 0;
+        if (status === 'done') progress = 82 + h1 % 19;
+        else if (status === 'ongoing') progress = (h1 % 3 === 0) ? 0 : 14 + h1 % 58;
+        /* Accuracy has to follow status the way progress does, or a chapter can be
+           badged Mastered at 91% coverage while reporting 53% accuracy. */
+        let perf = 0;
+        if (progress > 0) perf = status === 'done' ? 78 + h2 % 20 : 38 + h2 % 45;
+        const days = h3 % 34;
+        const d = new Date(Date.now() - days * 86400000);
+        const band = perfBand(perf);
+        return { key:'t' + num + '_' + i, name:tn, skills: 8 + h1 % 15,
+          progress, progressLabel: progress + '%', perf, perfLabel: perf > 0 ? perf + '%' : '\u2014',
+          perfWord: band.word, perfBg: band.bg, perfFg: band.fg,
+          last: progress > 0 ? d.getDate() + ' ' + MON[d.getMonth()] : 'Never',
+          lastLine: progress > 0 ? 'last practiced ' + d.getDate() + ' ' + MON[d.getMonth()] : 'not started yet',
+          perfChip: perf > 0 ? perf + '% ' + band.word : band.word,
+          cta: progress > 0 ? 'Practice' : 'Start' };
+      });
+      const attempted = topics.filter(t => t.progress > 0);
+      const progressPct = topics.length ? Math.round(topics.reduce((a,t) => a + t.progress, 0) / topics.length) : 0;
+      const perfPct = attempted.length ? Math.round(attempted.reduce((a,t) => a + t.perf, 0) / attempted.length) : 0;
+      return { num, name, status, unlockAfter, topics, attempted: attempted.length, progressPct, perfPct };
+    });
+  }
+
+  componentDidMount(){
+    try{
+      const p = new URLSearchParams(window.location.search);
+      const ch = p.get('chapter');
+      if (ch) this.setState({ view:'chapter', chapterId: parseInt(ch,10) || 3 });
+    }catch(e){}
+    try{
+      const raw = localStorage.getItem(RESUME_KEY);
+      if (raw) this.setState({ resume: JSON.parse(raw) });
+    }catch(e){}
+
+    /* Same 30s macro → micro → mini cadence as Home and Chapter Journey. */
+    this._goalTick = () => this.setState(s => ({ goalIdx: (s.goalIdx + 1) % 3 }));
+    this._goalT = setInterval(this._goalTick, 30000);
+
+    this._onDown = (e) => {
+      const t = e.target;
+      if (this.state.goalsOpen && !(t.closest && t.closest('.px-goalw'))) { this._holdGoals(false); this.setState({ goalsOpen:false }); }
+      if (this.state.profOpen && !(t.closest && t.closest('.px-prof'))) this.setState({ profOpen:false });
+    };
+    this._onKey = (e) => {
+      if (e.key === 'Escape') { this._holdGoals(false); this.setState({ goalsOpen:false, profOpen:false, leaveOpen:false }); return; }
+      if (this.state.view !== 'session' || this.state.leaveOpen) return;
+      const it = this._cur();
+      if (e.key === 'Enter') {
+        if (this._locked()) { e.preventDefault(); this._next(); }
+        else if (it.kind === 'numeric') { e.preventDefault(); this._judge(this.state.typed.trim() === it.answer); }
+        return;
+      }
+      if (it.kind === 'mcq' && !this._locked() && /^[1-4]$/.test(e.key)) {
+        const i = parseInt(e.key,10) - 1;
+        if (i < it.options.length) { e.preventDefault(); this.setState({ picked:i }); this._judge(i === it.answer); }
+      }
+    };
+    document.addEventListener('pointerdown', this._onDown, true);
+    document.addEventListener('keydown', this._onKey, true);
+  }
+
+  componentWillUnmount(){
+    clearInterval(this._goalT); clearInterval(this._clockT); clearInterval(this._cuI);
+    clearTimeout(this._pulseT);
+    document.removeEventListener('pointerdown', this._onDown, true);
+    document.removeEventListener('keydown', this._onKey, true);
+  }
+
+  // rotation must not run while expanded, or rows reorder under the reader
+  _holdGoals(hold){
+    if (hold) { clearInterval(this._goalT); this._goalT = null; }
+    else if (!this._goalT && this._goalTick) this._goalT = setInterval(this._goalTick, 30000);
+  }
+
+  chapters(){
+    return [
+      [1,'Real Numbers',48,'done'],[2,'Polynomials',36,'done'],[3,'Pair of Linear Equations',72,'ongoing'],
+      [4,'Quadratic Equations',60,'new'],[5,'Arithmetic Progressions',42,'new'],[6,'Coordinate Geometry',54,'ongoing'],
+      [7,'Triangles',80,'done'],[8,'Circles',56,'ongoing'],[9,'Constructions',24,'locked','Ch 08'],
+      [10,'Introduction to Trigonometry',88,'new'],[11,'Applications of Trigonometry',44,'locked','Ch 10'],
+      [12,'Areas Related to Circles',38,'locked','Ch 08'],[13,'Surface Areas & Volumes',70,'locked','Ch 12'],
+      [14,'Statistics',52,'done'],[15,'Probability',32,'new'],
+    ];
+  }
+
+  /* A set of N draws from the bank in order and wraps, so a 25-question paper is
+     a real 25-question run rather than a 5-item stub with an inflated label. */
+  _items(){
+    const n = this.state.total, out = [];
+    for (let i = 0; i < n; i++) out.push(BANK[i % BANK.length]);
+    return out;
+  }
+  _cur(){ return this._items()[this.state.idx] || BANK[0]; }
+  _locked(){ return this.state.verdict === 'ok' || this.state.verdict === 'shown'; }
+
+  /* .px-scroll is the scrollport now, so the window is not what needs resetting. */
+  _toTop(){ try{ const el = document.querySelector('.px-scroll'); if (el) el.scrollTop = 0; }catch(e){} }
+
+  _go(view, extra){ this.setState(Object.assign({ view }, extra || {})); this._toTop(); }
+
+  _toPane(p){ try{ window.location.href = 'Profile.dc.html?pane=' + p; }catch(e){} }
+
+  _startSession(opts){
+    const o = opts || {};
+    clearInterval(this._clockT);
+    const total = o.total || 6;
+    this.setState({ view:'session', idx:0, answered:[], attempts:0, picked:null, typed:'', shaded:[], seq:[],
+      workedAt:1, verdict:null, total, mode:o.mode || 'practice', setLabel:o.label || 'Practice set',
+      secsLeft: o.mins ? o.mins * 60 : null, leaveOpen:false });
+    if (o.mins) {
+      this._clockT = setInterval(() => {
+        const n = this.state.secsLeft - 1;
+        if (n <= 0) { clearInterval(this._clockT); this.setState({ secsLeft:0 }); this._finish(); }
+        else this.setState({ secsLeft:n });
+      }, 1000);
+    }
+    this._toTop();
+  }
+
+  /* Two attempts before the answer is given away: the first miss buys a hint and a
+     retry, which is the only thing that makes practice different from a test. */
+  _judge(ok){
+    if (this._locked()) return;
+    if (ok) { this._record(true); return; }
+    if (this.state.attempts === 0 && this.state.mode === 'practice') {
+      this.setState({ attempts:1, verdict:'retry' });
+      return;
+    }
+    this._record(false);
+  }
+
+  _record(ok){
+    const a = this.state.answered.slice(); a[this.state.idx] = ok;
+    this.setState({ answered:a, verdict: ok ? 'ok' : 'shown' });
+  }
+
+  _retry(){ this.setState({ verdict:null, picked:null, typed:'', shaded:[], seq:[] }); }
+
+  _next(){
+    if (this.state.idx >= this.state.total - 1) { this._finish(); return; }
+    this.setState({ idx:this.state.idx + 1, attempts:0, picked:null, typed:'', shaded:[], seq:[], workedAt:1, verdict:null });
+    this._save();
+  }
+
+  _save(){
+    try{
+      localStorage.setItem(RESUME_KEY, JSON.stringify({ idx:this.state.idx, answered:this.state.answered,
+        total:this.state.total, mode:this.state.mode, label:this.state.setLabel, secsLeft:this.state.secsLeft }));
+    }catch(e){}
+  }
+  _clearSave(){ try{ localStorage.removeItem(RESUME_KEY); }catch(e){} this.setState({ resume:null }); }
+
+  _finish(){
+    clearInterval(this._clockT);
+    this._clearSave();
+    const correct = this.state.answered.filter(v => v === true).length;
+    const xp = correct * 35, orbs = Math.max(1, Math.floor(correct / 2));
+    this._go('result');
+    this._award(xp, orbs);
+  }
+
+  /* Awards count up into the chrome widgets and pulse them, matching how the
+     Teaching Room pays out — otherwise the reward loop reads as inert. */
+  _award(xp, orbs){
+    clearInterval(this._cuI); clearTimeout(this._pulseT);
+    const p0 = this.state.xpDisp, o0 = this.state.orbsDisp, p1 = p0 + xp, o1 = o0 + orbs;
+    const dur = 1000, t0 = Date.now();
+    this.setState({ xpPulse:true, orbPulse:true });
+    this._cuI = setInterval(() => {
+      const t = Math.min(1, (Date.now() - t0) / dur), e = 1 - Math.pow(1 - t, 3);
+      this.setState({ xpDisp: Math.round(p0 + (p1 - p0) * e), orbsDisp: Math.round(o0 + (o1 - o0) * e) });
+      if (t >= 1) { clearInterval(this._cuI); this.setState({ xpDisp:p1, orbsDisp:o1 }); }
+    }, 35);
+    this._pulseT = setTimeout(() => this.setState({ xpPulse:false, orbPulse:false }), 1300);
+  }
+
+  renderVals(){
+    const st = this.state, it = this._cur(), total = st.total;
+    const correct = st.answered.filter(v => v === true).length;
+    const locked = this._locked(), retrying = st.verdict === 'retry';
+    const ok = st.verdict === 'ok';
+
+    const ORDER = { evaluated:0, marking:1, ongoing:2, open:3, locked:4 };
+
+    const statusMap = {
+      done:    { fg:'#237032', text:'Mastered', icon:'ti-check', rank:2 },
+      ongoing: { fg:'#1971c2', text:'In progress', icon:'ti-arrow-right', rank:0 },
+      new:     { fg:'#6b6786', text:'Ready', icon:'ti-arrow-right', rank:1 },
+      locked:  { fg:'#6b6786', text:'Locked', icon:'ti-lock', rank:3 },
+    };
+
+    /* Coverage is the meaningful number for a paper: what share of the chapters it
+       tests has this student actually covered? It is averaged from the same chapter
+       progress the table shows, so the two can never disagree. */
+    const allRows = this._rows();
+    const coverageOf = (chs) => {
+      const rs = allRows.filter(r => chs.indexOf(r.num) >= 0);
+      return rs.length ? Math.round(rs.reduce((a,r) => a + r.progressPct, 0) / rs.length) : 0;
+    };
+    const range = (a,b) => { const o = []; for (let i = a; i <= b; i++) o.push(i); return o; };
+
+    // ordered by readiness, not chapter number — the journey map does the same
+    const FILT = { all: () => true, progress: r => r.status === 'ongoing',
+      todo: r => r.status === 'new' || r.status === 'locked', done: r => r.status === 'done' };
+    const rows = allRows
+      .sort((a,b) => {
+        const rank = (r) => r.status === 'done' ? ORDER.evaluated
+          : r.status === 'ongoing' ? ORDER.ongoing
+          : r.status === 'locked' ? ORDER.locked : ORDER.open;
+        return (rank(a) - rank(b)) || (a.num - b.num);
+      })
+      .filter(FILT[st.tableFilter] || FILT.all)
+      .map(r => {
+        const isLocked = r.status === 'locked';
+        const band = perfBand(r.perfPct);
+        const expanded = st.expanded === r.num;
+        const shown = expanded
+          ? (st.topicFilter === 'todo' ? r.topics.filter(t => t.progress === 0) : r.topics)
+          : [];
+        // 6-point sparkline across the chapter's recent scores, drawn in a 56×24 box
+        const pts = r.perfPct > 0 ? [0,1,2,3,4,5].map(i => {
+          const v = Math.max(8, Math.min(100, r.perfPct + (hsh(r.num,i,7) % 26) - 13));
+          return (i * 11.2).toFixed(1) + ',' + (22 - (v / 100) * 20).toFixed(1);
+        }).join(' ') : '';
+        const TINT = isLocked ? 'linear-gradient(140deg,#adb5bd,#495057)'
+          : r.status === 'done' ? 'linear-gradient(140deg,#51cf66,#1f7a35)'
+          : r.status === 'ongoing' ? 'linear-gradient(140deg,#4dabf7,#12558f)'
+          : 'linear-gradient(140deg,#845ef7,#3b1e94)';
+        return { key:'r' + r.num, numShort:'CH ' + String(r.num).padStart(2,'0'), name:r.name,
+          tint: TINT, icon: isLocked ? 'ti-lock' : (r.status === 'done' ? 'ti-circle-check' : 'ti-list-details'),
+          hasTag: r.perfPct > 0, tileCls: r.status === 'done' ? 'px-tile-done' : '',
+          tileMeta: isLocked ? ('Unlocks after ' + (r.unlockAfter || '')) : (r.progressPct + '% done · ' + r.attempted + ' of ' + r.topics.length + ' topics'),
+          ctaIcon: isLocked ? 'ti-lock' : 'ti-player-play-filled',
+          ctaLabel: isLocked ? 'Locked' : (r.progressPct > 0 ? 'Practice' : 'Start'),
+          ctaFg: isLocked ? '#6b6786' : '#1864ab',
+          opacity: isLocked ? '.62' : '1',
+          progressLabel: r.progressPct + '%',
+          progressFill: r.progressPct >= 80 ? '#2f9e44' : (r.progressPct > 0 ? '#d9480f' : 'transparent'),
+          topicsLabel: String(r.attempted).padStart(2,'0') + ' / ' + String(r.topics.length).padStart(2,'0'),
+          perfLabel: r.perfPct > 0 ? r.perfPct + '%' : '\u2014',
+          perfWord: band.word, perfBg: band.bg, perfFg: band.fg,
+          hasTrend: !!pts, noTrend: !pts, trend: pts,
+          trendStroke: r.perfPct >= 60 ? '#2f9e44' : '#e8590c',
+          unlocked: !isLocked, locked: isLocked,
+          lockLabel: 'After ' + (r.unlockAfter || ''),
+          viewLabel: expanded ? 'Hide topics' : 'View topics',
+          toggle: () => this.setState({ expanded: expanded ? null : r.num, topicFilter:'all' }),
+          open: () => this._go('chapter', { chapterId:r.num }),
+          expanded, topics: shown, noTopics: expanded && shown.length === 0,
+        };
+      })
+      .map(r => ({ ...r, topics: r.topics.map(t => ({ ...t,
+        start: () => this._startSession({ total:6, label:'Practice · ' + t.name }) })) }));
+
+    const chRow = this.chapters().find(c => c[0] === st.chapterId) || this.chapters()[2];
+
+    // the chapter test gets the same coverage read as a timed paper, scoped to one chapter
+    const chCov = coverageOf([st.chapterId]);
+    const chReady = chCov >= 75 ? { word:'Ready to attempt', fg:'#237032' }
+      : chCov >= 45 ? { word:'Partly ready', fg:'#ad4d0a' }
+      : { word:'Too early', fg:'#c92a2a' };
+
+    const tiers = [
+      { n:'1', label:'Warm up', desc:'Single-step questions straight from the module examples.', pool:24, done:24, fg:'#237032', fill:'linear-gradient(90deg,#8ce99a,#2f9e44)', icon:'ti-check' },
+      { n:'2', label:'Build up', desc:'Two and three-step problems that combine methods.', pool:30, done:11, fg:'#ad4d0a', fill:'linear-gradient(90deg,#ffa94d,#e8590c)', icon:'ti-flame' },
+      { n:'3', label:'Stretch', desc:'Exam-weight questions with unfamiliar framing.', pool:18, done:0, fg:'#6b6786', fill:'linear-gradient(90deg,#c5c1d6,#6b6786)', icon:'ti-mountain' },
+    ].map(t => ({ ...t, key:'t' + t.n, perSet:6,
+      doneLabel: t.done + ' of ' + t.pool + ' done',
+      pct: Math.round((t.done / t.pool) * 100) + '%',
+      start: () => this._startSession({ total:6, label: chRow[1] + ' · Tier ' + t.n + ' ' + t.label }) }));
+
+    const subSteps = [
+      { key:'n1', n:'1', t:'Answer on paper' },
+      { key:'n2', n:'2', t:'Clock stops' },
+      { key:'n3', n:'3', t:'Photograph your sheets' },
+      { key:'n4', n:'4', t:'AI marks and scores' },
+    ];
+    const subPapers = [
+      { name:'Algebra — long answers', scope:'Chapters 2–5', mins:60, qs:8, chs:range(2,5),
+        upload:'15 min', state:'Marked · 34 / 40', stateLabel:'Last attempt', done:true },
+      { name:'Geometry proofs', scope:'Chapters 6–9', mins:75, qs:10, chs:range(6,9),
+        upload:'15 min', state:'Being marked', stateLabel:'Submitted 2 Sep', pending:true },
+      { name:'Board pattern paper', scope:'All 15 chapters', mins:180, qs:26, chs:range(1,15),
+        upload:'15 min', state:'Never attempted', stateLabel:'Last attempt' },
+    ].map((p,i) => {
+      const cov = coverageOf(p.chs);
+      const ready = cov >= 75 ? { word:'Ready to attempt', fg:'#237032' }
+        : cov >= 45 ? { word:'Partly ready', fg:'#ad4d0a' }
+        : { word:'Too early', fg:'#c92a2a' };
+      return { ...p, key:'sub' + i,
+        meta: p.qs + ' questions · ' + p.mins + ' min',
+        coverage: cov + '%', covFg: ready.fg, readiness: ready.word,
+        tint: p.pending ? 'linear-gradient(140deg,#ffa94d,#a34a00)' : 'linear-gradient(140deg,#ff922b,#a34a00)',
+        hasTag: !!(p.done || p.pending), tag: p.done ? '34/40' : (p.pending ? 'Marking' : ''),
+        tileCls: p.done ? 'px-tile-done' : '',
+        cta: p.pending ? 'View submission' : (p.done ? 'Attempt again' : 'Start paper'),
+        ctaIcon: p.pending ? 'ti-clock' : 'ti-player-play-filled',
+        ctaFg: p.pending ? '#ad4d0a' : '#1864ab',
+        rank: p.done ? ORDER.evaluated : (p.pending ? ORDER.marking : ORDER.open),
+        start: () => this._startSession({ total:p.qs, mins:p.mins, mode:'test', label:p.name }) };
+    }).sort((a,b) => a.rank - b.rank);
+
+    const tests = [
+      { name:'Algebra unit test', scope:'Chapters 2–5', mins:45, qs:25, chs:range(2,5),
+        last:'18 / 25 on 21 Aug', attempted:true },
+      { name:'Half-yearly mock', scope:'Chapters 1–8', mins:90, qs:40, chs:range(1,8),
+        last:'26 / 40 on 11 Aug', attempted:true },
+      { name:'Full syllabus paper', scope:'All 15 chapters', mins:180, qs:80, chs:range(1,15),
+        last:'Never attempted', attempted:false },
+    ].map((t,i) => {
+      const cov = coverageOf(t.chs);
+      const ready = cov >= 75 ? { word:'Ready to attempt', fg:'#237032' }
+        : cov >= 45 ? { word:'Partly ready', fg:'#ad4d0a' }
+        : { word:'Too early', fg:'#c92a2a' };
+      return { ...t, key:'test' + i,
+        meta: t.qs + ' questions · ' + t.mins + ' min',
+        coverage: cov + '%', covFg: ready.fg,
+        tint:'linear-gradient(140deg,#4dabf7,#12558f)',
+        hasTag: t.attempted, tag: t.attempted ? t.last.split(' on ')[0] : '',
+        tileCls:'', ctaIcon:'ti-player-play-filled', ctaFg:'#1864ab',
+        cta: t.attempted ? 'Attempt again' : 'Start paper',
+        rank: t.attempted ? ORDER.evaluated : ORDER.open,
+        start: () => this._startSession({ total:t.qs, mins:t.mins, mode:'test', label:t.name }) };
+    }).sort((a,b) => a.rank - b.rank);
+
+    /* One set per goal, but they are not peers: the nearest deadline with the least
+       ground covered is promoted to the page's single decision. */
+    const sets = [
+      { kind:'Fractions unit test', title:'Fractions drill, weighted to the test pattern',
+        count:6, mins:5, cta:'Start drill', goal:1 },
+      { kind:'Today\u2019s lesson', title:'Adding unlike fractions, one focused set',
+        count:4, mins:3, cta:'Start set', goal:2 },
+      { kind:'Year-end exam', title:'Full-syllabus revision across everything covered',
+        count:8, mins:7, cta:'Start revision', goal:0 },
+    ].map((m,i) => ({ ...m, key:'set' + i,
+      goalPctLabel: GOALS[m.goal].pct + '%', goalLabel: GOALS[m.goal].label,
+      tint: ['linear-gradient(140deg,#4dabf7,#12558f)','linear-gradient(140deg,#51cf66,#1f7a35)','linear-gradient(140deg,#845ef7,#3b1e94)'][i],
+      meta: m.count + ' questions · ' + m.mins + ' min',
+      start: () => this._startSession({ total:m.count, label:'Practice · ' + m.kind }) }));
+
+    // ---- session ----
+    const options = (it.kind === 'mcq' ? it.options : []).map((text,i) => {
+      const isPick = st.picked === i, isAns = it.answer === i;
+      let bg = '#f7f5fd', badgeBg = '#e6e2f5', badgeFg = '#3f3a63', icon = '', iconColor = 'transparent';
+      if (locked) {
+        if (isAns) { bg = '#ebfbee'; badgeBg = '#2f9e44'; badgeFg = '#fff'; icon = 'ti-check'; iconColor = '#2f9e44'; }
+        else if (isPick) { bg = '#fff5f5'; badgeBg = '#e03131'; badgeFg = '#fff'; icon = 'ti-x'; iconColor = '#e03131'; }
+      } else if (retrying && isPick) { bg = '#fff5f5'; badgeBg = '#e03131'; badgeFg = '#fff'; icon = 'ti-x'; iconColor = '#e03131'; }
+      else if (isPick) { bg = '#e7f5ff'; badgeBg = '#1c7ed6'; badgeFg = '#fff'; }
+      return { key:'o' + i, text, letter:'ABCD'[i], bg, badgeBg, badgeFg, icon, iconColor,
+        cursor: locked ? 'default' : 'pointer',
+        pick: () => { if (locked) return; this.setState({ picked:i }); this._judge(i === it.answer); } };
+    });
+
+    const answerSet = it.kind === 'construct' ? (it.answer || []) : [];
+    const regions = (it.kind === 'construct' ? VENN : []).map(r => {
+      const on = st.shaded.indexOf(r.id) >= 0;
+      const right = answerSet.indexOf(r.id) >= 0;
+      let fill = on ? 'rgba(51,154,240,.55)' : 'rgba(240,238,250,.9)';
+      if (locked) fill = right ? 'rgba(64,192,87,.55)' : (on ? 'rgba(250,82,82,.45)' : 'rgba(240,238,250,.9)');
+      else if (retrying && on) fill = 'rgba(250,82,82,.4)';
+      return { key:'r' + r.id, d:r.d, fill,
+        toggle: () => { if (locked) return; const s = st.shaded.slice(); const k = s.indexOf(r.id);
+          if (k >= 0) s.splice(k,1); else s.push(r.id); this.setState({ shaded:s }); } };
+    });
+
+    const steps = (it.kind === 'order' ? it.steps : []).map((text,i) => {
+      const pos = st.seq.indexOf(i), placed = pos >= 0;
+      let numBg = placed ? '#1c7ed6' : '#e6e2f5', numFg = placed ? '#fff' : '#3f3a63', bg = placed ? '#e7f5ff' : '#f7f5fd';
+      if (locked) { const right = it.answer[pos] === i; bg = right ? '#ebfbee' : '#fff5f5'; numBg = right ? '#2f9e44' : '#e03131'; numFg = '#fff'; }
+      return { key:'s' + i, text, order: placed ? String(pos + 1) : '·', bg, numBg, numFg,
+        icon: locked ? '' : (placed ? 'ti-x' : 'ti-plus'),
+        title: locked ? '' : (placed ? 'Remove from the order' : 'Add to the order'),
+        cursor: locked ? 'default' : 'pointer',
+        // tapping a placed step takes it back out, so a mis-tap costs one click
+        pick: () => { if (locked) return;
+          const s = st.seq.slice();
+          if (placed) s.splice(pos,1); else s.push(i);
+          this.setState({ seq:s }); } };
+    });
+
+    const workedSteps = (it.kind === 'worked' ? it.workedSteps : []).map((text,i) => ({
+      key:'w' + i, n:i + 1, text, opacity: i < st.workedAt ? '1' : '.24',
+      bg: i < st.workedAt ? '#f4f1fe' : '#f7f5fd' }));
+    const workedLast = it.kind === 'worked' && st.workedAt >= (it.workedSteps || []).length;
+
+    const rail = this._items().map((_,i) => ({ key:'rail' + i,
+      bg: i < st.idx ? (st.answered[i] ? '#2f9e44' : '#e8590c') : (i === st.idx ? '#1c7ed6' : 'rgba(33,26,74,.13)') }));
+
+    const mm = st.secsLeft != null ? Math.floor(st.secsLeft / 60) : 0;
+    const ss = st.secsLeft != null ? st.secsLeft % 60 : 0;
+    const resultPct = total ? Math.round((correct / total) * 100) : 0;
+    const r = st.resume;
+
+    return {
+      isHub: st.view === 'hub', isChapter: st.view === 'chapter', isSession: st.view === 'session', isResult: st.view === 'result',
+      showBack: st.view !== 'hub',
+      crumb: st.view === 'chapter' ? 'All practice' : (st.view === 'session' ? 'Leave this set' : 'Back to practice'),
+      goHome: () => { (function(f){try{var r=document.referrer;if(r){var u=new URL(r);if(u.origin===location.origin&&u.pathname!==location.pathname&&history.length>1){history.back();return;}}}catch(e){}location.href=encodeURI(f);})('Home Page.dc.html'); },
+
+      xpDisp: st.xpDisp.toLocaleString('en-IN'), orbsDisp: st.orbsDisp,
+      xpPulseClass: st.xpPulse ? 'px-rw-pulse' : '', orbPulseClass: st.orbPulse ? 'px-rw-pulse' : '',
+
+      goalRow: [GOALS[st.goalIdx]].map(g => ({ key:'g' + st.goalIdx, pctLabel: g.pct + '%', label: g.label })),
+      goalPct: GOALS[st.goalIdx].pct,
+      openGoals: GOALS.map((g,i) => ({ key:'og' + i, pctLabel: g.pct + '%', label: g.label })),
+      goalsOpen: st.goalsOpen, goalsClosed: !st.goalsOpen,
+      goalsOpenCls: st.goalsOpen ? 'px-goalw-open' : '',
+      toggleGoals: () => { const n = !st.goalsOpen; this._holdGoals(n); this.setState({ goalsOpen:n, profOpen:false }); },
+      goalsKey: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); const n = !st.goalsOpen; this._holdGoals(n); this.setState({ goalsOpen:n }); } },
+
+      profOpen: st.profOpen,
+      profBorder: st.profOpen ? '#a5d8ff' : '#dee2e6',
+      profChevron: st.profOpen ? 'ti-chevron-up' : 'ti-chevron-down',
+      toggleProf: () => this.setState({ profOpen: !st.profOpen, goalsOpen:false }),
+      profRadius: st.profOpen ? '12px 12px 0 0' : '12px',
+      profBorderB: st.profOpen ? 'transparent' : '#dee2e6',
+      openProfile: () => this._toPane('profile'),
+      // the same five entries, in the same order, as the Home chrome's menu
+      jump: [
+        { key:'profile', icon:'ti-user-circle', label:'Profile', pane:'profile' },
+        { key:'group', icon:'ti-users-group', label:'Study group', pane:'group' },
+        { key:'rewards', icon:'ti-gift', label:'Rewards', pane:'rewards' },
+        { key:'stats', icon:'ti-chart-histogram', label:'My stats', pane:'stats' },
+        { key:'goals', icon:'ti-target-arrow', label:'Goals', pane:'goals' },
+      ].map(j => ({ ...j, onClick: () => this._toPane(j.pane) })),
+
+      week: [
+        { key:'sets', value:'7', label:'sets this week', fg:'#211a4a' },
+        { key:'acc', value:'78%', label:'accuracy', fg:'#2b8a3e' },
+      ],
+
+      hasResume: !!r,
+      resumeLabel: r ? r.label : '',
+      resumeAt: r ? r.idx + 1 : 0,
+      resumeTotal: r ? r.total : 0,
+      resumeSet: () => { if (!r) return; clearInterval(this._clockT);
+        this.setState({ view:'session', idx:r.idx, answered:r.answered || [], total:r.total, mode:r.mode,
+          setLabel:r.label, secsLeft:r.secsLeft, attempts:0, picked:null, typed:'', shaded:[], seq:[], workedAt:1, verdict:null });
+        if (r.secsLeft) this._clockT = setInterval(() => {
+          const n = this.state.secsLeft - 1;
+          if (n <= 0) { clearInterval(this._clockT); this.setState({ secsLeft:0 }); this._finish(); }
+          else this.setState({ secsLeft:n });
+        }, 1000);
+        this._toTop(); },
+      // sits inside the resume row, so it must not also fire the row's resume
+      discardSet: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this._clearSave(); },
+
+      sets, rows, tests, tiers, noRows: rows.length === 0,
+      isRecommended: st.pane === 'recommended', isChapters: st.pane === 'chapters',
+      isPapers: st.pane === 'papers', isHistory: st.pane === 'history',
+      isSubjective: st.pane === 'subjective', subSteps, subPapers,
+
+      newTimed: () => this.setState({ buildMode:'timed', buildPick:[] }),
+      newSubjective: () => this.setState({ buildMode:'subjective', buildPick:[] }),
+      closeBuild: () => this.setState({ buildMode:null }),
+      stopProp: (e) => { if(e && e.stopPropagation) e.stopPropagation(); },
+      buildOpen: !!st.buildMode,
+      buildTitle: st.buildMode === 'subjective' ? 'New subjective paper' : 'New timed paper',
+      buildChapters: this.chapters().map(c => {
+        const on = st.buildPick.indexOf(c[0]) >= 0;
+        return { key:'bc' + c[0], name:'Ch ' + c[0] + ' · ' + c[1], on, cls: on ? 'on' : '',
+          toggle: () => this.setState(prev => ({ buildPick: prev.buildPick.indexOf(c[0]) >= 0
+            ? prev.buildPick.filter(x => x !== c[0]) : prev.buildPick.concat(c[0]) })) };
+      }),
+      buildSummary: (() => {
+        const k = st.buildPick.length;
+        if(!k) return 'Pick at least one chapter';
+        const sub = st.buildMode === 'subjective';
+        const qs = sub ? k * 2 : k * 6;
+        return k + (k === 1 ? ' chapter' : ' chapters') + ' · ' + qs + ' questions · ' + (sub ? qs * 8 : qs * 2) + ' min';
+      })(),
+      buildCtaCls: st.buildPick.length ? '' : 'px-btn-q',
+      confirmBuild: () => {
+        const k = st.buildPick.length; if(!k) return;
+        const sub = st.buildMode === 'subjective';
+        const qs = sub ? k * 2 : k * 6;
+        const label = (sub ? 'Subjective paper · ' : 'Timed paper · ') + k + (k === 1 ? ' chapter' : ' chapters');
+        this.setState({ buildMode:null });
+        this._startSession({ total:qs, mins: sub ? qs * 8 : qs * 2, mode:'test', label });
+      },
+      panes: [
+        { key:'papers', id:'papers', icon:'ti-stopwatch', label:'Timed papers' },
+        { key:'subjective', id:'subjective', icon:'ti-pencil', label:'Subjective papers' },
+        { key:'chapters', id:'chapters', icon:'ti-list-details', label:'Chapter practice' },
+        { key:'recommended', id:'recommended', icon:'ti-target-arrow', label:'Your goals' },
+        { key:'history', id:'history', icon:'ti-history', label:'Past attempts' },
+      ].map(p => ({ ...p, on: st.pane === p.id, cls: st.pane === p.id ? 'px-nav-on' : '',
+        pick: () => this.setState({ pane:p.id, expanded:null }) })),
+
+      history: [
+        { name:'Adding unlike fractions', type:'Practice set', date:'24 Aug', score:'4 / 4', pct:100 },
+        { name:'Algebra unit test', type:'Timed paper', date:'21 Aug', score:'18 / 25', pct:72 },
+        { name:'Tangent from an external point', type:'Practice set', date:'19 Aug', score:'3 / 6', pct:50 },
+        { name:'Circles', type:'Chapter test', date:'16 Aug', score:'7 / 10', pct:70 },
+        { name:'Half-yearly mock', type:'Timed paper', date:'11 Aug', score:'26 / 40', pct:65 },
+        { name:'Word problems with two variables', type:'Practice set', date:'9 Aug', score:'2 / 6', pct:33 },
+      ].map((h,i) => {
+        const band = perfBand(h.pct);
+        const t = { 'Practice set':{ bg:'#e7f1ff', fg:'#1864ab' }, 'Timed paper':{ bg:'#f3f0ff', fg:'#5f3dc4' },
+          'Chapter test':{ bg:'#fff4e6', fg:'#ad4d0a' } }[h.type];
+        const TT = { 'Practice set':{ tint:'linear-gradient(140deg,#4dabf7,#12558f)', icon:'ti-bolt' },
+          'Timed paper':{ tint:'linear-gradient(140deg,#845ef7,#3b1e94)', icon:'ti-stopwatch' },
+          'Chapter test':{ tint:'linear-gradient(140deg,#f06595,#8c1741)', icon:'ti-file-check' } }[h.type];
+        return { ...h, key:'h' + i, pctLabel: h.pct + '%',
+          tint: TT.tint, icon: TT.icon,
+          perfBg: band.bg, perfFg: band.fg, typeBg: t.bg, typeFg: t.fg };
+      }),
+      filters: [
+        { key:'all', id:'all', label:'All' },
+        { key:'progress', id:'progress', label:'In progress' },
+        { key:'todo', id:'todo', label:'Not started' },
+        { key:'done', id:'done', label:'Mastered' },
+      ].map(f => ({ ...f, on: st.tableFilter === f.id, cls: st.tableFilter === f.id ? 'px-radio-on' : '',
+        pick: () => this.setState({ tableFilter:f.id }) })),
+      topicFilters: [
+        { key:'all', id:'all', label:'All' },
+        { key:'todo', id:'todo', label:'Not started' },
+      ].map(f => ({ ...f, on: st.topicFilter === f.id, cls: st.topicFilter === f.id ? 'px-radio-on' : '',
+        pick: () => this.setState({ topicFilter:f.id }) })),
+      chName: chRow[1], testQs: 10, testMins: 25,
+      chCoverage: chCov + '%', chCovFg: chReady.fg, chReadiness: chReady.word,
+      startTest: () => this._startSession({ total:10, mins:25, mode:'test', label: chRow[1] + ' · Chapter test' }),
+
+      item: { kindLabel: it.kindLabel, prompt: it.prompt, unitHint: it.unitHint || '',
+        isMcq: it.kind === 'mcq', isNumeric: it.kind === 'numeric', isConstruct: it.kind === 'construct',
+        isOrder: it.kind === 'order', isWorked: it.kind === 'worked' },
+      options, regions, steps, workedSteps,
+      isRetry: st.attempts > 0 && !locked,
+      workedCta: workedLast ? 'Got it' : 'Show next step',
+      nextWorked: () => { if (workedLast) this._record(true); else this.setState({ workedAt: st.workedAt + 1 }); },
+
+      typed: st.typed,
+      onType: (e) => this.setState({ typed: e.target.value }),
+      submitNumeric: () => this._judge(st.typed.trim() === it.answer),
+      submitConstruct: () => { const a = st.shaded.slice().sort().join(','), b = answerSet.slice().sort().join(',');
+        this._judge(a === b && a !== ''); },
+      submitOrder: () => this._judge(st.seq.join(',') === (it.answer || []).join(',')),
+      resetOrder: () => { if (locked) return; this.setState({ seq:[] }); },
+
+      qNum: st.idx + 1, qTotal: total, correctCount: correct, rail,
+      isTimed: st.secsLeft != null,
+      clock: mm + ':' + String(ss).padStart(2,'0'),
+      clockColor: st.secsLeft != null && st.secsLeft < 60 ? '#c92a2a' : '#211a4a',
+
+      showVerdict: locked || retrying,
+      verdictBg: ok ? '#ebfbee' : (retrying ? '#fff4e6' : '#fff5f5'),
+      verdictFg: ok ? '#2b8a3e' : (retrying ? '#d9480f' : '#c92a2a'),
+      verdictIcon: ok ? 'ti-circle-check' : (retrying ? 'ti-refresh' : 'ti-circle-x'),
+      verdictText: ok ? 'Correct' : (retrying ? 'Not quite — have another go' : 'Not quite'),
+      verdictBody: retrying ? 'Nothing is lost yet. Read the nudge below and try once more.' : (it.why || ''),
+      showHint: (retrying || (locked && !ok)) && !!it.hint, hintText: it.hint || '',
+      showRetry: retrying,
+      retry: () => this._retry(),
+      showReveal: retrying,
+      reveal: () => this._record(false),
+      showNext: locked, nextLabel: st.idx >= total - 1 ? 'See results' : 'Next question',
+      next: () => this._next(),
+
+      leaveOpen: st.leaveOpen,
+      confirmLeave: () => { clearInterval(this._clockT); this._save();
+        try{ this.setState({ resume: JSON.parse(localStorage.getItem(RESUME_KEY)) }); }catch(e){}
+        this.setState({ leaveOpen:false }); this._go('hub'); },
+      cancelLeave: () => this.setState({ leaveOpen:false }),
+
+      resultKicker: st.mode === 'test' ? 'Paper submitted' : 'Set complete',
+      resultLine: resultPct >= 80 ? 'Strong set — that ground is holding.' : (resultPct >= 50 ? 'Solid. A couple of gaps worth another pass.' : 'Worth revisiting the module before the next set.'),
+      earnedXp: correct * 35, earnedOrbs: Math.max(1, Math.floor(correct / 2)),
+      again: () => this._startSession({ total:6, label:'Practice set' }),
+      toHub: () => this._go('hub'),
+
+      goBack: () => {
+        if (st.view === 'session') { this.setState({ leaveOpen:true }); return; }
+        this._go('hub');
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>

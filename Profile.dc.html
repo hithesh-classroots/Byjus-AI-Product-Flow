@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/colors.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/semantic.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/typography.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/base.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<script src="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/_ds_bundle.js"></script>
+<link rel="stylesheet" href="canvas-bg.css">
+<style>
+  html,body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;background:var(--cv-base);}
+  *{box-sizing:border-box;}
+  a{color:#1971c2;text-decoration:none;} a:hover{color:#1864ab;}
+  @keyframes pfIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes pfGoalIn{from{opacity:0}to{opacity:1}}
+  .pf-scroll{scrollbar-width:thin;scrollbar-color:#dcd8e6 transparent;}
+  .pf-scroll::-webkit-scrollbar{width:9px;}
+  .pf-scroll::-webkit-scrollbar-thumb{background:#dcd8e6;border-radius:999px;}
+  /* Goals widget, identical to the one in the Home, Practice and Chapter Journey chrome.
+     The expanded list is an overlay, never in flow, so it cannot reflow the XP/orb row. */
+  .pf-goalw{position:relative;display:flex;align-items:flex-start;gap:9px;cursor:pointer;border-radius:14px;outline:none;}
+  .pf-goalw::before{content:"";position:absolute;inset:-10px -14px;border-radius:14px;z-index:-1;
+    pointer-events:none;transition:opacity .26s ease,background .26s ease,box-shadow .26s ease;
+    background:transparent;box-shadow:0 8px 14px -10px rgba(70,46,146,.34);}
+  .pf-goalw-rows{height:44px;overflow:hidden;}
+  .pf-goalw-pop{position:absolute;left:-18px;top:-16px;z-index:60;width:376px;padding:16px 18px;overflow:hidden;
+    border-radius:16px;background:var(--cv-linear);
+    box-shadow:0 18px 38px -14px rgba(70,46,146,.42);animation:pfGoalIn .2s ease both;}
+  @keyframes pfGoalIn{from{opacity:0}to{opacity:1}}
+  .pf-goalw:not(.pf-goalw-open):focus-visible{box-shadow:0 0 0 2px #228be6;}
+  .pf-goalw-track{width:340px;height:5px;margin-top:7px;border-radius:999px;background:rgba(33,26,74,.13);overflow:hidden;}
+  .pf-goalw-fill{height:100%;background:#d9480f;border-radius:999px;transition:width .7s cubic-bezier(.2,.8,.3,1);}
+  .pf-goalw-row{animation:pfGoalIn .3s ease both;}
+  .pf-goalw-row + .pf-goalw-row{margin-top:12px;padding-top:12px;border-top:1px solid rgba(120,90,200,.18);}
+  .pf-goal-line{overflow:hidden;text-overflow:ellipsis;animation:pfGoalIn .5s cubic-bezier(.2,.8,.3,1) both;}
+  /* No surfaces: content sits on the ambient gradient, grouped by hairlines that fade
+     at both ends. Same grammar as the Practice page and the Teaching Room chrome. */
+  .pf-hair{height:1px;background:linear-gradient(90deg,rgba(120,90,200,0),rgba(120,90,200,.22) 5%,rgba(120,90,200,.22) 95%,rgba(120,90,200,0));}
+  .pf-vhair{width:1px;align-self:stretch;background:linear-gradient(180deg,rgba(120,90,200,0),rgba(120,90,200,.2) 6%,rgba(120,90,200,.2) 94%,rgba(120,90,200,0));}
+  .pf-nav{display:flex;align-items:center;gap:13px;padding:12px 14px;border-radius:11px;cursor:pointer;
+    font-size:14.5px;font-weight:700;white-space:nowrap;color:#5d5880;transition:background .14s ease,color .14s ease;}
+  .pf-nav i{flex:none;font-size:20px;}
+  .pf-nav:hover{color:#211a4a;background:rgba(255,255,255,.55);}
+  .pf-nav-on,.pf-nav-on:hover{background:rgba(231,241,255,.9);color:#1864ab;}
+  /* One row grammar for every list. The action track is PINNED, not auto: an auto track
+     sizes to each row's own label, which makes every gauge a different length. */
+  /* Rows are surfaces, not entries in a ruled ledger: separation comes from the gap between
+     white cards rather than from a hairline under every line of text. */
+  .pf-r:last-child{margin-bottom:0;}
+  .pf-r{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 148px;gap:20px;align-items:start;
+    padding:18px 20px;margin:0 0 10px;border-radius:16px;background:#ffffff;
+    box-shadow:0 1px 2px rgba(33,26,74,.05),0 8px 20px -16px rgba(33,26,74,.3);
+    transition:box-shadow .16s ease,transform .16s ease;}
+  .pf-r-act{cursor:pointer;}
+  .pf-r-act:hover{box-shadow:0 1px 2px rgba(33,26,74,.05),0 14px 28px -16px rgba(33,26,74,.42);}
+  .pf-r > .pf-act{justify-self:end;align-self:start;}
+  .pf-num{width:38px;height:38px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:15px;font-weight:800;letter-spacing:-.01em;}
+  .pf-btn{display:inline-flex;align-items:center;justify-content:center;height:36px;padding:0 18px;border-radius:10px;
+    background:#228be6;color:#ffffff;font-size:13.5px;font-weight:700;white-space:nowrap;cursor:pointer;transition:background .14s ease;}
+  .pf-btn:hover{background:#1c7ed6;}
+  .pf-btn-q{background:rgba(120,90,200,.12);color:#3f3a63;}
+  .pf-btn-q:hover{background:rgba(120,90,200,.2);color:#211a4a;}
+  .pf-link{font-size:13.5px;font-weight:700;white-space:nowrap;color:#1971c2;cursor:pointer;background:none;border:0;padding:0;font-family:inherit;}
+  .pf-link:hover{color:#1864ab;text-decoration:underline;text-underline-offset:3px;}
+  .pf-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:800;white-space:nowrap;}
+  /* a short rigid gauge reads as a measure; a full-width 4px rule reads as a divider,
+     and nothing shares its line so it cannot absorb label-width differences */
+  .pf-gauge{width:172px;max-width:100%;height:5px;margin-bottom:8px;border-radius:999px;background:rgba(33,26,74,.13);overflow:hidden;}
+  .pf-gauge > div{height:100%;border-radius:999px;}
+  .pf-meta{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-size:12.5px;font-weight:600;color:#6b6786;}
+  .pf-meta > span{white-space:nowrap;}
+  .pf-dot{width:3px;height:3px;flex:none;border-radius:50%;background:rgba(120,90,200,.45);}
+  .pf-in{width:100%;height:40px;padding:0 13px;border-radius:9px;border:1px solid #dee2e6;background:#ffffff;
+    font-family:inherit;font-size:14.5px;font-weight:600;color:#211a4a;outline:none;transition:border-color .14s ease;}
+  .pf-in:focus{border-color:#228be6;}
+  .pf-chip{display:inline-flex;align-items:center;height:34px;padding:0 14px;border-radius:9px;border:1px solid #dee2e6;
+    background:#ffffff;font-size:13.5px;font-weight:700;white-space:nowrap;color:#5d5880;cursor:pointer;transition:border-color .14s ease,color .14s ease,background .14s ease;}
+  .pf-chip:hover{border-color:#a5d8ff;color:#1864ab;}
+  .pf-chip-on,.pf-chip-on:hover{border-color:#228be6;background:#e7f1ff;color:#1864ab;}
+  .pf-lab{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#6b6786;}
+  .pf-av{position:relative;width:88px;height:88px;flex:none;border-radius:50%;overflow:hidden;background:#e7f5ff;
+    cursor:pointer;outline:none;box-shadow:0 6px 18px -8px rgba(70,46,146,.4);}
+  .pf-av-scrim{position:absolute;inset:0;display:grid;place-items:center;color:#ffffff;
+    background:rgba(33,26,74,.52);opacity:0;transition:opacity .16s ease;}
+  .pf-av:hover .pf-av-scrim,.pf-av:focus-visible .pf-av-scrim{opacity:1;}
+  .pf-av:focus-visible{box-shadow:0 0 0 3px #228be6;}
+  .pf-pick{width:64px;height:64px;flex:none;border-radius:50%;overflow:hidden;cursor:pointer;
+    background:#e7f5ff;border:2px solid transparent;transition:border-color .14s ease,transform .14s ease;}
+  .pf-pick:hover{transform:translateY(-2px);border-color:#a5d8ff;}
+  .pf-pick-on,.pf-pick-on:hover{border-color:#228be6;transform:none;}
+  .pf-up{position:relative;display:flex;align-items:center;justify-content:center;gap:9px;width:64px;height:64px;flex:none;
+    border-radius:50%;border:1px dashed #b0a8cc;color:#5d5880;cursor:pointer;transition:border-color .14s ease,color .14s ease;}
+  .pf-up:hover{border-color:#228be6;color:#1864ab;}
+  .pf-up-on,.pf-up-on:hover{border-style:solid;border-color:#228be6;color:#1864ab;background:#e7f1ff;}
+  .pf-up:focus-within{border-color:#228be6;box-shadow:0 0 0 3px rgba(34,139,230,.3);}
+  .pf-ch{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:9px;border:1px solid #dee2e6;
+    background:#ffffff;font-size:13px;font-weight:700;color:#5d5880;cursor:pointer;transition:border-color .14s ease,color .14s ease,background .14s ease;}
+  .pf-ch:hover{border-color:#a5d8ff;color:#1864ab;}
+  .pf-ch-on,.pf-ch-on:hover{border-color:#228be6;background:#e7f1ff;color:#1864ab;}
+  .pf-ch-box{width:15px;height:15px;flex:none;border-radius:4px;border:1.5px solid #c6c2d6;display:grid;place-items:center;font-size:11px;color:transparent;}
+  .pf-ch-on .pf-ch-box{border-color:#228be6;background:#228be6;color:#ffffff;}
+  .pf-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;max-width:336px;}
+  .pf-cal-h{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#6b6786;text-align:center;padding-bottom:4px;}
+  .pf-cal-d{position:relative;aspect-ratio:1;border-radius:9px;display:grid;place-items:center;
+    font-size:13px;font-weight:700;color:#5d5880;}
+  .pf-cal-on{background:#b2f2bb;color:#1b5e2a;font-weight:800;}
+  .pf-cal-today{background:linear-gradient(180deg,#e8590c,#ad4d0a);color:#ffffff;font-weight:800;
+    box-shadow:0 4px 12px -4px rgba(173,77,10,.55);}
+  .pf-cal-off{color:#6b6786;}
+  /* Group calendar: one cell per day, carrying the faces of whoever showed up. */
+  .pf-gcal{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;max-width:470px;}
+  .pf-gcal-h{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#6b6786;text-align:center;padding-bottom:2px;}
+  .pf-gcal-d{min-height:58px;border-radius:10px;padding:5px 4px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;
+    background:rgba(255,255,255,.5);}
+  .pf-gcal-empty{background:transparent;}
+  .pf-gcal-future{background:transparent;}
+  .pf-gcal-today{background:#fff4e6;box-shadow:inset 0 0 0 1.5px #e8590c;}
+  .pf-gcal-n{font-size:11.5px;font-weight:800;color:#5d5880;line-height:1;}
+  .pf-faces{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;}
+  .pf-face{width:17px;height:17px;border-radius:50%;display:grid;place-items:center;overflow:hidden;
+    font-size:8.5px;font-weight:800;color:#ffffff;letter-spacing:.02em;}
+  .pf-face img{width:100%;height:100%;object-fit:cover;display:block;}
+  /* Things you can hold — rewards, books, subjects — are cards with a face, not list rows. */
+  .pf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:14px;}
+  .pf-card{display:flex;flex-direction:column;border-radius:16px;overflow:hidden;background:#ffffff;
+    box-shadow:0 1px 2px rgba(33,26,74,.05),0 8px 20px -16px rgba(33,26,74,.3);
+    transition:box-shadow .18s ease;}
+  .pf-card:hover{box-shadow:0 1px 2px rgba(33,26,74,.05),0 16px 30px -16px rgba(33,26,74,.42);}
+  .pf-face-lg{position:relative;height:112px;display:grid;place-items:center;overflow:hidden;}
+  .pf-face-lg i{font-size:42px;color:rgba(255,255,255,.96);filter:drop-shadow(0 4px 10px rgba(0,0,0,.22));}
+  .pf-card-b{padding:14px 15px 15px;display:flex;flex-direction:column;gap:7px;flex:1;}
+  .pf-card-t{font-size:15px;font-weight:700;color:#211a4a;line-height:1.3;text-wrap:pretty;}
+  .pf-card-n{font-size:12.5px;font-weight:500;color:#6b6786;line-height:1.45;text-wrap:pretty;flex:1;}
+  .pf-price{font-size:13px;font-weight:800;color:#7a4700;white-space:nowrap;}
+  .pf-cover{height:150px;display:flex;align-items:flex-end;padding:14px;position:relative;overflow:hidden;}
+  .pf-cover-t{position:relative;font-size:15px;font-weight:800;line-height:1.25;color:#ffffff;text-wrap:pretty;
+    text-shadow:0 2px 8px rgba(0,0,0,.3);}
+  .pf-cover::after{content:"";position:absolute;left:0;right:0;bottom:0;height:64%;
+    background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.42));}
+  /* Account details read as a set of facts, so they sit in tiles with no rules at all. */
+  .pf-defs{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:12px;}
+  .pf-def{padding:14px 16px 15px;border-radius:14px;background:rgba(255,255,255,.66);
+    box-shadow:inset 0 0 0 1px rgba(120,90,200,.1);}
+  .pf-def-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:7px;}
+  .pf-rank{width:30px;flex:none;font-size:14px;font-weight:800;letter-spacing:-.01em;color:#6b6786;}
+  /* Range picker: one month, click a start then an end. Endpoints are solid, the span
+     between them is a light band, so the window reads as a shape not two dates. */
+  .pf-pick-h{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#6b6786;text-align:center;padding-bottom:2px;}
+  .pf-pick-d{height:34px;border-radius:8px;display:grid;place-items:center;font-size:13px;font-weight:700;color:#3f3a63;cursor:pointer;transition:background .12s ease,color .12s ease;}
+  .pf-pick-d:hover{background:#e7f1ff;color:#1864ab;}
+  .pf-pick-in,.pf-pick-in:hover{background:#e7f1ff;color:#1864ab;}
+  .pf-pick-on,.pf-pick-on:hover{background:#228be6;color:#ffffff;font-weight:800;}
+  .pf-pick-mute{color:#adb5bd;cursor:default;}
+  .pf-pick-mute:hover{background:transparent;color:#adb5bd;}
+  .pf-pick-blank{height:34px;}
+  .pf-step{display:inline-flex;align-items:center;gap:2px;padding:4px;border-radius:11px;border:1px solid #dee2e6;background:#ffffff;}
+  .pf-step-b{width:34px;height:34px;flex:none;border-radius:8px;display:grid;place-items:center;font-size:18px;color:#3f3a63;cursor:pointer;transition:background .12s ease,color .12s ease;}
+  .pf-step-b:hover{background:#e7f1ff;color:#1864ab;}
+  .pf-step-b[aria-disabled="true"]{color:#c6c2d6;cursor:default;background:transparent;}
+  .pf-step-v{min-width:92px;text-align:center;font-size:15px;font-weight:800;letter-spacing:-.01em;color:#211a4a;}
+  .pf-note{display:flex;align-items:flex-start;gap:9px;padding:12px 14px;border-radius:10px;font-size:13px;font-weight:600;line-height:1.5;text-wrap:pretty;}
+  .pf-note i{flex:none;font-size:17px;margin-top:1px;}
+  /* Vyom's chat, in the Teaching Room's vocabulary: mascot beside the bubble, word-by-word
+     reveal, typing dots, the student's replies in the blue-teal gradient, and a composer
+     that takes typing when the chips do not cover what they want to say. */
+  .pf-scrim{position:fixed;inset:0;z-index:70;background:rgba(33,26,74,.34);animation:pfFade .2s ease both;}
+  @keyframes pfFade{from{opacity:0}to{opacity:1}}
+  @keyframes pfSlide{from{transform:translateX(28px);opacity:0}to{transform:translateX(0);opacity:1}}
+  @keyframes pfDots{0%,60%,100%{opacity:.28;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+  /* The goal under discussion is lifted OUT of the scrim, so it is obvious which one
+     Vyom is changing. The ring plus the surrounding shadow do the dimming themselves. */
+  /* The goal under discussion runs flush into the chat panel — no gap, no stroke, and the
+     joining edge is square so the two read as one surface. */
+  /* .pf-r.pf-r-focus, not .pf-r-focus: the ≤1180px media rule for .pf-r is authored later
+     with equal specificity and would otherwise keep reserving the 124px action track. */
+  .pf-r.pf-r-focus{position:relative;z-index:2;background:#ffffff;border-radius:16px;
+    box-shadow:0 3px 6px rgba(33,26,74,.1),0 22px 46px -20px rgba(33,26,74,.46);}
+  .pf-r-dim{opacity:.38;box-shadow:none;filter:saturate(.55);transition:opacity .22s ease,filter .22s ease;}
+  .pf-r-focus::before{opacity:0;}
+  .pf-drawer{position:fixed;top:0;right:0;bottom:0;z-index:73;width:min(560px,44vw);min-width:320px;display:flex;flex-direction:column;
+    background:#ffffff;box-shadow:-18px 0 46px -20px rgba(33,26,74,.5);animation:pfSlide .26s cubic-bezier(.2,.8,.3,1) both;}
+  .pf-dhead{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid #eceaf4;}
+  .pf-dbody{flex:1;overflow-y:auto;padding:22px 22px 8px;display:flex;flex-direction:column;gap:16px;
+    background:var(--cv-linear-warm);}
+  .pf-brow{display:flex;gap:10px;align-items:flex-end;animation:pfIn .24s cubic-bezier(.2,.8,.3,1) both;}
+  .pf-brow-me{justify-content:flex-end;}
+  .pf-vav{width:34px;height:34px;flex:none;border-radius:50%;overflow:hidden;background:#f3f0ff;}
+  .pf-vav img{width:100%;height:100%;object-fit:cover;display:block;}
+  .pf-msg{max-width:78%;padding:10px 13px;font-size:14px;line-height:1.5;font-weight:400;text-wrap:pretty;}
+  .pf-msg-v{background:rgba(244,241,255,.95);color:#3a3450;border-radius:14px 14px 14px 4px;}
+  .pf-msg-m{background:linear-gradient(45deg,rgba(34,139,230,.96),rgba(21,170,191,.96));color:#ffffff;
+    border-radius:14px 14px 4px 14px;box-shadow:0 4px 12px rgba(34,139,230,.22);}
+  .pf-spk{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:15px;
+    color:#7048e8;background:rgba(112,72,232,.1);cursor:pointer;opacity:0;transition:opacity .16s ease,background .14s ease;}
+  .pf-brow:hover .pf-spk{opacity:1;}
+  .pf-spk:hover{background:rgba(112,72,232,.2);}
+  .pf-spk-on{opacity:1;background:#7048e8;color:#ffffff;}
+  .pf-dots{display:flex;gap:5px;padding:13px 15px;border-radius:14px 14px 14px 4px;background:rgba(244,241,255,.95);}
+  .pf-dots span{width:7px;height:7px;border-radius:50%;background:#8a86a8;animation:pfDots 1.2s infinite;}
+  .pf-dots span:nth-child(2){animation-delay:.2s;} .pf-dots span:nth-child(3){animation-delay:.4s;}
+  .pf-dfoot{padding:14px 20px 18px;border-top:1px solid #eceaf4;background:#ffffff;}
+  .pf-chiprow{display:flex;gap:9px;flex-wrap:wrap;margin:-4px 0 2px 44px;animation:pfIn .24s cubic-bezier(.2,.8,.3,1) both;}
+  .pf-chiprow .pf-chip{font-size:14px;font-weight:700;height:36px;padding:0 15px;border-radius:11px;}
+  .pf-comp{display:flex;align-items:center;gap:10px;height:48px;padding:0 8px 0 14px;border-radius:14px;
+    border:1px solid #dee2e6;background:#ffffff;transition:border-color .14s ease;}
+  .pf-comp:focus-within{border-color:#228be6;}
+  .pf-comp input{flex:1;min-width:0;border:0;outline:none;background:transparent;font-family:inherit;
+    font-size:14px;font-weight:400;color:#212529;}
+  .pf-comp input::placeholder{color:#adb5bd;font-weight:400;}
+  .pf-send{width:36px;height:36px;flex:none;border-radius:10px;display:grid;place-items:center;font-size:18px;
+    color:#ffffff;background:#228be6;cursor:pointer;transition:background .14s ease;}
+  .pf-send:hover{background:#1c7ed6;}
+  .pf-mic{width:36px;height:36px;flex:none;border-radius:10px;display:grid;place-items:center;font-size:19px;
+    color:#5d5880;cursor:pointer;transition:background .14s ease,color .14s ease;}
+  .pf-mic:hover{background:#f1f0f8;color:#211a4a;}
+  .pf-done{opacity:.72;}
+  .pf-fedit{padding:0 0 22px 14px;animation:pfIn .26s cubic-bezier(.2,.8,.3,1) both;max-width:480px;}
+  .pf-bar{width:100%;border-radius:6px 6px 3px 3px;transition:height .5s cubic-bezier(.2,.8,.3,1);}
+  @media (max-width:1180px){
+    .pf-r{grid-template-columns:minmax(0,1fr) 124px;gap:14px;}
+    .pf-c-hide{display:none;}
+  }
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;}}
+</style>
+<script src="./mobile-nav.js"></script>
+</helmet>
+
+<mobile-nav active="profile"></mobile-nav>
+
+<div class="pf-scroll" style="position:relative;width:100%;height:100vh;overflow-y:auto;background-image:radial-gradient(rgba(96,74,190,.13) 1px,transparent 1px),linear-gradient(180deg,#eee9fd 0%,#f8f5fe 46%,#fdfaf0 100%);background-size:24px 24px,100% 100%;background-attachment:fixed;">
+
+  <div style="position:relative;z-index:30;display:flex;align-items:flex-start;gap:40px;padding:24px 28px 0;">
+    <div onClick="{{ goHome }}" title="Home" role="button" tabindex="0" style="width:40px;height:40px;flex:none;border-radius:12px;overflow:hidden;display:grid;place-items:center;cursor:pointer;"><img src="logo.png" alt="Byjus.AI" style="width:100%;height:100%;object-fit:contain;"></div>
+
+    <div style="position:relative;top:-2px;min-width:0;">
+      <div class="pf-goalw {{ goalsOpenCls }}" onClick="{{ toggleGoals }}" onKeyDown="{{ goalsKey }}" role="button" tabindex="0" aria-expanded="{{ goalsOpen }}">
+        <div class="pf-goalw-rows" style="width:340px;min-width:0;">
+          <sc-if value="{{ noGoalsChrome }}" hint-placeholder-val="{{ false }}">
+            <div style="width:340px;height:26px;display:flex;align-items:flex-end;font-size:14px;font-weight:700;color:#6b6786;line-height:1.4;white-space:nowrap;">No goals set yet</div>
+          </sc-if>
+          <sc-if value="{{ goalSummary }}" hint-placeholder-val="{{ true }}">
+            <div style="position:relative;width:340px;height:26px;overflow:hidden;">
+              <sc-for list="{{ goalRow }}" as="g" hint-placeholder-count="1">
+                <div class="pf-goal-line" style="position:absolute;left:0;bottom:0;width:340px;font-size:14px;font-weight:700;color:#211a4a;line-height:1.4;white-space:nowrap;"><span style="color:#d9480f;font-weight:800;font-size:18px;">{{ g.pctLabel }}</span> {{ g.label }}</div>
+              </sc-for>
+            </div>
+            <div class="pf-goalw-track"><div class="pf-goalw-fill" style="width:{{ goalPct }}%;"></div></div>
+          </sc-if>
+        </div>
+        <sc-if value="{{ goalsOpen }}" hint-placeholder-val="{{ false }}">
+          <div class="pf-goalw-pop">
+            <sc-for list="{{ openGoals }}" as="g" hint-placeholder-count="3">
+              <div class="pf-goalw-row">
+                <div style="width:340px;font-size:14px;font-weight:700;color:#211a4a;line-height:1.4;white-space:nowrap;"><span style="color:#d9480f;font-weight:800;font-size:18px;">{{ g.pctLabel }}</span> {{ g.label }}</div>
+                <div class="pf-goalw-track"><div class="pf-goalw-fill" style="width:{{ g.pctLabel }};"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <div style="flex:1;"></div>
+
+    <div style="display:flex;align-items:center;flex:none;gap:8px;align-self:center;">
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 15px 8px 12px;border-radius:12px;" title="Experience points">
+        <i class="ti ti-star-filled" style="font-size:20px;color:#fab005;filter:drop-shadow(0 1px 2px rgba(180,120,0,.35));"></i>
+        <span style="font-weight:800;color:#7a4700;font-size:18px;letter-spacing:-.01em;">{{ xpDisp }}</span>
+      </div>
+      <span aria-hidden="true" style="width:1px;height:20px;flex:none;margin:0 6px;background:linear-gradient(180deg,rgba(120,90,200,0),rgba(120,90,200,.22) 30%,rgba(120,90,200,.22) 70%,rgba(120,90,200,0));"></span>
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 16px 8px 13px;border-radius:12px;" title="Energy orbs">
+        <span style="width:18px;height:18px;flex:none;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff,#ffe066 42%,#ff922b 78%,#e8590c);box-shadow:0 0 10px rgba(255,193,7,.95),0 0 3px rgba(255,255,255,.9);"></span>
+        <span style="font-weight:800;color:#7a4700;font-size:18px;letter-spacing:-.01em;">{{ orbsDisp }}</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Identity strip: the one thing every pane is about, so it sits above the split. -->
+  <div style="display:flex;align-items:flex-end;gap:26px;flex-wrap:wrap;padding:26px {{ splitPadR }} 0 {{ splitPadL }};transition:padding .26s cubic-bezier(.2,.8,.3,1);animation:pfIn .4s cubic-bezier(.2,.8,.3,1) both;">
+    <div class="pf-av" onClick="{{ openAvatar }}" role="button" tabindex="0" aria-label="Change your picture" title="Change your picture">
+      <sc-if value="{{ isAarav }}" hint-placeholder-val="{{ true }}"><img src="aarav-avatar.png" alt="Aarav" style="width:100%;height:100%;object-fit:cover;display:block;"></sc-if>
+      <sc-if value="{{ isMax }}" hint-placeholder-val="{{ false }}"><img src="max-mascot-sm.png" alt="MAX" style="width:100%;height:100%;object-fit:cover;display:block;"></sc-if>
+      <sc-if value="{{ isSpark }}" hint-placeholder-val="{{ false }}"><img src="spark-mascot-sm.png" alt="Spark" style="width:100%;height:100%;object-fit:cover;display:block;"></sc-if>
+      <sc-if value="{{ isJugnu }}" hint-placeholder-val="{{ false }}"><img src="vyom-mascot.png" alt="Jugnu" style="width:100%;height:100%;object-fit:cover;display:block;"></sc-if>
+      <sc-if value="{{ isUpload }}" hint-placeholder-val="{{ false }}"><img ref="{{ upRef }}" alt="Your photo" style="width:100%;height:100%;object-fit:cover;display:block;"></sc-if>
+      <div class="pf-av-scrim"><i class="ti ti-camera" style="font-size:24px;"></i></div>
+    </div>
+    <div style="flex:1;min-width:240px;">
+      <h1 style="margin:0 0 8px;font-size:38px;font-weight:700;line-height:1.05;letter-spacing:-.02em;color:#211a4a;">{{ pName }}</h1>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <span style="font-size:15.5px;font-weight:600;white-space:nowrap;color:#5d5880;">{{ pClassBoard }}</span>
+        <span class="pf-dot"></span>
+        <span style="font-size:15.5px;font-weight:600;white-space:nowrap;color:#5d5880;">{{ bookShort }}</span>
+        <span class="pf-badge" style="background:#fff4e6;color:#ad4d0a;"><i class="ti ti-flame" style="font-size:14px;"></i>{{ streakLabel }}</span>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{ avatarOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:24px 28px 0 108px;animation:pfIn .26s cubic-bezier(.2,.8,.3,1) both;">
+      <div class="pf-hair" style="margin-bottom:20px;"></div>
+      <div class="pf-lab" style="margin-bottom:12px;">Choose a picture</div>
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+        <div class="pf-pick {{ aaravCls }}" onClick="{{ pickAarav }}" role="radio" aria-checked="{{ isAarav }}" tabindex="0" title="Your current picture">
+          <img src="aarav-avatar.png" alt="Your current picture" style="width:100%;height:100%;object-fit:cover;display:block;">
+        </div>
+        <div class="pf-pick {{ maxCls }}" onClick="{{ pickMax }}" role="radio" aria-checked="{{ isMax }}" tabindex="0" title="MAX">
+          <img src="max-mascot-sm.png" alt="MAX" style="width:100%;height:100%;object-fit:cover;display:block;">
+        </div>
+        <div class="pf-pick {{ sparkCls }}" onClick="{{ pickSpark }}" role="radio" aria-checked="{{ isSpark }}" tabindex="0" title="Spark">
+          <img src="spark-mascot-sm.png" alt="Spark" style="width:100%;height:100%;object-fit:cover;display:block;">
+        </div>
+        <div class="pf-pick {{ jugnuCls }}" onClick="{{ pickJugnu }}" role="radio" aria-checked="{{ isJugnu }}" tabindex="0" title="Jugnu">
+          <img src="vyom-mascot.png" alt="Jugnu" style="width:100%;height:100%;object-fit:cover;display:block;">
+        </div>
+        <label class="pf-up {{ upCls }}" title="Upload a photo">
+          <i class="ti ti-upload" style="font-size:20px;"></i>
+          <input type="file" accept="image/*" onChange="{{ onUpload }}" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;">
+        </label>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;margin-top:20px;">
+        <div class="pf-btn" onClick="{{ closeAvatar }}">Done</div>
+        <span style="font-size:13px;font-weight:500;color:#6b6786;">Or upload a photo — square works best.</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="display:flex;align-items:flex-start;gap:24px;padding:30px {{ splitPadR }} 96px {{ splitPadL }};transition:padding .26s cubic-bezier(.2,.8,.3,1);">
+
+    <aside class="{{ railCls }}" style="position:sticky;top:0;flex:none;width:{{ railW }};transition:width .26s cubic-bezier(.2,.8,.3,1);">
+      <sc-for list="{{ panes }}" as="p" hint-placeholder-count="4">
+        <div class="pf-nav {{ p.cls }}" onClick="{{ p.pick }}" role="tab" aria-selected="{{ p.on }}" tabindex="0">
+          <i class="ti {{ p.icon }}"></i>{{ p.label }}
+        </div>
+      </sc-for>
+      <div class="pf-hair" style="margin:14px 10px;"></div>
+      <div class="pf-rail-foot" style="padding:0 14px;">
+        <div class="pf-lab" style="margin-bottom:6px;">Member since</div>
+        <div style="font-size:13.5px;font-weight:700;color:#3f3a63;">April 2026</div>
+      </div>
+    </aside>
+
+    <div class="pf-vhair" style="min-height:420px;"></div>
+
+    <div style="flex:1;min-width:0;max-width:{{ colMax }};transition:max-width .26s cubic-bezier(.2,.8,.3,1);">
+
+      <!-- ============ PROFILE ============ -->
+      <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ true }}">
+        <div style="animation:pfIn .3s cubic-bezier(.2,.8,.3,1) both;">
+          <h2 style="margin:0 0 5px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">Account details</h2>
+          <p style="margin:0 0 18px;font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;text-wrap:pretty;">What we use to pick your syllabus and keep your parent in the loop.</p>
+          <div class="pf-defs">
+            <sc-for list="{{ fields }}" as="f" hint-placeholder-count="6">
+              <div class="pf-def">
+                <div class="pf-def-h">
+                  <span class="pf-lab">{{ f.label }}</span>
+                  <span class="pf-link" onClick="{{ f.edit }}" style="font-size:12.5px;">{{ f.cta }}</span>
+                </div>
+                <div style="font-size:15.5px;font-weight:700;color:#211a4a;line-height:1.35;text-wrap:pretty;">{{ f.value }}</div>
+                <sc-if value="{{ f.editing }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top:12px;">
+                    <sc-if value="{{ f.isText }}" hint-placeholder-val="{{ true }}">
+                      <input class="pf-in" type="{{ f.inputType }}" value="{{ fieldDraft }}" onChange="{{ setFieldDraft }}" placeholder="{{ f.placeholder }}">
+                    </sc-if>
+                    <sc-if value="{{ f.isChoice }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <sc-for list="{{ f.options }}" as="o" hint-placeholder-count="4">
+                          <div class="pf-chip {{ o.cls }}" onClick="{{ o.pick }}" role="radio" aria-checked="{{ o.on }}" tabindex="0" style="height:32px;font-size:13px;">{{ o.label }}</div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                    <div style="font-size:12px;font-weight:500;color:#6b6786;line-height:1.45;margin-top:9px;text-wrap:pretty;">{{ f.hint }}</div>
+                    <div style="display:flex;align-items:center;gap:14px;margin-top:12px;">
+                      <div class="pf-btn" onClick="{{ saveField }}" style="height:32px;padding:0 15px;font-size:13px;">Save</div>
+                      <span class="pf-link" onClick="{{ cancelField }}" style="color:#6b6786;font-size:13px;">Cancel</span>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+
+          <h2 style="margin:46px 0 6px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">Plan</h2>
+          <p style="margin:0 0 18px;font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;">One subject, renewed yearly.</p>
+          <div class="pf-defs">
+            <div class="pf-def">
+              <div class="pf-def-h">
+                <span class="pf-lab">Subscription</span>
+                <span class="pf-link" style="font-size:12.5px;">Manage</span>
+              </div>
+              <div style="font-size:15.5px;font-weight:700;color:#211a4a;line-height:1.35;">Maths &middot; full year</div>
+              <div class="pf-meta" style="margin-top:7px;"><span>Renews 12 April 2027</span><span class="pf-dot"></span><span>&#8377;8,400 a year</span></div>
+            </div>
+            <sc-if value="{{ showParent }}" hint-placeholder-val="{{ true }}">
+              <div class="pf-def">
+                <div class="pf-def-h">
+                  <span class="pf-lab">Parent access</span>
+                  <span class="pf-link" style="font-size:12.5px;">Change</span>
+                </div>
+                <div style="font-size:15.5px;font-weight:700;color:#211a4a;line-height:1.35;">Meera</div>
+                <div class="pf-meta" style="margin-top:7px;"><span>Weekly report, Sunday evening</span></div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+        <div style="padding-top:46px;animation:pfIn .3s cubic-bezier(.2,.8,.3,1) both;">
+          <h2 style="margin:0 0 6px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">Your course</h2>
+          <p style="margin:0 0 18px;font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;">What you are enrolled in right now.</p>
+          <div class="pf-r" style="grid-template-columns:104px minmax(0,1fr) 148px;align-items:center;">
+            <div style="width:104px;height:104px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(150deg,#4dabf7,#1864ab);">
+              <i class="ti ti-math-symbols" style="font-size:44px;color:rgba(255,255,255,.96);"></i>
+            </div>
+            <div style="min-width:0;">
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <span style="font-size:18px;font-weight:700;color:#211a4a;letter-spacing:-.012em;line-height:1.3;">{{ courseTitle }}</span>
+                <span class="pf-badge" style="flex:none;background:#ebfbee;color:#237032;">Active</span>
+              </div>
+              <div style="font-size:13.5px;font-weight:500;color:#5d5880;line-height:1.45;margin-top:5px;text-wrap:pretty;">{{ courseBlurb }}</div>
+              <div style="margin-top:13px;">
+                <div class="pf-gauge"><div style="width:{{ coursePct }};background:linear-gradient(90deg,#8ce99a,#2f9e44);"></div></div>
+                <div class="pf-meta">
+                  <span style="font-weight:800;color:#237032;">{{ islandsDone }} of {{ islandsTotal }} chapters mastered</span>
+                  <span class="pf-dot"></span><span>{{ coursePct }} of the year</span>
+                </div>
+              </div>
+            </div>
+            <div class="pf-btn pf-act" onClick="{{ goJourney }}">Continue</div>
+          </div>
+
+          <h2 style="margin:46px 0 6px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">Textbook</h2>
+          <p style="margin:0 0 18px;font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;text-wrap:pretty;">Your lessons follow this book&rsquo;s chapter order and exercise numbering.</p>
+          <div class="pf-grid">
+            <sc-for list="{{ books }}" as="b" hint-placeholder-count="2">
+              <div class="pf-card">
+                <div class="pf-cover" style="background:{{ b.cover }};">
+                  <span class="pf-cover-t">{{ b.title }}</span>
+                </div>
+                <div class="pf-card-b">
+                  <sc-if value="{{ b.on }}" hint-placeholder-val="{{ false }}">
+                    <span class="pf-badge" style="align-self:flex-start;background:#e7f1ff;color:#1864ab;">In use</span>
+                  </sc-if>
+                  <div class="pf-card-n">{{ b.note }}</div>
+                  <sc-if value="{{ b.off }}" hint-placeholder-val="{{ true }}">
+                    <span class="pf-link" onClick="{{ b.pick }}" style="align-self:flex-start;">Switch to this</span>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <h2 style="margin:46px 0 6px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">Add a subject</h2>
+          <p style="margin:0 0 18px;font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;">Taught the same way, on its own journey map.</p>
+          <div class="pf-grid">
+            <sc-for list="{{ available }}" as="a" hint-placeholder-count="2">
+              <div class="pf-card">
+                <div class="pf-face-lg" style="background:{{ a.tint }};"><i class="ti {{ a.icon }}"></i></div>
+                <div class="pf-card-b">
+                  <div class="pf-card-t">{{ a.title }}</div>
+                  <div class="pf-card-n">{{ a.chapters }} chapters</div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                    <span class="pf-price">{{ a.price }}</span>
+                    <div class="pf-btn pf-btn-q" style="height:32px;padding:0 15px;font-size:13px;">Add</div>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="padding:32px 0 0;">
+            <span class="pf-link" style="color:#c92a2a;">Sign out</span>
+          </div>
+        </div>
+      </sc-if>
+
+
+      <!-- ============ STUDY GROUP ============ -->
+      <sc-if value="{{ isGroup }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:pfIn .3s cubic-bezier(.2,.8,.3,1) both;">
+          <h2 style="margin:0 0 5px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">{{ groupName }}</h2>
+          <p style="margin:0 0 18px;font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;text-wrap:pretty;">{{ groupBlurb }}</p>
+
+          <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px;">
+            <span class="pf-lab">This week&rsquo;s board</span>
+            <span style="font-size:12.5px;font-weight:600;color:#6b6786;">Ranked on XP earned since Monday</span>
+          </div>
+          <sc-for list="{{ board }}" as="p" hint-placeholder-count="6">
+            <div class="pf-r" style="padding:15px 14px;">
+              <div style="min-width:0;display:flex;align-items:center;gap:14px;">
+                <span class="pf-rank" style="color:{{ p.rankFg }};">{{ p.rank }}</span>
+                <div style="min-width:0;">
+                  <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">
+                    <span style="font-size:15.5px;font-weight:700;color:#211a4a;line-height:1.35;">{{ p.name }}</span>
+                    <sc-if value="{{ p.me }}" hint-placeholder-val="{{ false }}">
+                      <span class="pf-badge" style="flex:none;background:#e7f1ff;color:#1864ab;">You</span>
+                    </sc-if>
+                  </div>
+                  <div class="pf-meta" style="margin-top:5px;">
+                    <span style="font-weight:800;color:#3f3a63;">{{ p.xpLabel }} XP</span>
+                    <span class="pf-dot"></span><span>{{ p.streakLabel }}</span>
+                  </div>
+                </div>
+              </div>
+              <sc-if value="{{ p.other }}" hint-placeholder-val="{{ true }}">
+                <span class="pf-link pf-act" onClick="{{ p.remove }}" style="color:#6b6786;">Remove</span>
+              </sc-if>
+            </div>
+          </sc-for>
+
+          <h2 style="margin:46px 0 6px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">{{ gcalMonth }}</h2>
+          <p style="margin:0 0 18px;font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;text-wrap:pretty;">Who turned up, and when. {{ gcalSummary }}</p>
+          <div class="pf-gcal">
+            <sc-for list="{{ dowNames }}" as="d" hint-placeholder-count="7">
+              <div class="pf-gcal-h">{{ d.label }}</div>
+            </sc-for>
+            <sc-for list="{{ gcalDays }}" as="d" hint-placeholder-count="35">
+              <div class="pf-gcal-d {{ d.cls }}" title="{{ d.tip }}">
+                <span class="pf-gcal-n" style="color:{{ d.nFg }};">{{ d.n }}</span>
+                <div class="pf-faces">
+                  <sc-for list="{{ d.faces }}" as="f" hint-placeholder-count="0">
+                    <div class="pf-face" style="background:{{ f.bg }};" title="{{ f.name }}">
+                      <sc-if value="{{ f.isMe }}" hint-placeholder-val="{{ false }}"><img src="aarav-avatar.png" alt="You"></sc-if>
+                      <sc-if value="{{ f.other }}" hint-placeholder-val="{{ true }}">{{ f.initials }}</sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <h2 style="margin:46px 0 6px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">Add a peer</h2>
+          <p style="margin:0 0 14px;font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;text-wrap:pretty;">They join the board once they accept. Only weekly XP and streaks are shared &mdash; never your scores.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;max-width:480px;">
+            <input class="pf-in" style="flex:1;min-width:220px;" type="text" value="{{ inviteDraft }}" onChange="{{ setInvite }}" onKeyDown="{{ inviteKey }}" placeholder="Their name or Byjus.AI handle">
+            <div class="pf-btn" onClick="{{ sendInvite }}">Send invite</div>
+          </div>
+          <sc-if value="{{ hasInvites }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:24px;">
+              <div class="pf-lab" style="margin-bottom:6px;">Waiting to accept</div>
+              <sc-for list="{{ invites }}" as="i" hint-placeholder-count="1">
+                <div class="pf-r" style="padding:14px;">
+                  <div style="min-width:0;font-size:15px;font-weight:700;color:#211a4a;line-height:1.35;">{{ i.name }}</div>
+                  <span class="pf-link pf-act" onClick="{{ i.cancel }}" style="color:#6b6786;">Cancel</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- ============ REWARDS ============ -->
+      <sc-if value="{{ isRewards }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:pfIn .3s cubic-bezier(.2,.8,.3,1) both;">
+          <h2 style="margin:0 0 5px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">Rewards</h2>
+          <p style="margin:0 0 18px;font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;text-wrap:pretty;">Spend what you have earned. You hold <span style="font-weight:800;color:#7a4700;">{{ xpDisp }} XP</span> and <span style="font-weight:800;color:#7a4700;">{{ orbsDisp }} orbs</span> &mdash; XP for the long haul, orbs for the small stuff.</p>
+
+          <div class="pf-lab" style="margin-bottom:12px;">Worth saving for</div>
+          <div class="pf-grid" style="grid-template-columns:repeat(auto-fill,minmax(232px,1fr));">
+            <sc-for list="{{ rewardsHigh }}" as="r" hint-placeholder-count="3">
+              <div class="pf-card">
+                <div class="pf-face-lg" style="height:132px;background:{{ r.tint }};"><i class="ti {{ r.icon }}"></i></div>
+                <div class="pf-card-b">
+                  <div class="pf-card-t">{{ r.name }}</div>
+                  <div class="pf-card-n">{{ r.note }}</div>
+                  <div class="pf-gauge" style="width:100%;margin:2px 0 6px;"><div style="width:{{ r.pct }};background:linear-gradient(90deg,#ffd8a8,#e8590c);"></div></div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                    <div style="min-width:0;">
+                      <div class="pf-price">{{ r.costLabel }}</div>
+                      <div style="font-size:12px;font-weight:600;color:#6b6786;margin-top:2px;">{{ r.gapLabel }}</div>
+                    </div>
+                    <div class="pf-btn {{ r.btnCls }}" onClick="{{ r.claim }}" style="height:32px;padding:0 15px;font-size:13px;">{{ r.cta }}</div>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div class="pf-lab" style="margin:46px 0 12px;">Within reach</div>
+          <div class="pf-grid">
+            <sc-for list="{{ rewardsLow }}" as="r" hint-placeholder-count="4">
+              <div class="pf-card">
+                <div class="pf-face-lg" style="height:96px;background:{{ r.tint }};"><i class="ti {{ r.icon }}" style="font-size:34px;"></i></div>
+                <div class="pf-card-b">
+                  <div class="pf-card-t">{{ r.name }}</div>
+                  <div class="pf-card-n">{{ r.note }}</div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                    <span class="pf-price">{{ r.costLabel }}</span>
+                    <div class="pf-btn {{ r.btnCls }}" onClick="{{ r.claim }}" style="height:32px;padding:0 15px;font-size:13px;">{{ r.cta }}</div>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+
+      <!-- ============ STATS ============ -->
+      <sc-if value="{{ isStats }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:pfIn .3s cubic-bezier(.2,.8,.3,1) both;">
+          <h2 style="margin:0 0 5px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">This week</h2>
+          <p style="margin:0 0 18px;font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;">Monday to Sunday, reset every Monday morning.</p>
+
+          <div style="display:flex;align-items:baseline;gap:44px;flex-wrap:wrap;margin-bottom:30px;">
+            <sc-for list="{{ figures }}" as="f" hint-placeholder-count="4">
+              <div>
+                <div class="pf-lab" style="margin-bottom:7px;">{{ f.label }}</div>
+                <div style="display:flex;align-items:baseline;gap:9px;">
+                  <span style="font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1;color:{{ f.fg }};">{{ f.value }}</span>
+                  <span style="font-size:13px;font-weight:700;white-space:nowrap;color:#6b6786;">{{ f.note }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <!-- Minutes a day, against the weekly target as a single reference line -->
+          <div style="position:relative;max-width:520px;padding-top:8px;">
+            <div style="position:relative;height:150px;">
+              <div style="position:absolute;left:0;right:0;bottom:{{ targetLineBottom }};height:1px;background:repeating-linear-gradient(90deg,rgba(120,90,200,.42) 0 5px,transparent 5px 10px);"></div>
+              <div style="position:absolute;right:0;bottom:{{ targetLineLabel }};font-size:11.5px;font-weight:800;white-space:nowrap;color:#6741d9;">{{ dailyTargetLabel }} a day</div>
+              <div style="position:absolute;inset:0;display:grid;grid-template-columns:repeat(7,1fr);gap:14px;align-items:end;">
+                <sc-for list="{{ week }}" as="d" hint-placeholder-count="7">
+                  <div class="pf-bar" style="height:{{ d.h }};background:{{ d.bg }};" title="{{ d.tip }}"></div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:14px;margin-top:10px;">
+              <sc-for list="{{ week }}" as="d" hint-placeholder-count="7">
+                <div style="text-align:center;font-size:12.5px;font-weight:800;color:{{ d.fg }};">{{ d.day }}</div>
+              </sc-for>
+            </div>
+          </div>
+
+          <h2 style="margin:46px 0 6px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">{{ calMonth }}</h2>
+          <p style="margin:0 0 18px;font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;text-wrap:pretty;">Green is a day you practiced. {{ streakLine }}</p>
+          <div class="pf-cal">
+            <sc-for list="{{ dowNames }}" as="d" hint-placeholder-count="7">
+              <div class="pf-cal-h">{{ d.label }}</div>
+            </sc-for>
+            <sc-for list="{{ calDays }}" as="d" hint-placeholder-count="35">
+              <div class="pf-cal-d {{ d.cls }}" title="{{ d.tip }}">{{ d.n }}</div>
+            </sc-for>
+          </div>
+
+          <h2 style="margin:46px 0 6px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">All time</h2>
+          <p style="margin:0 0 18px;font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;">Since you joined in April.</p>
+          <sc-for list="{{ allTime }}" as="a" hint-placeholder-count="4">
+            <div class="pf-r">
+              <div style="min-width:0;">
+                <div style="font-size:16px;font-weight:700;color:#211a4a;line-height:1.35;">{{ a.label }}</div>
+                <div style="font-size:13px;font-weight:500;color:#6b6786;line-height:1.45;margin-top:4px;text-wrap:pretty;">{{ a.note }}</div>
+              </div>
+              <div class="pf-act" style="font-size:22px;font-weight:800;letter-spacing:-.016em;white-space:nowrap;color:#211a4a;text-align:right;">{{ a.value }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- ============ GOALS ============ -->
+      <sc-if value="{{ isGoals }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:pfFade .3s ease both;">
+          <h2 style="margin:46px 0 18px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">Current goal</h2>
+
+          <sc-for list="{{ curGoal }}" as="g" hint-placeholder-count="1">
+            <div>
+              <div class="pf-r {{ g.focusCls }} {{ g.dimCls }}" style="display:block;max-width:60%;box-sizing:border-box;position:relative;overflow:hidden;isolation:isolate;padding:26px 28px;border-radius:26px;background:linear-gradient(120deg,#ffffff 0%,#f7f3ff 52%,#fff1e2 100%);box-shadow:0 0 0 2px #b197fc,0 0 0 8px rgba(177,151,252,.16),0 26px 50px -22px rgba(112,72,232,.5);">
+                <div style="position:absolute;right:-150px;top:50%;width:420px;height:420px;transform:translateY(-50%);border-radius:50%;z-index:-1;pointer-events:none;background:repeating-radial-gradient(circle at center,transparent 0 38px,rgba(112,72,232,.12) 38px 39px);-webkit-mask-image:radial-gradient(circle,#000 0%,transparent 68%);mask-image:radial-gradient(circle,#000 0%,transparent 68%);"></div>
+                <div style="position:absolute;right:-60px;bottom:-140px;width:340px;height:340px;border-radius:50%;z-index:-1;pointer-events:none;background:radial-gradient(circle,rgba(255,192,120,.4),rgba(255,192,120,0) 68%);"></div>
+                <i class="ti ti-sparkles" style="position:absolute;right:28px;top:20px;font-size:18px;color:#ffa94d;z-index:-1;"></i>
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:24px 32px;width:100%;">
+                  <div style="flex:1.3 1 260px;min-width:0;display:flex;flex-direction:column;gap:10px;">
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <span class="pf-lab" style="color:{{ g.fg }};">{{ g.label }}</span>
+                    </div>
+                    <div style="font-size:24px;font-weight:700;color:#211a4a;letter-spacing:-.015em;line-height:1.25;text-wrap:balance;">{{ g.title }}</div>
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                      <span style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:#fff4e6;color:#d9480f;font-size:14px;font-weight:800;white-space:nowrap;"><i class="ti ti-calendar-event" style="font-size:16px;"></i>{{ g.dueLabel }}</span>
+                      <span style="font-size:14px;font-weight:600;color:#6b6786;white-space:nowrap;">{{ g.daysLeft }}</span>
+                    </div>
+                  </div>
+                  <div style="flex:1 1 200px;min-width:0;display:flex;flex-direction:column;gap:10px;">
+                    <span style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#868e96;">Chapters</span>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                      <sc-for list="{{ g.chips }}" as="c" hint-placeholder-count="1">
+                        <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 14px 7px 8px;border-radius:999px;background:rgba(255,255,255,.85);box-shadow:inset 0 0 0 1px rgba(112,72,232,.14);font-size:14px;font-weight:700;color:#3f3a63;"><span style="width:10px;height:10px;border-radius:50%;background:#7048e8;"></span>{{ c.name }}</span>
+                      </sc-for>
+                    </div>
+                    <span style="font-size:14px;font-weight:600;color:#6b6786;"><span style="font-weight:800;color:#3f3a63;">{{ g.effortLabel }}</span> a day · <span style="font-weight:800;color:{{ g.paceFg }};">{{ g.pace }}</span></span>
+                  </div>
+                  <div style="position:relative;width:112px;height:112px;flex:none;border-radius:50%;background:{{ g.ringBg }};display:grid;place-items:center;box-shadow:0 16px 30px -18px rgba(112,72,232,.6);">
+                    <div style="width:90px;height:90px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                      <span style="font-size:26px;font-weight:800;color:#5f3dc4;letter-spacing:-.02em;">{{ g.pctLabel }}</span>
+                      <span style="font-size:12px;font-weight:700;color:#868e96;">done</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </sc-for>
+
+
+          <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:24px 0 4px;">
+            <div class="pf-btn" onClick="{{ startAdd }}" style="display:inline-flex;gap:10px;"><i class="ti ti-plus" style="font-size:18px;"></i>New goal</div>
+            <span style="display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#8a3d05;white-space:nowrap;"><i class="ti ti-info-circle" style="font-size:17px;flex:none;"></i>This will end your current goal.</span>
+          </div>
+
+          <sc-if value="{{ hasPast }}" hint-placeholder-val="{{ true }}">
+            <h2 style="margin:46px 0 18px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">Past goals</h2>
+            <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;">
+              <sc-for list="{{ pastGoals }}" as="p" hint-placeholder-count="4">
+                <div style="min-width:0;height:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:12px;padding:28px 22px 24px;border-radius:26px;background:#fff;text-align:center;box-shadow:0 1px 2px rgba(33,26,74,.05),0 14px 30px -18px rgba(70,46,146,.32);">
+                  <div style="display:flex;align-items:flex-end;gap:6px;height:52px;">
+                    <sc-for list="{{ p.stars }}" as="sr" hint-placeholder-count="3">
+                      <i class="ti ti-star-filled" style="font-size:{{ sr.size }};color:{{ sr.color }};filter:{{ sr.glow }};"></i>
+                    </sc-for>
+                  </div>
+                  <span style="font-size:15px;font-weight:800;color:{{ p.ink }};">{{ p.cheer }}</span>
+                  <div style="display:flex;flex-direction:column;gap:4px;min-width:0;width:100%;padding-top:14px;border-top:0;">
+                    <span style="font-size:19px;font-weight:700;color:#211a4a;line-height:1.3;text-wrap:balance;min-height:2.6em;display:flex;align-items:center;justify-content:center;">{{ p.title }}</span>
+                    <span style="font-size:13px;font-weight:600;color:#868e96;">{{ p.dates }}</span>
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:auto;padding-top:12px;">
+                    <sc-for list="{{ p.chs }}" as="c" hint-placeholder-count="2">
+                      <span title="{{ c.tip }}" style="display:inline-flex;align-items:center;gap:7px;padding:6px 12px 6px 6px;border-radius:999px;background:#f8f7fc;font-size:13px;font-weight:700;color:#3f3a63;">
+                        <span style="width:20px;height:20px;border-radius:50%;background:{{ c.pie }};display:grid;place-items:center;flex:none;"><sc-if value="{{ c.full }}" hint-placeholder-val="{{ false }}"><i class="ti ti-check" style="font-size:12px;color:#fff;"></i></sc-if></span>{{ c.name }}
+                      </span>
+                    </sc-for>
+                    <sc-if value="{{ p.hasMoreChs }}" hint-placeholder-val="{{ false }}">
+                      <span title="{{ p.moreTip }}" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:#f3f0ff;font-size:13px;font-weight:800;color:#5f3dc4;">{{ p.moreChs }}</span>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ noGoals }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:22px 0 0;font-size:14px;font-weight:600;color:#6b6786;line-height:1.5;max-width:440px;text-wrap:pretty;">No goals yet. Add one and the product starts choosing lessons and practice around it.</div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+
+  <sc-if value="{{ chatOpen }}" hint-placeholder-val="{{ false }}">
+    <sc-if value="{{ chatDims }}" hint-placeholder-val="{{ true }}">
+      <div class="pf-scrim" onClick="{{ closeChat }}"></div>
+    </sc-if>
+    <div class="pf-drawer" role="dialog" aria-label="Chat with Vyom">
+      <div class="pf-dhead">
+        <div class="pf-vav" style="width:40px;height:40px;"><img src="vyom-mascot.png" alt="Vyom"></div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:14px;font-weight:700;color:#212529;line-height:1.25;">Vyom</div>
+          <div style="font-size:11px;font-weight:400;color:#adb5bd;margin-top:2px;">{{ chatSub }}</div>
+        </div>
+        <div class="pf-spk {{ voiceCls }}" onClick="{{ toggleVoice }}" role="button" tabindex="0" title="{{ voiceTitle }}" style="opacity:1;width:34px;height:34px;font-size:17px;"><i class="ti {{ voiceIcon }}"></i></div>
+        <div class="pf-step-b" onClick="{{ closeChat }}" role="button" tabindex="0" aria-label="Close"><i class="ti ti-x"></i></div>
+      </div>
+
+      <div class="pf-dbody">
+        <sc-for list="{{ chatMsgs }}" as="m" hint-placeholder-count="2">
+          <sc-if value="{{ m.isVyom }}" hint-placeholder-val="{{ true }}">
+            <div class="pf-brow">
+              <div class="pf-vav"><img src="vyom-mascot.png" alt="Vyom"></div>
+              <div class="pf-msg pf-msg-v">{{ m.text }}</div>
+              <div class="pf-spk" onClick="{{ m.speak }}" role="button" tabindex="0" title="Read it out"><i class="ti ti-volume"></i></div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ m.isMe }}" hint-placeholder-val="{{ false }}">
+            <div class="pf-brow pf-brow-me">
+              <div class="pf-msg pf-msg-m">{{ m.text }}</div>
+            </div>
+          </sc-if>
+        </sc-for>
+        <sc-if value="{{ chatThinking }}" hint-placeholder-val="{{ false }}">
+          <div class="pf-brow">
+            <div class="pf-vav"><img src="vyom-mascot.png" alt="Vyom"></div>
+            <div class="pf-dots"><span></span><span></span><span></span></div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ hasChips }}" hint-placeholder-val="{{ true }}">
+          <div class="pf-chiprow">
+            <sc-for list="{{ chatChips }}" as="c" hint-placeholder-count="3">
+              <div class="pf-chip {{ c.cls }}" onClick="{{ c.pick }}" role="button" tabindex="0">{{ c.label }}</div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <div id="pfChatEnd"></div>
+      </div>
+
+      <div class="pf-dfoot">
+        <div class="pf-comp">
+          <input type="text" value="{{ chatDraft }}" onChange="{{ setChatDraft }}" onKeyDown="{{ chatKey }}" placeholder="{{ chatPlaceholder }}" aria-label="Type a message to Vyom">
+          <div class="pf-mic" role="button" tabindex="0" title="Speak instead"><i class="ti ti-microphone"></i></div>
+          <div class="pf-send" onClick="{{ sendChat }}" role="button" tabindex="0" title="Send"><i class="ti ti-arrow-up"></i></div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900},&quot;defaultPane&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;profile&quot;,&quot;courses&quot;,&quot;stats&quot;,&quot;goals&quot;],&quot;default&quot;:&quot;profile&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behaviour&quot;},&quot;showParentAccess&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behaviour&quot;},&quot;weeklyTargetMins&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:180,&quot;min&quot;:60,&quot;max&quot;:420,&quot;step&quot;:30,&quot;unit&quot;:&quot;min&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Stats&quot;}}">
+/* The same three goals the Home, Chapter Journey and Practice chrome rotate through,
+   now with the fields the setup form edits. Progress is measured, never typed. */
+/* ---- dates ---- */
+const TODAY = '2026-08-27';
+const MON3 = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function d2s(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+function s2d(s){ const p = (s || '').split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
+function addDays(s, n){ const d = s2d(s); d.setDate(d.getDate() + n); return d2s(d); }
+function fmtShort(s){ const d = s2d(s); return d.getDate() + ' ' + MON3[d.getMonth()]; }
+function fmtLong(s){ const d = s2d(s); return d.getDate() + ' ' + MON3[d.getMonth()] + ' ' + d.getFullYear(); }
+function spanDays(a, b){ return Math.max(1, Math.round((s2d(b) - s2d(a)) / 86400000) + 1); }
+function rangeLabel(a, b){
+  if (!a) return 'No dates picked';
+  if (!b) return 'From ' + fmtShort(a) + ' — pick an end date';
+  if (a === b) return fmtLong(a) + ' · one day';
+  const sameYear = s2d(a).getFullYear() === s2d(b).getFullYear();
+  return (sameYear ? fmtShort(a) : fmtLong(a)) + ' – ' + fmtLong(b) + ' · ' + spanDays(a,b) + ' days';
+}
+
+/* Exams are not something a child should have to tell us about. Board, grade and school
+   already say when they fall and what they cover; the only thing we ever ask is the exact
+   start date, and only once the window is close enough to matter. */
+const EXAM_CAL = {
+  'CBSE':            { mid:'09-14', year:'2027-02-15' },
+  'ICSE':            { mid:'09-21', year:'2027-02-08' },
+  'State board · KA':{ mid:'09-28', year:'2027-03-15' },
+  'State board · AP':{ mid:'09-21', year:'2027-03-18' },
+  'State board · TS':{ mid:'09-21', year:'2027-03-18' },
+  'State board · MP':{ mid:'10-05', year:'2027-02-22' },
+  'State board · WB':{ mid:'09-07', year:'2027-02-24' },
+};
+const DATE_ASK_WINDOW = 45;      // days before an exam that we start asking for its date
+const MID_TERM_SCOPE = [1,2,3,4,5,6,7];
+
+/* Dates a child might type: "12 sep", "sep 12", "12/9", "12-09-2026". Deliberately narrow —
+   a wrong guess about an exam date is worse than asking again. */
+function parseDate(raw, noRoll){
+  const t = (raw || '').toLowerCase().trim();
+  const yNow = s2d(TODAY).getFullYear();
+  const mi = (w) => MON3.findIndex(m => w.indexOf(m.toLowerCase()) === 0);
+  let d = null, m = -1, y = null;
+  let x = t.match(/(\d{1,2})\s*(?:st|nd|rd|th)?\s+([a-z]{3,9})\.?\s*(\d{4})?/);
+  if (x) { d = +x[1]; m = mi(x[2]); y = x[3] ? +x[3] : null; }
+  if (m < 0) {
+    x = t.match(/([a-z]{3,9})\.?\s+(\d{1,2})\s*(?:st|nd|rd|th)?\s*,?\s*(\d{4})?/);
+    if (x) { m = mi(x[1]); d = +x[2]; y = x[3] ? +x[3] : null; }
+  }
+  if (m < 0) {
+    x = t.match(/^(\d{1,2})\s*[\/\-.]\s*(\d{1,2})\s*(?:[\/\-.]\s*(\d{2,4}))?$/);
+    if (x) { d = +x[1]; m = +x[2] - 1; y = x[3] ? (+x[3] < 100 ? 2000 + +x[3] : +x[3]) : null; }
+  }
+  if (m < 0 || m > 11 || !d || d < 1 || d > 31) return null;
+  let iso = (y || yNow) + '-' + String(m + 1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+  // rolling a bare date into next year is right for a deadline but wrong for an exam the
+  // student is naming now — there, a date already gone by should be queried, not shifted
+  if (!y && !noRoll && iso < TODAY) iso = (yNow + 1) + '-' + iso.slice(5);
+  return iso;
+}
+
+function nextOccurrence(md){
+  const y = s2d(TODAY).getFullYear();
+  const thisYear = y + '-' + md;
+  return thisYear >= TODAY ? thisYear : (y + 1) + '-' + md;
+}
+function systemGoals(profile){
+  const cal = EXAM_CAL[profile.board] || EXAM_CAL['CBSE'];
+  const mid = nextOccurrence(cal.mid);
+  return [
+    { id:'sys-mid', source:'system', kind:'Mid-term exams', icon:'ti-calendar-event',
+      title:'Mid-term exams', label:'Exam', from:TODAY, to:mid, chapters:MID_TERM_SCOPE.slice(), dated:false,
+      effort:0, fg:'#1864ab', chipBg:'#e7f1ff', fill:'linear-gradient(90deg,#a5d8ff,#1c7ed6)' },
+    { id:'sys-year', source:'system', kind:'Year-end exams', icon:'ti-trophy',
+      title:'Year-end exams', label:'Exam', from:TODAY, to:cal.year, chapters:CHAPTERS.map(c => c[0]), dated:false,
+      effort:0, fg:'#237032', chipBg:'#ebfbee', fill:'linear-gradient(90deg,#8ce99a,#2f9e44)' },
+  ].map(g => ({ ...g, effort: planFor(g.chapters, g.from, g.to).rec }));
+}
+
+const GOALS_INIT = [
+  { id:1, source:'student', kind:'Class test', label:'Class test', done:true,
+    title:'Clear the class test on Triangles', from:'2026-07-06', to:'2026-07-24', finishedOn:'2026-07-21',
+    effort:45, chapters:[7], focus:'learn',
+    fg:'#5f3dc4', chipBg:'#f3f0ff', fill:'linear-gradient(90deg,#d0bfff,#7048e8)' },
+  { id:2, source:'student', kind:'Topic goal', label:'Topic', done:true,
+    title:'Master Statistics', from:'2026-08-03', to:'2026-08-16', finishedOn:'2026-08-12',
+    effort:30, chapters:[14], focus:'learn',
+    fg:'#ad4d0a', chipBg:'#fff4e6', fill:'linear-gradient(90deg,#ffa94d,#e8590c)' },
+  { id:3, source:'student', kind:'Class test', icon:'ti-clipboard-check',
+    title:'Clear the class test on Circles', from:TODAY, to:'2026-09-05', effort:60,
+    chapters:[8], focus:'learn',
+    fg:'#5f3dc4', chipBg:'#f3f0ff', fill:'linear-gradient(90deg,#d0bfff,#7048e8)' },
+];
+
+/* The only two things a child raises themselves. Everything exam-shaped is already known. */
+const KINDS = [
+  { id:'Class test', icon:'ti-clipboard-check', fg:'#5f3dc4', chipBg:'#f3f0ff',
+    fill:'linear-gradient(90deg,#d0bfff,#7048e8)', span:14, ask:'A test at school',
+    name: (n) => 'Clear the class test on ' + n },
+  { id:'Topic goal', icon:'ti-target-arrow', fg:'#ad4d0a', chipBg:'#fff4e6',
+    fill:'linear-gradient(90deg,#ffa94d,#e8590c)', span:7, ask:'A topic I want to nail',
+    name: (n) => 'Master ' + n },
+];
+
+/* [id, name, questions, questions done, MINUTES OF CONTENT] — the first four columns are the
+   rows Chapter Journey builds its map from; the fifth is how long the chapter takes to teach,
+   which is what makes a daily recommendation possible instead of a guess. */
+const CHAPTERS = [
+  [1,'Real Numbers',24,24,210], [2,'Polynomials',18,18,180], [3,'Pair of Linear Equations',56,31,480],
+  [4,'Quadratic Equations',40,0,360], [5,'Arithmetic Progressions',28,0,270], [6,'Coordinate Geometry',34,10,300],
+  [7,'Triangles',52,52,450], [8,'Circles',44,9,420], [9,'Constructions',16,0,150],
+  [10,'Introduction to Trigonometry',60,0,540], [11,'Applications of Trigonometry',30,0,270],
+  [12,'Areas Related to Circles',26,0,240], [13,'Surface Areas & Volumes',48,0,420],
+  [14,'Statistics',36,36,330], [15,'Probability',22,0,195],
+];
+const CH_BY_ID = {}; CHAPTERS.forEach(c => CH_BY_ID[c[0]] = { id:c[0], name:c[1], count:c[2], done:c[3], mins:c[4] });
+
+/* ---- the recommendation ----
+   How long a goal needs per day is not a preference, it is arithmetic: the content still
+   unlearned in the chosen chapters, divided by the days in the chosen window. Chapters
+   already mastered carry no learning time — a window over them is revision, which we price
+   at 30% of the original teaching time. */
+const REVISION_SHARE = 0.3, MIN_PER_DAY = 10, MAX_PER_DAY = 300;
+function round5(n){ return Math.max(5, Math.ceil(n / 5) * 5); }
+function planFor(ids, from, to, focus){
+  const rows = (ids || []).map(i => CH_BY_ID[i]).filter(Boolean);
+  const total = rows.reduce((a,c) => a + c.mins, 0);
+  const left = rows.reduce((a,c) => a + Math.round(c.mins * (1 - (c.count ? c.done / c.count : 0))), 0);
+  const days = (from && to) ? spanDays(from, to) : 0;
+  // "practice" prices the window as revision even where content is unlearned
+  const revising = focus === 'practice' || (total > 0 && left === 0);
+  const need = total === 0 ? 0
+    : Math.ceil((revising ? total * REVISION_SHARE : left) / Math.max(1, days));
+  return { rows, total, left, days, revising,
+    need: Math.max(revising ? MIN_PER_DAY : 0, need),
+    rec: Math.min(MAX_PER_DAY, Math.max(MIN_PER_DAY, round5(need))) };
+}
+
+/* Progress is MEASURED from the chapters a goal names — never typed. An empty
+   selection has no measurable progress, which is why the editor nudges for one. */
+function goalPct(ids){
+  const rows = (ids || []).map(i => CH_BY_ID[i]).filter(Boolean);
+  const tot = rows.reduce((a,c) => a + c.count, 0);
+  if (!tot) return 0;
+  return Math.round((rows.reduce((a,c) => a + c.done, 0) / tot) * 100);
+}
+function chapterNames(ids){
+  const names = (ids || []).map(i => CH_BY_ID[i] && CH_BY_ID[i].name).filter(Boolean);
+  if (!names.length) return 'no chapters chosen yet';
+  if (names.length <= 3) return names.join(', ');
+  return names.slice(0,2).join(', ') + ' and ' + (names.length - 2) + ' more';
+}
+
+const CHOICES = {
+  klass: ['Class 6','Class 7','Class 8','Class 9','Class 10'],
+  board: ['CBSE','ICSE','State board · KA','State board · AP','State board · TS','State board · MP','State board · WB'],
+};
+
+/* The chrome's menu links straight to a pane (?pane=group), so those entries can route
+   here instead of showing a "coming soon" toast. */
+function paneFromUrl(){
+  try {
+    const p = new URLSearchParams(window.location.search).get('pane');
+    if (p === 'courses') return 'profile';                    // courses now lives inside Profile
+    return ['profile','group','rewards','stats','goals'].indexOf(p) >= 0 ? p : null;
+  } catch(e) { return null; }
+}
+
+const PROFILE_INIT = { name:'Aarav Menon', klass:'Class 10', board:'CBSE',
+  school:'Delhi Public School, Whitefield', phone:'+91 98765 43210' };
+
+const XP = 4820, ORBS = 32, STREAK = 4;
+
+/* August 2026. Today is Thursday the 27th, which is what makes the four days to its left
+   the 4-day streak the chrome reports — the calendar and the weekly bars are the same run. */
+const CAL = { month:'August 2026', firstDow:6, days:31, today:27 };
+const PRACTICED = [3,4,6,7,10,11,13,14,17,18,20,21,24,25,26,27];
+
+/* Rewards are priced in the two currencies the product already awards: XP for the long
+   haul, orbs for the small stuff. Nothing here can be bought with money. */
+const REWARDS = [
+  { id:'r1', tier:'high', name:'Noise-cancelling headphones', note:'For the long study evenings', cost:60000, cur:'xp',
+    icon:'ti-headphones', tint:'linear-gradient(150deg,#4c6ef5,#242b6b)' },
+  { id:'r2', tier:'high', name:'Beginner telescope', note:'Saturn\u2019s rings on a clear night', cost:40000, cur:'xp',
+    icon:'ti-telescope', tint:'linear-gradient(150deg,#7048e8,#2b1b63)' },
+  { id:'r3', tier:'high', name:'Byjus.AI hoodie', note:'Navy, with the orbit mark', cost:25000, cur:'xp',
+    icon:'ti-hanger', tint:'linear-gradient(150deg,#1c7ed6,#10305e)' },
+  { id:'r4', tier:'low', name:'Sticker sheet', note:'MAX, Spark and Jugnu', cost:1200, cur:'xp',
+    icon:'ti-sticker', tint:'linear-gradient(150deg,#f783ac,#a61e4d)' },
+  { id:'r5', tier:'low', name:'Avatar frame', note:'A gold ring around your picture', cost:800, cur:'xp',
+    icon:'ti-photo-circle', tint:'linear-gradient(150deg,#fcc419,#b8860b)' },
+  { id:'r6', tier:'low', name:'Streak freeze', note:'Keeps your streak through one missed day', cost:6, cur:'orb',
+    icon:'ti-snowflake', tint:'linear-gradient(150deg,#3bc9db,#0b6c7d)' },
+  { id:'r7', tier:'low', name:'Hint pack', note:'Five extra hints in practice sets', cost:4, cur:'orb',
+    icon:'ti-bulb', tint:'linear-gradient(150deg,#ffa94d,#b34700)' },
+];
+
+const FACE_BG = ['#5f3dc4','#1864ab','#237032','#ad4d0a','#a5195e','#0b7285'];
+function initialsOf(n){ return n.split(/\s+/).map(w => w[0]).join('').slice(0,2).toUpperCase(); }
+
+/* Weekly XP is what the leaderboard ranks on, so a quiet week costs you position no matter
+   how much you have banked all time. */
+const PEERS = [
+  { id:'you', name:'You', xp:1240, streak:4, me:true },
+  { id:'p1', name:'Ananya S.', xp:1610, streak:9 },
+  { id:'p2', name:'Rohan K.', xp:1180, streak:3 },
+  { id:'p3', name:'Ishaan P.', xp:960, streak:6 },
+  { id:'p4', name:'Diya M.', xp:1450, streak:12 },
+  { id:'p5', name:'Kabir R.', xp:420, streak:0 },
+];
+
+/* Minutes a day this week. Four days with minutes on them IS the 4-day streak, and the
+   total IS the 3h 20m the figures report — one source, so they cannot disagree. */
+const WEEK = [
+  { day:'Mo', mins:50, state:'done' }, { day:'Tu', mins:35, state:'done' },
+  { day:'We', mins:60, state:'done' }, { day:'Th', mins:55, state:'today' },
+  { day:'Fr', mins:0, state:'future' }, { day:'Sa', mins:0, state:'future' },
+  { day:'Su', mins:0, state:'future' },
+];
+
+function hhmm(m){
+  const h = Math.floor(m / 60), r = m % 60;
+  if (!h) return r + 'm';
+  return r ? h + 'h ' + r + 'm' : h + 'h';
+}
+
+class Component extends DCLogic {
+  _upRef = React.createRef();
+  _upUrl = null;
+
+  state = { pane: paneFromUrl() || this.props.defaultPane || 'profile',
+            goals: systemGoals(PROFILE_INIT).concat(GOALS_INIT), chat:null, voice:false, goalIdx:0, goalsOpen:false,
+            profile: PROFILE_INIT,
+            fieldEdit:null, fieldDraft:'',
+            peers: PEERS, invites: [], inviteDraft:'', claimed: [],
+            book:'ncert', avatar:'aarav', avatarOpen:false };
+
+  componentDidUpdate(){ this._pinChat(); }
+
+  /* Keep the newest line in view. scrollIntoView is not safe here, so drive scrollTop. */
+  _pinChat(){
+    if (!this.state.chat) return;
+    const b = document.querySelector('.pf-dbody');
+    if (b) b.scrollTop = b.scrollHeight;
+  }
+
+  componentDidMount(){
+    this._goalTick = () => this.setState(st => st.goals.length
+      ? { goalIdx: (st.goalIdx + 1) % st.goals.filter(g => !(g.done || goalPct(g.chapters) >= 100)).length } : {});
+    this._goalT = setInterval(this._goalTick, 30000);
+    this._onDown = (e) => {
+      const t = e.target;
+      if (this.state.goalsOpen && !(t.closest && t.closest('.pf-goalw'))) this._holdGoals(false, true);
+    };
+    document.addEventListener('mousedown', this._onDown);
+    this._onKey = (e) => { if (e.key === 'Escape') { this._holdGoals(false); this.setState({ chat:null, fieldEdit:null, avatarOpen:false, goalsOpen:false }); } };
+    document.addEventListener('keydown', this._onKey);
+  }
+  /* The uploaded photo's src is set imperatively for the same reason the shipped ones use
+     literal paths: an object URL cannot exist at template-parse time. */
+  componentDidUpdate(){ this._paintUpload(); }
+  _paintUpload(){
+    const el = this._upRef.current;
+    if (el && this._upUrl && el.getAttribute('src') !== this._upUrl) el.src = this._upUrl;
+  }
+  _takeUpload(e){
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
+    if (this._upUrl) URL.revokeObjectURL(this._upUrl);   // don't leak the previous pick
+    this._upUrl = URL.createObjectURL(f);
+    this.setState({ avatar:'upload' }, () => this._paintUpload());
+    e.target.value = '';                                  // so re-picking the same file fires again
+  }
+
+  /* the rotation must not run while the list is expanded, or rows reorder under the reader */
+  _holdGoals(hold, close){
+    if (hold) { clearInterval(this._goalT); this._goalT = null; }
+    else if (!this._goalT && this._goalTick) this._goalT = setInterval(this._goalTick, 30000);
+    if (close) this.setState({ goalsOpen:false });
+  }
+
+  componentWillUnmount(){
+    clearInterval(this._goalT);
+    document.removeEventListener('mousedown', this._onDown);
+    if (this._upUrl) URL.revokeObjectURL(this._upUrl);
+    document.removeEventListener('keydown', this._onKey);
+  }
+
+  _kind(id){ return KINDS.filter(k => k.id === id)[0] || KINDS[1]; }
+
+  /* ---------- Vyom's goal chat ----------
+     A child cannot fill in a goal form, but they can answer "got a test coming up?".
+     Every answer is a tap; the title, the chapters' teaching time and the daily minutes
+     are all worked out here rather than asked for. Nothing is written until they say yes. */
+
+  _say(msgs, who, text){ return msgs.concat([{ who, text }]); }
+
+  /* Vyom answers after a beat, with the dots showing — the Teaching Room does the same,
+     and instant replies read like a form rather than a conversation. */
+  _vyom(chatPatch, text){
+    const base = this.state.chat;
+    this.setState({ chat: { ...base, ...chatPatch, thinking: !!text } });
+    clearTimeout(this._vt);
+    if (!text) return;
+    this._vt = setTimeout(() => {
+      this.setState(st => st.chat
+        ? { chat: { ...st.chat, thinking:false, msgs: this._say(st.chat.msgs, 'v', text) } } : {},
+        () => { this._pinChat(); this._speak(text); });
+    }, 480);
+  }
+
+  _speakNow(text){
+    try {
+      const sp = window.speechSynthesis; if (!sp) return;
+      sp.cancel();
+      const u = new SpeechSynthesisUtterance(text); u.rate = 1.02; u.pitch = 1.15; sp.speak(u);
+    } catch(e) {}
+  }
+  _speak(text){
+    // Vyom only has a voice while he is on screen with his bubble rendered
+    if (!this.state.voice || !this.state.chat) return;
+    if (typeof document !== 'undefined' && document.hidden) return;
+    if (!document.querySelector('.pf-drawer .pf-msg-v')) return;
+    try {
+      const sp = window.speechSynthesis;
+      if (!sp) return;
+      sp.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.rate = 1.02; u.pitch = 1.15;
+      sp.speak(u);
+    } catch(e) {}
+  }
+
+  _openChat(mode, goal){
+    const opener = mode === 'add'
+      ? 'Hey Aarav! Is there something coming up you want to be ready for?'
+      : mode === 'date'
+        ? 'Your ' + goal.title.toLowerCase() + ' are close. Do you know which day they start? Type the date below \u2014 something like 12 Sep or 12/9.'
+        : mode === 'again'
+          ? 'Nice one \u2014 you finished \u201c' + goal.title + '\u201d. Want to run it again? Tell me when by.'
+          : 'Sure \u2014 what do you want to change about \u201c' + goal.title + '\u201d?';
+    const draft = mode === 'add'
+      ? { kind:null, chapters:[], from:TODAY, to:null, effort:0, focus:'learn' }
+      : { ...goal, from: mode === 'again' ? TODAY : goal.from, to: mode === 'again' ? null : goal.to };
+    const step = mode === 'add' ? 'kind' : (mode === 'date' ? 'date' : (mode === 'again' ? 'when' : 'what'));
+    this.setState({ chat: { mode, step, goalId: goal ? goal.id : null, draft, msgs:[], thinking:true, input:'' } });
+    clearTimeout(this._vt);
+    this._vt = setTimeout(() => {
+      this.setState(st => st.chat ? { chat: { ...st.chat, thinking:false, msgs:[{ who:'v', text:opener }] } } : {},
+        () => { this._pinChat(); this._speak(opener); });
+    }, 340);
+    // the row Vyom is talking about may be below the fold; centre it so the pairing is visible
+    setTimeout(() => {
+      const el = document.querySelector('.pf-r-focus'), sc = document.querySelector('.pf-scroll');
+      if (!el || !sc) return;
+      const r = el.getBoundingClientRect(), b = sc.getBoundingClientRect();
+      sc.scrollTop += (r.top - b.top) - Math.max(24, (b.height - r.height) / 2);
+    }, 70);
+  }
+
+  _planLine(d){
+    const pl = planFor(d.chapters, d.from, d.to, d.focus);
+    const names = chapterNames(d.chapters);
+    const plural = (d.chapters || []).length > 1;
+    if (pl.left === 0 && pl.total > 0) return 'You have already been through ' + names + ', so this is a revision run. '
+      + hhmm(pl.rec) + ' a day until ' + fmtShort(d.to) + ' should keep it fresh. Shall I set that?';
+    if (pl.revising) return 'Practice only, then \u2014 ' + hhmm(pl.rec) + ' a day until ' + fmtShort(d.to)
+      + '. Just so you know, ' + hhmm(pl.left) + ' of ' + names + (plural ? ' are' : ' is')
+      + ' still uncovered, so this will drill what you have rather than teach the rest. Shall I set that?';
+    return names + (plural ? ' have' : ' has') + ' about ' + hhmm(pl.left) + ' left to cover. Over '
+      + pl.days + ' days that works out at ' + hhmm(pl.rec) + ' a day. Sound alright?';
+  }
+
+  _toPlan(msgs, draft){
+    const pl = planFor(draft.chapters, draft.from, draft.to, draft.focus);
+    const d = { ...draft, effort: pl.rec };
+    this._vyom({ step:'plan', draft:d, msgs }, this._planLine(d));
+  }
+
+  _commit(chat){
+    const d = chat.draft;
+    this.setState(st => {
+      if (chat.mode === 'add' || chat.mode === 'again') {
+        const k = KINDS.filter(x => x.id === d.kind)[0] || KINDS[0];
+        const id = st.goals.reduce((m,g) => Math.max(m, typeof g.id === 'number' ? g.id : 0), 0) + 1;
+        return { goals: st.goals.concat([{ id, source:'student', kind:k.id, label:k.id, icon:k.icon,
+          title: chat.mode === 'again' ? d.title : k.name(chapterNames(d.chapters)),
+          from:d.from, to:d.to, effort:d.effort, chapters:d.chapters, focus:d.focus,
+          fg:k.fg, chipBg:k.chipBg, fill:k.fill }]) };
+      }
+      return { goals: st.goals.map(g => g.id === chat.goalId
+        ? { ...g, to:d.to, effort:d.effort, chapters:d.chapters, focus:d.focus,
+            dated: g.source === 'system' ? (d.dated || g.dated) : g.dated } : g) };
+    });
+  }
+
+  _pick(id, label){
+    const chat = this.state.chat;
+    if (!chat) return;
+    const msgs = this._say(chat.msgs, 'm', label);
+    const d = chat.draft;
+    const go = (patch, step, reply) => this._vyom({ step, draft:{ ...d, ...patch }, msgs, input:'' }, reply);
+
+    if (id === 'close') return this.closeChat();
+
+    if (id.indexOf('kind:') === 0) {
+      const k = KINDS.filter(x => x.id === id.slice(5))[0];
+      return go({ kind:k.id, to: addDays(TODAY, k.span - 1) }, 'chapters',
+        'Got it. Which chapters is it on? Tap all that apply, or just type them.');
+    }
+    if (id.indexOf('ch:') === 0) {
+      const n = +id.slice(3), has = d.chapters.indexOf(n) >= 0;
+      const chapters = (has ? d.chapters.filter(x => x !== n) : d.chapters.concat([n])).sort((a,b) => a - b);
+      // the tap writes into the composer, so the student sees their answer before sending it
+      return this.setState({ chat: { ...chat, draft: { ...d, chapters },
+        input: chapters.map(i => CH_BY_ID[i].name).join(', ') } });
+    }
+    if (id === 'chdone') {
+      if (!d.chapters.length) return;
+      if (chat.mode === 'edit') return this._toPlan(msgs, d);
+      return go({}, 'when', 'And when do you need it by?');
+    }
+    if (id.indexOf('when:') === 0) return this._toPlan(msgs, { ...d, to: addDays(TODAY, +id.slice(5) - 1) });
+    if (id.indexOf('date:') === 0) return this._toPlan(msgs, { ...d, to:id.slice(5), dated:true });
+    if (id === 'nodate') return this._vyom({ step:'done', msgs, input:'' },
+      'No problem \u2014 I will keep the usual date for now and ask again nearer the time.');
+
+    if (id.indexOf('eff:') === 0) return this._setEffort(+id.slice(4), msgs, chat);
+    if (id === 'stretch') {
+      const pl = planFor(d.chapters, d.from, d.to, d.focus);
+      const to = addDays(d.from, Math.ceil((pl.revising ? pl.total * REVISION_SHARE : pl.left) / Math.max(1, d.effort)) - 1);
+      return this._vyom({ step:'confirm', draft:{ ...d, to }, msgs, input:'' },
+        'Done \u2014 I have moved it to ' + fmtLong(to) + '. ' + hhmm(d.effort) + ' a day is enough for that.');
+    }
+    if (id === 'less') return go({}, 'effort', 'How long can you give it each day?');
+    if (id === 'more') return go({}, 'when', 'How much time do you want in total?');
+    if (id === 'yes') {
+      this._commit({ ...chat, draft:d });
+      return this._vyom({ step:'done', msgs, input:'' }, (chat.mode === 'add' || chat.mode === 'again')
+        ? 'All set. I will build your practice around it from today.'
+        : 'Updated. I will work to that from now on.');
+    }
+    if (id === 'edit:effort') return go({}, 'effort', 'How long can you give it each day?');
+    if (id === 'edit:when') return go({}, 'when', 'When would you like it done by?');
+    if (id === 'edit:chapters') return go({}, 'chapters', 'Which chapters should it cover?');
+    if (id === 'edit:focus') return go({}, 'focus', 'Is this about learning it, or practicing what you already know?');
+    if (id.indexOf('focus:') === 0) return this._toPlan(msgs, { ...d, focus:id.slice(6) });
+    if (id === 'edit:remove') return this._vyom({ step:'remove', msgs, input:'' },
+      'Sure? I will stop planning around it.');
+    if (id === 'remove-yes') {
+      this.setState(st => ({ goals: st.goals.filter(g => g.id !== chat.goalId) }));
+      return this._vyom({ step:'done', msgs, input:'' }, 'Gone. Tell me whenever something else comes up.');
+    }
+  }
+
+  _setEffort(mins, msgs, chat){
+    const d = chat.draft, pl = planFor(d.chapters, d.from, d.to, d.focus);
+    const reply = mins >= pl.need
+      ? 'That works. ' + hhmm(mins) + ' a day gets you there by ' + fmtShort(d.to) + '.'
+      : hhmm(mins) + ' a day only gets you about '
+        + Math.floor((mins * pl.days) / (pl.revising ? pl.total * REVISION_SHARE : pl.left) * 100)
+        + '% of the way by ' + fmtShort(d.to) + '. I can still set it, or we could give it until '
+        + fmtLong(addDays(d.from, Math.ceil((pl.revising ? pl.total * REVISION_SHARE : pl.left) / mins) - 1)) + ' instead.';
+    this._vyom({ step:'confirm', draft:{ ...d, effort:mins }, msgs, input:'' }, reply);
+  }
+
+  /* Typed answers. A child will not always find what they mean among the chips, so we read
+     the sentence for the things this step is actually asking for before giving up. */
+  _send(){
+    const chat = this.state.chat;
+    if (!chat) return;
+    const raw = (chat.input || '').trim();
+    if (!raw) return;
+    const t = raw.toLowerCase();
+    const msgs = this._say(chat.msgs, 'm', raw);
+    const d = chat.draft;
+
+    const chip = this._chips().filter(c => c.label && t === c.label.toLowerCase().replace(/\s*\u2192$/, ''))[0];
+    if (chip && chip.id.indexOf('ch:') !== 0) { this.setState({ chat: { ...chat, input:'' } }); return this._pick(chip.id, chip.label); }
+
+    if (chat.step === 'chapters') {
+      const named = CHAPTERS.filter(c => t.indexOf(c[1].toLowerCase()) >= 0).map(c => c[0]);
+      const chapters = named.length ? named : d.chapters;
+      if (chapters.length) {
+        const k = KINDS.filter(x => x.id === (d.kind || 'Topic goal'))[0];
+        const nd = { ...d, chapters, kind: d.kind || k.id, to: d.to || addDays(TODAY, k.span - 1) };
+        if (chat.mode === 'edit') return this._toPlan(msgs, nd);
+        return this._vyom({ step:'when', draft:nd, msgs, input:'' },
+          chapterNames(chapters) + ' \u2014 got it. When do you need it by?');
+      }
+    }
+
+    // minutes, in any of the ways a child writes them
+    const mins = (() => {
+      if (/half an hour|30 ?min/.test(t)) return 30;
+      if (/an hour|1 ?h(r|our)?\b/.test(t)) return 60;
+      const m = t.match(/(\d+)\s*(m|min|mins|minutes)?\b/);
+      if (!m) return null;
+      const n = +m[1];
+      return /h(r|our)/.test(t) ? n * 60 : (n >= 5 && n <= 300 ? n : null);
+    })();
+
+    if (mins && ['effort','plan','confirm','what'].indexOf(chat.step) >= 0) {
+      return this._setEffort(Math.min(MAX_PER_DAY, Math.max(MIN_PER_DAY, mins)), msgs, chat);
+    }
+    if (chat.step === 'what') {
+      // let them name the thing they want to change in their own words
+      const to = /date|when|due|day it|deadline/.test(t) ? 'edit:when'
+        : /chapter|topic/.test(t) ? 'edit:chapters'
+        : /practi|revis|learn/.test(t) ? 'edit:focus'
+        : /remove|delete|drop|cancel/.test(t) ? 'edit:remove' : null;
+      if (to) { this.setState({ chat: { ...chat, input:'' } }); return this._pick(to, raw); }
+    }
+    if (chat.step === 'chapters' || chat.step === 'kind') {
+      const hits = CHAPTERS.filter(c => t.indexOf(c[1].toLowerCase()) >= 0
+        || c[1].toLowerCase().split(' ').some(w => w.length > 4 && t.indexOf(w) >= 0)).map(c => c[0]);
+      if (hits.length) {
+        const kind = d.kind || (/(test|exam)/.test(t) ? 'Class test' : 'Topic goal');
+        const k = KINDS.filter(x => x.id === kind)[0];
+        const chapters = d.chapters.concat(hits.filter(h => d.chapters.indexOf(h) < 0));
+        return this._vyom({ step:'when', draft:{ ...d, kind, chapters, to: d.to || addDays(TODAY, k.span - 1) },
+          msgs, input:'' }, chapterNames(chapters) + ' \u2014 got it. When do you need it by?');
+      }
+    }
+    if (chat.step === 'date') {
+      const iso = parseDate(t, true);
+      if (iso) {
+        if (iso < TODAY) return this._vyom({ msgs, input:'' },
+          'That date has already gone by. Could you check and tell me again?');
+        return this._toPlan(msgs, { ...d, to:iso, dated:true });
+      }
+      if (!/not sure|dunno|no idea|don't know|dont know/.test(t))
+        return this._vyom({ msgs, input:'' },
+          'I could not read that as a date. Try it like 12 Sep, or 12/9/2026.');
+    }
+    if (chat.step === 'when') {
+      const wk = t.match(/(\d+)\s*(week|wk)/), mo = t.match(/(\d+)\s*month/), dy = t.match(/(\d+)\s*day/);
+      const days = /tomorrow/.test(t) ? 2 : /next week/.test(t) ? 7
+        : wk ? +wk[1] * 7 : mo ? +mo[1] * 30 : dy ? +dy[1] : null;
+      if (days) return this._toPlan(msgs, { ...d, to: addDays(TODAY, days - 1) });
+    }
+    if (/^(yes|yeah|yep|ok|okay|sure|set it|go)\b/.test(t) && (chat.step === 'plan' || chat.step === 'confirm')) {
+      this.setState({ chat: { ...chat, input:'' } });
+      return this._pick('yes', raw);
+    }
+    if (/^(no|nope|not now|nothing)\b/.test(t)) { this.setState({ chat: { ...chat, input:'' } }); return this.closeChat(); }
+
+    this._vyom({ msgs, input:'' }, 'Sorry, I did not catch that one. Could you tap one of the buttons below?');
+  }
+
+  closeChat(){ clearTimeout(this._vt); try{ window.speechSynthesis && window.speechSynthesis.cancel(); }catch(e){} this.setState({ chat:null }); }
+
+  _chips(){
+    const chat = this.state.chat;
+    if (!chat) return [];
+    const d = chat.draft, mk = (id, label, on) => ({ key:id, id, label, cls: on ? 'pf-chip-on' : '' });
+    switch (chat.step) {
+      case 'kind':
+        return KINDS.map(k => mk('kind:' + k.id, k.ask)).concat([mk('close', 'Nothing right now')]);
+      case 'chapters':
+        return CHAPTERS.map(c => mk('ch:' + c[0], c[1], d.chapters.indexOf(c[0]) >= 0))
+          .concat(d.chapters.length ? [mk('chdone', "That's all \u2192")] : []);
+      case 'when':
+        return [mk('when:7','This week'), mk('when:14','In two weeks'),
+                mk('when:30','In a month'), mk('when:60','In two months')];
+      case 'date':
+        return [mk('nodate','Not sure yet')];
+      case 'effort':
+        return [10,15,20,30,45,60,90].map(m => mk('eff:' + m, hhmm(m), d.effort === m));
+      case 'plan':
+        return [mk('yes','Yes, set it'), mk('less','I have less time'), mk('more','Give me more days')];
+      case 'confirm': {
+        const pl = planFor(d.chapters, d.from, d.to, d.focus);
+        return (d.effort < pl.need ? [mk('yes','Set it anyway'), mk('stretch','Give me until then')]
+                                   : [mk('yes','Yes, set it')]).concat([mk('less','Change the time')]);
+      }
+      case 'focus':
+        return [mk('focus:learn','Learning it'), mk('focus:practice','Practicing it')];
+      case 'remove':
+        return [mk('remove-yes','Yes, remove it'), mk('close','Keep it')];
+      case 'what': {
+        const g = this.state.goals.filter(x => x.id === chat.goalId)[0] || {};
+        return [mk('edit:effort','Time each day'), mk('edit:when',"When it's due"),
+                mk('edit:chapters','Which chapters'), mk('edit:focus','Learn or practice')]
+          .concat(g.source === 'student' ? [mk('edit:remove','Remove this goal')] : [])
+          .concat([mk('close','Nothing, thanks')]);
+      }
+      default:
+        return [mk('close','Close')];
+    }
+  }
+
+  _startField(key, value){
+    this.setState({ fieldEdit:key, fieldDraft:value, chat:null });
+  }
+  _saveField(){
+    const st = this.state, k = st.fieldEdit;
+    if (!k) return;
+    const v = (st.fieldDraft || '').trim();
+    if (!v) return;                                   // an empty value would erase the record
+    const profile = { ...st.profile, [k]: v };
+    // the exam goals are derived from board and grade, so they must follow a change to either
+    const goals = (k === 'board' || k === 'klass')
+      ? systemGoals(profile).concat(st.goals.filter(g => g.source !== 'system'))
+      : st.goals;
+    this.setState({ profile, goals, fieldEdit:null });
+  }
+
+  _sendInvite(){
+    const n = (this.state.inviteDraft || '').trim();
+    if (!n) return;
+    this.setState(st => ({ invites: st.invites.concat([{ id:'i' + Date.now(), name:n }]), inviteDraft:'' }));
+  }
+
+  _nav(file){ try{ window.location.href = file; }catch(e){} }
+
+  _reward(r, st){
+    const have = r.cur === 'xp' ? XP : ORBS;
+    const unit = r.cur === 'xp' ? 'XP' : (r.cost === 1 ? 'orb' : 'orbs');
+    const owned = st.claimed.indexOf(r.id) >= 0;
+    const can = have >= r.cost;
+    const gap = Math.max(0, r.cost - have);
+    return { key:r.id, name:r.name, note:r.note, icon:r.icon, tint:r.tint,
+      costLabel: r.cost.toLocaleString('en-IN') + ' ' + unit,
+      pct: Math.min(100, Math.round((have / r.cost) * 100)) + '%',
+      gapLabel: owned ? 'yours' : (can ? 'you can claim this' : gap.toLocaleString('en-IN') + ' ' + unit + ' to go'),
+      cta: owned ? 'Claimed' : (can ? 'Claim' : 'Locked'),
+      btnCls: (owned || !can) ? 'pf-btn-q' : '',
+      claim: () => { if (can && !owned) this.setState(prev => ({ claimed: prev.claimed.concat([r.id]) })); },
+    };
+  }
+
+  renderVals(){
+    const st = this.state;
+    /* A goal leaves the live list when it is marked finished or its chapters hit 100% —
+       the same measure the gauge uses, so the two can never disagree. */
+    const isDone = (g) => g.done || goalPct(g.chapters) >= 100;
+    // one goal at a time: the current goal is the open one due soonest
+    const goals = st.goals.filter(g => !isDone(g)).sort((a,b) => spanDays(TODAY, a.to) - spanDays(TODAY, b.to)).slice(0, 1);
+    const done = st.goals.filter(isDone);
+
+    const totalMins = WEEK.reduce((a, d) => a + d.mins, 0);
+    const target = this.props.weeklyTargetMins ?? 180;
+    const daily = Math.round(target / 7);
+    const peak = Math.max(60, daily, ...WEEK.map(d => d.mins));
+    const BARH = 150;
+
+    const week = WEEK.map(d => ({
+      key: d.day, day: d.day, tip: d.mins ? d.day + ' · ' + hhmm(d.mins) : d.day + ' · nothing yet',
+      h: Math.max(d.mins ? 6 : 3, Math.round((d.mins / peak) * BARH)) + 'px',
+      bg: d.state === 'today' ? 'linear-gradient(180deg,#ffa94d,#e8590c)'
+        : (d.mins ? 'linear-gradient(180deg,#8ce99a,#2f9e44)' : 'rgba(33,26,74,.1)'),
+      fg: d.state === 'today' ? '#ad4d0a' : (d.mins ? '#3f3a63' : '#6b6786'),
+    }));
+
+    const books = [
+      { id:'ncert', short:'NCERT Mathematics', title:'NCERT Mathematics · ' + st.profile.klass,
+        note:'The book your school follows.', cover:'linear-gradient(160deg,#2f9e44,#0b3d1c)' },
+      { id:'rds', short:'R.D. Sharma', title:'R.D. Sharma · ' + st.profile.klass,
+        note:'Heavier on practice sets. In our library.', cover:'linear-gradient(160deg,#e8590c,#6b2400)' },
+    ].map(b => ({ ...b, key:b.id, on: st.book === b.id, off: st.book !== b.id,
+      pick: () => this.setState({ book:b.id }) }));
+
+    const k = this._kind(st.draftKind);
+
+
+    const out = {
+      goalRow: (() => { const g = goals[0];
+        return g ? [{ key:'g0', pctLabel: goalPct(g.chapters) + '%',
+          label: 'towards ' + g.title.toLowerCase() }] : []; })(),
+      goalPct: goals.length ? goalPct(goals[0].chapters) : 0,
+      openGoals: goals.map((g,i) => ({ key:'og' + i, pctLabel: goalPct(g.chapters) + '%',
+        label: 'towards ' + g.title.toLowerCase() })),
+      noGoalsChrome: goals.length === 0, goalSummary: goals.length > 0,
+      goalsOpen: st.goalsOpen && goals.length > 0,
+      goalsOpenCls: st.goalsOpen ? 'pf-goalw-open' : '',
+      toggleGoals: () => { const n = !st.goalsOpen; this._holdGoals(n); this.setState({ goalsOpen:n }); },
+      goalsKey: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); const n = !st.goalsOpen; this._holdGoals(n); this.setState({ goalsOpen:n }); } },
+
+      pName: st.profile.name,
+      pClassBoard: st.profile.klass + ' · ' + st.profile.board,
+      goHome: () => (function(f){try{var r=document.referrer;if(r){var u=new URL(r);if(u.origin===location.origin&&u.pathname!==location.pathname&&history.length>1){history.back();return;}}}catch(e){}location.href=encodeURI(f);})('Home Page.dc.html'),
+      goJourney: () => this._nav('Chapter Journey - L&P.dc.html'),
+      /* Which picture is shown is a set of flags, not a src string: a {{ }} hole in an
+         attribute the browser fetches makes it request the literal "{{ avatarSrc }}"
+         during HTML parse, before React can resolve anything. */
+      isAarav: st.avatar === 'aarav', isMax: st.avatar === 'max',
+      isSpark: st.avatar === 'spark', isJugnu: st.avatar === 'vyom',
+      isUpload: st.avatar === 'upload',
+      aaravCls: st.avatar === 'aarav' ? 'pf-pick-on' : '',
+      maxCls: st.avatar === 'max' ? 'pf-pick-on' : '',
+      sparkCls: st.avatar === 'spark' ? 'pf-pick-on' : '',
+      jugnuCls: st.avatar === 'vyom' ? 'pf-pick-on' : '',
+      upCls: st.avatar === 'upload' ? 'pf-up-on' : '',
+      pickAarav: () => this.setState({ avatar:'aarav' }),
+      pickMax: () => this.setState({ avatar:'max' }),
+      pickSpark: () => this.setState({ avatar:'spark' }),
+      pickJugnu: () => this.setState({ avatar:'vyom' }),
+      upRef: this._upRef,
+      onUpload: (e) => this._takeUpload(e),
+      avatarOpen: st.avatarOpen,
+      openAvatar: () => this.setState({ avatarOpen: !st.avatarOpen }),
+      closeAvatar: () => this.setState({ avatarOpen:false }),
+      xpDisp: XP.toLocaleString('en-IN'), orbsDisp: ORBS, streakLabel: STREAK + '-day streak',
+
+      panes: [
+        { key:'profile', id:'profile', icon:'ti-user-circle', label:'Profile' },
+        { key:'group', id:'group', icon:'ti-users-group', label:'Study group' },
+        { key:'rewards', id:'rewards', icon:'ti-gift', label:'Rewards' },
+        { key:'stats', id:'stats', icon:'ti-chart-histogram', label:'Stats' },
+        { key:'goals', id:'goals', icon:'ti-target-arrow', label:'Goals' },
+      ].map(p => ({ ...p, on: st.pane === p.id, cls: st.pane === p.id ? 'pf-nav-on' : '',
+        pick: () => this.setState({ pane:p.id, editing:null, adding:false }) })),
+      isProfile: st.pane === 'profile',
+      isGroup: st.pane === 'group', isRewards: st.pane === 'rewards',
+      isStats: st.pane === 'stats', isGoals: st.pane === 'goals',
+
+      showParent: this.props.showParentAccess ?? true,
+      fields: [
+        { id:'name', label:'Full name', kind:'text', inputType:'text', placeholder:'Your full name',
+          hint:'Use the name your school has on record.' },
+        { id:'klass', label:'Class', kind:'choice',
+          hint:'Changing this reloads your syllabus and journey map.' },
+        { id:'board', label:'Board', kind:'choice',
+          hint:'Your chapters and question style follow the board you pick.' },
+        { id:'school', label:'School', kind:'text', inputType:'text', placeholder:'School name and city',
+          hint:'We use this to line up unit tests with your school\u2019s dates.' },
+        { id:'phone', label:'Parent\u2019s mobile', kind:'text', inputType:'tel', placeholder:'+91 00000 00000',
+          hint:'A new number has to be verified by SMS before reports move to it.' },
+      ].map(f => {
+        const editing = st.fieldEdit === f.id;
+        const opts = CHOICES[f.id] || [];
+        return { ...f, key:f.id,
+          value: f.id === 'phone' ? st.profile.phone.replace(/(\d{2})\d{3}\s?(\d{2})/, '$1••• ••') : st.profile[f.id],
+          editing, cta: editing ? 'Close' : (f.kind === 'choice' ? 'Change' : 'Edit'),
+          isText: editing && f.kind === 'text', isChoice: editing && f.kind === 'choice',
+          options: opts.map(o => ({ key:o, label:o, on: st.fieldDraft === o,
+            cls: st.fieldDraft === o ? 'pf-chip-on' : '',
+            pick: () => this.setState({ fieldDraft:o }) })),
+          edit: () => { if (editing) this.setState({ fieldEdit:null });
+                        else this._startField(f.id, st.profile[f.id]); } };
+      }),
+      fieldDraft: st.fieldDraft,
+      setFieldDraft: (e) => this.setState({ fieldDraft: e.target.value }),
+      saveField: () => this._saveField(),
+      cancelField: () => this.setState({ fieldEdit:null }),
+
+      islandsDone: CHAPTERS.filter(c => c[3] >= c[2]).length, islandsTotal: CHAPTERS.length,
+      coursePct: goalPct(CHAPTERS.map(c => c[0])) + '%',
+      courseTitle: 'Mathematics · ' + st.profile.klass,
+      courseBlurb: st.profile.board + ' syllabus, taught chapter by chapter along your journey map.',
+      books, bookShort: (books.filter(b => b.on)[0] || books[0]).short,
+      available: [
+        { key:'sci', title:'Science · ' + st.profile.klass, chapters:18, price:'\u20b98,400 a year',
+          icon:'ti-flask', tint:'linear-gradient(150deg,#20c997,#0b5345)' },
+        { key:'soc', title:'Social Science · ' + st.profile.klass, chapters:22, price:'\u20b97,600 a year',
+          icon:'ti-globe', tint:'linear-gradient(150deg,#f59f00,#804000)' },
+      ],
+
+      figures: [
+        { key:'streak', label:'Day streak', value: STREAK, note:'days running', fg:'#ad4d0a' },
+        { key:'acc', label:'Accuracy', value:'82%', note:'up 4 points', fg:'#237032' },
+        { key:'time', label:'Time learning', value: hhmm(totalMins), note:'of ' + hhmm(target), fg:'#211a4a' },
+        { key:'isl', label:'Chapters mastered', value: String(CHAPTERS.filter(c => c[3] >= c[2]).length), note:'of ' + CHAPTERS.length, fg:'#5f3dc4' },
+      ],
+      week,
+      /* One month grid. Leading blanks come from the 1st's weekday, so the columns line up
+         without hard-coding an offset per month. */
+      calMonth: CAL.month,
+      streakLine: STREAK + ' days in a row so far, counting today.',
+      dowNames: ['Mo','Tu','We','Th','Fr','Sa','Su'].map(d => ({ key:d, label:d })),
+      calDays: (() => {
+        const out = [];
+        const lead = (CAL.firstDow - 1 + 7) % 7;            // grid starts Monday
+        for (let i = 0; i < lead; i++) out.push({ key:'b' + i, n:'', cls:'pf-cal-off', tip:'' });
+        for (let d = 1; d <= CAL.days; d++) {
+          const on = PRACTICED.indexOf(d) >= 0, today = d === CAL.today;
+          out.push({ key:'d' + d, n:d,
+            cls: today ? 'pf-cal-today' : (on ? 'pf-cal-on' : (d > CAL.today ? 'pf-cal-off' : '')),
+            tip: today ? 'Today' : (on ? 'Practiced' : (d > CAL.today ? 'Still to come' : 'Nothing logged')) });
+        }
+        return out;
+      })(),
+
+      /* Affordability is computed against the balance, so a price never reads as reachable
+         when it is not — and the meter shows how far off it is. */
+      rewardsHigh: REWARDS.filter(r => r.tier === 'high').map(r => this._reward(r, st)),
+      rewardsLow: REWARDS.filter(r => r.tier === 'low').map(r => this._reward(r, st)),
+
+      /* The calendar is not separate data: a peer's run of days ending today IS the streak
+         their row reports, so the grid and the leaderboard can never contradict each other. */
+      gcalMonth: CAL.month,
+      gcalSummary: (() => {
+        const best = st.peers.slice().sort((a,b) => b.streak - a.streak)[0];
+        return best && best.streak
+          ? (best.me ? 'You are' : best.name + ' is') + ' on the longest run at ' + best.streak + ' days.'
+          : 'Nobody has a run going yet.';
+      })(),
+      gcalDays: (() => {
+        const lead = (CAL.firstDow - 1 + 7) % 7;
+        const out = [];
+        for (let i = 0; i < lead; i++) out.push({ key:'gb' + i, n:'', cls:'pf-gcal-empty', nFg:'transparent', tip:'', faces:[] });
+        for (let day = 1; day <= CAL.days; day++) {
+          const future = day > CAL.today, today = day === CAL.today;
+          const faces = future ? [] : st.peers.filter(p => {
+            if (p.me) return PRACTICED.indexOf(day) >= 0;
+            // their streak is the run of days ending today; before that, a steady rhythm
+            const back = CAL.today - day;
+            if (back < p.streak) return true;
+            // the day adjoining the streak must stay empty, or the visible run overshoots
+            // the number the leaderboard reports
+            if (!p.streak || back === p.streak) return false;
+            const seed = p.id.charCodeAt(p.id.length - 1);
+            return (day * 7 + seed) % (2 + seed % 3) === 0;
+          }).map((p,i) => ({ key:'f' + day + p.id, name: p.me ? 'You' : p.name,
+            isMe: !!p.me, other: !p.me, initials: initialsOf(p.name || 'You'),
+            bg: FACE_BG[(st.peers.indexOf(p)) % FACE_BG.length] }));
+          out.push({ key:'gd' + day, n:day,
+            cls: today ? 'pf-gcal-today' : (future ? 'pf-gcal-future' : ''),
+            nFg: future ? '#adb5bd' : (today ? '#8a3d05' : '#5d5880'),
+            tip: future ? '' : (faces.length ? faces.map(f => f.name).join(', ') : 'Nobody came in'),
+            faces });
+        }
+        return out;
+      })(),
+
+      groupName: 'Class 10 study group',
+      groupBlurb: 'Six of you, ranked on the work you actually put in this week.',
+      board: st.peers.slice().sort((a,b) => b.xp - a.xp).map((p,i) => ({
+        key:p.id, name: p.me ? st.profile.name.split(' ')[0] : p.name, me:!!p.me, other:!p.me, rank:'#' + (i + 1),
+        rankFg: i === 0 ? '#ad4d0a' : '#6b6786',
+        xpLabel: p.xp.toLocaleString('en-IN'),
+        streakLabel: p.streak ? p.streak + '-day streak' : 'no streak',
+        remove: () => this.setState(prev => ({ peers: prev.peers.filter(x => x.id !== p.id) })),
+      })),
+      inviteDraft: st.inviteDraft,
+      setInvite: (e) => this.setState({ inviteDraft: e.target.value }),
+      inviteKey: (e) => { if (e.key === 'Enter') this._sendInvite(); },
+      sendInvite: () => this._sendInvite(),
+      invites: st.invites.map(i => ({ key:i.id, name:i.name,
+        cancel: () => this.setState(prev => ({ invites: prev.invites.filter(x => x.id !== i.id) })) })),
+      hasInvites: st.invites.length > 0,
+
+      dailyTargetLabel: hhmm(daily),
+      targetLineBottom: Math.round((daily / peak) * BARH) + 'px',
+      targetLineLabel: (Math.round((daily / peak) * BARH) + 5) + 'px',
+      allTime: [
+        { key:'xp', label:'Experience points', value: XP.toLocaleString('en-IN'), note:'Earned from every correct answer, first try or second.' },
+        { key:'orb', label:'Energy orbs', value: ORBS, note:'Spent on hints and second chances.' },
+        { key:'q', label:'Questions answered', value:'1,284', note:'Across practice sets, chapter tests and timed papers.' },
+        { key:'mod', label:'Modules finished', value:'47', note:'Lessons taught in the Teaching Room.' },
+      ],
+
+      goals: goals
+        // primary / secondary / tertiary is not a label the student picks: the goal due
+        // soonest is the one that matters most today, so the order decides the rank
+        .slice().sort((a,b) => spanDays(TODAY, a.to) - spanDays(TODAY, b.to))
+        .map((g, gi) => {
+        const rank = gi === 0 ? 'Primary' : (gi === 1 ? 'Secondary' : 'Tertiary');
+        const rankFg = gi === 0 ? '#c92a2a' : (gi === 1 ? '#ad4d0a' : '#5d5880');
+        const rankBg = gi === 0 ? '#fff5f5' : (gi === 1 ? '#fff4e6' : '#f1f0f8');
+        const n = (g.chapters || []).length;
+        // a goal is behind when the day it asks for is less than the day it needs
+        const pl = planFor(g.chapters, g.from, g.to, g.focus);
+        const short = g.effort < pl.need;
+        const standing = g.source === 'system';
+        // only ask for an exam date once the window is close enough to be knowable
+        const needsDate = standing && !g.dated && spanDays(TODAY, g.to) <= DATE_ASK_WINDOW;
+        return { ...g, key:'g' + g.id, standing, needsDate, label: g.label || g.kind, rank, rankFg, rankBg,
+          focusCls: (st.chat && st.chat.goalId === g.id) ? 'pf-r-focus' : '',
+          dimCls: (st.chat && st.chat.goalId && st.chat.goalId !== g.id) ? 'pf-r-dim' : '',
+          needsDateText: 'These usually start around ' + fmtLong(g.to) + '. Do you know the real date?',
+          pctLabel: goalPct(g.chapters) + '%',
+          chapterCount: n === 1 ? '1 chapter:' : n + ' chapters:',
+          chapterNames: chapterNames(g.chapters),
+          when: rangeLabel(g.from, g.to),
+          pace: short ? 'needs ' + hhmm(pl.need) + ' a day' : (pl.revising ? 'revision' : 'on track'),
+          paceFg: short ? '#c92a2a' : '#237032',
+          effortLabel: hhmm(g.effort),
+          editing: st.editing === g.id,
+          editLabel: st.editing === g.id ? 'Close' : 'Edit',
+          edit: () => this._openChat(needsDate ? 'date' : 'edit', g),
+        };
+      }),
+
+      chatOpen: !!st.chat,
+      // only dim when there is no row to point at; otherwise the highlight does the work
+      chatDims: !!(st.chat && !st.chat.goalId),
+      // narrow the content column while the drawer is open so the highlighted row clears it
+      // 363px is the left gutter + rail + gaps; subtracting the drawer leaves the row ending
+      // exactly where the panel begins, so the two meet with no gap
+      // 255px is the rail plus the gaps; the gutter shrinks while the chat is open, so the
+      // row always ends exactly at the panel rather than disappearing under it
+      /* The row meets the panel by construction: the split container's RIGHT padding IS the
+         drawer's width, so the content column's edge is the drawer's edge whatever the rail
+         and gaps measure. Counting those by hand was off by 16px. */
+      colMax: st.pane === 'goals' ? '1320px' : '760px', splitPadL: '108px', splitPadR: '28px', railW: '206px', railCls: '',
+      chatSub: st.chat ? ({ add:'Setting up a goal', date:'Confirming your exam date',
+        again:'Running a goal again' }[st.chat.mode] || 'Changing a goal') : '',
+      chatMsgs: (st.chat ? st.chat.msgs : []).map((m,ix) => ({ key:'m' + ix, text:m.text,
+        isVyom: m.who === 'v', isMe: m.who === 'm', speak: () => this._speakNow(m.text) })),
+      chatThinking: !!(st.chat && st.chat.thinking),
+      chatChips: this._chips().map(c => ({ ...c, pick: () => this._pick(c.id, c.label) })),
+      hasChips: this._chips().length > 0 && !(st.chat && st.chat.thinking),
+      chatDraft: st.chat ? (st.chat.input || '') : '',
+      chatPlaceholder: st.chat && st.chat.step === 'chapters' ? 'Or type a chapter name\u2026'
+        : (st.chat && st.chat.step === 'date' ? 'e.g. 12 Sep, or 12/9/2026' : 'Type your answer\u2026'),
+      setChatDraft: (e) => { const v = e.target.value; this.setState(p => p.chat ? { chat: { ...p.chat, input:v } } : {}); },
+      chatKey: (e) => { if (e.key === 'Enter') { e.preventDefault(); this._send(); } },
+      sendChat: () => this._send(),
+      voice: st.voice, voiceCls: st.voice ? 'pf-spk-on' : '',
+      voiceIcon: st.voice ? 'ti-volume' : 'ti-volume-off',
+      voiceTitle: st.voice ? 'Vyom reads his replies out' : 'Vyom is quiet',
+      toggleVoice: () => { const on = !st.voice; if (!on) { try{ window.speechSynthesis.cancel(); }catch(e){} } this.setState({ voice:on }); },
+      closeChat: () => this.closeChat(),
+
+      hasDone: done.length > 0,
+      doneSummary: done.length === 1 ? 'One goal seen through.'
+        : done.length + ' goals seen through. Vyom keeps them so you can run the same plan again.',
+      doneGoals: done.map(g => {
+        const fin = g.finishedOn || g.to;
+        const early = spanDays(fin, g.to) - 1;
+        return { key:'d' + g.id, label: g.label || g.kind, title: g.title,
+          finished: 'Finished ' + fmtLong(fin),
+          early: early > 0 ? early + ' days early' : (early === 0 ? 'right on time' : 'a little late'),
+          chapterNames: chapterNames(g.chapters),
+          again: () => this._openChat('again', g) };
+      }),
+      canAdd: true, noGoals: goals.length === 0 && done.length === 0,
+      curTitle: (goals.length ? goals.slice().sort((a,b) => spanDays(TODAY, a.to) - spanDays(TODAY, b.to))[0].title : 'your current goal'),
+      hasPast: true,
+      pastGoals: [
+        ['Unit test 1', 'Exam', '2 – 24 Aug', 78, 31, 40, [['Integers', 100, '#4c6ef5'], ['Fractions', 84, '#15aabf']]],
+        ['Master Fractions in 2 weeks', 'Topic', '1 – 14 Sep', 88, 22, 25, [['Fractions', 100, '#15aabf']]],
+        ['Geometry before Diwali', 'Time-bound', '15 Sep – 6 Oct', 64, 29, 45, [['Lines and angles', 92, '#e64980'], ['Triangles', 70, '#7048e8'], ['Symmetry', 100, '#15aabf'], ['Perimeter and area', 55, '#4c6ef5']]],
+        ['Revise Integers', 'Topic', '20 – 27 Jul', 92, 23, 25, [['Integers', 100, '#4c6ef5']]],
+      ].map((p, i) => { const k = p[3], col = k >= 80 ? '#2f9e44' : (k >= 65 ? '#7048e8' : '#f76707');
+        return { key: 'pg' + i, title: p[0], label: p[1], dates: p[2], know: k + '%', right: p[4] + ' of ' + p[5] + ' questions right', ink: col, labInk: '#7048e8',
+          cheer: k >= 85 ? 'Superstar!' : (k >= 70 ? 'Great job!' : 'Good try!'),
+          stars: [0, 1, 2].map(n => { const on = n < (k >= 85 ? 3 : (k >= 70 ? 2 : 1)); return { key: 'pg' + i + 's' + n, size: n === 1 ? '46px' : '34px', color: on ? '#fab005' : '#e9ecef', glow: on ? 'drop-shadow(0 4px 6px rgba(250,176,5,.35))' : 'none' }; }),
+          moreChs: p[6].length > 2 ? '+' + (p[6].length - 2) + ' more' : '', hasMoreChs: p[6].length > 2, moreTip: p[6].slice(2).map(c => c[0]).join(', '),
+          chs: p[6].slice(0, 2).map((c, j) => ({ key: 'pg' + i + 'c' + j, name: c[0], full: c[1] >= 100, tip: c[0] + ' · ' + c[1] + '% covered',
+            pie: c[1] >= 100 ? '#2f9e44' : 'conic-gradient(' + c[2] + ' ' + (c[1] * 3.6) + 'deg,#e9ecef 0)' })),
+          ring: 'conic-gradient(' + col + ' ' + (k * 3.6) + 'deg,rgba(33,26,74,.08) 0)' }; }),
+      startAdd: () => this._openChat('add'),
+    };
+    out.curGoal = (out.goals || []).slice(0, 1).map(g => { const dl = spanDays(TODAY, g.to) - 1; const p = parseInt(g.pctLabel, 10) || 0;
+      return Object.assign({}, g, { dueLabel: 'Due ' + fmtLong(g.to).replace(/ \d{4}$/, ''), daysLeft: dl <= 0 ? 'today' : (dl === 1 ? 'in 1 day' : 'in ' + dl + ' days'),
+        chips: (g.chapters || []).map(id => CH_BY_ID[id]).filter(Boolean).map((c, i) => ({ key: 'cc' + i, name: c.name })),
+        ringBg: 'conic-gradient(#7048e8 ' + (p * 3.6) + 'deg,rgba(112,72,232,.12) 0)' }); });
+    return out;
+  }
+}
+
+</script>
+</body>
+</html>

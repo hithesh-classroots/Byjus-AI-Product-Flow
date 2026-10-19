@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+<link rel="preload" as="script" href="https://unpkg.com/@rive-app/canvas@2.26.4">
+<script src="vyom-rive.js"></script>
+<link rel="preload" as="image" href="vyom-mascot.png">
+<link rel="preload" as="image" href="spark-mascot-sm.png">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/colors.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/semantic.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/typography.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/base.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<script src="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/_ds_bundle.js"></script>
+<style>
+  /* ---- type scale (single source of truth — see Type Scale.md) ---- */
+  :root{
+    --fs-display:38px; --fs-title:30px; --fs-heading:24px; --fs-subheading:20px;
+    --fs-body:16px; --fs-secondary:14px; --fs-caption:12px; --fs-eyebrow:11px;
+    --fs-numeral-sm:44px; --fs-numeral-md:48px; --fs-numeral-lg:58px;
+    --fw-regular:500; --fw-bold:700; --fw-heavy:800;
+  }
+
+  html,body{margin:0;background:#1a1526;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  *{box-sizing:border-box;}
+  #app-root{display:none;}
+  #dc-root{display:none;}
+  #byjus-host{position:fixed;inset:0;overflow:auto;background-color:#1a1526;background-image:radial-gradient(rgba(163,133,250,.10) 1px, transparent 1px),linear-gradient(180deg,#262038 0%,#1a1526 58%,#1a1526 100%);background-size:24px 24px,100% 100%;background-attachment:local,local;}
+  #byjus-host::-webkit-scrollbar{width:10px;height:10px;}
+  #byjus-host::-webkit-scrollbar-thumb{background:rgba(120,120,180,.45);border-radius:999px;border:3px solid transparent;background-clip:content-box;}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  @keyframes bobb{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  @keyframes wav{0%,100%{transform:scaleY(.32)}50%{transform:scaleY(1)}}
+  @keyframes riseIn{from{transform:translateY(10px)}to{transform:translateY(0)}}
+  @keyframes pop{0%{transform:scale(.72)}70%{transform:scale(1.06)}100%{transform:scale(1)}}
+  @keyframes cardpop{0%{transform:scale(1)}28%{transform:scale(1.05)}58%{transform:scale(.99)}100%{transform:scale(1)}}
+  @keyframes siri{0%,100%{transform:scaleY(.28)}20%{transform:scaleY(.85)}40%{transform:scaleY(.45)}60%{transform:scaleY(1)}80%{transform:scaleY(.6)}}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+  @keyframes dots{0%,80%,100%{opacity:.25}40%{opacity:1}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(60px,-40px) scale(1.15)}}
+  @keyframes drift2{0%,100%{transform:translate(0,0) scale(1.1)}50%{transform:translate(-50px,50px) scale(1)}}
+  @keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,30px) scale(1.2)}}
+  @keyframes sheen{0%{transform:translateX(-120%)}60%,100%{transform:translateX(220%)}}
+  @keyframes rimspin{to{transform:rotate(360deg)}}
+  @keyframes ripple{0%{transform:translate(-50%,-50%) scale(.35);opacity:.5}70%{opacity:.08}100%{transform:translate(-50%,-50%) scale(2.6);opacity:0}}
+  @keyframes tileripple{0%{transform:translate(-50%,-50%) scale(0);opacity:.55}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
+  @keyframes excitedpop{0%{transform:scale(1) rotate(0)}30%{transform:scale(1.38) rotate(-5deg)}55%{transform:scale(1.25) rotate(5deg)}78%{transform:scale(1.34) rotate(-2deg)}100%{transform:scale(1.32) rotate(0)}}
+  @keyframes panelbreathe{0%,100%{opacity:.5}50%{opacity:1}}
+  @keyframes pulsemic{0%,100%{box-shadow:0 0 0 4px rgba(255,255,255,.14)}50%{box-shadow:0 0 0 9px rgba(255,255,255,.06)}}
+  @keyframes sparkin{0%{transform:scale(.3) rotate(-28deg);opacity:0}55%{transform:scale(1.14) rotate(9deg);opacity:1}74%{transform:scale(.95) rotate(-5deg)}100%{transform:scale(1) rotate(0)}}
+  @keyframes sparkwiggle{0%,100%{transform:rotate(-3.5deg) translateY(0)}50%{transform:rotate(3.5deg) translateY(-3px)}}
+  @keyframes sparkmsgin{0%{opacity:0;transform:translateX(18px) scale(.92)}60%{opacity:1;transform:translateX(-3px) scale(1.02)}100%{transform:translateX(0) scale(1)}}
+  @keyframes sparkglow{0%,100%{box-shadow:0 0 0 0 rgba(240,140,0,0)}50%{box-shadow:0 0 16px 2px rgba(240,140,0,.28)}}
+  @keyframes sparkpop{0%{transform:scale(.2);opacity:0}13%{transform:scale(3.25);opacity:1}26%{transform:scale(2.9)}32%{transform:scale(3)}56%{transform:scale(3)}80%{transform:scale(1.62)}100%{transform:scale(1.75)}}
+  @keyframes sparkslide{0%,30%{transform:translateX(-100%);opacity:0}40%{opacity:1}66%{transform:translateX(0)}100%{transform:translateX(0);opacity:1}}
+  /* a ripple has to be SEEN to emerge and die, or three evenly-staggered rings just read as a fixed
+     set of concentric circles. Fast ramp in near the mascot, long fade out well before the edge. */
+  @keyframes expand{0%{width:196px;height:196px;opacity:0}9%{opacity:.92}55%{opacity:.34}100%{width:396px;height:396px;opacity:0}}
+  .ringx{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:196px;height:196px;animation-name:expand;animation-timing-function:ease-out;animation-iteration-count:infinite;}
+  .ringx-line{position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg,#4da3f0 0%,#3d3459 52%,#a385fa 100%);padding:2px;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;}
+  @keyframes twinkle{0%,100%{opacity:0;transform:scale(.4) rotate(0deg)}50%{opacity:1;transform:scale(1) rotate(45deg)}}
+  @keyframes streak{0%{transform:translate(-40%,30%) rotate(-18deg);opacity:0}45%{opacity:.55}100%{transform:translate(55%,-25%) rotate(-18deg);opacity:0}}
+  @keyframes morphA{0%,100%{border-radius:60% 40% 52% 48%/55% 50% 50% 45%;transform:translate(0,0) rotate(0deg) scale(1)}33%{border-radius:42% 58% 64% 36%/46% 56% 44% 54%;transform:translate(22%,-14%) rotate(50deg) scale(1.18)}66%{border-radius:56% 44% 38% 62%/60% 40% 56% 44%;transform:translate(-14%,16%) rotate(110deg) scale(.92)}}
+  @keyframes morphB{0%,100%{border-radius:50% 50% 60% 40%/45% 55% 45% 55%;transform:translate(0,0) rotate(0deg) scale(1.05)}40%{border-radius:62% 38% 44% 56%/58% 42% 58% 42%;transform:translate(-18%,12%) rotate(-60deg) scale(.9)}70%{border-radius:38% 62% 56% 44%/50% 50% 50% 50%;transform:translate(16%,-10%) rotate(-120deg) scale(1.2)}}
+  @keyframes blobpulse{0%,100%{opacity:.35}50%{opacity:.62}}
+  @keyframes streaksin{from{opacity:0}to{opacity:1}}
+  @keyframes roomsweep{0%{transform:translateX(150%);opacity:0}14%{opacity:1}100%{transform:translateX(-140%);opacity:0}}
+  @keyframes dusttw{0%{opacity:0;transform:scale(.3) rotate(0deg)}42%{opacity:1;transform:scale(1) rotate(35deg)}100%{opacity:0;transform:scale(.55) rotate(72deg)}}
+  @keyframes suckin{0%{opacity:1;transform:scale(1) translateY(0)}100%{opacity:0;transform:scale(.32) translateY(60px)}}
+  @keyframes capsulepop{0%{opacity:0;transform:scale(.55)}60%{transform:scale(1.04)}100%{opacity:1;transform:scale(1)}}
+  @keyframes selin{0%{opacity:0;transform:scale(.98)}100%{opacity:1;transform:scale(1)}}
+  @keyframes nodepulse{0%{box-shadow:0 7px 16px rgba(34,139,230,.4),0 0 0 0 rgba(34,139,230,.5)}70%{box-shadow:0 7px 16px rgba(34,139,230,.4),0 0 0 15px rgba(34,139,230,0)}100%{box-shadow:0 7px 16px rgba(34,139,230,.4),0 0 0 0 rgba(34,139,230,0)}}
+  @keyframes herebob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-3px)}}
+  @keyframes starpop{0%{transform:scale(0);opacity:0}70%{transform:scale(1.18)}100%{transform:scale(1);opacity:1}}
+  @keyframes flicker{0%,100%{transform:scale(1) rotate(-3deg);opacity:.92}50%{transform:scale(1.14) rotate(3deg);opacity:1}}
+  @keyframes firemove{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+  @keyframes emberflicker{0%,100%{box-shadow:0 0 9px 1px rgba(255,80,15,.5),0 4px 13px rgba(255,146,43,.42)}35%{box-shadow:0 0 15px 3px rgba(255,110,15,.7),0 6px 16px rgba(255,110,20,.5)}65%{box-shadow:0 0 11px 2px rgba(255,60,0,.6),0 5px 14px rgba(255,90,20,.48)}}
+  @keyframes goalcycle{0%{opacity:0;transform:translateY(7px)}100%{opacity:1;transform:translateY(0)}}
+  @keyframes mzoom{0%{transform:scale(.4);opacity:0}18%{opacity:1}100%{transform:scale(6.5);opacity:0}}
+  @keyframes tlpop{0%{opacity:0;transform:scale(.93)}100%{opacity:1;transform:scale(1)}}
+  @keyframes hudglow{0%,100%{opacity:.5}50%{opacity:.9}}
+  .msg{animation:riseIn .3s cubic-bezier(.2,.7,.3,1) both;}
+  .scrn{animation:riseIn .34s cubic-bezier(.2,.7,.3,1) both;}
+  .ph-d{font-variation-settings:normal;}
+</style>
+<script type="module" src="./app-cosmos-dark.js?v=1"></script>
+</helmet>
+<div id="app-root"></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:760},&quot;ambience&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;cosmic&quot;,&quot;serene&quot;,&quot;spotlight&quot;],&quot;default&quot;:&quot;spotlight&quot;,&quot;tsType&quot;:&quot;'cosmic'|'serene'|'spotlight'&quot;,&quot;section&quot;:&quot;Feel&quot;},&quot;companions&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;duo&quot;,&quot;solo&quot;],&quot;default&quot;:&quot;duo&quot;,&quot;tsType&quot;:&quot;'duo'|'solo'&quot;,&quot;section&quot;:&quot;Feel&quot;},&quot;pace&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;calm&quot;,&quot;balanced&quot;,&quot;spirited&quot;],&quot;default&quot;:&quot;balanced&quot;,&quot;tsType&quot;:&quot;'calm'|'balanced'|'spirited'&quot;,&quot;section&quot;:&quot;Feel&quot;}}">
+class Component extends DCLogic {
+  renderVals(){
+    const t={ ambience:this.props.ambience??'cosmic', companions:this.props.companions??'duo', pace:this.props.pace??'balanced' };
+    try{ window.__BYJUS_TWEAKS=t; window.dispatchEvent(new CustomEvent('byjus-tweaks',{detail:t})); }catch(e){}
+    return {};
+  }
+}
+</script>
+</body>
+</html>
