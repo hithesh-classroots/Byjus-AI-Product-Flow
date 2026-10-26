@@ -1,0 +1,122 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "interaction-script.schema.json",
+ "title": "Content Canvas interaction script (lines of working or a multi-step problem)",
+ "type": "object",
+ "required": [
+  "key",
+  "mode",
+  "steps"
+ ],
+ "properties": {
+  "key": {
+   "type": "string"
+  },
+  "thread": {
+   "type": "string"
+  },
+  "title": {
+   "type": "string"
+  },
+  "level": {
+   "enum": [
+    "L1",
+    "L2",
+    "L3"
+   ]
+  },
+  "grades": {
+   "type": "string"
+  },
+  "mode": {
+   "enum": [
+    "expr",
+    "eq"
+   ],
+   "description": "expr: simplifying one expression, every line after the first gets a hanging =. eq: every line carries its own relation."
+  },
+  "layout": {
+   "enum": [
+    "working",
+    "problem"
+   ],
+   "default": "working",
+   "description": "problem: statement band on top, knowns rail on the right, compact working size."
+  },
+  "runner": {
+   "enum": [
+    "p35"
+   ],
+   "description": "Reference only: played by the preset-35 board instead of the runtime."
+  },
+  "steps": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "say",
+     "ops"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "say": {
+      "type": "string",
+      "description": "Status-chip text for the reader. Never drawn on the board."
+     },
+     "ops": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+       "type": "array",
+       "minItems": 1,
+       "prefixItems": [
+        {
+         "enum": [
+          "addFrac",
+          "arcs",
+          "box",
+          "cancel",
+          "clear",
+          "clearArcs",
+          "collect",
+          "count",
+          "deposit",
+          "dim",
+          "distribute",
+          "down",
+          "figure",
+          "flip",
+          "focus",
+          "hop",
+          "insert",
+          "joinFrac",
+          "ledger",
+          "merge",
+          "move",
+          "newline",
+          "note",
+          "remove",
+          "replace",
+          "role",
+          "rule",
+          "shade",
+          "split",
+          "statement",
+          "sum",
+          "text",
+          "tight",
+          "tint",
+          "unfocus",
+          "unfrac",
+          "untint",
+          "wait"
+         ]
+        }
+       ]
+      }
+     }
+    }
+   }
+  }
+ }
+}

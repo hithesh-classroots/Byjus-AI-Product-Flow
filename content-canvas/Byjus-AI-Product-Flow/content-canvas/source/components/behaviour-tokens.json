@@ -1,0 +1,1031 @@
+{
+ "version": "2.4.0-draft",
+ "layer": "normative",
+ "source": "§13 Interaction · behaviour tokens",
+ "description": "Every interaction is built from these behaviour tokens. A token fixes which channels move, how long (a --cc-* duration), how (a --cc-ease-* or named easing), along what path, with which sound, and where it ends. Components and step recipes are compositions of tokens; they never set their own timing.",
+ "primitives": {
+  "duration": {
+   "fast": "--cc-fast",
+   "enter": "--cc-enter",
+   "morph": "--cc-morph",
+   "draw": "--cc-draw",
+   "beat": "--cc-beat",
+   "hold": "--cc-hold",
+   "stagger": "--cc-stagger",
+   "type-gap": "--cc-type-gap"
+  },
+  "easing": {
+   "move": "--cc-ease-move",
+   "in": "--cc-ease-in",
+   "out": "--cc-ease-out"
+  },
+  "distance": {
+   "rise": "--cc-rise",
+   "arc-lift": "--cc-arc-lift",
+   "hop-lift": "--cc-hop-lift",
+   "lift": "--cc-lift",
+   "tilt": "--cc-tilt",
+   "shake": "--cc-shake",
+   "teeter": "--cc-teeter",
+   "overshoot": "--cc-overshoot"
+  },
+  "fraction": {
+   "mergeAt": "--cc-merge-at",
+   "fadeAt": "--cc-fade-at"
+  },
+  "working": {
+   "work-size": "--cc-work-size",
+   "work-size-compact": "--cc-work-size-compact",
+   "work-gap": "--cc-work-gap",
+   "work-tight": "--cc-work-tight",
+   "work-hang": "--cc-work-hang",
+   "work-x": "--cc-work-x",
+   "work-y": "--cc-work-y",
+   "work-bottom": "--cc-work-bottom",
+   "work-pitch": "--cc-work-pitch",
+   "work-pitch-frac": "--cc-work-pitch-frac",
+   "work-pitch-compact": "--cc-work-pitch-compact",
+   "work-pitch-compact-frac": "--cc-work-pitch-compact-frac"
+  },
+  "problem": {
+   "problem-x": "--cc-problem-x",
+   "problem-bottom": "--cc-problem-bottom",
+   "problem-rail-x": "--cc-problem-rail-x",
+   "problem-rail-y": "--cc-problem-rail-y",
+   "problem-rail-w": "--cc-problem-rail-w"
+  }
+ },
+ "sfx": {
+  "peak": "--cc-sfx-peak",
+  "rule": "Noise or one glide, same pitch on repeats, host mute (__MAX_MUTED__) honoured on every call. Two-note rising = correct only; two-note falling = wrong only.",
+  "palette": {
+   "tick": "high-pass noise 3.2 kHz, 12 ms",
+   "pop": "sine 660 Hz, 30 ms",
+   "drop": "sine 300→220 Hz, 70 ms + low noise",
+   "whoosh": "band-pass noise 500→1800 Hz over the travel",
+   "click": "high-pass noise 3 kHz, 15 ms",
+   "scratch": "band-pass noise 2.8 kHz",
+   "flip": "band-pass 1.2→3 kHz, 120 ms",
+   "lift": "sine 420→540 Hz, 50 ms",
+   "thud": "triangle 170→110 Hz, gain by impact",
+   "right": "sine 523 then 784 Hz",
+   "wrong": "sine 392 then 262 Hz"
+  }
+ },
+ "roles": {
+  "given": "data-role=emphasis (quantities in the problem text and figure labels)",
+  "known": "data-role=action (found values A, B, C… and every recall of them)",
+  "focus": "concept (focus frame, shaded figure part)",
+  "history": "data-state=muted",
+  "same-thing": "data-hue (teal, pink, gold, grape, azure)"
+ },
+ "behaviours": [
+  {
+   "id": "appear",
+   "group": "enter-exit",
+   "means": "Something new is written: it rises into place.",
+   "channels": [
+    "opacity",
+    "translateY"
+   ],
+   "duration": "--cc-enter",
+   "easing": "--cc-ease-out",
+   "params": {
+    "rise": "--cc-rise"
+   },
+   "sfx": [
+    "tick"
+   ],
+   "endState": "opacity 1 at its slot",
+   "reducedMotion": "end state at once ; end sound once",
+   "runtime": "behaviours.appear"
+  },
+  {
+   "id": "type-in",
+   "group": "enter-exit",
+   "means": "A line is written left to right, one symbol after another.",
+   "channels": [
+    "opacity",
+    "translateY"
+   ],
+   "duration": "--cc-enter",
+   "easing": "--cc-ease-out",
+   "params": {
+    "gap": "--cc-type-gap",
+    "rise": "--cc-rise"
+   },
+   "sfx": [
+    "tick per symbol"
+   ],
+   "endState": "every symbol at its slot",
+   "reducedMotion": "end state at once ; end sound once",
+   "notes": "appear, repeated with --cc-type-gap between symbols"
+  },
+  {
+   "id": "fade-in",
+   "group": "enter-exit",
+   "means": "A result, frame or new part comes to full strength where it already stands.",
+   "channels": [
+    "opacity"
+   ],
+   "duration": "--cc-enter",
+   "easing": "--cc-ease-out",
+   "sfx": [],
+   "endState": "opacity 1",
+   "reducedMotion": "end state at once",
+   "runtime": "behaviours.fadeIn"
+  },
+  {
+   "id": "leave",
+   "group": "enter-exit",
+   "means": "An object has done its job and goes: brackets, cancelled factors, cleared working.",
+   "channels": [
+    "opacity"
+   ],
+   "duration": "--cc-enter",
+   "easing": "--cc-ease-in",
+   "sfx": [],
+   "endState": "hidden and removed",
+   "reducedMotion": "end state at once",
+   "contentCanvasMove": "leave",
+   "runtime": "behaviours.leave"
+  },
+  {
+   "id": "bring-in",
+   "group": "enter-exit",
+   "means": "A new model enters faint, then comes to full strength.",
+   "channels": [
+    "opacity"
+   ],
+   "duration": "--cc-morph",
+   "easing": "ease-out",
+   "sfx": [],
+   "endState": "opacity 1",
+   "reducedMotion": "end state at once",
+   "contentCanvasMove": "bringIn"
+  },
+  {
+   "id": "rest",
+   "group": "enter-exit",
+   "means": "The rest of a whole recedes while one part is studied; text is muted, never faded.",
+   "channels": [
+    "opacity",
+    "data-state"
+   ],
+   "duration": "--cc-enter",
+   "easing": "ease",
+   "params": {
+    "level": [
+     "--cc-rest",
+     "--cc-recede"
+    ]
+   },
+   "sfx": [],
+   "endState": "rest or recede opacity",
+   "reducedMotion": "end state at once",
+   "contentCanvasMove": "focus / unfocus"
+  },
+  {
+   "id": "glide",
+   "group": "travel",
+   "means": "An object changes place in a straight line.",
+   "channels": [
+    "translate"
+   ],
+   "duration": "--cc-morph",
+   "easing": "--cc-ease-move",
+   "path": "straight",
+   "sfx": [
+    "whoosh"
+   ],
+   "endState": "at the target",
+   "reducedMotion": "end state at once ; end sound once",
+   "contentCanvasMove": "travel",
+   "runtime": "behaviours.glide"
+  },
+  {
+   "id": "arc",
+   "group": "travel",
+   "means": "A term or value travels to a new place over the others: crossing the =, flying from the problem text, a ledger, or another line.",
+   "channels": [
+    "translate"
+   ],
+   "duration": "--cc-morph",
+   "easing": "--cc-ease-move",
+   "path": "quadratic arc, apex --cc-arc-lift above the higher end",
+   "params": {
+    "lift": "--cc-arc-lift"
+   },
+   "sfx": [
+    "whoosh",
+    "drop on landing"
+   ],
+   "endState": "at the target",
+   "reducedMotion": "end state at once ; end sound once",
+   "runtime": "behaviours.arc"
+  },
+  {
+   "id": "converge",
+   "group": "travel",
+   "means": "Two or more tokens become one: they travel to a shared centre and fade out after --cc-fade-at of the travel.",
+   "channels": [
+    "translate",
+    "opacity"
+   ],
+   "duration": "--cc-morph",
+   "easing": "--cc-ease-move",
+   "params": {
+    "fadeAt": "--cc-fade-at"
+   },
+   "sfx": [
+    "pop",
+    "drop"
+   ],
+   "endState": "removed; the result is in their place",
+   "reducedMotion": "end state at once ; end sound once",
+   "runtime": "behaviours.converge"
+  },
+  {
+   "id": "copy-down",
+   "group": "travel",
+   "means": "The line is carried down as a live copy to be worked on; the line it came from stays as history.",
+   "channels": [
+    "translate"
+   ],
+   "duration": "--cc-morph",
+   "easing": "--cc-ease-move",
+   "params": {
+    "pitch": [
+     "--cc-work-pitch",
+     "--cc-work-pitch-frac"
+    ]
+   },
+   "sfx": [
+    "whoosh"
+   ],
+   "endState": "copy one pitch below; the source line muted",
+   "reducedMotion": "end state at once ; end sound once"
+  },
+  {
+   "id": "make-room",
+   "group": "travel",
+   "means": "Neighbours slide apart or close up so nothing overlaps when a token splits, merges, arrives or leaves.",
+   "channels": [
+    "translate"
+   ],
+   "duration": "--cc-morph",
+   "easing": "--cc-ease-move",
+   "sfx": [],
+   "endState": "no overlaps",
+   "reducedMotion": "end state at once",
+   "notes": "glide applied to every neighbour at once"
+  },
+  {
+   "id": "hop",
+   "group": "travel",
+   "means": "A decimal point or token steps one place at a time.",
+   "channels": [
+    "translate"
+   ],
+   "duration": "--cc-enter × 1.3",
+   "easing": "--cc-ease-move",
+   "path": "arc, apex --cc-hop-lift",
+   "params": {
+    "lift": "--cc-hop-lift"
+   },
+   "sfx": [
+    "tick per step"
+   ],
+   "endState": "at the new place value",
+   "reducedMotion": "end state at once ; end sound once"
+  },
+  {
+   "id": "snap",
+   "group": "travel",
+   "means": "A dragged object seats on a target.",
+   "channels": [
+    "translate"
+   ],
+   "duration": "--cc-fast",
+   "easing": "--cc-ease-out",
+   "sfx": [
+    "click"
+   ],
+   "endState": "seated",
+   "reducedMotion": "end state at once ; end sound once"
+  },
+  {
+   "id": "lift",
+   "group": "travel",
+   "means": "An object is picked up by the learner: rises, tilts from the grab point, shadow deepens.",
+   "channels": [
+    "translate",
+    "rotate"
+   ],
+   "duration": "--cc-fast",
+   "easing": "--cc-ease-out",
+   "params": {
+    "lift": "--cc-lift",
+    "tilt": "--cc-tilt"
+   },
+   "sfx": [
+    "lift"
+   ],
+   "endState": "held",
+   "reducedMotion": "end state at once ; end sound once"
+  },
+  {
+   "id": "settle",
+   "group": "travel",
+   "means": "A dropped or arriving object comes to rest with one small overshoot.",
+   "channels": [
+    "translate",
+    "rotate"
+   ],
+   "duration": "--cc-enter",
+   "easing": "spring",
+   "params": {
+    "overshoot": "--cc-overshoot"
+   },
+   "sfx": [
+    "drop"
+   ],
+   "endState": "at rest, level",
+   "reducedMotion": "end state at once ; end sound once"
+  },
+  {
+   "id": "return-home",
+   "group": "travel",
+   "means": "A refused object shakes (judged wrong), pauses, and travels back where it started; its mark clears on the way.",
+   "channels": [
+    "translate"
+   ],
+   "duration": "--cc-morph + --cc-morph",
+   "easing": "--cc-ease-move",
+   "params": {
+    "shake": "--cc-shake"
+   },
+   "sfx": [
+    "wrong",
+    "whoosh"
+   ],
+   "endState": "at its start, unmarked",
+   "reducedMotion": "end state at once ; end sound once"
+  },
+  {
+   "id": "scroll",
+   "group": "travel",
+   "means": "The working is full: everything glides up one pitch; lines leaving the top leave.",
+   "channels": [
+    "translate",
+    "opacity"
+   ],
+   "duration": "--cc-morph",
+   "easing": "--cc-ease-move",
+   "sfx": [
+    "whoosh"
+   ],
+   "endState": "current line above --cc-work-bottom",
+   "reducedMotion": "end state at once ; end sound once"
+  },
+  {
+   "id": "physics",
+   "group": "travel",
+   "means": "Objects with weight fall, bounce, swing or slide by simulation, not easing.",
+   "channels": [
+    "translate",
+    "rotate"
+   ],
+   "duration": "simulated",
+   "easing": "simulated",
+   "params": {
+    "gravity": 2600,
+    "restitution": 0.32,
+    "damping": 0.9,
+    "friction": 0.25
+   },
+   "sfx": [
+    "thud by impact speed"
+   ],
+   "endState": "at rest",
+   "reducedMotion": "end state at once ; end sound once"
+  },
+  {
+   "id": "split-open",
+   "group": "glyph",
+   "means": "One token opens into its parts from its own centre (18 → 6 × 3, % → ÷ 100).",
+   "channels": [
+    "opacity",
+    "translate"
+   ],
+   "duration": "--cc-morph",
+   "easing": "--cc-ease-move",
+   "sfx": [
+    "pop"
+   ],
+   "endState": "parts in the line; the token removed",
+   "reducedMotion": "end state at once ; end sound once"
+  },
+  {
+   "id": "swap-glyph",
+   "group": "glyph",
+   "means": "A symbol is rewritten in place: of → ×, + → − while crossing.",
+   "channels": [
+    "opacity"
+   ],
+   "duration": "--cc-fast",
+   "easing": "linear",
+   "sfx": [],
+   "endState": "new glyph",
+   "reducedMotion": "end state at once",
+   "runtime": "behaviours.swapGlyph"
+  },
+  {
+   "id": "turn-glyph",
+   "group": "glyph",
+   "means": "A sign turns half a turn into its opposite (> → <).",
+   "channels": [
+    "rotate"
+   ],
+   "duration": "--cc-morph",
+   "easing": "--cc-ease-move",
+   "sfx": [
+    "flip"
+   ],
+   "endState": "opposite glyph, upright",
+   "reducedMotion": "end state at once ; end sound once",
+   "runtime": "behaviours.turnGlyph"
+  },
+  {
+   "id": "tint",
+   "group": "glyph",
+   "means": "Things that are the same thing take the same categorical hue (data-hue: teal, pink, gold, grape, azure).",
+   "channels": [
+    "color"
+   ],
+   "duration": "--cc-enter",
+   "easing": "ease",
+   "sfx": [],
+   "endState": "data-hue set",
+   "reducedMotion": "end state at once",
+   "runtime": "behaviours.tint",
+   "notes": "At most four hues on a board, reserved correct/wrong arcs excluded."
+  },
+  {
+   "id": "role",
+   "group": "glyph",
+   "means": "A value takes its ledger role everywhere it appears (a known A, B… is Action).",
+   "channels": [
+    "color"
+   ],
+   "duration": "--cc-enter",
+   "easing": "ease",
+   "sfx": [],
+   "endState": "data-role set",
+   "reducedMotion": "end state at once"
+  },
+  {
+   "id": "mute",
+   "group": "glyph",
+   "means": "A line becomes history: still readable, in --cc-muted.",
+   "channels": [
+    "color",
+    "data-state"
+   ],
+   "duration": "--cc-enter",
+   "easing": "ease",
+   "sfx": [],
+   "endState": "data-state muted",
+   "reducedMotion": "end state at once",
+   "runtime": "behaviours.mute"
+  },
+  {
+   "id": "focus-frame",
+   "group": "emphasis",
+   "means": "A tinted frame surrounds the part being worked on and travels with it.",
+   "channels": [
+    "opacity",
+    "translate",
+    "size of the frame"
+   ],
+   "duration": "--cc-fast in, --cc-enter between",
+   "easing": "--cc-ease-move",
+   "sfx": [
+    "click"
+   ],
+   "endState": "frame around the focus",
+   "reducedMotion": "end state at once ; end sound once"
+  },
+  {
+   "id": "answer-frame",
+   "group": "emphasis",
+   "means": "The result line is framed in the Action role.",
+   "channels": [
+    "opacity"
+   ],
+   "duration": "--cc-enter",
+   "easing": "--cc-ease-out",
+   "sfx": [
+    "right"
+   ],
+   "endState": "frame stays",
+   "reducedMotion": "end state at once ; end sound once"
+  },
+  {
+   "id": "count-badge",
+   "group": "emphasis",
+   "means": "Numbered badges tick over the items being counted, one --cc-beat apart.",
+   "channels": [
+    "opacity"
+   ],
+   "duration": "--cc-fast each, --cc-beat apart",
+   "easing": "--cc-ease-out",
+   "sfx": [
+    "tick per badge"
+   ],
+   "endState": "badges leave after the count",
+   "reducedMotion": "end state at once ; end sound once",
+   "contentCanvasMove": "count"
+  },
+  {
+   "id": "strike",
+   "group": "emphasis",
+   "means": "A diagonal stroke draws through each partner that cancels, then they leave.",
+   "channels": [
+    "stroke draw",
+    "opacity"
+   ],
+   "duration": "--cc-enter",
+   "easing": "--cc-ease-out",
+   "sfx": [
+    "scratch"
+   ],
+   "endState": "struck tokens removed (or a 1 left)",
+   "reducedMotion": "end state at once ; end sound once"
+  },
+  {
+   "id": "reach",
+   "group": "emphasis",
+   "means": "Dotted arcs from a multiplier to every term it will touch.",
+   "channels": [
+    "opacity"
+   ],
+   "duration": "--cc-morph",
+   "easing": "--cc-ease-out",
+   "sfx": [
+    "scratch"
+   ],
+   "endState": "arcs shown until distribute",
+   "reducedMotion": "end state at once ; end sound once"
+  },
+  {
+   "id": "draw",
+   "group": "emphasis",
+   "means": "A line, arc, rule or construction draws from its start.",
+   "channels": [
+    "stroke draw"
+   ],
+   "duration": "--cc-draw (rules --cc-enter)",
+   "easing": "--cc-ease-move",
+   "sfx": [
+    "scratch"
+   ],
+   "endState": "drawn",
+   "reducedMotion": "end state at once ; end sound once"
+  },
+  {
+   "id": "teeter",
+   "group": "emphasis",
+   "means": "A relation slot takes its sign and teeters once.",
+   "channels": [
+    "rotate"
+   ],
+   "duration": "--cc-morph",
+   "easing": "ease-in-out",
+   "params": {
+    "angle": "--cc-teeter"
+   },
+   "sfx": [],
+   "endState": "upright",
+   "reducedMotion": "end state at once",
+   "contentCanvasMove": "resolve",
+   "runtime": "behaviours.teeter"
+  },
+  {
+   "id": "judge",
+   "group": "emphasis",
+   "means": "Judgement on the object: correct swells, wrong wiggles, with a check or cross beside it.",
+   "channels": [
+    "translate",
+    "stroke width"
+   ],
+   "duration": "--cc-hold",
+   "easing": "ease-in-out",
+   "sfx": [
+    "right",
+    "wrong"
+   ],
+   "endState": "hue and glyph stay",
+   "reducedMotion": "end state at once ; end sound once",
+   "contentCanvasMove": "mark"
+  },
+  {
+   "id": "attention",
+   "group": "emphasis",
+   "means": "The one next thing to act on pulses twice.",
+   "channels": [
+    "outline"
+   ],
+   "duration": "1.4s × 2",
+   "easing": "ease-out",
+   "sfx": [],
+   "endState": "still",
+   "reducedMotion": "end state at once",
+   "contentCanvasMove": "data-state attention"
+  },
+  {
+   "id": "tap-hint",
+   "group": "emphasis",
+   "means": "The learner’s finger on what to act on, looping until the first tap.",
+   "channels": [
+    "translate"
+   ],
+   "duration": "loop",
+   "easing": "ease-in-out",
+   "sfx": [],
+   "endState": "removed on tap",
+   "reducedMotion": "end state at once",
+   "contentCanvasMove": "hint"
+  },
+  {
+   "id": "extract",
+   "group": "knowns",
+   "means": "A given quantity leaves the problem text or figure label and becomes a token in the working.",
+   "channels": [
+    "translate"
+   ],
+   "duration": "--cc-morph",
+   "easing": "--cc-ease-move",
+   "path": "arc at 0.6 × --cc-arc-lift",
+   "sfx": [
+    "whoosh"
+   ],
+   "endState": "token in the line; the source stays marked",
+   "reducedMotion": "end state at once ; end sound once"
+  },
+  {
+   "id": "deposit",
+   "group": "knowns",
+   "means": "A found value travels from the working into its slot in the knowns rail (or a table cell) and the slot comes to strength.",
+   "channels": [
+    "translate",
+    "opacity"
+   ],
+   "duration": "--cc-morph",
+   "easing": "--cc-ease-move",
+   "path": "arc",
+   "sfx": [
+    "whoosh",
+    "drop"
+   ],
+   "endState": "slot shows the value in the Action role",
+   "reducedMotion": "end state at once ; end sound once"
+  },
+  {
+   "id": "recall",
+   "group": "knowns",
+   "means": "A known travels from the rail into a later line of working.",
+   "channels": [
+    "translate"
+   ],
+   "duration": "--cc-morph",
+   "easing": "--cc-ease-move",
+   "path": "arc",
+   "sfx": [
+    "whoosh"
+   ],
+   "endState": "token in the line, Action role kept",
+   "reducedMotion": "end state at once ; end sound once"
+  },
+  {
+   "id": "clear-working",
+   "group": "knowns",
+   "means": "A finished sub-problem leaves; the statement, figure and knowns stay.",
+   "channels": [
+    "opacity"
+   ],
+   "duration": "--cc-enter",
+   "easing": "--cc-ease-in",
+   "sfx": [],
+   "endState": "working area empty",
+   "reducedMotion": "end state at once"
+  },
+  {
+   "id": "shade-part",
+   "group": "knowns",
+   "means": "The part of the figure being used takes a concept fill.",
+   "channels": [
+    "fill"
+   ],
+   "duration": "--cc-enter",
+   "easing": "ease",
+   "sfx": [
+    "tick"
+   ],
+   "endState": "part shaded until released",
+   "reducedMotion": "end state at once ; end sound once"
+  }
+ ],
+ "recipes": [
+  {
+   "id": "newline",
+   "of": [
+    "type-in",
+    "extract|recall (with from)"
+   ],
+   "means": "Write a line; tokens with a source fly from it."
+  },
+  {
+   "id": "down",
+   "of": [
+    "copy-down",
+    "mute",
+    "leave (name)"
+   ],
+   "means": "Carry the line down to work on it. In a named chain (#A = …) the name leaves and the = hangs under the first =."
+  },
+  {
+   "id": "focus",
+   "of": [
+    "focus-frame"
+   ],
+   "means": "Show what acts next."
+  },
+  {
+   "id": "unfocus",
+   "of": [
+    "leave"
+   ],
+   "means": "Release the frame."
+  },
+  {
+   "id": "tint",
+   "of": [
+    "tint"
+   ],
+   "means": "Same thing, same hue."
+  },
+  {
+   "id": "untint",
+   "of": [
+    "tint"
+   ],
+   "means": "Back to ink."
+  },
+  {
+   "id": "role",
+   "of": [
+    "role"
+   ],
+   "means": "Bind a value to its ledger role."
+  },
+  {
+   "id": "dim",
+   "of": [
+    "mute"
+   ],
+   "means": "Reject a candidate; it stays readable."
+  },
+  {
+   "id": "split",
+   "of": [
+    "split-open",
+    "make-room"
+   ],
+   "means": "One token opens into parts."
+  },
+  {
+   "id": "merge",
+   "of": [
+    "converge",
+    "fade-in@--cc-merge-at",
+    "make-room"
+   ],
+   "means": "Tokens become their result."
+  },
+  {
+   "id": "text",
+   "of": [
+    "swap-glyph"
+   ],
+   "means": "Rewrite a symbol."
+  },
+  {
+   "id": "move",
+   "of": [
+    "arc",
+    "swap-glyph@0.5",
+    "fade-in (prefix)",
+    "leave (drop)",
+    "make-room"
+   ],
+   "means": "Cross the = or regroup; the operation inverts mid-flight."
+  },
+  {
+   "id": "flip",
+   "of": [
+    "turn-glyph"
+   ],
+   "means": "Turn a sign into its opposite."
+  },
+  {
+   "id": "cancel",
+   "of": [
+    "strike",
+    "leave",
+    "fade-in (to)",
+    "make-room"
+   ],
+   "means": "Partners cancel."
+  },
+  {
+   "id": "insert",
+   "of": [
+    "fade-in|arc (from)",
+    "make-room"
+   ],
+   "means": "Open a gap and put something in it."
+  },
+  {
+   "id": "remove",
+   "of": [
+    "leave",
+    "make-room"
+   ],
+   "means": "Something that has done its job goes."
+  },
+  {
+   "id": "arcs",
+   "of": [
+    "reach"
+   ],
+   "means": "Show what a multiplier will reach."
+  },
+  {
+   "id": "distribute",
+   "of": [
+    "arc",
+    "leave",
+    "make-room"
+   ],
+   "means": "Copies of the multiplier land on each term."
+  },
+  {
+   "id": "collect",
+   "of": [
+    "reach",
+    "arc",
+    "converge"
+   ],
+   "means": "Two terms make a product on the new line."
+  },
+  {
+   "id": "replace",
+   "of": [
+    "arc",
+    "leave"
+   ],
+   "means": "Substitute a value for a letter."
+  },
+  {
+   "id": "count",
+   "of": [
+    "count-badge"
+   ],
+   "means": "Count places or repeated factors."
+  },
+  {
+   "id": "hop",
+   "of": [
+    "hop",
+    "appear (0)"
+   ],
+   "means": "Move the decimal point."
+  },
+  {
+   "id": "joinFrac",
+   "of": [
+    "glide",
+    "leave",
+    "fade-in"
+   ],
+   "means": "Fractions multiply onto one bar."
+  },
+  {
+   "id": "addFrac",
+   "of": [
+    "converge",
+    "glide"
+   ],
+   "means": "Equal denominators become one bar."
+  },
+  {
+   "id": "unfrac",
+   "of": [
+    "leave",
+    "make-room"
+   ],
+   "means": "A denominator of 1 drops."
+  },
+  {
+   "id": "rule",
+   "of": [
+    "draw"
+   ],
+   "means": "Rule under stacked equations."
+  },
+  {
+   "id": "sum",
+   "of": [
+    "converge",
+    "leave"
+   ],
+   "means": "Add or subtract lines column by column; opposites vanish."
+  },
+  {
+   "id": "note",
+   "of": [
+    "fade-in"
+   ],
+   "means": "Small working note beside a side list (never names a step)."
+  },
+  {
+   "id": "box",
+   "of": [
+    "appear (name)",
+    "answer-frame"
+   ],
+   "means": "Frame the result; a named chain gets its name back (A = 10)."
+  },
+  {
+   "id": "statement",
+   "of": [
+    "fade-in"
+   ],
+   "means": "Show the problem with given quantities marked."
+  },
+  {
+   "id": "figure",
+   "of": [
+    "draw",
+    "fade-in"
+   ],
+   "means": "Show the figure with labelled given quantities."
+  },
+  {
+   "id": "ledger",
+   "of": [
+    "fade-in"
+   ],
+   "means": "Show the knowns rail with empty slots."
+  },
+  {
+   "id": "deposit",
+   "of": [
+    "deposit"
+   ],
+   "means": "A found value goes to its slot."
+  },
+  {
+   "id": "clear",
+   "of": [
+    "clear-working"
+   ],
+   "means": "Finish a sub-problem."
+  },
+  {
+   "id": "shade",
+   "of": [
+    "shade-part"
+   ],
+   "means": "Shade the part of the figure in use."
+  },
+  {
+   "id": "wait",
+   "of": [],
+   "means": "Pause."
+  },
+  {
+   "id": "tight",
+   "of": [],
+   "means": "Change the spacing before a token; applied at the next layout."
+  },
+  {
+   "id": "clearArcs",
+   "of": [
+    "leave"
+   ],
+   "means": "Remove reach arcs."
+  }
+ ]
+}
