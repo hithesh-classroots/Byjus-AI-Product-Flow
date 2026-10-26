@@ -1,0 +1,2410 @@
+{
+ "layer": "reference",
+ "normative": false,
+ "schema": "../../source/components/interaction-script.schema.json",
+ "note": "Sample working scripts. Patterns only: never reuse their numbers.",
+ "scripts": [
+  {
+   "key": "ops",
+   "thread": "Number",
+   "title": "Order of operations",
+   "level": "L1",
+   "grades": "4–6",
+   "steps": [
+    {
+     "say": "Write the expression",
+     "ops": [
+      [
+       "newline",
+       "a=3 p=+ b=4 m=× c=2"
+      ]
+     ]
+    },
+    {
+     "say": "× binds tighter, so 4 × 2 goes first",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "focus",
+       [
+        "b",
+        "m",
+        "c"
+       ]
+      ]
+     ]
+    },
+    {
+     "say": "4 × 2 collapses into 8",
+     "ops": [
+      [
+       "merge",
+       [
+        "b",
+        "m",
+        "c"
+       ],
+       "d=8"
+      ],
+      [
+       "unfocus"
+      ]
+     ]
+    },
+    {
+     "say": "Now 3 + 8",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "a",
+        "p",
+        "d"
+       ],
+       "e=11"
+      ]
+     ]
+    },
+    {
+     "say": "Answer",
+     "ops": [
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "expr"
+  },
+  {
+   "key": "int",
+   "thread": "Number",
+   "title": "Integers: − (−5)",
+   "level": "L2",
+   "grades": "6–7",
+   "steps": [
+    {
+     "say": "Write the expression",
+     "ops": [
+      [
+       "newline",
+       "a=−7 p=+ b=3 m=− l=( c=~−5 r=~)"
+      ]
+     ]
+    },
+    {
+     "say": "Taking away a negative turns into adding",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "tint",
+       [
+        "m",
+        "c"
+       ],
+       "pink"
+      ],
+      [
+       "flip",
+       "m",
+       "+"
+      ],
+      [
+       "tight",
+       "c",
+       false
+      ],
+      [
+       "remove",
+       [
+        "l",
+        "r"
+       ]
+      ],
+      [
+       "text",
+       "c",
+       "5"
+      ]
+     ]
+    },
+    {
+     "say": "−7 + 3 meet first",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "untint",
+       [
+        "m",
+        "c"
+       ]
+      ],
+      [
+       "merge",
+       [
+        "a",
+        "p",
+        "b"
+       ],
+       "d=−4"
+      ]
+     ]
+    },
+    {
+     "say": "−4 + 5",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "d",
+        "m",
+        "c"
+       ],
+       "e=1"
+      ]
+     ]
+    },
+    {
+     "say": "Answer",
+     "ops": [
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "expr"
+  },
+  {
+   "key": "dec",
+   "thread": "Number",
+   "title": "Decimals: 0.4 × 0.03",
+   "level": "L2",
+   "grades": "5–7",
+   "steps": [
+    {
+     "say": "Write the product",
+     "ops": [
+      [
+       "newline",
+       "a=0.4 m=× b=0.03"
+      ]
+     ]
+    },
+    {
+     "say": "Count the digits after each point",
+     "ops": [
+      [
+       "split",
+       "a",
+       "a0=0 ap=~. a4=~4"
+      ],
+      [
+       "split",
+       "b",
+       "b0=0 bp=~. b1=~0 b3=~3"
+      ],
+      [
+       "tint",
+       [
+        "a4"
+       ],
+       "gold"
+      ],
+      [
+       "count",
+       [
+        "a4"
+       ]
+      ],
+      [
+       "tint",
+       [
+        "b1",
+        "b3"
+       ],
+       "teal"
+      ],
+      [
+       "count",
+       [
+        "b1",
+        "b3"
+       ]
+      ]
+     ]
+    },
+    {
+     "say": "1 place is tenths, 2 places is hundredths",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "a0",
+        "ap",
+        "a4"
+       ],
+       "fa=[ n4=4 / d10=10 ]"
+      ],
+      [
+       "merge",
+       [
+        "b0",
+        "bp",
+        "b1",
+        "b3"
+       ],
+       "fb=[ n3=3 / d100=100 ]"
+      ],
+      [
+       "tint",
+       [
+        "d10"
+       ],
+       "gold"
+      ],
+      [
+       "tint",
+       [
+        "d100"
+       ],
+       "teal"
+      ]
+     ]
+    },
+    {
+     "say": "Tops multiply, bottoms multiply",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "untint",
+       [
+        "d10",
+        "d100"
+       ]
+      ],
+      [
+       "joinFrac",
+       "fa",
+       "m",
+       "fb",
+       {
+        "ids": [
+         "x1",
+         "x2"
+        ]
+       }
+      ],
+      [
+       "merge",
+       [
+        "n4",
+        "x1",
+        "n3"
+       ],
+       "n12=12"
+      ],
+      [
+       "merge",
+       [
+        "d10",
+        "x2",
+        "d100"
+       ],
+       "d1k=1000"
+      ]
+     ]
+    },
+    {
+     "say": "Thousandths: three zeros, so the point hops back 3 places",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "split",
+       "d1k",
+       "k1=1 k2=~0 k3=~0 k4=~0"
+      ],
+      [
+       "count",
+       [
+        "k2",
+        "k3",
+        "k4"
+       ]
+      ],
+      [
+       "merge",
+       [
+        "fa"
+       ],
+       "p1=~1 p2=~2 pt=~."
+      ],
+      [
+       "hop",
+       "pt",
+       3
+      ],
+      [
+       "insert",
+       "z0=~0",
+       {
+        "start": true
+       }
+      ],
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "expr"
+  },
+  {
+   "key": "fsimp",
+   "thread": "Fractions",
+   "title": "Simplify 18/24",
+   "level": "L1",
+   "grades": "4–6",
+   "steps": [
+    {
+     "say": "Write the fraction",
+     "ops": [
+      [
+       "newline",
+       "f=[ a=18 / b=24 ]"
+      ]
+     ]
+    },
+    {
+     "say": "Both split around a shared 6",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "split",
+       "a",
+       "a1=6 a2=× a3=3"
+      ],
+      [
+       "split",
+       "b",
+       "b1=6 b2=× b3=4"
+      ],
+      [
+       "tint",
+       [
+        "a1",
+        "b1"
+       ],
+       "gold"
+      ]
+     ]
+    },
+    {
+     "say": "The 6s cancel",
+     "ops": [
+      [
+       "cancel",
+       [
+        "a1",
+        "b1"
+       ]
+      ],
+      [
+       "remove",
+       [
+        "a2",
+        "b2"
+       ]
+      ]
+     ]
+    },
+    {
+     "say": "Answer",
+     "ops": [
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "expr"
+  },
+  {
+   "key": "fadd",
+   "thread": "Fractions",
+   "title": "Add 1/4 + 2/3",
+   "level": "L2",
+   "grades": "5–7",
+   "steps": [
+    {
+     "say": "Write the sum",
+     "ops": [
+      [
+       "newline",
+       "fa=[ a1=1 / a2=4 ] p=+ fb=[ b1=2 / b2=3 ]"
+      ]
+     ]
+    },
+    {
+     "say": "Each fraction borrows the other's denominator",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "insert",
+       "x1=× x2=3",
+       {
+        "after": "a1"
+       },
+       {
+        "from": "b2"
+       }
+      ],
+      [
+       "insert",
+       "y1=× y2=3",
+       {
+        "after": "a2"
+       },
+       {
+        "from": "b2"
+       }
+      ],
+      [
+       "insert",
+       "z1=× z2=4",
+       {
+        "after": "b1"
+       },
+       {
+        "from": "a2"
+       }
+      ],
+      [
+       "insert",
+       "w1=× w2=4",
+       {
+        "after": "b2"
+       },
+       {
+        "from": "a2"
+       }
+      ]
+     ]
+    },
+    {
+     "say": "Multiply out",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "a1",
+        "x1",
+        "x2"
+       ],
+       "n1=3"
+      ],
+      [
+       "merge",
+       [
+        "a2",
+        "y1",
+        "y2"
+       ],
+       "d1=12"
+      ],
+      [
+       "merge",
+       [
+        "b1",
+        "z1",
+        "z2"
+       ],
+       "n2=8"
+      ],
+      [
+       "merge",
+       [
+        "b2",
+        "w1",
+        "w2"
+       ],
+       "d2=12"
+      ]
+     ]
+    },
+    {
+     "say": "Same denominator, so the tops join",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "addFrac",
+       "fa",
+       "p",
+       "fb"
+      ]
+     ]
+    },
+    {
+     "say": "3 + 8",
+     "ops": [
+      [
+       "merge",
+       [
+        "n1",
+        "p",
+        "n2"
+       ],
+       "n3=11"
+      ],
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "expr"
+  },
+  {
+   "key": "fmul",
+   "thread": "Fractions",
+   "title": "Multiply 4/9 × 3/8",
+   "level": "L2",
+   "grades": "5–7",
+   "steps": [
+    {
+     "say": "Write the product",
+     "ops": [
+      [
+       "newline",
+       "fa=[ a=4 / b=9 ] m=× fb=[ c=3 / d=8 ]"
+      ]
+     ]
+    },
+    {
+     "say": "Tops join tops, bottoms join bottoms",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "joinFrac",
+       "fa",
+       "m",
+       "fb",
+       {
+        "ids": [
+         "d1",
+         "d2"
+        ]
+       }
+      ]
+     ]
+    },
+    {
+     "say": "Open 9 and 8 to find shared factors",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "split",
+       "b",
+       "b1=3 b2=× b3=3"
+      ],
+      [
+       "split",
+       "d",
+       "e1=4 e2=× e3=2"
+      ],
+      [
+       "tint",
+       [
+        "a",
+        "e1"
+       ],
+       "gold"
+      ],
+      [
+       "tint",
+       [
+        "c",
+        "b1"
+       ],
+       "teal"
+      ]
+     ]
+    },
+    {
+     "say": "Matching pairs cancel",
+     "ops": [
+      [
+       "cancel",
+       [
+        "a",
+        "e1"
+       ],
+       {
+        "to": "o1=1"
+       }
+      ],
+      [
+       "cancel",
+       [
+        "c",
+        "b1"
+       ],
+       {
+        "to": "o2=1"
+       }
+      ],
+      [
+       "tight",
+       "e3",
+       false
+      ],
+      [
+       "remove",
+       [
+        "b2",
+        "e2"
+       ]
+      ]
+     ]
+    },
+    {
+     "say": "Multiply what is left",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "o1",
+        "d1",
+        "o2"
+       ],
+       "n=1"
+      ],
+      [
+       "merge",
+       [
+        "b3",
+        "d2",
+        "e3"
+       ],
+       "q=6"
+      ],
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "expr"
+  },
+  {
+   "key": "pct",
+   "thread": "Ratio and percent",
+   "title": "15% of 80",
+   "level": "L2",
+   "grades": "6–7",
+   "steps": [
+    {
+     "say": "Write it",
+     "ops": [
+      [
+       "newline",
+       "a=15 pc=~% o=of b=80"
+      ]
+     ]
+    },
+    {
+     "say": "Percent means out of 100; \"of\" means ×",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "a",
+        "pc"
+       ],
+       "fa=[ a1=15 / a2=100 ]"
+      ],
+      [
+       "text",
+       "o",
+       "×"
+      ]
+     ]
+    },
+    {
+     "say": "80 joins the top",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "joinFrac",
+       "fa",
+       "o",
+       "b",
+       {
+        "ids": [
+         "d1"
+        ]
+       }
+      ]
+     ]
+    },
+    {
+     "say": "80 and 100 share a 20",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "split",
+       "b",
+       "b1=4 b2=× b3=20"
+      ],
+      [
+       "split",
+       "a2",
+       "c1=5 c2=× c3=20"
+      ],
+      [
+       "tint",
+       [
+        "b3",
+        "c3"
+       ],
+       "gold"
+      ],
+      [
+       "cancel",
+       [
+        "b3",
+        "c3"
+       ]
+      ],
+      [
+       "remove",
+       [
+        "b2",
+        "c2"
+       ]
+      ]
+     ]
+    },
+    {
+     "say": "15 and 5 share a 5",
+     "ops": [
+      [
+       "split",
+       "a1",
+       "a3=3 a4=× a5=5"
+      ],
+      [
+       "tint",
+       [
+        "a5",
+        "c1"
+       ],
+       "teal"
+      ],
+      [
+       "cancel",
+       [
+        "c1",
+        "a5"
+       ],
+       {
+        "to": "one=1"
+       }
+      ],
+      [
+       "remove",
+       [
+        "a4"
+       ]
+      ],
+      [
+       "unfrac",
+       "fa"
+      ]
+     ]
+    },
+    {
+     "say": "3 × 4",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "a3",
+        "d1",
+        "b1"
+       ],
+       "r=12"
+      ],
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "expr"
+  },
+  {
+   "key": "ratio",
+   "thread": "Ratio and percent",
+   "title": "Share 45 in 2 : 3",
+   "level": "L2",
+   "grades": "6–7",
+   "steps": [
+    {
+     "say": "Write the problem",
+     "ops": [
+      [
+       "newline",
+       "t=45 i=in a=2 c=: b=3"
+      ]
+     ]
+    },
+    {
+     "say": "The parts add up",
+     "ops": [
+      [
+       "newline",
+       "p2=2 pp=+ p3=3 pe== p5=5",
+       {
+        "keep": true,
+        "from": {
+         "p2": "a",
+         "p3": "b"
+        }
+       }
+      ]
+     ]
+    },
+    {
+     "say": "One part is 45 ÷ 5",
+     "ops": [
+      [
+       "newline",
+       "q1=45 qd=÷ q5=5 qe== q9=9",
+       {
+        "from": {
+         "q1": "t",
+         "q5": "p5"
+        }
+       }
+      ],
+      [
+       "tint",
+       [
+        "q9"
+       ],
+       "gold"
+      ]
+     ]
+    },
+    {
+     "say": "Each share is parts × one part",
+     "ops": [
+      [
+       "newline",
+       "s2=2 sm=× s9=9 se== s18=18",
+       {
+        "from": {
+         "s2": "a",
+         "s9": "q9"
+        }
+       }
+      ],
+      [
+       "newline",
+       "u3=3 um=× u9=9 ue== u27=27",
+       {
+        "x": 520,
+        "row": true,
+        "from": {
+         "u3": "b",
+         "u9": "q9"
+        }
+       }
+      ]
+     ]
+    },
+    {
+     "say": "Answer",
+     "ops": [
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "eq"
+  },
+  {
+   "key": "like",
+   "thread": "Algebra",
+   "title": "Collect like terms",
+   "level": "L1",
+   "grades": "7",
+   "steps": [
+    {
+     "say": "Write the expression",
+     "ops": [
+      [
+       "newline",
+       "a1=3 a2=~a p1=+ b1=2 b2=~b p2=+ c1=5 c2=~a m=− d2=b"
+      ]
+     ]
+    },
+    {
+     "say": "Same letter, same colour",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "tint",
+       [
+        "a1",
+        "a2",
+        "p2",
+        "c1",
+        "c2"
+       ],
+       "teal"
+      ],
+      [
+       "tint",
+       [
+        "p1",
+        "b1",
+        "b2",
+        "m",
+        "d2"
+       ],
+       "pink"
+      ]
+     ]
+    },
+    {
+     "say": "Like terms slide together, sign travels too",
+     "ops": [
+      [
+       "move",
+       [
+        "p2",
+        "c1",
+        "c2"
+       ],
+       {
+        "after": "a2"
+       }
+      ]
+     ]
+    },
+    {
+     "say": "Each group combines",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "a1",
+        "a2",
+        "p2",
+        "c1",
+        "c2"
+       ],
+       "e1=8 e2=~a"
+      ],
+      [
+       "merge",
+       [
+        "b1",
+        "b2",
+        "m",
+        "d2"
+       ],
+       "f1=b"
+      ],
+      [
+       "untint",
+       [
+        "p1"
+       ]
+      ],
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "expr"
+  },
+  {
+   "key": "expand",
+   "thread": "Algebra",
+   "title": "Expand 2(x + 3) − 4",
+   "level": "L1",
+   "grades": "7–8",
+   "steps": [
+    {
+     "say": "Write the expression",
+     "ops": [
+      [
+       "newline",
+       "k=2 l=~( x=~x p=+ t=3 r=~) m=− f=4"
+      ]
+     ]
+    },
+    {
+     "say": "2 reaches every term inside",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "arcs",
+       "k",
+       [
+        "x",
+        "t"
+       ]
+      ]
+     ]
+    },
+    {
+     "say": "A copy of 2 lands on each term",
+     "ops": [
+      [
+       "distribute",
+       "k",
+       [
+        {
+         "before": "x",
+         "spec": "k1=2"
+        },
+        {
+         "before": "t",
+         "spec": "k2=2 kd=×"
+        }
+       ],
+       {
+        "drop": [
+         "k",
+         "l",
+         "r"
+        ]
+       }
+      ]
+     ]
+    },
+    {
+     "say": "2 × 3",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "k2",
+        "kd",
+        "t"
+       ],
+       "s=6"
+      ]
+     ]
+    },
+    {
+     "say": "6 − 4",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "s",
+        "m",
+        "f"
+       ],
+       "s2=2"
+      ],
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "expr"
+  },
+  {
+   "key": "dbl",
+   "thread": "Algebra",
+   "title": "Expand (x + 2)(x + 3)",
+   "level": "L2",
+   "grades": "8–9",
+   "steps": [
+    {
+     "say": "Write the product",
+     "ops": [
+      [
+       "newline",
+       "l1=( a=~x p1=+ b=2 r1=~) l2=~( c=~x p2=+ d=3 r2=~)"
+      ]
+     ]
+    },
+    {
+     "say": "Every term meets every term: x×x",
+     "ops": [
+      [
+       "newline",
+       "",
+       {
+        "keep": true
+       }
+      ],
+      [
+       "collect",
+       [
+        "a",
+        "c"
+       ],
+       "e1=x e2=^2",
+       {
+        "arc": true
+       }
+      ]
+     ]
+    },
+    {
+     "say": "x×3",
+     "ops": [
+      [
+       "collect",
+       [
+        "a",
+        "d"
+       ],
+       "q1=+ q2=3 q3=~x",
+       {
+        "arc": true
+       }
+      ]
+     ]
+    },
+    {
+     "say": "2×x",
+     "ops": [
+      [
+       "collect",
+       [
+        "b",
+        "c"
+       ],
+       "w1=+ w2=2 w3=~x",
+       {
+        "arc": true
+       }
+      ]
+     ]
+    },
+    {
+     "say": "2×3",
+     "ops": [
+      [
+       "collect",
+       [
+        "b",
+        "d"
+       ],
+       "z1=+ z2=6",
+       {
+        "arc": true
+       }
+      ]
+     ]
+    },
+    {
+     "say": "The x terms combine",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "q1",
+        "q2",
+        "q3",
+        "w1",
+        "w2",
+        "w3"
+       ],
+       "m1=+ m2=5 m3=~x"
+      ],
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "expr"
+  },
+  {
+   "key": "quad",
+   "thread": "Algebra",
+   "title": "Factorise x² + 7x + 12",
+   "level": "L3",
+   "grades": "9",
+   "steps": [
+    {
+     "say": "Write the quadratic",
+     "ops": [
+      [
+       "newline",
+       "a=x ae=^2 p=+ b=7 bx=~x q=+ c=12"
+      ]
+     ]
+    },
+    {
+     "say": "Look for two numbers: they multiply to 12 and add to 7",
+     "ops": [
+      [
+       "tint",
+       [
+        "c"
+       ],
+       "gold"
+      ],
+      [
+       "tint",
+       [
+        "b"
+       ],
+       "teal"
+      ]
+     ]
+    },
+    {
+     "say": "12 opens into its factor pairs",
+     "ops": [
+      [
+       "newline",
+       "f1=1 f1m=× f1b=12",
+       {
+        "x": 590,
+        "y": 66,
+        "side": true,
+        "from": {
+         "f1": "c",
+         "f1b": "c"
+        }
+       }
+      ],
+      [
+       "newline",
+       "f2=2 f2m=× f2b=6",
+       {
+        "x": 590,
+        "y": 136,
+        "side": true,
+        "from": {
+         "f2": "c",
+         "f2b": "c"
+        }
+       }
+      ],
+      [
+       "newline",
+       "f3=3 f3m=× f3b=4",
+       {
+        "x": 590,
+        "y": 206,
+        "side": true,
+        "from": {
+         "f3": "c",
+         "f3b": "c"
+        }
+       }
+      ]
+     ]
+    },
+    {
+     "say": "Add each pair",
+     "ops": [
+      [
+       "newline",
+       "u1=1 u2=+ u3=12",
+       {
+        "x": 760,
+        "y": 66,
+        "side": true,
+        "from": {
+         "u1": "f1",
+         "u3": "f1b"
+        }
+       }
+      ],
+      [
+       "merge",
+       [
+        "u1",
+        "u2",
+        "u3"
+       ],
+       "s1=13"
+      ],
+      [
+       "newline",
+       "v1=2 v2=+ v3=6",
+       {
+        "x": 760,
+        "y": 136,
+        "side": true,
+        "from": {
+         "v1": "f2",
+         "v3": "f2b"
+        }
+       }
+      ],
+      [
+       "merge",
+       [
+        "v1",
+        "v2",
+        "v3"
+       ],
+       "s2=8"
+      ],
+      [
+       "newline",
+       "w1=3 w2=+ w3=4",
+       {
+        "x": 760,
+        "y": 206,
+        "side": true,
+        "from": {
+         "w1": "f3",
+         "w3": "f3b"
+        }
+       }
+      ],
+      [
+       "merge",
+       [
+        "w1",
+        "w2",
+        "w3"
+       ],
+       "s3=7"
+      ]
+     ]
+    },
+    {
+     "say": "Only 3 and 4 add to 7",
+     "ops": [
+      [
+       "dim",
+       [
+        "f1",
+        "f1m",
+        "f1b",
+        "s1",
+        "f2",
+        "f2m",
+        "f2b",
+        "s2"
+       ]
+      ],
+      [
+       "tint",
+       [
+        "f3",
+        "f3b",
+        "s3"
+       ],
+       "teal"
+      ]
+     ]
+    },
+    {
+     "say": "7x splits into 3x + 4x",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "b",
+        "bx"
+       ],
+       "m3=3 m3x=~x mp=+ m4=4 m4x=~x"
+      ],
+      [
+       "tint",
+       [
+        "m3",
+        "m4"
+       ],
+       "teal"
+      ]
+     ]
+    },
+    {
+     "say": "Each pair of terms gives out what it shares",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "untint",
+       [
+        "m3",
+        "m4"
+       ]
+      ],
+      [
+       "merge",
+       [
+        "a",
+        "ae",
+        "p",
+        "m3",
+        "m3x"
+       ],
+       "g1=x g2=~( g3=~x g4=+ g5=3 g6=~)"
+      ],
+      [
+       "merge",
+       [
+        "m4",
+        "m4x",
+        "q",
+        "c"
+       ],
+       "h1=4 h2=~( h3=~x h4=+ h5=3 h6=~)"
+      ],
+      [
+       "tint",
+       [
+        "g2",
+        "g3",
+        "g4",
+        "g5",
+        "g6",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6"
+       ],
+       "pink"
+      ]
+     ]
+    },
+    {
+     "say": "(x + 3) is in both, so it is written once; x and 4 join in the other bracket",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "remove",
+       [
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6"
+       ]
+      ],
+      [
+       "merge",
+       [
+        "g1",
+        "mp",
+        "h1"
+       ],
+       "k1=( k2=~x k3=+ k4=4 k5=~)"
+      ],
+      [
+       "move",
+       [
+        "k1",
+        "k2",
+        "k3",
+        "k4",
+        "k5"
+       ],
+       {
+        "end": true
+       },
+       {
+        "set": {
+         "k1": {
+          "tight": true
+         }
+        }
+       }
+      ],
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "expr"
+  },
+  {
+   "key": "subst",
+   "thread": "Algebra",
+   "title": "Substitute x = 4",
+   "level": "L1",
+   "grades": "7–8",
+   "steps": [
+    {
+     "say": "Write the expression and the value",
+     "ops": [
+      [
+       "newline",
+       "a=2 ax=~x ae=^2 m=− b=3 bx=~x"
+      ],
+      [
+       "newline",
+       "v1=x ve== v4=4",
+       {
+        "x": 600,
+        "row": true
+       }
+      ],
+      [
+       "tint",
+       [
+        "v4"
+       ],
+       "gold"
+      ]
+     ]
+    },
+    {
+     "say": "4 drops into every x",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "replace",
+       "ax",
+       "w0=~( w1=~4 w2=~)",
+       {
+        "from": "v4"
+       }
+      ],
+      [
+       "replace",
+       "bx",
+       "z0=~( z1=~4 z2=~)",
+       {
+        "from": "v4"
+       }
+      ]
+     ]
+    },
+    {
+     "say": "Power first: 4² is 16",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "w1",
+        "ae"
+       ],
+       "s=~16"
+      ]
+     ]
+    },
+    {
+     "say": "Then multiply",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "a",
+        "w0",
+        "s",
+        "w2"
+       ],
+       "t1=32"
+      ],
+      [
+       "merge",
+       [
+        "b",
+        "z0",
+        "z1",
+        "z2"
+       ],
+       "t2=12"
+      ]
+     ]
+    },
+    {
+     "say": "32 − 12",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "t1",
+        "m",
+        "t2"
+       ],
+       "t3=20"
+      ],
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "expr"
+  },
+  {
+   "key": "idx",
+   "thread": "Algebra",
+   "title": "Indices: 2³ × 2⁴",
+   "level": "L2",
+   "grades": "8–9",
+   "steps": [
+    {
+     "say": "Write the product",
+     "ops": [
+      [
+       "newline",
+       "a=2 ae=^3 m=× b=2 be=^4"
+      ]
+     ]
+    },
+    {
+     "say": "Unpack each power",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "a",
+        "ae"
+       ],
+       "l1=( a1=~2 a2=× a3=2 a4=× a5=2 r1=~)"
+      ],
+      [
+       "merge",
+       [
+        "b",
+        "be"
+       ],
+       "l2=( b1=~2 b2=× b3=2 b4=× b5=2 b6=× b7=2 r2=~)"
+      ]
+     ]
+    },
+    {
+     "say": "Count every 2",
+     "ops": [
+      [
+       "tint",
+       [
+        "a1",
+        "a3",
+        "a5",
+        "b1",
+        "b3",
+        "b5",
+        "b7"
+       ],
+       "gold"
+      ],
+      [
+       "count",
+       [
+        "a1",
+        "a3",
+        "a5",
+        "b1",
+        "b3",
+        "b5",
+        "b7"
+       ]
+      ]
+     ]
+    },
+    {
+     "say": "Seven 2s become one power",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "l1",
+        "a1",
+        "a2",
+        "a3",
+        "a4",
+        "a5",
+        "r1",
+        "m",
+        "l2",
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6",
+        "b7",
+        "r2"
+       ],
+       "c=2 ce=^7"
+      ],
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "expr"
+  },
+  {
+   "key": "lin",
+   "thread": "Equations",
+   "title": "Solve 5x − 3 = 2x + 9",
+   "level": "L2",
+   "grades": "7–8",
+   "steps": [
+    {
+     "say": "Write the equation",
+     "ops": [
+      [
+       "newline",
+       "a=5 ax=~x m=− b=3 e== c=2 cx=~x p=+ d=9"
+      ]
+     ]
+    },
+    {
+     "say": "2x crosses over and turns negative",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "move",
+       [
+        "c",
+        "cx"
+       ],
+       {
+        "after": "ax"
+       },
+       {
+        "prefix": "cm=−",
+        "drop": [
+         "p"
+        ]
+       }
+      ]
+     ]
+    },
+    {
+     "say": "−3 crosses over and turns positive",
+     "ops": [
+      [
+       "move",
+       [
+        "m",
+        "b"
+       ],
+       {
+        "end": true
+       },
+       {
+        "text": {
+         "m": "+"
+        }
+       }
+      ]
+     ]
+    },
+    {
+     "say": "Each side combines",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "a",
+        "ax",
+        "cm",
+        "c",
+        "cx"
+       ],
+       "g=3 gx=~x"
+      ],
+      [
+       "merge",
+       [
+        "d",
+        "m",
+        "b"
+       ],
+       "h=12"
+      ]
+     ]
+    },
+    {
+     "say": "3 leaves x as a divisor",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "move",
+       [
+        "g"
+       ],
+       {
+        "end": true
+       },
+       {
+        "prefix": "dv=÷"
+       }
+      ]
+     ]
+    },
+    {
+     "say": "12 ÷ 3",
+     "ops": [
+      [
+       "merge",
+       [
+        "h",
+        "dv",
+        "g"
+       ],
+       "k=4"
+      ],
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "eq"
+  },
+  {
+   "key": "ineq",
+   "thread": "Equations",
+   "title": "Inequality −2x > 6",
+   "level": "L2",
+   "grades": "8–9",
+   "steps": [
+    {
+     "say": "Write the inequality",
+     "ops": [
+      [
+       "newline",
+       "a=−2 ax=~x g=> b=6"
+      ]
+     ]
+    },
+    {
+     "say": "Divide both sides by −2",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "insert",
+       "d1=÷ d2=(−2)",
+       {
+        "after": "ax"
+       }
+      ],
+      [
+       "insert",
+       "d3=÷ d4=(−2)",
+       {
+        "end": true
+       }
+      ],
+      [
+       "tint",
+       [
+        "d1",
+        "d2",
+        "d3",
+        "d4"
+       ],
+       "pink"
+      ]
+     ]
+    },
+    {
+     "say": "A negative divisor flips the sign",
+     "ops": [
+      [
+       "flip",
+       "g",
+       "<"
+      ]
+     ]
+    },
+    {
+     "say": "Each side settles",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "a",
+        "ax",
+        "d1",
+        "d2"
+       ],
+       "xx=x"
+      ],
+      [
+       "merge",
+       [
+        "b",
+        "d3",
+        "d4"
+       ],
+       "r=−3"
+      ],
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "eq"
+  },
+  {
+   "key": "spldv",
+   "thread": "Equations",
+   "title": "Simultaneous: elimination",
+   "level": "L3",
+   "grades": "8–9",
+   "steps": [
+    {
+     "say": "Stack the two equations",
+     "ops": [
+      [
+       "newline",
+       "a1=x ap=+ ay=y ae== a10=10"
+      ],
+      [
+       "newline",
+       "b1=x bm=− by=y be== b4=4",
+       {
+        "keep": true
+       }
+      ]
+     ]
+    },
+    {
+     "say": "Add them column by column; +y and −y vanish",
+     "ops": [
+      [
+       "rule"
+      ],
+      [
+       "sum",
+       [
+        {
+         "ids": [
+          "a1",
+          "b1"
+         ],
+         "spec": "c2=2 cx=~x"
+        },
+        {
+         "ids": [
+          "ap",
+          "ay",
+          "bm",
+          "by"
+         ]
+        },
+        {
+         "ids": [
+          "ae",
+          "be"
+         ],
+         "spec": "ce=="
+        },
+        {
+         "ids": [
+          "a10",
+          "b4"
+         ],
+         "spec": "c14=14"
+        }
+       ]
+      ]
+     ]
+    },
+    {
+     "say": "2 leaves x",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "move",
+       [
+        "c2"
+       ],
+       {
+        "end": true
+       },
+       {
+        "prefix": "dv=÷"
+       }
+      ],
+      [
+       "merge",
+       [
+        "c14",
+        "dv",
+        "c2"
+       ],
+       "c7=7"
+      ],
+      [
+       "tint",
+       [
+        "c7"
+       ],
+       "gold"
+      ]
+     ]
+    },
+    {
+     "say": "7 goes back into the first equation",
+     "ops": [
+      [
+       "newline",
+       "q1=7 qp=+ qy=y qe== q10=10",
+       {
+        "from": {
+         "q1": "c7",
+         "qp": "ap",
+         "qy": "ay",
+         "qe": "ae",
+         "q10": "a10"
+        }
+       }
+      ]
+     ]
+    },
+    {
+     "say": "7 crosses over",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "move",
+       [
+        "q1"
+       ],
+       {
+        "end": true
+       },
+       {
+        "prefix": "qm=−",
+        "drop": [
+         "qp"
+        ]
+       }
+      ],
+      [
+       "merge",
+       [
+        "q10",
+        "qm",
+        "q1"
+       ],
+       "r3=3"
+      ],
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "eq"
+  },
+  {
+   "key": "surd",
+   "thread": "Surds",
+   "title": "Simplify √50",
+   "level": "L2",
+   "grades": "9",
+   "steps": [
+    {
+     "say": "Write the root",
+     "ops": [
+      [
+       "newline",
+       "r=√ n=_50"
+      ]
+     ]
+    },
+    {
+     "say": "Find a square inside 50",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "split",
+       "n",
+       "n1=_25 n2=_× n3=_2"
+      ],
+      [
+       "tint",
+       [
+        "n1"
+       ],
+       "gold"
+      ]
+     ]
+    },
+    {
+     "say": "The square steps out as its root",
+     "ops": [
+      [
+       "move",
+       [
+        "n1"
+       ],
+       {
+        "before": "r"
+       },
+       {
+        "text": {
+         "n1": "5"
+        },
+        "set": {
+         "n1": {
+          "rm": "rad",
+          "tight": false
+         }
+        }
+       }
+      ],
+      [
+       "remove",
+       [
+        "n2"
+       ]
+      ],
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "expr"
+  },
+  {
+   "key": "pyth",
+   "thread": "Geometry",
+   "title": "Pythagoras c² = 6² + 8²",
+   "level": "L2",
+   "grades": "8",
+   "steps": [
+    {
+     "say": "Write the relation",
+     "ops": [
+      [
+       "newline",
+       "c=c ce=^2 e== a=6 ae=^2 p=+ b=8 be=^2"
+      ]
+     ]
+    },
+    {
+     "say": "Square each side length",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "a",
+        "ae"
+       ],
+       "a2=36"
+      ],
+      [
+       "merge",
+       [
+        "b",
+        "be"
+       ],
+       "b2=64"
+      ]
+     ]
+    },
+    {
+     "say": "36 + 64",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "a2",
+        "p",
+        "b2"
+       ],
+       "s=100"
+      ]
+     ]
+    },
+    {
+     "say": "Root both sides",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "tight",
+       "c",
+       true
+      ],
+      [
+       "tight",
+       "s",
+       true
+      ],
+      [
+       "insert",
+       "r1=√",
+       {
+        "start": true
+       }
+      ],
+      [
+       "insert",
+       "r2=√",
+       {
+        "after": "e"
+       }
+      ],
+      [
+       "tint",
+       [
+        "r1",
+        "r2"
+       ],
+       "teal"
+      ]
+     ]
+    },
+    {
+     "say": "Each side settles",
+     "ops": [
+      [
+       "down"
+      ],
+      [
+       "merge",
+       [
+        "r1",
+        "c",
+        "ce"
+       ],
+       "cc=c"
+      ],
+      [
+       "merge",
+       [
+        "r2",
+        "s"
+       ],
+       "t=10"
+      ],
+      [
+       "box"
+      ]
+     ]
+    }
+   ],
+   "mode": "eq"
+  }
+ ]
+}

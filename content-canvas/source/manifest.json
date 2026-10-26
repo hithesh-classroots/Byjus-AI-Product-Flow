@@ -1,0 +1,279 @@
+{
+  "version": "2.4.0-draft",
+  "purpose": "Integration source manifest. Normal consumers select a concern and load only its readFiles.",
+  "shared": {
+    "styles": "assets/canvas.css",
+    "runtime": "runtime/canvas.js",
+    "componentSpecs": "components/component-specs.json",
+    "contract": "contracts/canvas-contract.json",
+    "htmlTemplate": "templates/board.html",
+    "reactAdapter": "templates/CanvasApplet.jsx",
+    "example": "templates/example.js",
+    "interactionRuntime": "runtime/canvas-interaction.js",
+    "interactionSpecs": "components/interaction-specs.json",
+    "behaviourTokens": "components/behaviour-tokens.json",
+    "interactionScriptSchema": "components/interaction-script.schema.json"
+  },
+  "concerns": [
+    {
+      "id": "contract",
+      "covers": [
+        "authority",
+        "closed-world behavior",
+        "prohibitions",
+        "required records"
+      ],
+      "readFiles": [
+        "guidance/00-contract.html",
+        "contracts/canvas-contract.json"
+      ],
+      "resourceFiles": []
+    },
+    {
+      "id": "foundations",
+      "covers": [
+        "typography",
+        "colour roles",
+        "themes",
+        "states",
+        "tokens"
+      ],
+      "readFiles": [
+        "guidance/03-type.html",
+        "guidance/04-colour.html",
+        "guidance/05-states.html"
+      ],
+      "resourceFiles": [
+        "assets/canvas.css"
+      ]
+    },
+    {
+      "id": "content-components",
+      "componentTypes": [
+        "content"
+      ],
+      "covers": [
+        "prose",
+        "lists",
+        "tables",
+        "formulae",
+        "media primitives"
+      ],
+      "readFiles": [
+        "guidance/08-content.html"
+      ],
+      "resourceFiles": [
+        "components/component-specs.json"
+      ]
+    },
+    {
+      "id": "data-maths-diagrams",
+      "componentTypes": [
+        "figure",
+        "construction-mark",
+        "transform",
+        "arithmetic",
+        "equation",
+        "chart",
+        "graph",
+        "number-line",
+        "venn"
+      ],
+      "covers": [
+        "geometry",
+        "charts",
+        "notation",
+        "accuracy"
+      ],
+      "readFiles": [
+        "guidance/07-diagrams.html"
+      ],
+      "resourceFiles": [
+        "components/component-specs.json"
+      ]
+    },
+    {
+      "id": "model-library",
+      "componentTypes": [
+        "counting",
+        "fraction",
+        "tape",
+        "structure",
+        "instrument"
+      ],
+      "covers": [
+        "model choice",
+        "model recipes",
+        "quantity preservation"
+      ],
+      "readFiles": [
+        "guidance/07-diagrams.html"
+      ],
+      "resourceFiles": [
+        "components/component-specs.json"
+      ]
+    },
+    {
+      "id": "interactive",
+      "componentTypes": [
+        "control",
+        "slider",
+        "counter",
+        "ui-shape"
+      ],
+      "covers": [
+        "controls",
+        "sliders",
+        "counters",
+        "choices",
+        "feedback",
+        "reachable states"
+      ],
+      "readFiles": [
+        "guidance/06-components.html",
+        "guidance/05-states.html"
+      ],
+      "resourceFiles": [
+        "components/component-specs.json",
+        "runtime/canvas.js"
+      ]
+    },
+    {
+      "id": "motion",
+      "covers": [
+        "stage moves",
+        "judgement on the object",
+        "in-place focus",
+        "counting made visible",
+        "tap hint",
+        "timing",
+        "easing tokens",
+        "behaviour tokens"
+      ],
+      "readFiles": [
+        "guidance/12-motion.html",
+        "guidance/05-states.html"
+      ],
+      "resourceFiles": [
+        "assets/canvas.css",
+        "runtime/canvas.js"
+      ]
+    },
+    {
+      "id": "interaction",
+      "interactionSpecs": true,
+      "behaviourTokens": true,
+      "covers": [
+        "behaviour tokens",
+        "step recipes",
+        "interaction presets",
+        "lines of working",
+        "multi-step problems",
+        "knowns rail",
+        "preset sound",
+        "tool dial"
+      ],
+      "readFiles": [
+        "guidance/13-interaction.html",
+        "guidance/12-motion.html"
+      ],
+      "resourceFiles": [
+        "assets/canvas.css",
+        "components/behaviour-tokens.json",
+        "components/interaction-specs.json",
+        "components/interaction-script.schema.json",
+        "runtime/canvas.js",
+        "runtime/canvas-interaction.js"
+      ]
+    },
+    {
+      "id": "illustration",
+      "covers": [
+        "media",
+        "illustration",
+        "cropping",
+        "projection",
+        "loading and failure"
+      ],
+      "readFiles": [
+        "guidance/08-content.html"
+      ],
+      "resourceFiles": [
+        "assets/canvas.css"
+      ]
+    },
+    {
+      "id": "module-structure",
+      "covers": [
+        "takeaways",
+        "sequence",
+        "intro",
+        "objectives",
+        "practice",
+        "closing"
+      ],
+      "readFiles": [
+        "guidance/08-content.html",
+        "contracts/canvas-contract.json"
+      ],
+      "resourceFiles": []
+    },
+    {
+      "id": "layout-library",
+      "covers": [
+        "board geometry",
+        "fit",
+        "density",
+        "layout catalogue"
+      ],
+      "readFiles": [
+        "guidance/02-layout.html",
+        "contracts/canvas-contract.json"
+      ],
+      "resourceFiles": [
+        "assets/canvas.css"
+      ]
+    },
+    {
+      "id": "authoring-from-source",
+      "covers": [
+        "new applets",
+        "redesigns",
+        "source fidelity",
+        "manifest creation"
+      ],
+      "readFiles": [
+        "guidance/01-adopt.html",
+        "contracts/canvas-contract.json"
+      ],
+      "resourceFiles": []
+    },
+    {
+      "id": "normalisation",
+      "covers": [
+        "acceptance",
+        "regression",
+        "evidence",
+        "resolved contradictions"
+      ],
+      "readFiles": [
+        "guidance/09-verify.html",
+        "guidance/10-decisions.html",
+        "contracts/canvas-contract.json"
+      ],
+      "resourceFiles": []
+    },
+    {
+      "id": "delivery",
+      "covers": [
+        "build",
+        "exports",
+        "distribution"
+      ],
+      "readFiles": [
+        "guidance/11-source.html"
+      ],
+      "resourceFiles": []
+    }
+  ]
+}

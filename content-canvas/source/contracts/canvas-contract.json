@@ -1,0 +1,1162 @@
+{
+  "version": "2.3.0",
+  "date": "2026-10-23",
+  "source": "source/manifest.json",
+  "authority": [
+    "source/manifest.json and indexed concern guidance",
+    "source/assets/canvas.css",
+    "source/components/component-specs.json",
+    "source/runtime/canvas.js and source/templates"
+  ],
+  "coordinates": {
+    "width": 924,
+    "height": 519.75,
+    "ratio": "16:9",
+    "minTestWidth": 585,
+    "legacy1600Conversion": "multiply coordinates by 924/1600; discard legacy typography and apply classes",
+    "hitTargets": {
+      "early": 56,
+      "middle": 56,
+      "upper": 44,
+      "senior": 44
+    }
+  },
+  "roles": {
+    "concept": "primary referent taught",
+    "emphasis": "supporting referent used to define or contrast concept",
+    "action": "result, computed outcome or live value, including static results"
+  },
+  "exponentLedger": {
+    "base": "ink",
+    "exponent": "concept",
+    "result": "action"
+  },
+  "states": {
+    "default": "No special condition",
+    "emphasis": "Current focus; same geometry",
+    "muted": "Out of immediate scope, readable neutral text",
+    "excluded": "Explicitly not part; optional labels removed, remaining information readable",
+    "selected": "Chosen, not yet judged",
+    "disabled": "Unavailable; native behaviour disabled, values readable",
+    "complete": "Finished; neutral tick inside the control; inert (no further press or input)",
+    "attention": "Next control/group, or the stage object or group to act on next; two outline pulses (a stroke swell on a stage object)",
+    "correct": "Judged correct; check icon (on a stage object: the state hue and a check beside it, set by mark())",
+    "wrong": "Judged wrong; cross icon, retained answer (on a stage object: the state hue and a cross beside it, kept until the question is solved)"
+  },
+  "allowedStates": {
+    "text": [
+      "default",
+      "emphasis",
+      "muted",
+      "excluded",
+      "complete"
+    ],
+    "surface": [
+      "default",
+      "emphasis",
+      "muted",
+      "excluded",
+      "disabled",
+      "complete",
+      "correct",
+      "wrong"
+    ],
+    "figure": [
+      "default",
+      "emphasis",
+      "muted",
+      "excluded",
+      "selected",
+      "disabled",
+      "complete",
+      "attention",
+      "correct",
+      "wrong"
+    ],
+    "control": [
+      "default",
+      "emphasis",
+      "muted",
+      "selected",
+      "disabled",
+      "complete",
+      "attention",
+      "correct",
+      "wrong"
+    ]
+  },
+  "bands": [
+    [
+      "Early",
+      "K-2",
+      "title",
+      "8",
+      "5",
+      "1"
+    ],
+    [
+      "Middle",
+      "3-5",
+      "body",
+      "20",
+      "8",
+      "3"
+    ],
+    [
+      "Upper",
+      "6-8",
+      "body",
+      "28",
+      "12",
+      "5"
+    ],
+    [
+      "Senior",
+      "9-10",
+      "body",
+      "38",
+      "16",
+      "7"
+    ]
+  ],
+  "boardKinds": [
+    "intro",
+    "section",
+    "divider",
+    "objectives",
+    "teach",
+    "explain",
+    "explore",
+    "practice",
+    "feedback",
+    "recap",
+    "word-problem",
+    "challenge",
+    "recall",
+    "bridge",
+    "closing"
+  ],
+  "layouts": [
+    [
+      "T01",
+      "Title",
+      "Centred",
+      "MASCOT → TITLE(hero) → SUB"
+    ],
+    [
+      "T02",
+      "Title + artefact",
+      "Centred",
+      "MASCOT → TITLE(hero) → SUB → FORMULA/DIAGRAM"
+    ],
+    [
+      "T03",
+      "Title over media",
+      "Full",
+      "MEDIA[bleed] + TITLE(hero) on opaque local surface"
+    ],
+    [
+      "T04",
+      "Section divider",
+      "Centred",
+      "CALLOUT → label numeral → TITLE"
+    ],
+    [
+      "T05",
+      "Closing",
+      "Centred",
+      "TITLE → LIST(ticked) → BADGE row → ACTION"
+    ],
+    [
+      "T06",
+      "Objectives",
+      "Centred",
+      "TITLE → LIST(numbered ×3) → ACTION(secondary)"
+    ],
+    [
+      "T07",
+      "Single statement",
+      "Centred",
+      "TITLE only, ≤12 words"
+    ],
+    [
+      "T08",
+      "Quote",
+      "Centred",
+      "MEDIA[circle] → BODY(36/500) → CAPTION"
+    ],
+    [
+      "E01",
+      "Title + prose",
+      "Centred",
+      "TITLE → BODY"
+    ],
+    [
+      "E02",
+      "Title + list",
+      "Centred",
+      "TITLE → LIST"
+    ],
+    [
+      "E03",
+      "Checklist",
+      "Centred",
+      "TITLE → LIST(check)"
+    ],
+    [
+      "E04",
+      "Steps horizontal",
+      "Thirds",
+      "TITLE → 3× (BADGE + BODY)"
+    ],
+    [
+      "E05",
+      "Steps vertical",
+      "Centred",
+      "TITLE → LIST(stepped)"
+    ],
+    [
+      "E06",
+      "Two-column compare",
+      "Half",
+      "TITLE → 2× card(TITLE + LIST)"
+    ],
+    [
+      "E07",
+      "Do vs don't",
+      "Half",
+      "As E06 with neutral comparison panels (outcome colours only after judgement)"
+    ],
+    [
+      "E08",
+      "Key-value",
+      "Centred",
+      "TITLE → table(2 col)"
+    ],
+    [
+      "E09",
+      "Definition + example",
+      "Centred",
+      "TITLE → tint(definition) → card(example)"
+    ],
+    [
+      "E10",
+      "Term grid",
+      "Quarters",
+      "TITLE → 4× (BADGE + label + BODY)"
+    ],
+    [
+      "E11",
+      "Prose + callout",
+      "Major-left",
+      "TITLE → BODY ‖ CALLOUT"
+    ],
+    [
+      "E12",
+      "Table board",
+      "Full",
+      "TITLE → table"
+    ],
+    [
+      "M01",
+      "Media left",
+      "Half",
+      "MEDIA[standard] ‖ TITLE + BODY"
+    ],
+    [
+      "M02",
+      "Media right",
+      "Half",
+      "TITLE + BODY ‖ MEDIA[standard]"
+    ],
+    [
+      "M03",
+      "Media + caption",
+      "Centred",
+      "TITLE → MEDIA[wide] → CAPTION"
+    ],
+    [
+      "M04",
+      "Media pair",
+      "Half",
+      "TITLE → 2× MEDIA[standard] + CAPTION"
+    ],
+    [
+      "M05",
+      "Media trio",
+      "Thirds",
+      "TITLE → 3× MEDIA[square] + CAPTION"
+    ],
+    [
+      "M06",
+      "Media quad",
+      "Quarters",
+      "TITLE → 4× MEDIA[square]"
+    ],
+    [
+      "M07",
+      "Media grid 2×2",
+      "Half",
+      "4× MEDIA[square] with inset labels"
+    ],
+    [
+      "M08",
+      "Full bleed",
+      "Full",
+      "MEDIA[bleed] + CAPTION band"
+    ],
+    [
+      "M09",
+      "Portrait + text",
+      "Major-right",
+      "MEDIA[portrait] ‖ TITLE + BODY"
+    ],
+    [
+      "M10",
+      "Media + list",
+      "Major-right",
+      "MEDIA[square] ‖ TITLE + LIST"
+    ],
+    [
+      "M11",
+      "Before / after",
+      "Half",
+      "2× MEDIA[standard] with pill labels"
+    ],
+    [
+      "M12",
+      "Annotated media",
+      "Full",
+      "MEDIA[wide] + numbered hotspots + legend"
+    ],
+    [
+      "D01",
+      "Diagram + legend",
+      "Major-left",
+      "DIAGRAM ‖ legend keys"
+    ],
+    [
+      "D02",
+      "Diagram + formula",
+      "Half",
+      "DIAGRAM ‖ FORMULA + variable legend"
+    ],
+    [
+      "D03",
+      "Diagram compare",
+      "Half",
+      "2× DIAGRAM with pill labels, relation glyph between"
+    ],
+    [
+      "D04",
+      "Diagram + callouts",
+      "Full",
+      "DIAGRAM centred + numbered callouts pinned"
+    ],
+    [
+      "D05",
+      "Formula focus",
+      "Centred",
+      "TITLE → FORMULA(figure) → CAPTION"
+    ],
+    [
+      "D06",
+      "Derivation",
+      "Centred",
+      "TITLE → rows of FORMULA, changed term accented"
+    ],
+    [
+      "D07",
+      "Number line",
+      "Full",
+      "TITLE → number line → CAPTION"
+    ],
+    [
+      "D08",
+      "Coordinate plane",
+      "Centred",
+      "TITLE → plane + plotted data"
+    ],
+    [
+      "D09",
+      "Plane + readout",
+      "Major-left",
+      "plane ‖ value cards"
+    ],
+    [
+      "D10",
+      "Construction steps",
+      "Thirds",
+      "TITLE → 3× DIAGRAM showing progressive construction"
+    ],
+    [
+      "D11",
+      "Shape family",
+      "Quarters",
+      "TITLE → 4× DIAGRAM + label"
+    ],
+    [
+      "D12",
+      "Proof two-column",
+      "Half",
+      "TITLE → statements ‖ reasons table"
+    ],
+    [
+      "D13",
+      "Column arithmetic",
+      "Centred",
+      "TITLE → component contract stack → CAPTION"
+    ],
+    [
+      "D14",
+      "Working + model",
+      "Half",
+      "component contract step stack ‖ the module's model (Part 3B)"
+    ],
+    [
+      "D15",
+      "Solid + net",
+      "Half",
+      "component contract solid ‖ its unfolded net, faces labelled alike"
+    ],
+    [
+      "D16",
+      "Transformation",
+      "Half",
+      "pre-image ‖ image, mapping arrows across the gutter (component contract)"
+    ],
+    [
+      "D17",
+      "Congruence pair",
+      "Half",
+      "2× figure with component contract marks + correspondence statement below"
+    ],
+    [
+      "D18",
+      "Model bridge",
+      "Half",
+      "2× model of the SAME quantity + the equality between them (component contract)"
+    ],
+    [
+      "D19",
+      "Structure diagram",
+      "Centred",
+      "TITLE → factor / probability tree (component contract)"
+    ],
+    [
+      "D20",
+      "Instrument read",
+      "Major-left",
+      "component contract instrument ‖ TITLE + reading"
+    ],
+    [
+      "G01",
+      "Chart full",
+      "Full",
+      "TITLE → CHART → CAPTION"
+    ],
+    [
+      "G02",
+      "Chart + readout",
+      "Major-left",
+      "CHART ‖ value cards"
+    ],
+    [
+      "G03",
+      "Chart + prose",
+      "Half",
+      "CHART ‖ TITLE + BODY"
+    ],
+    [
+      "G04",
+      "Chart pair",
+      "Half",
+      "TITLE → 2× CHART with labels"
+    ],
+    [
+      "G05",
+      "Stat row",
+      "Quarters",
+      "TITLE → 4× (figure + label)"
+    ],
+    [
+      "G06",
+      "Pictograph",
+      "Full",
+      "TITLE → glyph rows + key"
+    ],
+    [
+      "G07",
+      "Table + chart",
+      "Half",
+      "frequency table ‖ its chart, same category order both sides"
+    ],
+    [
+      "G08",
+      "Distribution",
+      "Full",
+      "TITLE → line plot or box plot over one component contract axis"
+    ],
+    [
+      "W01",
+      "Word problem - model",
+      "Half",
+      "STEM + given/asked ‖ MODEL"
+    ],
+    [
+      "W02",
+      "Word problem - working",
+      "Half",
+      "STEM ‖ component contract/component contract working → boxed answer"
+    ],
+    [
+      "W03",
+      "Word problem - stacked",
+      "Centred",
+      "STEM → MODEL → boxed answer + unit"
+    ],
+    [
+      "P01",
+      "Practice - options",
+      "Centred",
+      "STEM → option row (component contract) → CHECK"
+    ],
+    [
+      "P02",
+      "Practice - entry",
+      "Centred",
+      "STEM → answer box + unit (component contract) → CHECK"
+    ],
+    [
+      "P03",
+      "Practice - on a model",
+      "Half",
+      "MODEL ‖ STEM + answer box"
+    ],
+    [
+      "P04",
+      "Practice - drag",
+      "Full",
+      "STEM → drop zones → token tray"
+    ],
+    [
+      "C01",
+      "Challenge",
+      "Centred",
+      "STEM → workspace → HINT + CHECK"
+    ],
+    [
+      "C02",
+      "Challenge - multi-part",
+      "Centred",
+      "STEM → (a)(b)(c) rows, each with its own answer box"
+    ],
+    [
+      "R01",
+      "Recall",
+      "Centred",
+      "TITLE → prior model at muted → one question"
+    ],
+    [
+      "I01",
+      "Slider + shape",
+      "Centred",
+      "TITLE → DIAGRAM → CONTROL(slider) + single readout"
+    ],
+    [
+      "I02",
+      "Slider + chart",
+      "Half",
+      "CHART ‖ CONTROL + readout"
+    ],
+    [
+      "I03",
+      "Slider pair",
+      "Centred",
+      "DIAGRAM → 2× CONTROL, one single readout each"
+    ],
+    [
+      "I04",
+      "MCQ",
+      "Centred",
+      "TITLE(stem) → LIST(options) → ACTION"
+    ],
+    [
+      "I05",
+      "MCQ with media",
+      "Half",
+      "TITLE → 4× MEDIA[square] options → ACTION"
+    ],
+    [
+      "I06",
+      "Numeric input",
+      "Centred",
+      "TITLE → CONTROL(input) + unit → ACTION"
+    ],
+    [
+      "I07",
+      "Match pairs",
+      "Half",
+      "TITLE → 2 columns of rows + connectors"
+    ],
+    [
+      "I08",
+      "Sort / order",
+      "Centred",
+      "TITLE → draggable rows"
+    ],
+    [
+      "I09",
+      "Drag to bins",
+      "Half",
+      "TITLE → tokens ‖ 2-3 drop zones"
+    ],
+    [
+      "I10",
+      "Tap the shape",
+      "Full",
+      "TITLE → DIAGRAM with tappable regions"
+    ],
+    [
+      "I11",
+      "Plot the point",
+      "Centred",
+      "TITLE → plane, tap to place"
+    ],
+    [
+      "I12",
+      "Build the formula",
+      "Centred",
+      "TITLE → FORMULA with empty slots + token tray"
+    ],
+    [
+      "F01",
+      "Answer reveal",
+      "Centred",
+      "state band → answer(figure) → BODY → ACTION"
+    ],
+    [
+      "F02",
+      "Worked solution",
+      "Centred",
+      "TITLE → LIST(stepped: FORMULA + reason)"
+    ],
+    [
+      "F03",
+      "Hint reveal",
+      "Centred",
+      "The origin board with the hint panel expanded"
+    ],
+    [
+      "F04",
+      "Objective earned",
+      "Centred",
+      "Ticked LIST + neutral completion markers"
+    ],
+    [
+      "F05",
+      "Misconception",
+      "Centred",
+      "neutral misconception comparison → explanation → correct reasoning → ACTION"
+    ],
+    [
+      "S01",
+      "Stage - one model",
+      "Centred",
+      "MODEL centred → result LABEL (voice-led: no on-screen stem)"
+    ],
+    [
+      "S02",
+      "Stage - two models",
+      "Centred",
+      "2× MODEL with a relation slot between → result LABELs (voice-led: no on-screen stem)"
+    ],
+    [
+      "S03",
+      "Stage - answer on the model",
+      "Centred",
+      "MODEL with tappable parts as the answer surface, each marked data-cc-option → result LABEL (voice-led: no on-screen stem)"
+    ]
+  ],
+  "components": [
+    [
+      "Surface",
+      ".cc-surface",
+      "Flat local fill, no resting stroke. Emphasis is an inset stroke. No press response."
+    ],
+    [
+      "Button",
+      ".cc-button",
+      "Neutral or primary face; flat solid edge; travel equals edge height. Sentence-case label. One primary per board."
+    ],
+    [
+      "Choice",
+      ".cc-choice / .cc-choice-row",
+      "Equal resting options. External reserved outcome slot. Selection retains edge. Native button semantics."
+    ],
+    [
+      "Input",
+      ".cc-input",
+      "Width follows expected answer length. Numeric: figure; prose: body. External unit/outcome. Keep wrong value."
+    ],
+    [
+      "Slider",
+      "bindSlider()",
+      "Range input overlay; hue track; bright circular thumb; labels OR tethered counter OR object readout."
+    ],
+    [
+      "Counter",
+      "bindCounter()",
+      "Stable width for largest value; plus/minus bars; independent bound disabling. Optional grouping shell."
+    ],
+    [
+      "Toggle",
+      "bindToggle()",
+      "Native button with role=switch and aria-checked; labelled; knob position duplicates state."
+    ],
+    [
+      "Figure",
+      ".cc-figure / svgNode()",
+      "Data-derived SVG; no static base edge; description; keyboard alternative for manipulation."
+    ],
+    [
+      "SVG button",
+      "bindSVGButton()",
+      "Separate base plate and translated front. role=button, tabindex, aria-label, aria-disabled; compensated screen hit area."
+    ],
+    [
+      "Drag / sort / match",
+      "Application behaviour + shared parts",
+      "Use button-family tokens, pointer capture and keyboard pick/move/drop/cancel. Preserve existing logic; register and test any new component."
+    ],
+    [
+      "Table / fraction / media",
+      ".cc-table / .cc-fraction / .cc-media",
+      "Use the shared structure; do not introduce a separate typography or surface system."
+    ]
+  ],
+  "diagrams": [
+    [
+      "Graph",
+      "Grid recedes; axes neutral; plot coloured. Name both axes. Lines continue with two arrowheads; segments stop at unringed endpoints. Standalone points have a ring. Emphasis adds a ripple, never changes coordinate or point size."
+    ],
+    [
+      "Graph labels",
+      "Keep origin label left/below origin. Label only necessary ticks and reserve clear space. Do not forbid real data at y = −1: relocate labels or expand the plot margin instead. Helpers may draw an unlabelled sheet; add data-driven ticks when reading coordinates is the task."
+    ],
+    [
+      "Number line",
+      "Whole-number line starts at zero with a square cap, continues right; integer line has both arrowheads. Equal spacing, up to 17 ticks. Zero tick is heavier/label 800. Marks above, tick labels below. Marks alone carry hue. Stacked lines share unit width."
+    ],
+    [
+      "Intervals",
+      "Filled endpoint means included; hollow means excluded. Endpoint markers have no separating ring. Bands are 5% at rest, 26% in emphasis, absent when disabled; labels stay legible. Never move the interval endpoints between states."
+    ],
+    [
+      "Venn / sets",
+      "Nested: rectangles, up to four levels. Overlap/disjoint: circles; overlap uses one hue and a separately drawn opaque lens, never alpha mixing. Nested fills use --cc-l-v0…v3 with chroma .10/.075/.05/.03 and the per-room ladder. Labels occupy top bands; members bottom bands, neutral and readable."
+    ],
+    [
+      "Geometry",
+      "Equal sides: matching tick counts. Equal angles: matching arc counts. Right angle: square. Parallel: matching chevrons. Mark correspondences explicitly. No reuse of tick counts for unequal groups."
+    ],
+    [
+      "Solids / nets",
+      "Technical isometric at 30° axes; three flat tones from surface2/line2/faint, visible boundary and dashed hidden edges. No gradient, texture, reflection or lighting glow. Net labels match solid faces; base fixed during unfolding."
+    ],
+    [
+      "Transforms",
+      "Always retain pre-image; image uses primes. Draw centre/mirror line when relevant. One mapping convention per board. Common scale; preserve unit sizes."
+    ],
+    [
+      "Charts",
+      "Bars/areas start at zero. Up to two series; stacked column up to three parts. Direct labels for one series. Pie up to six sectors; below 5% aggregate only if mathematically honest. Outside labels. Equal histogram bins touch. No 3D/exploded charts."
+    ],
+    [
+      "Opacity exceptions",
+      "Only plot fills, interval bands and ripples may use transparent colour. Graph faces use .10 default/.18 emphasis; point ripples .16. Meaningful outlines remain solid. No opacity on a whole readable region. Stage objects resting in place through focus() (concern motion) take --cc-rest or --cc-recede; their text is muted, never faded."
+    ]
+  ],
+  "models": [
+    [
+      "Counting",
+      "Identical flat counters; ten-frame is 2×5, fills left-to-right then top-to-bottom; tally fifth crosses four; fixed dice arrangements. No decorative faces on counters."
+    ],
+    [
+      "Place value",
+      "One common unit: rod = ten unit edges; flat = ten rods; cube = ten flats. Regroup while preserving total. Use a single tone per place and explicit labels."
+    ],
+    [
+      "Fractions",
+      "Bar is default; equal geometric partitions; one whole is the same size throughout. Circle only halves, thirds, quarters, sixths, eighths. Unshaded regions remain part of the whole."
+    ],
+    [
+      "Tape model",
+      "Equal quantities are equal widths; equal bar height; left-aligned comparisons; brackets name totals/parts; unknown explicitly marked. No chart axis."
+    ],
+    [
+      "Factor / probability tree",
+      "Edges actually connect nodes. Circle prime leaves. Probability branch label above and probability below; outcomes aligned on the right."
+    ],
+    [
+      "Mapping / patterns",
+      "One arrow per mapping pair; preserve many-to-one. Pattern terms share unit size and position labels; empty next-term slot is explicit."
+    ],
+    [
+      "Ruler / protractor",
+      "Ruler zero aligns with object start and stays visible. Protractor centre aligns to vertex; show both scales and highlight the measured arm."
+    ],
+    [
+      "Balance / liquid / clock",
+      "Balance level iff quantities equal; tilt follows difference. Liquid surface flat with correctly spaced graduations. Clock hand lengths distinguish hours/minutes; no decorative gloss."
+    ],
+    [
+      "Arithmetic",
+      "Place-value columns fixed and tabular. Carry/borrow above their own column as annotations. Rule spans full working; operators outside digit columns. Never colour the whole sum to show one step."
+    ],
+    [
+      "Equation working",
+      "Equals aligned, one operation per row, change highlighted only in current row. Note the operation on both sides; final solution grouped, optional check below."
+    ]
+  ],
+  "motion": {
+    "concern": "motion",
+    "scope": "Stage objects (figures, models, art) move, fade, enter, leave and change place only through these moves, or through a kit move. Controls, surfaces and type keep their state treatments and every ban in States. Application code writes no keyframes, opacity, filter or position of its own for a stage object. Moves compose: a replacement is leave() with bringIn(); giving way is leave() with travel(). A motion no move covers never blocks a build: it is built once as a kit move in the journey's shared code (on these tokens; translate, rotate or opacity only; no scale; reduced motion lands on the end state; resolves a Promise when it rests) and raised with a component ask to join this list. Redesigning an existing applet replaces its motion with moves wherever a move expresses it; motion no move expresses stays only as a recorded exception.",
+    "tokens": {
+      "--cc-enter": "entries, fades, restores and leaves",
+      "--cc-morph": "travel, split, line-up, teeter",
+      "--cc-beat": "one counted unit",
+      "--cc-hold": "default length of a mark's motion when the feedback line's length is not passed",
+      "--cc-rest": "rest level, 0.4",
+      "--cc-recede": "recede level, 0.2"
+    },
+    "moves": [
+      [
+        "focus(keep, rest, {level})",
+        "The part under study stays; the rest of its whole recedes in place to rest (0.4) or recede (0.2). Fade once: nothing inside a resting group fades again. Readable text takes the muted state, never opacity: a group holding text rests part by part.",
+        "unfocus(els) restores, the rest gliding back to full over --cc-enter"
+      ],
+      [
+        "mark(el, 'correct'|'wrong', {hold, siblings})",
+        "Judgement on the object: the state hue plus a check or cross beside it. Wrong wiggles, correct swells, for hold ms (the feedback line), then rests; the mark stays. On correct, siblings recede. A control is marked through its outcome slot; an entered answer on its input.",
+        "Wrong marks accumulate until clearMarks(root, {only:'wrong'}) when the question is solved; a correct mark stays until clearMarks(root) when the stage changes. Marking an object again replaces its own mark."
+      ],
+      [
+        "count(units, {label, side})",
+        "Each unit boxed and numbered in turn, one beat apart; the numerals then give way to the named label.",
+        "Units belong to one SVG figure"
+      ],
+      [
+        "leave(els)",
+        "An object goes from the stage: it fades out over --cc-enter from wherever it rests, then is hidden, so nothing vanishes in a cut. bringIn() brings it back.",
+        "Leaving is not resting: its text goes with it. Nothing is removed from the stage any other way"
+      ],
+      [
+        "bringIn(el, {faint})",
+        "A new model enters in two beats: with faint it appears faint (recede) and waits there, offered - travel() makes room beside it and hint() can point at it; bringIn(el) then brings it to full strength over --cc-morph. From hidden without faint it rises through faint to full in one --cc-morph.",
+        "No scale: the model is its full size throughout, beside the first at the same unit size"
+      ],
+      [
+        "travel(els, mutate)",
+        "FLIP: the objects glide from where they were to where mutate placed them. The only way a stage object changes place.",
+        "Size never changes"
+      ],
+      [
+        "split(parts, {gap, axis}) / join(parts)",
+        "The parts of a whole part along a cut, a gap opening between them; join closes it.",
+        ""
+      ],
+      [
+        "lineUp(pieces, {x, y, gap})",
+        "Pieces lift out and sit edge to edge, left edges aligned, for side-by-side comparison.",
+        ""
+      ],
+      [
+        "resolve(slot, glyph, {also})",
+        "The relation slot takes ?, >, <, = or ≠ and teeters once; also teeters the side it favours.",
+        ""
+      ],
+      [
+        "hint(target)",
+        "The tap hint: the learner's finger on what to act on, looping until the first tap there; not a text or spoken hint. One per board and, while it shows, the board's one attention target. Never on an answer option (.cc-choice, .cc-media-choice, or a stage part marked data-cc-option): for a choice, or on S03, it points at the whole group.",
+        "Shown again only as the idle ladder's first, silent step; never while the tutor's pointer shows"
+      ]
+    ],
+    "reducedMotion": "Every move lands on its end state at once; marks keep hue and glyph; the hint stands still.",
+    "persistence": "Wrong marks accumulate until the question is solved; a correct mark stays until the stage changes. Motion stops when the feedback line ends; the mark does not."
+  },
+  "acceptance": [
+    [
+      "Resources",
+      "Pinned version and exact resource hashes; all font faces actually loaded; no unauthorised token overrides.",
+      "Resource/hash check + font inspection"
+    ],
+    [
+      "Typography",
+      "Every run uses a named type class/category; variables explicitly marked; missing glyph coverage resolved.",
+      "Computed styles + glyph review"
+    ],
+    [
+      "Fit",
+      "No board scroll or clipped content; no unintended overlap; safe area, band density and occupancy satisfied.",
+      "Bounds/overflow measurements + visual review"
+    ],
+    [
+      "Theme",
+      "Transparent document/root/board; correct resolved host theme and iframe colour scheme; no hardcoded light plates.",
+      "Both themes at every supported width"
+    ],
+    [
+      "Contrast",
+      "Readable text ≥4.5:1; meaningful graphical boundaries ≥3:1, on actual backgrounds.",
+      "Browser colour conversion/compositing"
+    ],
+    [
+      "State",
+      "One supported state per element; state visibly changes as defined; at most one attention target; no dead controls.",
+      "Transition table + exercised input evidence"
+    ],
+    [
+      "Meaning",
+      "One focal element/claim; stable referent ledger; no decorative or selection green/red.",
+      "Recorded author/reviewer judgement"
+    ],
+    [
+      "Interaction",
+      "Keyboard and pointer operation; physical targets meet band minimum; no hover-only action.",
+      "Rendered bounds and interaction checks"
+    ],
+    [
+      "Motion",
+      "Reduced-motion preference honoured; no punishing failure animation; reveal never bypasses lesson logic; stage objects move only through stage moves; marks persist as specified; a hint never rests on an answer option.",
+      "Reduced-motion run"
+    ],
+    [
+      "Correctness",
+      "Mathematics/data/units/models accurate; description present; redesign preserves runtime and scoring.",
+      "Behaviour comparison and content review"
+    ],
+    [
+      "Release",
+      "All applicable checks pass, exceptions explicit, no skipped check called green.",
+      "Signed/attributed acceptance record"
+    ]
+  ],
+  "decisions": [
+    [
+      "Source of truth",
+      "Extract palette/shape intent from the rendered reference, then correct it here. The stale §26 bridge is replaced.",
+      "Review §1; proposal architecture"
+    ],
+    [
+      "Product shell",
+      "Old shell §§1-4 are out of applet scope. Its content-canvas dark rules are retained here.",
+      "Review §2.1 / §7"
+    ],
+    [
+      "Exponent colour",
+      "Choose review option A: base always ink, exponent always Concept, result Action. No distinction-board recolouring.",
+      "01 §2.4; 09 §34; review §2.1"
+    ],
+    [
+      "Role definitions",
+      "Concept = primary subject; Emphasis = supporting referent; Action = result/live/computed value. Control affordance is depth.",
+      "01 §3; 09 §34; review §2.5"
+    ],
+    [
+      "Type conflict",
+      "48/36/24/16 is the principal ladder; figure 44 and micro 12 are maths exceptions. Statement 36/500. Retire 38/30/20/14 and component 22/15/38 prose.",
+      "01 §§2.1-2.3; reference CSS"
+    ],
+    [
+      "Weight conflict",
+      "500 content; 700 labels; 800 title/results/buttons/focal span. Explicit component exceptions replace the impossible one-800-element cap.",
+      "01 §2.2 vs 05 §20.0"
+    ],
+    [
+      "Roboto",
+      "Use the embedded variable font at 500/700/800; its weight axis is verified as 100-900. Retire “Roboto has no 800” and cross-frame inheritance claims.",
+      "Review §2.3; reference font faces"
+    ],
+    [
+      "Coordinate scale",
+      "Single render-space authoring API; convert legacy 1600 geometry by 924/1600. Layout uses flex/grid, not the inconsistent fixed column arithmetic.",
+      "00 §0.2; 01 §1 vs §7"
+    ],
+    [
+      "Small-board targets",
+      "Compensate hit areas in screen space after scaling, with layout revalidation. 585 is width, never height.",
+      "Review §5; proposal open scale conflict"
+    ],
+    [
+      "Arrows",
+      "Length 3× stroke; half-width 2×. Canonical SVG marker; no 8px literal.",
+      "01 §5 vs 03 §16a"
+    ],
+    [
+      "States",
+      "All ten names; highlighted becomes emphasis. Focus/press remain browser states. Negative is an explicit judged-wrong surface tone.",
+      "Review §3"
+    ],
+    [
+      "State contradictions",
+      "Stable identity colour is separate from focal emphasis. Selected/outcomes may use their prescribed hue; muted/excluded/complete are neutral. Remove contradictory “only emphasis may use colour”.",
+      "01 §8a; 09 §34"
+    ],
+    [
+      "Opacity / readability",
+      "Do not fade readable text. State tokens are achromatic and readable; alpha restricted to explicitly described diagram effects. Stage objects resting in place through focus() (2.2.0) take --cc-rest/--cc-recede; a group holding text rests part by part, its text muted.",
+      "01 §3.6 vs component states"
+    ],
+    [
+      "Surface family",
+      "Surface/button/input/formula radius is the shared shape token. Old 12/16 component card declarations are replaced by family semantics.",
+      "05 §20.0 supersession; review radius note"
+    ],
+    [
+      "Base edge",
+      "CSS flat offset; SVG separate base/front with equal travel. No gradients, lit top edges or ambient button glows in either room.",
+      "Review §5; proposal Fix #5; 05 ban"
+    ],
+    [
+      "Reference defects",
+      "Explicit light/dark only; one dark Venn ladder. Dark body and muted text strengthened; every ink/fill pairing rechecked.",
+      "Reference auto/dark selector differences"
+    ],
+    [
+      "Number line / graph",
+      "Correct whole/integer ends. Points never change size by state. Remove graph y=−1 data prohibition; move label furniture instead.",
+      "03 §§17-17a; review §4"
+    ],
+    [
+      "Layouts",
+      "Keep original Part 9 IDs. Retire conflicting reference-gallery meanings and incorrect “60 layouts” total; count from actual registry.",
+      "10-layout-library vs reference gallery"
+    ],
+    [
+      "Media / skin",
+      "Opaque label plate on media replaces conflicting scrims. Natural skin remains an asset colour, not a speculative hue conversion.",
+      "01 §3.5 vs shell §5; 07 §31.7"
+    ],
+    [
+      "Acceptance / retrofit",
+      "All applicable requirements block new conformance claims. Stage repairs while existing live journeys remain available. No broker/fleet changes claimed by this file.",
+      "Review §2.2/2.4; proposal #4/#6"
+    ],
+    [
+      "Broken citations",
+      "Old section files become pointers. §9.4 resolves to media-bleed; §20.0a to choice contract; §14a marker chip to cc-chip. No invented history.",
+      "rules README; extant component intent"
+    ],
+    [
+      "LLM adoption",
+      "Agents may make documented design/content judgements within task scope; CSS alone is never evidence of accuracy. No human-approval loop added for ordinary adoption.",
+      "11 §41.2; current user request"
+    ],
+    [
+      "Stage motion (2.2.0)",
+      "States and their bans govern controls, surfaces and type. A stage object (figure, model, art) moves only through the named stage moves (concern motion): judgement on the object with a glyph, in-place rest/recede for out-of-focus parts, a counted unit sequence, entries, travel, split, line-up, relation teeter and the learner's tap hint. Hand-made keyframes, opacity, filters and positions stay prohibited everywhere. Readable text is never faded; it is muted.",
+      "05-states vs applet teaching motion; 2026-10-23"
+    ],
+    [
+      "Voice-led stage layouts (2.2.0)",
+      "A tutored applet's question is spoken, so S01-S03 carry no stem slot; on-board text names results. An applet's board is mounted once and never cut to or remounted; a change of layout (one model becomes two) is reached by stage moves, the objects on screen staying and moving into it, and the board declares the new layout.",
+      "Layout catalogue vs voice-led applets; 2026-10-23"
+    ],
+    [
+      "Exits and kit moves (2.3.0)",
+      "An object leaves the stage only through leave(): it fades out, then is hidden; nothing vanishes in a cut. A motion no move covers is built once as a kit move to the moves' rules and raised for adoption; the closed list never blocks a build.",
+      "2.2 had no exit and no route for a missing motion; 2026-10-23"
+    ]
+  ],
+  "acceptanceRecord": {
+    "canvasVersion": "2.3.0",
+    "appletId": "exponent-explorer",
+    "sourceMode": "new | redesign",
+    "sourceHash": "<sha256>",
+    "resourceHashes": {
+      "css": "<sha256>",
+      "runtime": "<sha256>"
+    },
+    "band": "upper",
+    "claim": "The exponent counts repeated factors.",
+    "takeaway": "T1",
+    "layout": "I01",
+    "anchors": {
+      "base": "ink",
+      "exponent": "concept",
+      "result": "action"
+    },
+    "focal": "exponent",
+    "tested": [
+      {
+        "theme": "light",
+        "width": 585,
+        "state": "default",
+        "evidence": "<file>"
+      }
+    ],
+    "mechanical": "pending",
+    "semanticReview": {
+      "reviewer": "<author or reviewing agent>",
+      "status": "pending",
+      "evidence": "<explanation>"
+    },
+    "behaviourRegression": "pending",
+    "exceptions": [],
+    "conformance": "pending"
+  },
+  "prohibitions": [
+    "board background",
+    "gradient inside board",
+    "text shadow",
+    "bevel/inner highlight",
+    "colour-only state",
+    "scale-to-highlight",
+    "hover-only affordance",
+    "unversioned external assets",
+    "nearest-colour migration",
+    "silent runtime changes",
+    "motion on a stage object outside a stage move or a kit move",
+    "faded readable text",
+    "a hint on an answer option"
+  ],
+  "referenceCoverage": {
+    "authoredFamilies": [
+      "Shape System",
+      "Slider System",
+      "Counter System",
+      "Graph System",
+      "Number Line System",
+      "Venn & Set System",
+      "Layout Gallery"
+    ],
+    "sliders": "five types × three states + eight hues",
+    "counters": "two types × three states + eight hues",
+    "graphs": "two sheets + five plottables × three states + eight hues",
+    "numberLines": "two sets + two marks × three states + eight hues",
+    "venn": "three relations + region/member × three states + nesting depth/hue variants",
+    "layouts": "all 87 Part 9 slot configurations; source-gallery ID collisions reconciled; plus the three voice-led stage layouts S01-S03 (2.2.0)",
+    "additionalSystems": [
+      "Figure edges/faces/states/lattices",
+      "Construction marks",
+      "Transformations",
+      "Other controls",
+      "Charts",
+      "Counting/fraction/tape/structure/instrument/arithmetic/equation models",
+      "Content primitives"
+    ],
+    "componentAPI": {
+      "entryPoint": "ContentCanvas.createComponent",
+      "types": 19,
+      "variants": 113,
+      "schema": "componentAPIs"
+    }
+  },
+  "probeLimitations": [
+    "not a complete conformance gate",
+    "does not prove content accuracy",
+    "custom SVG/media contrast and interior collisions need independent measurement",
+    "all applet states must be exercised by the application"
+  ]
+}
