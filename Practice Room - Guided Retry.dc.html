@@ -2868,7 +2868,14 @@ class Component extends DCLogic {
     const T=!H.line ? [] : [{f:1,n:H.a[0],d:D},{o:'+'},{f:1,n:H.b[0],d:D},{o:'='},{f:1,n:H.a[0]+' + '+H.b[0],d:D},{o:'='},{f:1,n:tot,d:D},{o:'='},{m:1,w:H.mixed[0],n:H.mixed[1],d:H.mixed[2]}];
     R.vhEq=T.map((t,i)=>({ isFrac:!!t.f, isOp:!!t.o, isMixed:!!t.m, n:t.n, d:t.d, w:t.w, o:t.o, op: i<fr ? '1' : '0', ty: i<fr ? '0px' : '8px', hl: i===fr-1 && fr>3 ? '#7048e8' : '#212529' }));
     return R; }
-  _fitStage(){ const dz=document.getElementById('qsDesign'); if(!dz) return; const box=dz.parentElement; const W=box.clientWidth, H=box.clientHeight; if(!W||!H) return; const sc=Math.min(W/1280, H/720); const w=Math.round(W/sc), h=Math.round(H/sc); if(dz._fw!==w || dz._fh!==h){ dz._fw=w; dz._fh=h; dz.style.width=w+'px'; dz.style.height=h+'px'; if(!this._calcUserMoved && this._calcIntroDone && !this._calcBubbleOn()){ this._calcDocked=false; } } }
+  _fitStage(){ const dz=document.getElementById('qsDesign'); if(!dz) return; const box=dz.parentElement; const BW=box.clientWidth, H=box.clientHeight; if(!BW||!H) return;
+    /* One canvas size for every state: it is always fitted to the width the stage has while the chat is OPEN
+       (row width minus the 372px chat column), so the step-by-step panel, hint and question never resize.
+       Closing the chat only slides that same canvas to the centre of the wider stage. */
+    const tw=document.querySelector('[data-teach-wrap]'), row=tw&&tw.parentElement; const W=Math.max(320, row ? row.clientWidth-372 : BW);
+    const sc=Math.min(W/1280, H/720); const w=Math.round(W/sc), h=Math.round(H/sc), x=Math.max(0, Math.round((BW-W)/2*100)/100);
+    if(dz._fx!==x || dz._fs!==sc){ dz._fx=x; dz._fs=sc; dz.style.left=x+'px'; dz.style.transform='scale('+sc+')'; }
+    if(dz._fw!==w || dz._fh!==h){ dz._fw=w; dz._fh=h; dz.style.width=w+'px'; dz.style.height=h+'px'; if(!this._calcUserMoved && this._calcIntroDone && !this._calcBubbleOn()){ this._calcDocked=false; } } }
   componentDidUpdate(pp, ps){ this._measureSparkPin(); this._fitStage();
     if(this._vhMorph){ const bx=document.getElementById('vhBox'); if(bx){ const F=this._vhMorph; this._vhMorph=null; bx.style.opacity='0'; requestAnimationFrame(()=>requestAnimationFrame(()=>{ bx.style.opacity=''; this._vhMorphRun(bx,F); })); } }
     { const bx=document.getElementById('vhBox'), qt=document.getElementById('qsQText'); if(bx && qt && bx.offsetParent){ const dz=document.getElementById('qsDesign'), sc=dz?((dz.getBoundingClientRect().height/720)||1):1; const t=Math.max(0, Math.round((qt.getBoundingClientRect().bottom - bx.offsetParent.getBoundingClientRect().top)/sc + 16)); if(Math.abs(t-(this._vhBoxTopPx||0))>1){ this._vhBoxTopPx=t; this.forceUpdate(); } } }
