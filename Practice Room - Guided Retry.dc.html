@@ -260,6 +260,8 @@
   .vh-grow .vh-fade{animation:vhFade .75s ease both;}
   @keyframes vhShake{0%,100%{transform:none}20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
   .vh-shake{animation:vhShake .42s ease both;}
+  .vh-tipbox{position:absolute;top:calc(100% + 8px);right:0;z-index:30;padding:7px 11px;border-radius:9px;background:#343a40;color:#fff;font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;transform:translateY(-3px);pointer-events:none;transition:opacity .15s ease,transform .15s ease;}
+  .vh-tip:hover .vh-tipbox,.vh-tip:focus-visible .vh-tipbox{opacity:1;transform:none;transition-delay:.12s;}
   @keyframes vhFill{from{width:0}to{width:100%}}
   .vh-fill{animation-name:vhFill;animation-timing-function:linear;animation-fill-mode:forwards;}
   @keyframes vhPulse{0%,100%{fill-opacity:.35}50%{fill-opacity:.8}}
@@ -450,8 +452,7 @@
       <div id="dockPill" class="{{ dockPillClass }}" style="pointer-events:auto;position:absolute;left:72px;bottom:6px;height:48px;width:{{ composerW }};border-radius:14px;overflow:hidden;background:#fff;border:1px solid {{ composerBorder }};box-shadow:{{ composerShadow }};transition:width .44s cubic-bezier(.34,1.12,.5,1),box-shadow .4s ease,border-color .4s ease,transform .72s cubic-bezier(.5,0,.2,1);">
           <div style="position:absolute;inset:0;background:linear-gradient(45deg,#0c8599,#15aabf);opacity:{{ composerTealOp }};transition:opacity .4s ease;pointer-events:none;"></div>
           <div style="position:absolute;inset:0;display:flex;align-items:center;opacity:{{ closedOp }};pointer-events:{{ closedPE }};transition:opacity .26s ease;">
-            <div onClick="{{ openChatMsg }}" title="{{ chatLockTitle }}" aria-disabled="{{ chatLocked }}" style="width:54px;height:48px;display:grid;place-items:center;cursor:{{ chatLockCur }};opacity:{{ chatLockOp }};color:#fff;border-right:1px solid rgba(255,255,255,.32);"><i class="ti ti-message-2" style="font-size:20px;"></i></div>
-            <div onClick="{{ openChatMic }}" title="{{ chatLockTitleMic }}" aria-disabled="{{ chatLocked }}" style="width:54px;height:48px;display:grid;place-items:center;cursor:{{ chatLockCur }};opacity:{{ chatLockOp }};color:#fff;"><i class="ti ti-microphone" style="font-size:20px;"></i></div>
+            <div onClick="{{ openChatMsg }}" title="{{ chatLockTitle }}" aria-disabled="{{ chatLocked }}" style="flex:1;height:48px;display:flex;align-items:center;justify-content:center;gap:9px;cursor:{{ chatLockCur }};opacity:{{ chatLockOp }};color:#fff;font-size:14px;font-weight:700;white-space:nowrap;"><i class="ti ti-message-2" style="font-size:20px;"></i>Take help from Vyom</div>
           </div>
           <div id="chatInputRow" style="position:absolute;inset:0;display:flex;align-items:center;gap:10px;padding:0 12px;opacity:{{ openOp }};pointer-events:{{ openPE }};transition:opacity .32s ease .06s;">
             <i class="ti ti-paperclip" style="font-size:16px;color:#adb5bd;cursor:pointer;flex:none;"></i>
@@ -491,7 +492,7 @@
           <sc-if value="{{ m.isSpark }}" hint-placeholder-val="{{ false }}">
             <div class="brow" style="display:{{ m.disp }};gap:10px;align-items:flex-start;justify-content:flex-start;--brow-op:{{ m.op }};opacity:{{ m.op }};pointer-events:{{ m.pe }};">
               <div style="min-width:0;position:relative;">
-                <div data-spark-bubble class="{{ m.fsClass }}" style="background:rgba(255,244,230,.95);color:#8a4712;padding:10px 13px;border-radius:14px 14px 4px 14px;font-size:14px;line-height:1.5;border:1px solid #ffe8cc;"><sc-for list="{{ m.words }}" as="w" hint-placeholder-count="0"><span style="white-space:pre-wrap;opacity:{{ w.op }};transition:opacity .22s ease;">{{ w.t }}</span></sc-for><sc-if value="{{ m.showVidBtns }}" hint-placeholder-val="{{ false }}"><div class="btn-rise" style="display:flex;gap:9px;margin-top:11px;"><div onClick="{{ m.onGotIt }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:#40c057;color:#fff;font-size:14px;font-weight:700;padding:10px 14px;border-radius:11px;cursor:pointer;box-shadow:0 6px 14px rgba(64,192,87,.35);"><i class="ti ti-check"></i>Got it</div><div onClick="{{ m.onMissed }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:#fa5252;color:#fff;font-size:14px;font-weight:700;padding:10px 14px;border-radius:11px;cursor:pointer;box-shadow:0 6px 14px rgba(250,82,82,.32);">I missed it</div></div></sc-if></div>
+                <div data-spark-bubble class="{{ m.fsClass }}" style="background:rgba(255,244,230,.95);color:#8a4712;padding:10px 13px;border-radius:14px 14px 4px 14px;font-size:14px;line-height:1.5;border:1px solid #ffe8cc;"><sc-for list="{{ m.words }}" as="w" hint-placeholder-count="0"><span style="white-space:pre-wrap;opacity:{{ w.op }};transition:opacity .22s ease;">{{ w.t }}</span></sc-for><sc-if value="{{ m.showVidBtns }}" hint-placeholder-val="{{ false }}"><div class="btn-rise" style="display:flex;gap:9px;margin-top:11px;"><div onClick="{{ m.onGotIt }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:#40c057;color:#fff;font-size:14px;font-weight:700;padding:10px 14px;border-radius:11px;cursor:pointer;box-shadow:0 6px 14px rgba(64,192,87,.35);"><i class="ti ti-check"></i>Got it</div><div onClick="{{ m.onMissed }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:#fa5252;color:#fff;font-size:14px;font-weight:700;padding:10px 14px;border-radius:11px;cursor:pointer;box-shadow:0 6px 14px rgba(250,82,82,.32);">I missed it</div></div></sc-if><sc-if value="{{ m.showTry }}" hint-placeholder-val="{{ false }}"><div class="btn-rise" style="display:flex;margin-top:11px;"><div onClick="{{ m.tryGo }}" style="display:inline-flex;align-items:center;gap:6px;background:#fff;color:#8a4712;font-size:14px;font-weight:700;padding:8px 14px;border-radius:999px;cursor:pointer;border:1.5px solid #ffa94d;">{{ m.tryLabel }}</div></div></sc-if></div>
                 
               </div>
             </div>
@@ -855,7 +856,7 @@
               </sc-if>
             </div>
             <div id="qsQText" style="flex:none;height:120px;box-sizing:border-box;padding-top:24px;overflow:hidden;text-align:center;visibility:{{ qsBodyVis }};">
-              <div class="pq-q" style="width:100%;font-weight:700;color:#212529;letter-spacing:-.01em;text-wrap:balance;">{{ qsQ }}</div>
+              <div class="pq-q" style="width:100%;font-weight:700;color:#212529;letter-spacing:-.01em;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 10px;"><sc-for list="{{ qsParts }}" as="p" hint-placeholder-count="1"><sc-if value="{{ p.isT }}" hint-placeholder-val="{{ true }}"><span style="white-space:pre-wrap;text-wrap:balance;">{{ p.t }}</span></sc-if><sc-if value="{{ p.isF }}" hint-placeholder-val="{{ false }}"><span data-qf="{{ p.key }}" style="display:inline-flex;flex-direction:column;align-items:center;padding:2px 10px;border-radius:12px;line-height:1.05;background:{{ p.bg }};box-shadow:{{ p.sh }};transition:background .3s ease, box-shadow .3s ease;"><span>{{ p.n }}</span><span style="align-self:stretch;height:3px;margin:2px 0;border-radius:2px;background:#212529;"></span><span>{{ p.d }}</span></span></sc-if></sc-for></div>
             </div>
             <div id="qsBody" style="position:relative;box-sizing:border-box;padding-bottom:{{ qsColPadB }};flex:1;min-height:0;display:grid;grid-template-columns:{{ qsGridCols }};column-gap:{{ qsGridGap }};row-gap:24px;grid-template-rows:minmax(0,1fr);align-items:center;justify-content:center;visibility:{{ qsBodyVis }};transition:grid-template-columns .5s cubic-bezier(.2,.8,.2,1),column-gap .5s cubic-bezier(.2,.8,.2,1);">
             <div style="min-width:0;min-height:0;box-sizing:border-box;padding-left:{{ qsLeftPadL }};display:flex;flex-direction:column;justify-content:center;">
@@ -1216,16 +1217,19 @@
                   </div>
                   <div key="{{ vhPageKey }}" class="vh-page" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:12px;padding:16px 22px 16px;">
                     <div style="flex:none;display:flex;flex-direction:column;gap:4px;">
-                      <div key="{{ vhBadgeKey }}" class="vh-say" style="display:flex;align-items:center;gap:8px;"><span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px 0 8px;border-radius:999px;background:{{ vhAccent }};color:#ffffff;font-size:13px;font-weight:700;white-space:nowrap;"><i class="ti {{ vhBadgeIcon }}" style="font-size:14px;"></i>{{ vhBadge }}</span><span style="font-size:14px;font-weight:600;color:{{ vhStageInk }};white-space:nowrap;">{{ vhStage }}</span></div>
+                      <div key="{{ vhBadgeKey }}" class="vh-say" style="display:flex;align-items:center;gap:8px;"><span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px 0 8px;border-radius:999px;background:{{ vhAccent }};color:#ffffff;font-size:13px;font-weight:700;white-space:nowrap;"><i class="ti {{ vhBadgeIcon }}" style="font-size:14px;"></i>{{ vhBadge }}</span><span style="font-size:14px;font-weight:600;color:{{ vhStageInk }};white-space:nowrap;">{{ vhStage }}</span><span onClick="{{ vhGotIt }}" class="vh-tip" role="button" tabindex="0" aria-label="Close explanation and submit the answer" style="position:relative;margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 14px 0 10px;border-radius:999px;border:1.5px solid #d0bfff;background:#ffffff;color:#5f3dc4;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;" style-hover="background:#f3f0ff;"><i class="ti ti-check" style="font-size:15px;"></i>Got it<span class="vh-tipbox">Close explanation and submit the answer</span></span></div>
                       <div style="font-size:20px;font-weight:700;line-height:1.35;color:#212529;letter-spacing:-.01em;text-wrap:pretty;">{{ vhTitle }}</div>
                     </div>
                     <div style="flex:1;min-height:0;border-radius:14px;background:#f8f9fa;padding:8px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;overflow:hidden;">
-                      <sc-if value="{{ vhLineOn }}" hint-placeholder-val="{{ false }}">
-                        <div style="width:100%;max-width:720px;"><div style="position:relative;width:100%;">
+                      <sc-if value="{{ vhFrOn }}" hint-placeholder-val="{{ false }}">
+                        <div style="flex:none;display:flex;align-items:center;justify-content:center;gap:{{ vhFrGap }};padding:{{ vhFrPad }};font-size:{{ vhFrFs }};font-weight:700;color:#212529;opacity:{{ vhFrOp }};transition:opacity .35s ease;"><span data-vhfr="a" style="display:inline-flex;flex-direction:column;align-items:center;padding:6px 14px;border-radius:16px;background:{{ vhHlABg }};box-shadow:{{ vhHlASh }};transition:background .3s ease, box-shadow .3s ease;"><span data-vhfn="a" style="padding:0 8px;border-radius:10px;background:{{ vhHlAnBg }};box-shadow:{{ vhHlAnSh }};transition:background .3s ease, box-shadow .3s ease;">{{ vhFrAN }}</span><span style="align-self:stretch;height:4px;margin:4px 0;border-radius:2px;background:#212529;"></span><span data-vhfd="a" style="padding:0 8px;border-radius:10px;background:{{ vhHlAdBg }};box-shadow:{{ vhHlAdSh }};transition:background .3s ease, box-shadow .3s ease;">{{ vhFrAD }}</span></span><span>+</span><span data-vhfr="b" style="display:inline-flex;flex-direction:column;align-items:center;padding:6px 14px;border-radius:16px;background:{{ vhHlBBg }};box-shadow:{{ vhHlBSh }};transition:background .3s ease, box-shadow .3s ease;"><span data-vhfn="b" style="padding:0 8px;border-radius:10px;background:{{ vhHlBnBg }};box-shadow:{{ vhHlBnSh }};transition:background .3s ease, box-shadow .3s ease;">{{ vhFrBN }}</span><span style="align-self:stretch;height:4px;margin:4px 0;border-radius:2px;background:#212529;"></span><span data-vhfd="b" style="padding:0 8px;border-radius:10px;background:{{ vhHlBdBg }};box-shadow:{{ vhHlBdSh }};transition:background .3s ease, box-shadow .3s ease;">{{ vhFrBD }}</span></span><sc-if value="{{ vhFrSumOn }}" hint-placeholder-val="{{ false }}"><span>=</span><span data-vhfr="sum" style="display:inline-flex;flex-direction:column;align-items:center;padding:6px 14px;border-radius:16px;background:{{ vhHlSBg }};box-shadow:{{ vhHlSSh }};transition:background .3s ease, box-shadow .3s ease;"><span data-vhfn="sum" style="padding:0 8px;border-radius:10px;background:{{ vhHlSnBg }};box-shadow:{{ vhHlSnSh }};transition:background .3s ease, box-shadow .3s ease;">{{ vhFrSN }}</span><span style="align-self:stretch;height:4px;margin:4px 0;border-radius:2px;background:#212529;"></span><span data-vhfd="sum" style="padding:0 8px;border-radius:10px;background:{{ vhHlSdBg }};box-shadow:{{ vhHlSdSh }};transition:background .3s ease, box-shadow .3s ease;">{{ vhFrSD }}</span></span></sc-if></div>
+                      </sc-if>
+                      <sc-if value="{{ vhLineShow }}" hint-placeholder-val="{{ false }}">
+                        <div style="width:100%;max-width:720px;animation:pfIn .6s cubic-bezier(.2,.8,.3,1) both;"><div style="position:relative;width:100%;">
                           <div style="position:absolute;left:{{ vhMidAP }};top:41%;transform:translate(-50%,-50%);font-size:18px;font-weight:700;color:#5f3dc4;white-space:nowrap;opacity:{{ vhAOp }};transition:opacity .4s ease {{ vhADelay }};">{{ vhALab }}</div>
                           <div style="position:absolute;left:{{ vhMidBP }};top:41%;transform:translate(-50%,-50%);font-size:18px;font-weight:700;color:#d9480f;white-space:nowrap;opacity:{{ vhBOp }};transition:opacity .4s ease {{ vhBDelay }};">{{ vhBLab }}</div>
                           <div style="position:absolute;left:{{ vhXAP }};top:11%;transform:translate(-50%,-50%);font-size:18px;font-weight:700;color:#5f3dc4;white-space:nowrap;opacity:{{ vhAOp }};transition:opacity .4s ease {{ vhADelay }};">{{ vhAVal }}</div>
-                          <div style="position:absolute;left:{{ vhXBP }};top:11%;transform:translate(-100%,-50%);font-size:18px;font-weight:700;color:#d9480f;white-space:nowrap;opacity:{{ vhBOp }};transition:opacity .4s ease {{ vhBDelay }};">{{ vhBVal }}</div>
+                          <div style="position:absolute;left:{{ vhXBP }};top:11%;transform:translate(-100%,-50%);font-size:18px;font-weight:700;color:#d9480f;white-space:nowrap;opacity:{{ vhBOp }};transition:opacity .4s ease {{ vhBDelay }};" data-vhmark="b">{{ vhBVal }}</div>
                           <div style="position:absolute;left:{{ vhXBP }};top:11%;transform:translate(8px,-50%);font-size:18px;font-weight:700;color:#2b8a3e;white-space:nowrap;opacity:{{ vhDoneOp }};transition:opacity .4s ease {{ vhBDelay }};">{{ vhMixed }}</div>
                           <svg viewBox="0 0 900 180" width="100%" style="display:block;overflow:visible;">
                             <rect x="{{ vhUnitX }}" y="102" width="{{ vhUnitW }}" height="36" rx="5" fill="#b197fc" style="opacity:{{ vhUnitOp }};transition:opacity .4s ease;" class="vh-pulse"></rect>
@@ -1250,28 +1254,27 @@
                     <div style="flex:none;display:flex;flex-direction:{{ vhRowDir }};align-items:center;gap:18px;min-height:56px;">
                       <sc-if value="{{ vhIsSteps }}" hint-placeholder-val="{{ false }}">
                         <div style="flex:none;display:flex;align-items:center;gap:16px;pointer-events:{{ vhPadPE }};position:relative;opacity:{{ vhPadOp }};transition:opacity .25s ease;">
-                          <sc-if value="{{ vhDemo }}" hint-placeholder-val="{{ false }}"><img src="spark-mascot-sm.png" alt="Sparkle" style="flex:none;width:52px;height:52px;object-fit:contain;opacity:{{ vhSparkOp }};transform:translateY({{ vhSparkY }});transition:opacity .35s ease, transform .5s cubic-bezier(.22,1,.36,1);filter:drop-shadow(0 6px 10px rgba(112,72,232,.25));"></sc-if>
                           <sc-if value="{{ vhInFrac }}" hint-placeholder-val="{{ false }}">
                             <div key="{{ vhShakeKey }}" class="{{ vhShakeCls }}" style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-                              <div onClick="{{ vhPickNum }}" style="width:66px;height:42px;box-sizing:border-box;border-radius:10px;background:{{ vhNumBg }};border:{{ vhNumBd }};display:grid;place-items:center;font-size:22px;font-weight:700;color:#212529;cursor:pointer;">{{ vhNum }}</div>
+                              <div data-vhbox="num" onClick="{{ vhPickNum }}" style="width:66px;height:42px;box-sizing:border-box;border-radius:10px;background:{{ vhNumBg }};border:{{ vhNumBd }};display:grid;place-items:center;font-size:22px;font-weight:700;color:#212529;cursor:pointer;">{{ vhNum }}</div>
                               <div style="width:78px;height:3px;border-radius:2px;background:#212529;"></div>
-                              <div onClick="{{ vhPickDen }}" style="width:66px;height:42px;box-sizing:border-box;border-radius:10px;background:{{ vhDenBg }};border:{{ vhDenBd }};display:grid;place-items:center;font-size:22px;font-weight:700;color:{{ vhDenInk }};cursor:pointer;">{{ vhDen }}</div>
+                              <div data-vhbox="den" onClick="{{ vhPickDen }}" style="width:66px;height:42px;box-sizing:border-box;border-radius:10px;background:{{ vhDenBg }};border:{{ vhDenBd }};display:grid;place-items:center;font-size:22px;font-weight:700;color:{{ vhDenInk }};cursor:pointer;">{{ vhDen }}</div>
                             </div>
                           </sc-if>
                           <sc-if value="{{ vhInNum }}" hint-placeholder-val="{{ false }}">
-                            <div key="{{ vhShakeKey }}" class="{{ vhShakeCls }}" style="display:flex;align-items:center;gap:8px;"><div style="min-width:96px;height:50px;padding:0 12px;box-sizing:border-box;border-radius:10px;background:#f3f0ff;border:2.5px solid #7048e8;display:grid;place-items:center;font-size:22px;font-weight:700;color:#212529;">{{ vhNum }}</div><sc-if value="{{ vhHasUnit }}" hint-placeholder-val="{{ false }}"><span style="font-size:18px;font-weight:600;color:#495057;">{{ vhUnit }}</span></sc-if></div>
+                            <div key="{{ vhShakeKey }}" class="{{ vhShakeCls }}" style="display:flex;align-items:center;gap:8px;"><div data-vhbox="num" style="min-width:96px;height:50px;padding:0 12px;box-sizing:border-box;border-radius:10px;background:#f3f0ff;border:2.5px solid #7048e8;display:grid;place-items:center;font-size:22px;font-weight:700;color:#212529;">{{ vhNum }}</div><sc-if value="{{ vhHasUnit }}" hint-placeholder-val="{{ false }}"><span style="font-size:18px;font-weight:600;color:#495057;">{{ vhUnit }}</span></sc-if></div>
                           </sc-if>
                           <sc-if value="{{ vhPadOn }}" hint-placeholder-val="{{ false }}">
                             <div style="display:grid;grid-template-columns:repeat(6,42px);gap:5px;">
                               <sc-for list="{{ vhKeys }}" as="k" hint-placeholder-count="12">
-                                <button onClick="{{ k.go }}" style="height:42px;border:1px solid #dee2e6;border-radius:9px;background:#ffffff;color:#212529;font:inherit;font-size:18px;font-weight:600;cursor:pointer;opacity:{{ k.op }};display:grid;place-items:center;" style-hover="background:#f8f9fa;" style-active="background:#f1f3f5;"><sc-if value="{{ k.isIcon }}" hint-placeholder-val="{{ false }}"><i class="ti {{ k.icon }}" style="font-size:17px;color:#495057;"></i></sc-if>{{ k.label }}</button>
+                                <button data-vhkey="{{ k.k }}" onClick="{{ k.go }}" style="height:42px;border:1px solid #dee2e6;border-radius:9px;background:#ffffff;color:#212529;font:inherit;font-size:18px;font-weight:600;cursor:pointer;opacity:{{ k.op }};display:grid;place-items:center;" style-hover="background:#f8f9fa;" style-active="background:#f1f3f5;"><sc-if value="{{ k.isIcon }}" hint-placeholder-val="{{ false }}"><i class="ti {{ k.icon }}" style="font-size:17px;color:#495057;"></i></sc-if>{{ k.label }}</button>
                               </sc-for>
                             </div>
                           </sc-if>
                           <sc-if value="{{ vhInChoice }}" hint-placeholder-val="{{ false }}">
                             <div key="{{ vhShakeKey }}" class="{{ vhShakeCls }}" style="display:flex;flex-wrap:wrap;gap:8px;max-width:560px;">
                               <sc-for list="{{ vhChoices }}" as="c" hint-placeholder-count="2">
-                                <button onClick="{{ c.go }}" style="display:flex;align-items:center;gap:10px;min-height:46px;padding:6px 14px 6px 8px;box-sizing:border-box;border:{{ c.bd }};border-radius:12px;background:{{ c.bg }};color:{{ c.ink }};font:inherit;font-size:16px;font-weight:600;text-align:left;cursor:pointer;"><span style="flex:none;width:26px;height:26px;border-radius:7px;background:{{ c.kb }};color:{{ c.kbInk }};display:grid;place-items:center;font-size:13px;font-weight:700;">{{ c.n }}</span>{{ c.t }}</button>
+                                <button data-vhopt="{{ c.idx }}" onClick="{{ c.go }}" style="display:flex;align-items:center;gap:10px;min-height:46px;padding:6px 14px 6px 8px;box-sizing:border-box;border:{{ c.bd }};border-radius:12px;background:{{ c.bg }};color:{{ c.ink }};font:inherit;font-size:16px;font-weight:600;text-align:left;cursor:pointer;"><span style="flex:none;width:26px;height:26px;border-radius:7px;background:{{ c.kb }};color:{{ c.kbInk }};display:grid;place-items:center;font-size:13px;font-weight:700;">{{ c.n }}</span>{{ c.t }}</button>
                               </sc-for>
                             </div>
                           </sc-if>
@@ -1310,7 +1313,7 @@
                 <div style="min-height:0;overflow:hidden;display:flex;justify-content:center;align-items:center;gap:16px;padding:8px 12px 4px;margin:-8px -12px 0;">
                   <div style="display:flex;justify-content:center;min-width:180px;">
                   <sc-if value="{{ qsUnsubmitted }}" hint-placeholder-val="{{ true }}">
-                    <button onClick="{{ qsSubmit }}" class="cc-button pq-btn {{ qsMainLift }}" data-cc-kind="control" data-state="{{ qsMainSubState }}" disabled="{{ qsMainSubOff }}" style="min-width:180px;box-shadow:{{ qsMainSubSh }};font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px;"><sc-if value="{{ qsSubIco }}" hint-placeholder-val="{{ false }}"><i class="ti ti-rotate" style="font-size:19px;"></i></sc-if>{{ qsSubmitLabel }}</button>
+                    <button onClick="{{ qsSubmit }}" class="cc-button pq-btn {{ qsMainLift }} {{ qsSubShkCls }}" data-cc-kind="control" data-state="{{ qsMainSubState }}" disabled="{{ qsMainSubOff }}" style="min-width:180px;box-shadow:{{ qsMainSubSh }};font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px;"><sc-if value="{{ qsSubIco }}" hint-placeholder-val="{{ false }}"><i class="ti ti-rotate" style="font-size:19px;"></i></sc-if>{{ qsSubmitLabel }}</button>
                   </sc-if>
                   <sc-if value="{{ qsShowNext }}" hint-placeholder-val="{{ false }}">
                     <button onClick="{{ qsNext }}" class="pq-btn" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;min-width:180px;min-height:64px;padding:20px 34px;border:none;border-radius:var(--cc-r-shape,20px);background:#f1f3f5;color:#495057;font:inherit;font-size:var(--mantine-h4-font-size,18px);line-height:1.25;font-weight:800;cursor:pointer;white-space:nowrap;box-shadow:0 3px 0 #ced4da;transition:transform .1s ease,box-shadow .1s ease,background .15s ease;" style-hover="background:#e9ecef;" style-active="transform:translateY(3px);box-shadow:0 0 0 #ced4da;">{{ qsNextLabel }}<i class="ti ti-arrow-right" style="font-size:18px;"></i></button>
@@ -2639,7 +2642,7 @@ class Component extends DCLogic {
     const prev=this._vh(), same=prev.qIdx===(st.qsIdx||0) && prev.mode && prev.mode!=='offer';
     if(!this._vhKey){ this._vhKey=e=>this._vhOnKey(e); window.addEventListener('keydown', this._vhKey); this._vhRs=()=>{ if(this._vh().open) this.forceUpdate(); }; window.addEventListener('resize', this._vhRs); }
     if(same && prev.ended) intro='Still tricky? Let\u2019s go through it again.';
-    const S0=H.steps[0]; this._vhPush(intro);
+    this._vhAnn=null; this._vhWr=null; const S0=H.steps[0]; this._vhPush(intro);
     { const fb=document.getElementById('qsFbBox'); if(fb){ const r=fb.getBoundingClientRect(); this._vhMorph={top:r.top,left:r.left,right:r.right,bottom:r.bottom,txt:fb.innerHTML}; } else this._vhMorph=null; } this._vhFlipped=false;
     try{ const dz=document.getElementById('qsDesign'), qt=document.getElementById('qsQText'), dr=dz.getBoundingClientRect(), sc=(dr.height/720)||1;
       this._vhTopPx = qt ? Math.max(120, Math.round((qt.getBoundingClientRect().bottom-dr.top)/sc + 14)) : 170;
@@ -2677,7 +2680,7 @@ class Component extends DCLogic {
     if(v.backDone && v.backTo===-1){ return; }
     const C=v.cur0||{}; const back=v.review ? (v.backTo!=null ? v.backTo : mx) : i;
     const T=H.steps[back]; this._vhSet({ mode:'steps', review:false, step:back, num:C.num||'', den:C.den||(T.den?String(T.den):''), box:C.box||'num', pick:C.pick!=null?C.pick:null, wrong:C.wrong||0, coach:'', tone:'info', vis:T.vis, locked:false, cur0:null }); }
-  _vhClose(forget){ clearTimeout(this._vhT); clearTimeout(this._vhP);
+  _vhClose(forget){ clearTimeout(this._vhT); clearTimeout(this._vhP); if(!this._sparkSolving) this._pilotHide();
     clearTimeout(this._vhDT); this._vhSet(v=>({wide:false, playing:false, open: forget ? false : v.open, finished: forget ? true : v.finished})); }
   _vhReopen(){ const vq=this._vh().qIdx; if(vq!=null && (this.state.qsIdx||0)!==vq && this._qsGo) this._qsGo(vq); this._vhShowChat(); this._vhSet(v=>({open:true, wide:true, playing: v.mode==='auto' && !v.ended}), ()=>{ const v=this._vh(); if(v.mode==='auto' && v.playing) this._vhTick(); }); }
   _vhKeyPress(k){ const v=this._vh(); if(v.mode!=='steps' || v.locked) return; const S=this._vhH().steps[v.step];
@@ -2703,7 +2706,7 @@ class Component extends DCLogic {
       this._vhSet({coach:S.ok||'That\u2019s it.', tone:'ok', locked:true});
       this._vhT=setTimeout(()=>this._vhSet({maxStep:Math.max(v.maxStep||0,v.step+1), step:v.step+1, num:'', den:nx.den?String(nx.den):'', box:'num', pick:null, wrong:0, coach:'', tone:'info', vis:nx.vis, locked:false}), 1400); return; }
     const w=v.wrong+1;
-    if(w>=2){ this._vhSet({wrong:w, coach:'No worries. Let\u2019s watch the whole thing, then it\u2019ll click.', tone:'warn', shake:v.shake+1, locked:true}); this._vhT=setTimeout(()=>this._vhAuto(true), 1700); return; }
+    if(w>=2){ this._vhSet({wrong:w, coach:'Let\u2019s watch Spark do it.', tone:'warn', shake:v.shake+1, locked:true}); this._vhT=setTimeout(()=>this._vhAuto(true), 1700); return; }
     this._vhSet({wrong:w, coach:S.hint||'Not quite. Look at the hint again.', tone:'warn', shake:v.shake+1, pick:null}); }
   _vhCheck(){ const v=this._vh(), H=this._vhH(); if(!H || v.mode!=='steps' || v.locked) return; const S=H.steps[v.step];
     if(S.input==='ack'){ this._vhGo(v,H,true); return; }
@@ -2721,26 +2724,126 @@ class Component extends DCLogic {
       this._vhT=setTimeout(()=>this._vhSet({maxStep:Math.max(v.maxStep||0,v.step+1), step:v.step+1, num:'', den:nx.den?String(nx.den):'', box:'num', wrong:0, coach:nx.cap, tone:'info', vis:nx.vis, locked:false}), 1500);
       return; }
     const trap=(S.traps||[]).find(t=>t.n===n && t.d===d), w=v.wrong+1;
-    if(w>=2){ this._vhSet({wrong:w, coach:'No worries. Watch me do the whole thing, then it\u2019ll click.', tone:'warn', shake:v.shake+1, locked:true});
+    if(w>=2){ this._vhSet({wrong:w, coach:'Let\u2019s watch Spark do it.', tone:'warn', shake:v.shake+1, locked:true});
       this._vhT=setTimeout(()=>this._vhAuto(true), 1700); return; }
     this._vhSet({wrong:w, coach: trap ? trap.msg : S.hint, tone:'warn', shake:v.shake+1, box: (!S.den && trap && trap.n===S.ans[0]) ? 'den' : 'num'}); }
   _vhAuto(fromSteps){ clearTimeout(this._vhT); clearTimeout(this._vhP); clearTimeout(this._vhDT); const H=this._vhH(); if(!H) return;
-    this._vhSet({mode:'steps', demo:true, wide:true, open:true, doneSent:false, playing:true, ended:false, solved:false, review:false, viaSteps:!!fromSteps, locked:true, answers:{}, maxStep:0, wrong:0, tone:'info'}, ()=>this._vhDemoStep(0)); }
+    this._vhSet({mode:'steps', demo:true, wide:true, open:true, doneSent:false, playing:true, ended:false, solved:false, review:false, viaSteps:!!fromSteps, locked:true, answers:{}, maxStep:0, step:0, num:'', den:'', pick:null, wrong:0, tone:'info', coach:'', sparkOn:false, ds:{stage:'frac', show:false, hl:null, hops:0, sum:false, done:false}}, ()=>{ this.setState({qsFocus:null});
+      this._vhSparkSay('Okay, watch me! I\u2019ll start again from step 1.');
+      this._vhDemoWait(2200, ()=>this._vhDemoStep(0)); }); }
   _vhDemoWait(ms,fn){ clearTimeout(this._vhP); this._vhP=setTimeout(()=>{ const v=this._vh(); if(!v.open || !v.demo) return; if(!v.playing){ this._vhResume=fn; return; } fn(); }, ms); }
+  /* Spark is a free-floating mascot: it glides to whatever it is about to use, taps it, then the value lands. */
+  get _PILOT_TR(){ return 'transform .85s cubic-bezier(.45,0,.2,1),opacity .35s ease'; }
+  _pilot(){ let p=document.getElementById('vhPilot'); if(p) return p; p=document.createElement('img'); p.id='vhPilot'; p.src='spark-mascot-sm.png'; p.alt='Spark';
+    p.style.cssText='position:fixed;left:0;top:0;width:54px;height:54px;object-fit:contain;z-index:9999;pointer-events:none;opacity:0;transform:translate(-120px,-120px);filter:drop-shadow(0 8px 12px rgba(253,126,20,.35));'; p.style.transition=this._PILOT_TR;
+    document.body.appendChild(p); return p; }
+  _pilotAt(cx, bottom){ const p=this._pilot(), x=cx-27, y=bottom-48;
+    if(p.style.opacity!=='1'){ p.style.transition='none'; p.style.transform='translate('+(x-160)+'px,'+(y+120)+'px)'; void p.offsetWidth; p.style.transition=this._PILOT_TR; }
+    p.style.opacity='1'; p.style.transform='translate('+x+'px,'+y+'px)'; }
+  _pilotGo(el){ if(!el) return; const r=el.getBoundingClientRect(); this._pilotAt(r.left+Math.min(r.width/2, 140), r.top+8); }
+  _pilotTap(el){ try{ const p=this._pilot(); p.animate([{scale:'1'},{scale:'.82'},{scale:'1'}],{duration:260}); if(el) el.animate([{transform:'scale(1)'},{transform:'scale(.93)'},{transform:'scale(1)'}],{duration:260}); }catch(e){} }
+  _pilotHide(){ const p=document.getElementById('vhPilot'); if(!p) return; p.style.opacity='0'; clearTimeout(this._pilotRm); this._pilotRm=setTimeout(()=>{ const q=document.getElementById('vhPilot'); if(q && q.style.opacity==='0') q.remove(); }, 600); }
+  _vhSparkSay(text, extra){ const on=this._sparkOn(); try{ this._pushChat(on?'spark':'max', text, extra||{}); if(this._speak) this._speak(text, on?'spark':'max'); this._vhScrollEnd(); }catch(e){} }
+  /* A spot on the number line, in screen px: v is a count of wholes from 0. */
+  _linePt(v){ const sv=document.querySelector('#qsDesign svg'); if(!sv) return null; const r=sv.getBoundingClientRect(), k=r.width/900, U=(860-40)/7; return {x:r.left+(40+U*v)*k, y:r.top+118*k}; }
+  /* Spark's script for step i: where it goes, what it says there, what it enters. Written in Spark's own voice. */
+  _vhScript(i, H, S){ const kind=S.input||'frac', ans=S.ans||[0,1], preDen=S.den?String(S.den):'';
+    const keyTap=(b,c)=>({el:'[data-vhkey="'+c+'"]', set:[b,c], tap:true, fly:750, hold:260}), pickBox=(b,say)=>({el:'[data-vhbox="'+b+'"]', say, tap:true, fn:()=>this._vhSet({box:b}), fly:900, hold:420});
+    const enter=(b,n,say)=>[pickBox(b,say)].concat([...String(n)].map(c=>keyTap(b,c))), digits=(n)=>enter('num',n);
+    if(H.line){ const D=H.a[1], u=D===9?'ninths':'equal parts', an=H.a[0], bn=H.b[0], sm=H.sum[0], ds=p=>()=>this._vhDs(p);
+      const nums=(n,say)=>enter('num',n,say), dens=(n,say)=>enter('den',n,say);
+      if(i===0) return { acts:[
+        {el:'[data-qf="a"]', say:'Here are two fractions: '+an+' over '+D+', and '+bn+' over '+D+'. Let me look at them closely.', fn:()=>this.setState({qsFocus:'a'}), hold:2200},
+        {el:'[data-qf="b"]', fn:()=>this.setState({qsFocus:'b'}), fly:900, hold:1500},
+        {el:'[data-vhfr="a"]', say:'Let me bring them over to my board.', fn:()=>{ this.setState({qsFocus:null}); this._vhDs({show:true}, ()=>requestAnimationFrame(()=>this._fracFlyIn())); }, fly:1000, hold:1900},
+        {el:'[data-vhfd="a"]', say:'Now look at the bottom number. It’s '+D+' in both. Each whole is split into '+D+' equal parts.', fn:ds({hl:'dens'}), fly:900, hold:3400},
+        {el:'[data-vhfd="b"]', say:'Both fractions count '+u+'. That’s our unit!', fly:800, hold:2000}
+      ].concat(dens(D, 'I’ll write the bottom number first: '+D+'.'), nums(1, 'And one part of it is 1 over '+D+'.')), post:'' };
+      if(i===1) return { acts:[
+        {pre:ds({stage:'line', hl:null, hops:0}), preMs:700, pt:0, say:'Now let’s see them on a number line. Each whole is split into '+D+' parts, just like our unit.', fly:1000, hold:2600},
+        {pre:ds({hl:'an'}), preMs:300, el:'[data-vhfn="a"]', say:an+' '+u+' means '+an+' jumps of one '+(D===9?'ninth':'part')+'.', fly:900, hold:2000},
+        {hop:[0,an,150], fn:ds({hl:null}), hold:900, say:'One, two, three… all the way to '+an+'.'},
+        {pre:ds({hl:'bn'}), preMs:300, el:'[data-vhfn="b"]', say:'Now the second fraction: '+bn+' '+u+'. That’s '+bn+' more jumps.', fly:900, hold:2200},
+        {hop:[an,sm,95], fn:ds({hl:null}), hold:700, say:'Here we go, '+bn+' more!'},
+        {pt:sm/D, say:'I landed on '+sm+'. That’s '+sm+' '+u+' in all!', fn:ds({hl:'sum'}), fly:500, hold:2200},
+        {el:'[data-vhmark="b"]', say:'I’ll take the '+sm+' from here.', fly:900, hold:1300}
+      ].concat(nums(sm)), post:'So there are '+sm+' '+u+' altogether.' };
+      return { acts:[
+        {pre:ds({sum:true, hl:'sum'}), preMs:600, el:'[data-vhfr="sum"]', say:'So '+an+' over '+D+' plus '+bn+' over '+D+' is '+sm+' over '+D+'. The bottom stays '+D+', because we’re still counting '+u+'.', fly:1100, hold:3600}
+      ].concat(nums(sm, 'I’ll write '+sm+' on top…'), dens(D, '…and '+D+' on the bottom.')), post:'Done! We just added the counts.' }; }
+    const q={el:'#qsQText', say: S.cap ? 'Let me think. '+S.cap : 'Let me read the question again.'};
+    if(kind==='choice'){ const sweep=(S.opts||[]).filter(o=>o.i!==S.ans).slice(0,2).map(o=>({el:'[data-vhopt="'+o.i+'"]', fly:700, hold:350})), pick=(S.opts||[]).find(o=>o.i===S.ans);
+      return { acts:[q].concat(sweep, [{el:'[data-vhopt="'+S.ans+'"]', say:'I’ll go with “'+(pick?pick.t:'this one')+'”.', pick:S.ans, tap:true, fly:800, hold:900}]), post:S.ok||'' }; }
+    if(kind==='num') return { acts:[q].concat(digits(S.ans)), post:S.ok||'' };
+    return { acts:[q], post:'' }; }
+  _vhRun(list, done){ const go=k=>{ if(k>=list.length){ done&&done(); return; } const a=list[k];
+      const go2=()=>{ if(a.say) this._vhSparkSay(a.say);
+        if(a.hop){ const [f,t,ms]=a.hop, pt=this._linePt(f/this._vhH().a[1]); if(pt) this._pilotAt(pt.x, pt.y);
+          this._vhDemoWait(a.fly||900, ()=>{ if(a.fn) a.fn(); this._vhHop(f,t,ms,()=>this._vhDemoWait(a.hold||500, ()=>go(k+1))); }); return; }
+        let tgt=null; if(a.pt!=null){ const p=this._linePt(a.pt); if(p) this._pilotAt(p.x, p.y); } else if(a.el){ tgt=document.querySelector(a.el); this._pilotGo(tgt); }
+        this._vhDemoWait(a.fly||900, ()=>{ if(a.tap) this._pilotTap(tgt); if(a.fn) a.fn();
+          if(a.set){ const v=this._vh(); this._vhSet({box:a.set[0], [a.set[0]]:String(v[a.set[0]]||'')+a.set[1]}); }
+          if(a.pick!=null) this._vhSet({pick:a.pick});
+          this._vhDemoWait(a.hold || (a.say ? Math.max(1500, a.say.length*45) : 450), ()=>go(k+1)); }); };
+      if(a.pre){ a.pre(); this._vhDemoWait(a.preMs||500, go2); } else go2(); }; go(0); }
+  /* what the board shows during the watch-through: which stage, which part is lit, how many hops are drawn */
+  _vhDs(p, cb){ this._vhSet(v=>({ds:Object.assign({}, v.ds||{}, p)}), cb); }
+  /* Spark hops along the number line one ninth at a time, drawing each hop as it lands. */
+  _vhHop(from, to, ms, next){ const D=this._vhH().a[1], p=this._pilot(), tr=this._PILOT_TR; let k=from; p.style.transition='transform '+(ms*0.9/1000)+'s linear, opacity .35s ease';
+    const step=()=>{ if(k>=to){ p.style.transition=tr; next(); return; } k++; const pt=this._linePt(k/D); if(pt) this._pilotAt(pt.x, pt.y); this._vhDs({hops:k});
+      try{ p.animate([{translate:'0 0'},{translate:'0 -14px', offset:.5},{translate:'0 0'}],{duration:ms}); }catch(e){} this._vhDemoWait(ms, step); }; step(); }
+  /* the two given fractions travel from the question into the board */
+  _fracFlyIn(){ const dz=document.getElementById('qsDesign'); if(!dz) return; const sc=(dz.getBoundingClientRect().height/720)||1;
+    ['a','b'].forEach(k=>{ const q=document.querySelector('[data-qf="'+k+'"]'), p=document.querySelector('[data-vhfr="'+k+'"]'); if(!q||!p) return;
+      const a=q.getBoundingClientRect(), b=p.getBoundingClientRect(), dx=(a.left+a.width/2-b.left-b.width/2)/sc, dy=(a.top+a.height/2-b.top-b.height/2)/sc, z=a.width/b.width;
+      try{ p.animate([{transform:'translate('+dx+'px,'+dy+'px) scale('+z+')'},{transform:'none'}],{duration:900, easing:'cubic-bezier(.22,1,.36,1)'}); }catch(e){} }); }
   _vhDemoStep(i){ const H=this._vhH(), S=H && H.steps[i]; if(!S){ return; }
-    const ans=S.ans||[0,1], preDen=S.den?String(S.den):'';
+    const preDen=S.den?String(S.den):'';
     this._vhSet({step:i, maxStep:i, num:'', den:preDen, box:'num', pick:null, coach:S.cap||'', tone:'info', vis:S.vis, sparkOn:true});
-    this._vhSay(i===0 ? 'Watch Sparkle solve it. '+(S.hint||S.ask||'') : (S.hint||S.ask||''));
-    const nTxt=String(ans[0]), dTxt=preDen ? '' : String(ans[1]);
-    const seq=[...nTxt].map(ch=>['num',ch]).concat([...dTxt].map(ch=>['den',ch]));
-    const type=(k)=>{ if(k>=seq.length){ this._vhDemoWait(500, ()=>this._vhDemoOk(i)); return; }
-      const [box,ch]=seq[k], v=this._vh(); this._vhSet({box, [box]:String(v[box]||'')+ch}); this._vhDemoWait(380, ()=>type(k+1)); };
-    this._vhDemoWait(1900, ()=>type(0)); }
-  _vhDemoOk(i){ const H=this._vhH(), S=H.steps[i], v=this._vh(), last=i>=H.steps.length-1;
-    const ans=Object.assign({}, v.answers||{}); ans[i]={num:v.num, den:v.den};
-    this._vhSet({answers:ans, coach:S.ok||'That\u2019s it.', tone:'ok', sparkOn:false}); this._vhSay(S.ok||'That\u2019s it.');
-    this._vhDemoWait(2200, ()=>{ if(!last){ this._vhDemoStep(i+1); return; }
-      this._vhSet({mode:'done', demo:false, maxStep:H.steps.length, ended:true, solved:false, watched:true, locked:true, playing:false, coach:(H.done||{}).cap||'', tone:'ok', vis:(H.done||{}).vis}, ()=>this._vhSendDone()); }); }
+    const sc=this._vhScript(i, H, S); this._vhPost=sc.post;
+    this._vhRun(sc.acts, ()=>this._vhDemoWait(500, ()=>this._vhDemoOk(i))); }
+  _vhDemoOk(i){ const H=this._vhH(), S=H.steps[i], v=this._vh(), last=i>=H.steps.length-1, post=this._vhPost||'';
+    const ans=Object.assign({}, v.answers||{}); ans[i]={num:v.num, den:v.den, pick:v.pick};
+    this._vhSet({answers:ans, coach:S.ok||'That’s it.', tone:'ok', sparkOn:false}); if(post) this._vhSparkSay(post);
+    this._vhDemoWait(Math.max(1800, post.length*45), ()=>{ if(!last){ this._vhDemoStep(i+1); return; } this._vhDemoDone(); }); }
+  /* After the last step the entered answer stays on the board; Spark points at it, carries it into the real question, and hands it in. */
+  _vhDemoDone(){ const H=this._vhH(), q=this._qsQ(), num=q && q.type==='numeric' && q.answer!=null, one=q && (q.type==='single'||q.type==='truefalse'||!q.type) && q.opts && typeof q.ans==='number';
+    if(!(num||one)){ this._pilotHide(); this._vhSet({mode:'done', demo:false, maxStep:H.steps.length, ended:true, solved:false, watched:true, locked:true, playing:false, coach:(H.done||{}).cap||'', tone:'ok', vis:(H.done||{}).vis}, ()=>this._vhSendDone()); return; }
+    const txt=num ? String(q.answer) : String(q.opts[q.ans]);
+    this._vhSet({maxStep:H.steps.length, tone:'ok', coach:(H.done||{}).cap||'', vis:(H.done||{}).vis});
+    this._vhRun([{pre:()=>this._vhDs({hl:'ans'}), preMs:200, el:'[data-vhbox="num"]', say: num ? 'That’s my answer: '+txt+'. Now I’ll hand it in.' : 'I’ll go with “'+txt+'”. Now I’ll hand it in.', fly:900, hold:2300}],
+      ()=>{ this._sparkSolving=true; this.setState({qsFocus:null}); this._vhFinish('retry'); if(num) this.setState({qsVal:txt, qsSparkHl:true}); else this.setState({qsPick:q.ans});
+        setTimeout(()=>this._sparkAnswer(q, txt, num), 500); }); }
+  _sparkAnswer(q, txt, num){ const go=(el,next)=>{ this._pilotGo(el); setTimeout(()=>next(el), 950); };
+    const submit=()=>{ const b=[...document.querySelectorAll('#qsDesign button')].find(x=>/^Submit/.test((x.textContent||'').trim()));
+      go(b, el=>{ this._pilotTap(el); setTimeout(()=>{ this.setState({qsSparkHl:false}); this._qsSubmit(); setTimeout(()=>this._sparkSolved(), 1800); }, 280); }); };
+    if(num) go(document.querySelector('#qsDesign input'), ()=>setTimeout(submit, 1100));
+    else { const el=[...document.querySelectorAll('#qsBody *')].filter(e=>(e.textContent||'').trim()===txt).pop(); go(el, ()=>setTimeout(submit, 900)); } }
+  _sparkSolved(){ this._sparkSolving=false; this._pilotHide(); const q=this._qsQ(), H=this._vhH(), variant=!!(q && q.help && H && H.line);
+    this._vhSparkSay('That\u2019s how I solved it! Want to try one like it?', this._sparkOn() ? {tryBtn:true, tryLabel: variant?'Try one like it':'Next question'} : null); }
+  _vhTryLike(c){ this._tryUsed=this._tryUsed||{}; if(this._tryUsed[c.id]) return; this._tryUsed[c.id]=true;
+    this._pushChat('user', c.tryLabel||'Try one like it');
+    const q=this._qsQ(), idx=this.state.qsIdx||0;
+    const HH=this._vhH();
+    if(q && q.help && HH && HH.line){
+      this._fracBase=this._fracBase||JSON.parse(JSON.stringify(q)); const cur=q.help.a[0];
+      let an, bn, n=0; do{ an=12+Math.floor(Math.random()*18); bn=an+2+Math.floor(Math.random()*20); n++; }while(n<200 && ((an+bn)%9===0 || an+bn>61 || an+bn<19 || an===cur));
+      Object.assign(q, this._fracVariant(this._fracBase, an, bn)); if(this._vhCache) this._vhCache.delete(q);
+      const T={...(this.state.qsTries||{})}; T[idx]=1;
+      this.setState({qsSubmitted:false, qsVal:'', qsPick:null, qsTries:T, qsGuideAt:-1, qsHintFor:-1, bgFx:'', vh:{open:false}});
+      this._vhSparkSay('Same idea, new numbers. Now it\u2019s your turn!'); }
+    else { this._vhSparkSay('Next one. Your turn!'); this._qsNext(); } }
+  /* Same question, new numbers (ninths kept): every number and sentence is rewritten from the original. */
+  _fracVariant(base, an, bn){ const s=an+bn, w=Math.floor(s/9), r=s%9, M={17:an,41:bn,58:s};
+    const fix=x=>{ if(typeof x==='number') return x===24 ? bn-an : x===48 ? s-10 : (M[x]!=null ? M[x] : x);
+      if(typeof x==='string'){ if(/Check the ones/.test(x)) return 'Close. Check the ones and the tens again.';
+        return x.replace(/\b(17|41|58)\b/g,m=>M[m]).replace(/\b6([  ])4\/9/g,(m,sp)=>w+sp+r+'/9').replace(/\b6 wholes and 4 ninths/g,w+' wholes and '+r+' ninths'); }
+      if(Array.isArray(x)) return x.map(fix);
+      if(x && typeof x==='object'){ const o={}; for(const k in x) o[k]=fix(x[k]); return o; } return x; };
+    const v=fix(base); v.help.mixed=[w,r,9]; return v; }
+  _vhWatchChat(){ const v=this._vh(); if(!v.open || v.demo || v.mode!=='steps' || v.review) return; const H=this._vhH(); if(!H) return; const S=H.steps[v.step]; if(!S) return;
+    const k=v.qIdx+':'+v.step; if(this._vhAnn!==k){ this._vhAnn=k; this._vhPush('Step '+((v.step||0)+1)+'. '+(S.ask||S.cap||'')); }
+    const w=v.wrong||0, wk=k+':'+w; if(w<1) this._vhWr=null; else if(w<2 && this._vhWr!==wk){ this._vhWr=wk; if(v.coach) this._vhPush(/^(Not quite|No worries)/i.test(v.coach) ? v.coach : 'Not quite. '+v.coach); } }
   _vhSay(text){ try{ this._pushChat('max', text); if(this._speak) this._speak(text,'max'); }catch(e){} }
   _vhTick(){}
   _vhToggle(){ const v=this._vh(); if(v.mode==='done' && v.watched){ this._vhAuto(v.viaSteps); return; }
@@ -2758,10 +2861,10 @@ class Component extends DCLogic {
     const R={ vhOpen:open, vhWide:wide, vhNarrow:!wide, chatLayerW:'372px', vhChipText: v.ended ? 'See the solution' : 'Continue step-by-step',
       vhQBlur: wide ? 'blur(6px) saturate(.85)' : 'none', vhQOp: wide ? '.6' : '1', vhQPE: wide ? 'none' : 'auto',
       vhMiniIcon: v.ended ? (v.solved?'ti-circle-check':'ti-player-play') : 'ti-stairs-up',
-      vhMiniText: v.ended ? (v.solved ? 'Solved together: 58/9' : 'Watched the full solution') : (v.mode==='auto' ? 'Watching the solution' : 'Step '+((v.step||0)+1)+' of 3 \u00b7 paused'),
+      vhMiniText: v.ended ? (v.solved ? 'Solved together: '+(H.line?H.sum[0]+'/'+H.sum[1]:'') : 'Watched the full solution') : (v.mode==='auto' ? 'Watching the solution' : 'Step '+((v.step||0)+1)+' of 3 \u00b7 paused'),
       vhMiniCta: v.ended ? 'Open' : 'Continue', vhCols: split ? 'minmax(0,1.4fr) minmax(0,1fr)' : 'minmax(0,1fr)', vhTipDisp: split||short ? 'none' : 'block',
       vhKeyW: short ? '56px' : '64px', vhKeyH: short ? '44px' : '50px', vhChipOn: live && !wide && !v.finished && !!v.mode && v.mode!=='offer' && v.mode!=='self',
-      vhReopen:()=>this._vhReopen(), vhClose:()=>this._vhClose(false), vhForget:()=>this._vhClose(true) };
+      vhGotIt:()=>this._vhFinish('retry'), vhReopen:()=>this._vhReopen(), vhClose:()=>this._vhClose(false), vhForget:()=>this._vhClose(true) };
     if(!H || !live) return Object.assign(R,{vhIsOffer:false, vhRail:[], vhWork:[], vhChoices:[], vhBars:[], vhAct:null, vhWide:false, vhIsWork:false, vhTicks:[], vhLabels:[], vhHops:[], vhEq:[], vhKeys:[], vhStepDots:[], vhFrames:[]});
     const mode=v.mode||'offer', S=H.steps[Math.min(v.step||0,H.steps.length-1)];
     const left=this._vhTriesLeft();
@@ -2786,7 +2889,7 @@ class Component extends DCLogic {
         icon: k==='del' ? 'ti-backspace' : (v.box==='den' ? 'ti-arrow-up' : 'ti-arrow-down'),
         op: k==='swap' && (S.den || S.input==='num') ? '.3' : '1', go:()=>this._vhKeyPress(k) })),
       vhCheck:()=>this._vhCheck(), vhCheckBg: (v.num && (S.den||v.den) && !v.locked) ? '#7048e8' : '#e9ecef', vhCheckInk:(v.num && (S.den||v.den) && !v.locked) ? '#ffffff' : '#adb5bd', vhCheckSh:(v.num && (S.den||v.den) && !v.locked) ? '0 10px 20px -10px rgba(112,72,232,.8)' : 'none',
-      vhPadPE: v.locked ? 'none' : 'auto', vhPadOp: v.locked ? '.55' : '1',
+      vhPadPE: v.locked ? 'none' : 'auto', vhPadOp: (v.locked && !v.demo) ? '.55' : '1',
       vhPlayIcon: v.ended ? 'ti-rotate-clockwise' : v.playing ? 'ti-player-pause-filled' : 'ti-player-play-filled',
       vhPlayLabel: v.ended ? 'Replay' : v.playing ? 'Pause' : 'Play', vhCtrlDisp: v.ended ? 'none' : 'flex',
       vhToggle:()=>this._vhToggle(), vhReplay:()=>this._vhAuto(v.viaSteps),
@@ -2798,6 +2901,7 @@ class Component extends DCLogic {
     });
     /* number line: 0..7 in ninths */
     const x0=40, x1=860, Y=118, U=(x1-x0)/7, N=U/9, D=H.line?H.a[1]:9;
+    const ds=v.ds||{}, dm=!!(v.demo && H.line);
     const vis=v.vis||'none', rank={none:0,unit:1,a:2,b:3,done:4}[vis]||0;
     { const auto = mode==='auto' || (mode==='done' && !v.solved);
       R.vhPageKey = auto ? 'auto' : 'st'+(v.step||0);
@@ -2815,9 +2919,9 @@ class Component extends DCLogic {
       R.vhTitle = auto ? H.watchTitle : R.vhTitle;
       const kind = S.input || 'frac', stepsOn = mode==='steps';
       R.vhLineOn = !!H.line; R.vhWorkOn = !H.line;
-      R.vhInFrac = stepsOn && kind==='frac'; R.vhInNum = stepsOn && kind==='num'; R.vhInChoice = stepsOn && kind==='choice'; R.vhPadOn = (R.vhInFrac || R.vhInNum) && !v.review && !v.demo; R.vhDemo = !!v.demo && mode==='steps'; R.vhRowDir = R.vhDemo ? 'row-reverse' : 'row'; R.vhSparkOn = R.vhDemo && !!v.sparkOn; R.vhSparkOp = R.vhDemo ? (v.sparkOn ? '1' : '.55') : '0'; R.vhSparkY = v.sparkOn ? '0px' : '4px';
+      R.vhInFrac = stepsOn && kind==='frac'; R.vhInNum = stepsOn && kind==='num'; R.vhInChoice = stepsOn && kind==='choice'; R.vhPadOn = (R.vhInFrac || R.vhInNum) && !v.review; R.vhDemo = !!v.demo && mode==='steps'; R.vhRowDir = 'row'; R.vhSparkOn = R.vhDemo && !!v.sparkOn; R.vhSparkOp = '0'; R.vhSparkY = v.sparkOn ? '0px' : '4px';
       R.vhUnit = S.unit || ''; R.vhHasUnit = !!S.unit;
-      R.vhChoices = kind==='choice' ? (S.opts||[]).map((o,k)=>{ const on=v.pick===o.i; return { t:o.t, n:String(k+1), go:()=>this._vhSet({pick:o.i}), bg: on?'#f3f0ff':'#ffffff', bd: on?'2px solid #7048e8':'1px solid #dee2e6', ink: on?'#5f3dc4':'#212529', kb: on?'#7048e8':'#f1f3f5', kbInk: on?'#ffffff':'#495057' }; }) : [];
+      R.vhChoices = kind==='choice' ? (S.opts||[]).map((o,k)=>{ const on=v.pick===o.i; return { t:o.t, idx:o.i, n:String(k+1), go:()=>this._vhSet({pick:o.i}), bg: on?'#f3f0ff':'#ffffff', bd: on?'2px solid #7048e8':'1px solid #dee2e6', ink: on?'#5f3dc4':'#212529', kb: on?'#7048e8':'#f1f3f5', kbInk: on?'#ffffff':'#495057' }; }) : [];
       const ready = kind==='ack' || (kind==='choice' ? v.pick!=null : kind==='num' ? !!v.num : !!(v.num && (S.den||v.den)));
       R.vhCheckW = kind==='ack' ? '220px' : '150px'; R.vhCheckH = kind==='ack' ? '52px' : '98px'; R.vhCheckDir = kind==='ack' ? 'row-reverse' : 'column'; R.vhCheckGap = kind==='ack' ? '8px' : '4px';
       R.vhCheckLabel = kind==='ack' ? (v.step>=H.steps.length-1 ? 'Got it' : 'Next') : 'Check'; R.vhCheckIco = kind==='ack' ? 'ti-arrow-right' : 'ti-check';
@@ -2836,7 +2940,7 @@ class Component extends DCLogic {
         const watched = auto && !v.demo && !v.watched;
         const rail = watched ? H.frames.map((x,i)=>stepRow(x,i,true)) : H.steps.map((x,i)=>stepRow(x,i,false));
         R.vhRail = rail;
-        R.vhStage = (mode==='steps' && v.demo) ? 'Watch it solved \u00b7 Sparkle is solving' : (mode==='done' && v.watched) ? 'Watched it solved' : mode==='steps' ? (v.review ? 'Looking back \u00b7 done earlier' : (v.step||0)===0 && !mx ? 'Let\u2019s try to solve it step by step' : 'Step '+((v.step||0)+1)+' of '+H.steps.length) : auto && !v.ended ? 'Part '+((v.frame||0)+1)+' of '+H.frames.length+' \u00b7 plays by itself' : v.solved ? 'Solved together' : 'Full solution';
+        R.vhStage = (mode==='steps' && v.demo) ? 'Watch it solved \u00b7 Spark is solving' : (mode==='done' && v.watched) ? 'Watched it solved' : mode==='steps' ? (v.review ? 'Looking back \u00b7 done earlier' : (v.step||0)===0 && !mx ? 'Let\u2019s try to solve it step by step' : 'Step '+((v.step||0)+1)+' of '+H.steps.length) : auto && !v.ended ? 'Part '+((v.frame||0)+1)+' of '+H.frames.length+' \u00b7 plays by itself' : v.solved ? 'Solved together' : 'Full solution';
         R.vhStageInk = accInk;
         if(mode==='done' || (auto && v.ended)) R.vhTitle = H.summary(!!v.solved, 0).replace(/ Now you try it\.$/,'');
         if(mode==='steps' && v.review) R.vhAct={ primary:()=> v.backDone ? this._vhSet({mode:'done', review:false, backDone:false, coach:v.doneCoach||'', tone:'ok', vis:(H.done||{}).vis, locked:true}) : this._vhStepTo(v.backTo!=null ? v.backTo : mx), pLabel: v.backDone ? 'Back to the answer' : 'Back to my step', pOn:true, secondary:()=>this._vhAuto(true), sLabel:'Watch it solved', sOn:!v.backDone };
@@ -2852,20 +2956,26 @@ class Component extends DCLogic {
         : H.steps.map((x,i)=>({go:()=>{}, cur:'default', bg: (mode==='done'&&v.solved)||i<(v.step||0) ? '#7048e8' : i===(v.step||0) ? '#d0bfff' : '#e9ecef', key:'s'+i, cls:'', dur:'0s', ps:'paused'})); }
     R.vhTicks=[]; for(let k=0;k<=63;k++){ const maj=k%9===0; R.vhTicks.push({x:(x0+k*N).toFixed(1), y1: maj?Y-18:Y-9, y2: maj?Y+18:Y+9, w: maj?'2.5':'1.5', c: maj?'#343a40':'#adb5bd'}); }
     R.vhLabels=[]; for(let k=0;k<=7;k++) R.vhLabels.push({x:(x0+k*U).toFixed(1), t:String(k)});
-    R.vhUnitX=x0.toFixed(1); R.vhUnitW=N.toFixed(1); R.vhUnitOp = rank===1 ? '1' : rank>1 ? '.0' : '0';
+    R.vhUnitX=x0.toFixed(1); R.vhUnitW=N.toFixed(1); R.vhUnitOp = (!dm && rank===1) ? '1' : (!dm && rank>1) ? '.0' : '0';
     const hopLen=(()=>{ let L=0,px=0,py=0; for(let i=1;i<=20;i++){ const t=i/20, x=N*t, y=2*(1-t)*t*(-26); L+=Math.hypot(x-px,y-py); px=x; py=y; } return L; })();
     const an=H.line?H.a[0]:0, tot=H.line?H.sum[0]:0;
-    R.vhHops=[]; for(let k=0;k<tot;k++){ const xa=x0+k*N, isA=k<an, on = isA ? rank>=2 : rank>=3;
+    R.vhHops=[]; for(let k=0;k<tot;k++){ const xa=x0+k*N, isA=k<an, on = dm ? k<(ds.hops||0) : (isA ? rank>=2 : rank>=3);
       R.vhHops.push({d:'M'+xa.toFixed(1)+' '+Y+' Q'+(xa+N/2).toFixed(1)+' '+(Y-26)+' '+(xa+N).toFixed(1)+' '+Y, c: isA?'#7950f2':'#fd7e14', len:hopLen.toFixed(1), off: on?'0':hopLen.toFixed(1),
-        dl: on ? ((isA ? k*0.055 : (k-an)*0.04)+'s') : '0s'}); }
+        dl: dm ? '0s' : (on ? ((isA ? k*0.055 : (k-an)*0.04)+'s') : '0s')}); }
     const xA=x0+an*N, xB=x0+tot*N;
     const P=x=>(x/900*100).toFixed(2)+'%';
     Object.assign(R,{ vhXAP:P(xA), vhXBP:P(xB), vhMidAP:P((x0+xA)/2), vhMidBP:P((xA+xB)/2), vhXA:xA.toFixed(1), vhXB:xB.toFixed(1), vhMidA:((x0+xA)/2).toFixed(1), vhMidB:((xA+xB)/2).toFixed(1),
-      vhAOp: rank>=2?'1':'0', vhBOp: rank>=3?'1':'0', vhDoneOp: rank>=4?'1':'0', vhBDelay: rank>=3 ? (H.b[0]*0.04)+'s' : '0s', vhADelay: rank>=2 ? (an*0.055)+'s' : '0s',
+      vhAOp: dm ? ((ds.hops||0)>=an?'1':'0') : (rank>=2?'1':'0'), vhBOp: dm ? ((ds.hops||0)>=tot?'1':'0') : (rank>=3?'1':'0'), vhDoneOp: dm ? (ds.done?'1':'0') : (rank>=4?'1':'0'), vhBDelay: dm ? '0s' : (rank>=3 ? (H.b[0]*0.04)+'s' : '0s'), vhADelay: dm ? '0s' : (rank>=2 ? (an*0.055)+'s' : '0s'),
       vhALab: an+' ninths', vhBLab: (H.line?H.b[0]:0)+' more ninths', vhAVal: an+'/'+D, vhBVal: tot+'/'+D, vhMixed: H.line ? '= '+H.mixed[0]+' '+H.mixed[1]+'/'+H.mixed[2] : '' });
     /* the working, built up during the watch-through */
     const fr=!H.line ? 0 : v.watched ? 9 : v.mode==='auto'||(v.mode==='done'&&!v.solved) ? (H.frames[v.frame||0]||{}).eq||3 : 0;
     const T=!H.line ? [] : [{f:1,n:H.a[0],d:D},{o:'+'},{f:1,n:H.b[0],d:D},{o:'='},{f:1,n:H.a[0]+' + '+H.b[0],d:D},{o:'='},{f:1,n:tot,d:D},{o:'='},{m:1,w:H.mixed[0],n:H.mixed[1],d:H.mixed[2]}];
+    { const h=ds.hl||'', big=ds.stage!=='line', H1=(on)=>({Bg:on?'#fff3bf':'transparent', Sh:on?'0 0 0 3px #fcc419':'none'}), put=(k,on)=>{ const o=H1(on); R[k+'Bg']=o.Bg; R[k+'Sh']=o.Sh; };
+      R.vhLineShow = !!H.line && !(dm && ds.stage!=='line'); R.vhFrOn = dm; R.vhFrOp = ds.show ? '1' : '0'; R.vhFrSumOn = dm && !!ds.sum;
+      R.vhFrFs = big ? '60px' : '30px'; R.vhFrGap = big ? '40px' : '18px'; R.vhFrPad = big ? '0 0 4px' : '0 0 10px';
+      if(H.line){ R.vhFrAN=String(H.a[0]); R.vhFrAD=String(H.a[1]); R.vhFrBN=String(H.b[0]); R.vhFrBD=String(H.b[1]); R.vhFrSN=String(H.sum[0]); R.vhFrSD=String(H.sum[1]); }
+      if(dm && h==='ans'){ R.vhNumBg='#fff3bf'; R.vhNumBd='2.5px solid #fcc419'; R.vhDenBg='#fff3bf'; R.vhDenBd='2.5px solid #fcc419'; }
+      put('vhHlA',h==='a'); put('vhHlAn',h==='an'); put('vhHlAd',h==='dens'); put('vhHlB',h==='b'); put('vhHlBn',h==='bn'); put('vhHlBd',h==='dens'); put('vhHlS',h==='sum'); put('vhHlSn',false); put('vhHlSd',false); }
     R.vhEq=T.map((t,i)=>({ isFrac:!!t.f, isOp:!!t.o, isMixed:!!t.m, n:t.n, d:t.d, w:t.w, o:t.o, op: i<fr ? '1' : '0', ty: i<fr ? '0px' : '8px', hl: i===fr-1 && fr>3 ? '#7048e8' : '#212529' }));
     return R; }
   _fitStage(){ const dz=document.getElementById('qsDesign'); if(!dz) return; const box=dz.parentElement; const BW=box.clientWidth, H=box.clientHeight; if(!BW||!H) return;
@@ -2876,7 +2986,7 @@ class Component extends DCLogic {
     const sc=Math.min(W/1280, H/720); const w=Math.round(W/sc), h=Math.round(H/sc), x=Math.max(0, Math.round((BW-W)/2*100)/100);
     if(dz._fx!==x || dz._fs!==sc){ dz._fx=x; dz._fs=sc; dz.style.left=x+'px'; dz.style.transform='scale('+sc+')'; }
     if(dz._fw!==w || dz._fh!==h){ dz._fw=w; dz._fh=h; dz.style.width=w+'px'; dz.style.height=h+'px'; if(!this._calcUserMoved && this._calcIntroDone && !this._calcBubbleOn()){ this._calcDocked=false; } } }
-  componentDidUpdate(pp, ps){ this._measureSparkPin(); this._fitStage();
+  componentDidUpdate(pp, ps){ this._measureSparkPin(); this._fitStage(); this._vhWatchChat();
     if(this._vhMorph){ const bx=document.getElementById('vhBox'); if(bx){ const F=this._vhMorph; this._vhMorph=null; bx.style.opacity='0'; requestAnimationFrame(()=>requestAnimationFrame(()=>{ bx.style.opacity=''; this._vhMorphRun(bx,F); })); } }
     { const bx=document.getElementById('vhBox'), qt=document.getElementById('qsQText'); if(bx && qt && bx.offsetParent){ const dz=document.getElementById('qsDesign'), sc=dz?((dz.getBoundingClientRect().height/720)||1):1; const t=Math.max(0, Math.round((qt.getBoundingClientRect().bottom - bx.offsetParent.getBoundingClientRect().top)/sc + 16)); if(Math.abs(t-(this._vhBoxTopPx||0))>1){ this._vhBoxTopPx=t; this.forceUpdate(); } } }
     { const b=this.state.vh, a=ps&&ps.vh; if(b && b.wide && !this._vhFlipped && this._vhFrom){ this._vhFlipped=true; (()=>{ const c=document.getElementById('vhCard'), dz=document.getElementById('qsDesign'); if(!c||!dz) return;
@@ -2898,6 +3008,7 @@ class Component extends DCLogic {
   _qsSubmit(){
     if(this.state.qsSubmitted || !this._qsAnswered()) return;
     const ok=this._qsRight();
+    if(!ok){ this.setState({qsSubShk:true}); clearTimeout(this._shkT); this._shkT=setTimeout(()=>this.setState({qsSubShk:false}), 520); }
     const st=this.state, idx=st.qsIdx||0;
     const marks=(st.qsMarks||[]).slice(); marks[idx]={correct:ok};
     const qq=this._qsQ();
@@ -2920,7 +3031,7 @@ class Component extends DCLogic {
         this._disT=setTimeout(()=>{ if((this.state.qsIdx||0)===idx) this.setState({qsDiscard:2}); }, 900);
         this._disT2=setTimeout(()=>{ if((this.state.qsIdx||0)===idx) this.setState({qsDiscard:0, qsVal:'', qsPick:null, qsPicks:[], qsLinks:{}, qsSel:null}); }, 1250);
         clearTimeout(this._qsFxT); this._qsFxT=setTimeout(()=>this.setState({bgFx:''}), 1050); return; } }
-    this.setState({qsKb:false, qsSubmitted:true, qsGuideAt: (!ok && qq && this._vhH()) ? idx : -1, qsScore:(st.qsScore||0)+(ok?1:0), qsMarks:marks,
+    this.setState({qsKb:false, qsSubmitted:true, qsGuideAt: (!ok && qq && this._vhH()) ? idx : -1, qsScore:(st.qsScore||0)+((ok&&!this._sparkSolving)?1:0), qsMarks:marks,
       bgFx: ok?'success':'fail', bgFxColor: ok?'success':'fail'});
     clearTimeout(this._vhOT);
     if(!ok && qq && this._vhH()){ this._vhOT=setTimeout(()=>{ if((this.state.qsIdx||0)===idx && this.state.qsSubmitted) this._vhOpen(); }, 1700); }
@@ -3183,7 +3294,7 @@ class Component extends DCLogic {
     const st=this.state, on = st.step===this.IDX.qset;
     const q = on ? this._qsQ() : null;
     const base = { isQset:on, qsStats:[], qsBars:[], qsOptions:[], qsLeft:[], qsRight:[], qsPaths:[], qsMatchDots:[],
-      qsIsChoice:false, qsIsImgChoice:false, qsImgOpts:[], qsIsField:false, qsIsMatch:false, qsIsOrder:false, qsOrder:[], qsQ:'',
+      qsIsChoice:false, qsIsImgChoice:false, qsImgOpts:[], qsIsField:false, qsIsMatch:false, qsIsOrder:false, qsOrder:[], qsQ:'', qsParts:[],
       qsIsIx:false, ixSvgOn:false, ixGridLines:[], ixPolys:[], ixLines:[], ixHits:[], ixSpots:[], ixTexts:[], ixMarks:[],
       ixSliderOn:false, ixMin:0, ixMax:10, ixStep:1, ixVal:0, ixSlide:()=>{}, ixRead:'', ixReadInk:'#495057',
       ixChipsOn:false, ixChips:[], ixSlotsOn:false, ixSlots:[], ixBucketsOn:false, ixBuckets:[], ixStepsOn:false, ixSteps:[],
@@ -3315,6 +3426,10 @@ class Component extends DCLogic {
     const reveal = done && (right || ((st.qsTries||{})[st.qsIdx||0]||1) >= this.QS_MAX_TRIES);
     base.qsReveal = reveal;
     base.qsQ = q.q;
+    base.qsParts = (()=>{ const t=String(q.q||''), re=/(\d+)\/(\d+)/g, out=[], foc=this.state.qsFocus; let last=0, m, n=0;
+      while((m=re.exec(t))){ if(m.index>last) out.push({isT:true,isF:false,t:t.slice(last,m.index)}); const key=n===0?'a':n===1?'b':'x'+n, on=foc===key;
+        out.push({isF:true,isT:false,n:m[1],d:m[2],key,bg:on?'#fff3bf':'transparent',sh:on?'0 0 0 3px #fcc419':'none'}); last=m.index+m[0].length; n++; }
+      if(last<t.length) out.push({isT:true,isF:false,t:t.slice(last)}); if(!out.length) out.push({isT:true,isF:false,t}); return out; })();
     const fbOnly = !q.fig && !q.imgOpts && reveal && !right && !!q.fbFig;
     if(q.imgOpts && done){
       base.qsImgFbOn = !!q.why || true;
@@ -3607,7 +3722,9 @@ class Component extends DCLogic {
       if(a.qsHasFig) a.qsGridCols='minmax(0,1fr) minmax(0,340px)';
       b.vhBoxTop = (this._vhBoxTopPx||0)+'px';
       b.vhBoxW = a.qsHasFig ? 'calc(100% - 340px - '+(a.qsGridGap||'48px')+')' : '100%'; }
-    else if(st.qsGuideAt===(st.qsIdx||0) && st.qsSubmitted){ a.qsShowNext=false; }
+    else if(st.qsGuideAt===(st.qsIdx||0) && st.qsSubmitted){ a.qsShowNext=false; a.qsUnsubmitted=true; a.qsMainSubOff=true; a.qsMainSubState='disabled'; a.qsMainSubSh='none'; a.qsSubmitLabel='Submit again'; a.qsSubIco=true; }
+    a.qsSubShkCls = st.qsSubShk ? 'vh-shake' : '';
+    if(st.qsSparkHl){ a.qsFieldBorder='#fcc419'; a.qsFieldBg='#fff9db'; }
     return Object.assign(a,b); }
   _rv0(){
     const st=this.state, s=this.steps[st.step], total=this.steps.length;
@@ -3616,7 +3733,7 @@ class Component extends DCLogic {
     const atNewest = st.step===st.maxStep;
     // Chat window renders ONLY from the committed chat log (single source of truth).
     const msgs = [];
-    (st.chats||[]).forEach(c=>{ if(c.who==='spark'&&!sparkOn) return; msgs.push({ id:c.id, isMax:c.who==='max'&&!c.kind, isSpark:c.who==='spark', isUser:c.who==='user', text:c.text, _vidPause:c.vidPause, srcKey:c.srcKey, noFloat:!!c.noFloat, vhS:!!c.vhS, isVhOffer:c.kind==='vhOffer', isVhWork:c.kind==='vhWork', isVhDone:c.kind==='vhDone' }); });
+    (st.chats||[]).forEach(c=>{ if(c.who==='spark'&&!sparkOn) return; msgs.push({ id:c.id, isMax:c.who==='max'&&!c.kind, isSpark:c.who==='spark', isUser:c.who==='user', text:c.text, _vidPause:c.vidPause, srcKey:c.srcKey, noFloat:!!c.noFloat, vhS:!!c.vhS, isVhOffer:c.kind==='vhOffer', isVhWork:c.kind==='vhWork', isVhDone:c.kind==='vhDone', showTry:!!c.tryBtn && !(this._tryUsed&&this._tryUsed[c.id]), tryLabel:c.tryLabel, tryGo:()=>this._vhTryLike(c) }); });
     // the self-check must attach to THIS board's own narrated line, found by its srcKey — not to
     // "whichever message is currently last", which is stale until narration catches up and later
     // scrolls off under the 15s auto-hide (both bugs the verifier caught)
@@ -3641,7 +3758,7 @@ class Component extends DCLogic {
     const newestKey = N ? ((msgs[N-1].text||'')+'|'+(msgs[N-1].isMax?'m':(msgs[N-1].isUser?'u':'s'))) : '';
     if(newestKey !== this._newestKey){ this._newestKey=newestKey; this._lastNewestAt=Date.now(); clearTimeout(this._newestTimer); this._newestTimer=setTimeout(()=>this.forceUpdate(),15200); }
     const _within15=(Date.now()-(this._lastNewestAt||0))<15000;
-    msgs.forEach((m,i)=>{ const isLast=i===N-1; if(chatCollapsed){ const pin=!!(m.showSelfCheck && m.gotSh==='none' && m.revSh==='none') || !!m.showVidBtns; const show=isLast&&(m.isMax||m.isSpark)&&!m.noFloat&&(_within15||pin); m.op=show?1:0; m.pe=show?'auto':'none'; m.disp=show?'flex':'none'; } else { m.pe='auto'; m.disp='flex'; } });
+    msgs.forEach((m,i)=>{ const isLast=i===N-1; if(chatCollapsed){ const pin=!!(m.showSelfCheck && m.gotSh==='none' && m.revSh==='none') || !!m.showVidBtns || !!m.showTry; const show=isLast&&(m.isMax||m.isSpark)&&!m.noFloat&&(_within15||pin); m.op=show?1:0; m.pe=show?'auto':'none'; m.disp=show?'flex':'none'; } else { m.pe='auto'; m.disp='flex'; } });
     let _popSrc=(st.pops||[]).slice();
     if(s3ActionActive){ const _s3t = st.s3Phase==='ask1' ? "By dragging the top corner of the parallelogram, we're able to form a trapezoid." : "When you dragged the slider, the top side got shorter than the bottom. Now the shape has only one pair of parallel sides \u2014 so it isn't a parallelogram any more. It's a trapezoid."; _popSrc.push({ id:'s3act', isMax:true, isSpark:false, isUser:false, text:_s3t, showBtns:!!st.s3Buttons, b1Label:'Got it', b2Label:(st.s3Phase==='ask2'?'Have a doubt':'Explain more'), b1:()=>this._s3Success(), b2:()=> (this.state.s3Phase==='ask2' ? this._s3Doubt() : this._s3ExplainMore()) }); }
     const _tail=_popSrc.slice(-3); const TN=_tail.length; const popMsgs=_tail.map((m,i)=>{ const fromEnd=TN-1-i; let stage='pm-full'; if(fromEnd===1){ stage='pm-reduced'; } else if(fromEnd>=2){ stage='pm-leaving'; } return Object.assign({}, m, {op:1, stageClass:stage}); });
@@ -3790,7 +3907,7 @@ class Component extends DCLogic {
           celebrate: isCel && !!st.loCelOn,
           hlClass: ((s.objSeq||s.outro) && i===st.activeBullet) ? 'obj-hl' : ''}; }),
       chatWrapRef: this.chatWrapRef,
-      sparkPinShow: !!(this._pin && this._pin.show) && sparkOn,
+      sparkPinShow: !!(this._pin && this._pin.show) && sparkOn && !(this._vh().demo || this._sparkSolving),
       sparkPinLeft: ((this._pin && this._pin.left) || 0) + 'px',
       sparkPinTop: ((this._pin && this._pin.top) || 0) + 'px',
       sparkPinSize: ((this._pin && this._pin.size) || 34) + 'px',
@@ -3800,7 +3917,7 @@ class Component extends DCLogic {
       /* handle + edge stay visible the whole trip — they ride the wrapper's own width slide */
       chatHandleOp: 1,
       chatHandleTr: 'opacity .18s ease', chatColW: chatCollapsed ? '0px' : '372px', teachWrapW: chatCollapsed ? '100%' : 'calc(100% - 372px)',
-      chatScrollPE: chatCollapsed ? 'none' : 'auto', chatListPadB: '92px', chatScrollOv: chatCollapsed ? 'visible' : 'auto', composerW: chatCollapsed?'110px':'272px', composerBorder: chatCollapsed?'transparent':'#dee2e6', composerShadow: 'none', composerTealOp: chatCollapsed?1:0, closedOp: chatCollapsed?1:0, closedPE: chatCollapsed?'auto':'none', openOp: chatCollapsed?0:1, openPE: chatCollapsed?'none':'auto', chatChevron: chatCollapsed ? 'ti-chevron-right' : 'ti-chevron-left', chatToggleTitle: chatCollapsed ? 'Show chat' : 'Collapse chat', popMsgs, toggleChat:()=>this._toggleChat(),      railTitle: sparkOn ? 'Vyom & Spark are with you' : 'Vyom, your AI tutor',
+      chatScrollPE: chatCollapsed ? 'none' : 'auto', chatListPadB: '92px', chatScrollOv: chatCollapsed ? 'visible' : 'auto', composerW: chatCollapsed?'218px':'272px', composerBorder: chatCollapsed?'transparent':'#dee2e6', composerShadow: 'none', composerTealOp: chatCollapsed?1:0, closedOp: chatCollapsed?1:0, closedPE: chatCollapsed?'auto':'none', openOp: chatCollapsed?0:1, openPE: chatCollapsed?'none':'auto', chatChevron: chatCollapsed ? 'ti-chevron-right' : 'ti-chevron-left', chatToggleTitle: chatCollapsed ? 'Show chat' : 'Collapse chat', popMsgs, toggleChat:()=>this._toggleChat(),      railTitle: sparkOn ? 'Vyom & Spark are with you' : 'Vyom, your AI tutor',
       tabs,
       quizQ, optionRows, quizSubmitted:st.quizSubmitted, feedbackText, feedbackColor, feedbackBg, feedbackIcon,
       submitBg, submitCursor, submitShadow,
