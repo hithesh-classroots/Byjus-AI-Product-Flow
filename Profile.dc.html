@@ -89,6 +89,8 @@
   .pf-chip:hover{border-color:#a5d8ff;color:#1864ab;}
   .pf-chip-on,.pf-chip-on:hover{border-color:#228be6;background:#e7f1ff;color:#1864ab;}
   .pf-lab{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#6b6786;}
+  .pf-av-sm{position:relative;width:44px;height:44px;flex:none;border-radius:50%;overflow:hidden;background:#e7f5ff;cursor:pointer;outline:none;box-shadow:0 4px 12px -6px rgba(70,46,146,.4);}
+  .pf-av-sm:focus-visible{box-shadow:0 0 0 3px #228be6;}
   .pf-av{position:relative;width:88px;height:88px;flex:none;border-radius:50%;overflow:hidden;background:#e7f5ff;
     cursor:pointer;outline:none;box-shadow:0 6px 18px -8px rgba(70,46,146,.4);}
   .pf-av-scrim{position:absolute;inset:0;display:grid;place-items:center;color:#ffffff;
@@ -291,14 +293,6 @@
 
   <!-- Identity strip: the one thing every pane is about, so it sits above the split. -->
   <div style="display:flex;align-items:flex-end;gap:26px;flex-wrap:wrap;padding:26px {{ splitPadR }} 0 {{ splitPadL }};transition:padding .26s cubic-bezier(.2,.8,.3,1);animation:pfIn .4s cubic-bezier(.2,.8,.3,1) both;">
-    <div class="pf-av" onClick="{{ openAvatar }}" role="button" tabindex="0" aria-label="Change your picture" title="Change your picture">
-      <sc-if value="{{ isAarav }}" hint-placeholder-val="{{ true }}"><img src="aarav-avatar.png" alt="Aarav" style="width:100%;height:100%;object-fit:cover;display:block;"></sc-if>
-      <sc-if value="{{ isMax }}" hint-placeholder-val="{{ false }}"><img src="max-mascot-sm.png" alt="MAX" style="width:100%;height:100%;object-fit:cover;display:block;"></sc-if>
-      <sc-if value="{{ isSpark }}" hint-placeholder-val="{{ false }}"><img src="spark-mascot-sm.png" alt="Spark" style="width:100%;height:100%;object-fit:cover;display:block;"></sc-if>
-      <sc-if value="{{ isJugnu }}" hint-placeholder-val="{{ false }}"><img src="vyom-mascot.png" alt="Jugnu" style="width:100%;height:100%;object-fit:cover;display:block;"></sc-if>
-      <sc-if value="{{ isUpload }}" hint-placeholder-val="{{ false }}"><img ref="{{ upRef }}" alt="Your photo" style="width:100%;height:100%;object-fit:cover;display:block;"></sc-if>
-      <div class="pf-av-scrim"><i class="ti ti-camera" style="font-size:24px;"></i></div>
-    </div>
     <div style="flex:1;min-width:240px;">
       <h1 style="margin:0 0 8px;font-size:38px;font-weight:700;line-height:1.05;letter-spacing:-.02em;color:#211a4a;">{{ pName }}</h1>
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
@@ -309,35 +303,6 @@
       </div>
     </div>
   </div>
-
-  <sc-if value="{{ avatarOpen }}" hint-placeholder-val="{{ false }}">
-    <div style="padding:24px 28px 0 108px;animation:pfIn .26s cubic-bezier(.2,.8,.3,1) both;">
-      <div class="pf-hair" style="margin-bottom:20px;"></div>
-      <div class="pf-lab" style="margin-bottom:12px;">Choose a picture</div>
-      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-        <div class="pf-pick {{ aaravCls }}" onClick="{{ pickAarav }}" role="radio" aria-checked="{{ isAarav }}" tabindex="0" title="Your current picture">
-          <img src="aarav-avatar.png" alt="Your current picture" style="width:100%;height:100%;object-fit:cover;display:block;">
-        </div>
-        <div class="pf-pick {{ maxCls }}" onClick="{{ pickMax }}" role="radio" aria-checked="{{ isMax }}" tabindex="0" title="MAX">
-          <img src="max-mascot-sm.png" alt="MAX" style="width:100%;height:100%;object-fit:cover;display:block;">
-        </div>
-        <div class="pf-pick {{ sparkCls }}" onClick="{{ pickSpark }}" role="radio" aria-checked="{{ isSpark }}" tabindex="0" title="Spark">
-          <img src="spark-mascot-sm.png" alt="Spark" style="width:100%;height:100%;object-fit:cover;display:block;">
-        </div>
-        <div class="pf-pick {{ jugnuCls }}" onClick="{{ pickJugnu }}" role="radio" aria-checked="{{ isJugnu }}" tabindex="0" title="Jugnu">
-          <img src="vyom-mascot.png" alt="Jugnu" style="width:100%;height:100%;object-fit:cover;display:block;">
-        </div>
-        <label class="pf-up {{ upCls }}" title="Upload a photo">
-          <i class="ti ti-upload" style="font-size:20px;"></i>
-          <input type="file" accept="image/*" onChange="{{ onUpload }}" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;">
-        </label>
-      </div>
-      <div style="display:flex;align-items:center;gap:16px;margin-top:20px;">
-        <div class="pf-btn" onClick="{{ closeAvatar }}">Done</div>
-        <span style="font-size:13px;font-weight:500;color:#6b6786;">Or upload a photo — square works best.</span>
-      </div>
-    </div>
-  </sc-if>
 
   <div style="display:flex;align-items:flex-start;gap:24px;padding:30px {{ splitPadR }} 96px {{ splitPadL }};transition:padding .26s cubic-bezier(.2,.8,.3,1);">
 
@@ -364,6 +329,48 @@
           <h2 style="margin:0 0 5px;font-size:21px;font-weight:700;letter-spacing:-.016em;color:#211a4a;">Account details</h2>
           <p style="margin:0 0 18px;font-size:14px;font-weight:500;color:#6b6786;line-height:1.5;text-wrap:pretty;">What we use to pick your syllabus and keep your parent in the loop.</p>
           <div class="pf-defs">
+            <div class="pf-def" style="grid-column:{{ avatarSpan }};">
+              <div class="pf-def-h">
+                <span class="pf-lab">Photo</span>
+                <span class="pf-link" onClick="{{ openAvatar }}" style="font-size:12.5px;">{{ avatarCta }}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div class="pf-av-sm" onClick="{{ openAvatar }}" role="button" tabindex="0" aria-label="Change your picture">
+                  <sc-if value="{{ isAarav }}" hint-placeholder-val="{{ true }}"><img src="aarav-avatar.png" alt="Aarav" style="width:100%;height:100%;object-fit:cover;display:block;"></sc-if>
+                  <sc-if value="{{ isMax }}" hint-placeholder-val="{{ false }}"><img src="max-mascot-sm.png" alt="MAX" style="width:100%;height:100%;object-fit:cover;display:block;"></sc-if>
+                  <sc-if value="{{ isSpark }}" hint-placeholder-val="{{ false }}"><img src="spark-mascot-sm.png" alt="Spark" style="width:100%;height:100%;object-fit:cover;display:block;"></sc-if>
+                  <sc-if value="{{ isJugnu }}" hint-placeholder-val="{{ false }}"><img src="vyom-mascot.png" alt="Jugnu" style="width:100%;height:100%;object-fit:cover;display:block;"></sc-if>
+                  <sc-if value="{{ isUpload }}" hint-placeholder-val="{{ false }}"><img ref="{{ upRef }}" alt="Your photo" style="width:100%;height:100%;object-fit:cover;display:block;"></sc-if>
+                </div>
+                <div style="font-size:15.5px;font-weight:700;color:#211a4a;line-height:1.35;">{{ avatarName }}</div>
+              </div>
+              <sc-if value="{{ avatarOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="animation:pfIn .26s cubic-bezier(.2,.8,.3,1) both;">
+                <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px;">
+                  <div class="pf-pick {{ aaravCls }}" onClick="{{ pickAarav }}" role="radio" aria-checked="{{ isAarav }}" tabindex="0" title="Your current picture">
+                    <img src="aarav-avatar.png" alt="Your current picture" style="width:100%;height:100%;object-fit:cover;display:block;">
+                  </div>
+                  <div class="pf-pick {{ maxCls }}" onClick="{{ pickMax }}" role="radio" aria-checked="{{ isMax }}" tabindex="0" title="MAX">
+                    <img src="max-mascot-sm.png" alt="MAX" style="width:100%;height:100%;object-fit:cover;display:block;">
+                  </div>
+                  <div class="pf-pick {{ sparkCls }}" onClick="{{ pickSpark }}" role="radio" aria-checked="{{ isSpark }}" tabindex="0" title="Spark">
+                    <img src="spark-mascot-sm.png" alt="Spark" style="width:100%;height:100%;object-fit:cover;display:block;">
+                  </div>
+                  <div class="pf-pick {{ jugnuCls }}" onClick="{{ pickJugnu }}" role="radio" aria-checked="{{ isJugnu }}" tabindex="0" title="Jugnu">
+                    <img src="vyom-mascot.png" alt="Jugnu" style="width:100%;height:100%;object-fit:cover;display:block;">
+                  </div>
+                  <label class="pf-up {{ upCls }}" title="Upload a photo">
+                    <i class="ti ti-upload" style="font-size:20px;"></i>
+                    <input type="file" accept="image/*" onChange="{{ onUpload }}" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;">
+                  </label>
+                </div>
+                <div style="font-size:12px;font-weight:500;color:#6b6786;line-height:1.45;margin-top:10px;">Pick a character, or upload a photo &mdash; square works best.</div>
+                <div style="display:flex;align-items:center;gap:14px;margin-top:12px;">
+                  <div class="pf-btn" onClick="{{ closeAvatar }}" style="height:32px;padding:0 15px;font-size:13px;">Done</div>
+                </div>
+                </div>
+              </sc-if>
+            </div>
             <sc-for list="{{ fields }}" as="f" hint-placeholder-count="6">
               <div class="pf-def">
                 <div class="pf-def-h">
@@ -1518,6 +1525,8 @@ class Component extends DCLogic {
       upRef: this._upRef,
       onUpload: (e) => this._takeUpload(e),
       avatarOpen: st.avatarOpen,
+      avatarSpan: st.avatarOpen ? '1 / -1' : 'auto', avatarCta: st.avatarOpen ? 'Close' : 'Change',
+      avatarName: ({aarav:'Your photo', max:'MAX', spark:'Spark', vyom:'Jugnu', upload:'Uploaded photo'})[st.avatar] || 'Your photo',
       openAvatar: () => this.setState({ avatarOpen: !st.avatarOpen }),
       closeAvatar: () => this.setState({ avatarOpen:false }),
       xpDisp: XP.toLocaleString('en-IN'), orbsDisp: ORBS, streakLabel: STREAK + '-day streak',
