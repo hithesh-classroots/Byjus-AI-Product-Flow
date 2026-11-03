@@ -5,6 +5,10 @@
    Now: the layout switches to its final state in one step, and the stage frame animates from where it
    was to where it is with a single transform (FLIP). It only ever sits between two valid, on-screen
    states, so nothing overshoots, drifts or disappears. */
+/* Pages whose component owns _fitStage() (Practice Room - Guided Retry) do not use the FLIP below: the
+   wrapper keeps its own width slide and the canvas is re-fitted on every frame of it (ResizeObserver), so the
+   stage is always valid and scales continuously. A uniform-scale FLIP can't morph a width-only change: it
+   stretched the stage 1.6x tall mid-slide and pushed Submit/Skip off screen. */
 (function () {
   var DUR = 420, EASE = 'cubic-bezier(.4,0,.2,1)';
   var last = null, lastW = null, anim = null;
@@ -13,11 +17,25 @@
   css.textContent = '[data-teach-wrap]{transition:none !important}';
   document.head.appendChild(css);
 
+  var native = false;
+  function nativeFit() { return !!(window.__TR && typeof window.__TR._fitStage === 'function'); }
+  /* Guided Retry: keep the wrapper's own width transition and refit the canvas each frame of it. */
+  function startNative() {
+    native = true; css.textContent = '';
+    var box = null, ro = new ResizeObserver(function () { try { window.__TR._fitStage(); } catch (e) {} });
+    (function attach() {
+      var d = document.getElementById('qsDesign'), b = d && d.parentElement;
+      if (b !== box) { if (box) ro.unobserve(box); box = b; if (box) ro.observe(box); }
+      requestAnimationFrame(attach);
+    })();
+  }
+
   function wrapper() { return document.querySelector('[data-teach-wrap]'); }
   function frame() { var d = document.getElementById('qsDesign'); return d && d.parentElement && d.parentElement.parentElement; }
 
   /* Remember where the frame is, every frame, so we know where it was just before a layout change. */
   function snap() {
+    if (native) return;
     if (!anim) { var f = frame(); last = f ? f.getBoundingClientRect() : null; }
     requestAnimationFrame(snap);
   }
@@ -40,6 +58,8 @@
   }
 
   function watch() {
+    if (native) return;
+    if (nativeFit()) return startNative();
     var w = wrapper();
     if (w && w.style.width !== lastW) { var first = lastW === null; lastW = w.style.width; if (!first) onWidthChange(); }
   }
