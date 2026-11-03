@@ -3203,7 +3203,7 @@ class Component extends DCLogic {
       journeyOnCls: isJourney ? 'on' : '', libraryOnCls: isLibraryMode ? 'on' : '',
       practiceOnCls: isPractice ? 'on' : '',
       cdIntents, cdSpecific, cdDone, cdHasDone, cdWays, cdStartMain, cdStartPaper, cdLog, cdDoneCount, cdHasLog,
-      goAssess: (e) => { if (e) e.preventDefault(); const id = this.state.active; try { window.location.href = encodeURI('Assessments.dc.html') + (id != null ? '?ch=' + id : ''); } catch (err) {} }, cdShowLog: cdHasLog && !this.state.prSheet,
+      goAssess: (e) => { if (e) e.preventDefault(); const id = this.state.active; try { window.location.href = encodeURI('Practice Room - Guided Retry.dc.html') + (id != null ? '?ch=' + id : ''); } catch (err) {} }, cdShowLog: cdHasLog && !this.state.prSheet,
       snack: this.state.snack, hasSnack: !!this.state.snack,
       hintOpacity: this.state.active != null ? 0 : 1,
       topWidgetsPE: this.state.active != null ? 'none' : 'auto',

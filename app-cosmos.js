@@ -12,7 +12,7 @@ const CHAPTER_JOURNEY_URL='Chapter Journey - L&P.dc.html';
 function openChapterJourney(){ try{ window.location.href=encodeURI(CHAPTER_JOURNEY_URL); }catch(e){} }
 
 /* Navigate to the standalone Assessment page (product-level entry, sibling of Chapter Journey) */
-const PRACTICE_URL='Assessment.dc.html';
+const PRACTICE_URL='Practice Room.dc.html';
 function openPractice(){ try{ window.location.href=encodeURI(PRACTICE_URL); }catch(e){} }
 
 /* Navigate to the Goals journey (Goal Page) — sibling of Chapter Journey and Challenges */

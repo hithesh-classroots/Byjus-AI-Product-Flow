@@ -10,7 +10,6 @@
   var TABS = [
     { k: 'home',     t: 'Home',     i: 'home',         href: 'Home Page.dc.html' },
     { k: 'journey',  t: 'Journey',  i: 'route',        href: 'Chapter Journey - L&P.dc.html' },
-    { k: 'practice', t: 'Assessment', i: 'target-arrow', href: 'Assessment.dc.html' },
     { k: 'profile',  t: 'Profile',  i: 'user',         href: 'Profile.dc.html?pane=profile' },
   ];
 

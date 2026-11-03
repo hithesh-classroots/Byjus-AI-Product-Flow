@@ -16,7 +16,7 @@
    If the screen navigates to a page that is not a fixed-layout one, leave the stage and open it normally. */
 var q = new URLSearchParams(location.search);
 var W = +q.get('w') || 1280, H = +q.get('h') || 720, page = q.get('p') || 'Teaching Room.dc.html';
-var FIT = /^(Teaching Room|Teaching Room Spark|Teaching Room - Dark|Practice Room|Practice Room - Vyom Help|Practice Room - Guided Retry|Practice Room v1|quiz)\.dc\.html$/i;
+var FIT = /^(Teaching Room|Teaching Room Spark|Teaching Room - Dark|Practice Room|Practice Room - Guided Retry|Practice Room v1|quiz)\.dc\.html$/i;
 var f = document.getElementById('f');
 function fit() {
   var k = Math.min(innerWidth / W, innerHeight / H);
