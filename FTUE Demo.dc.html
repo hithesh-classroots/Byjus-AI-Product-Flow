@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/colors.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/semantic.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/typography.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/base.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<style>
+  /* ---- type scale (single source of truth — see Type Scale.md) ---- */
+  :root{
+    --fs-display:38px; --fs-title:30px; --fs-heading:24px; --fs-subheading:20px;
+    --fs-body:16px; --fs-secondary:14px; --fs-caption:12px; --fs-eyebrow:11px;
+    --fs-numeral-sm:44px; --fs-numeral-md:48px; --fs-numeral-lg:58px;
+    --fw-regular:500; --fw-bold:700; --fw-heavy:800;
+  }
+
+  html,body{margin:0;background:#100d30;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  *{box-sizing:border-box;}
+  a{color:#4dabf7;} a:hover{color:#74c0fc;}
+  .fd-btn{transition:filter .15s ease,transform .15s ease;cursor:pointer;}
+  .fd-btn:hover{filter:brightness(1.08);transform:translateY(-1px);}
+  @keyframes fdPop{0%{transform:scale(.7);opacity:0}70%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
+  @keyframes fdFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  .fd-orb{animation:fdPop .5s cubic-bezier(.3,1.4,.5,1) both,fdFloat 2.6s ease-in-out .5s infinite;}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:40px;text-align:center;background:radial-gradient(ellipse at 30% 10%,#241d58,#100d30 55%,#070614 100%);">
+  <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a5d8ff;">FTUE demo entry point</div>
+  <div class="fd-orb" style="width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a5d8ff,#1c7ed6);display:grid;place-items:center;box-shadow:0 10px 30px rgba(28,126,214,.4);">
+    <i class="ti ti-player-play-filled" style="font-size:38px;color:#fff;"></i>
+  </div>
+  <div>
+    <div style="font-size:30px;font-weight:800;color:#fff;margin-bottom:8px;">Start the first lesson</div>
+    <div style="font-size:16px;font-weight:700;color:#c9c5e6;max-width:440px;">This resets the FTUE flags, then opens the Teaching Room. Finish the lesson and the real completion flow will carry you into the Chapter Journey FTUE.</div>
+  </div>
+  <div class="fd-btn" onClick="{{ go }}" style="margin-top:8px;display:inline-flex;align-items:center;gap:10px;padding:16px 32px;border-radius:14px;background:linear-gradient(180deg,#4dabf7,#1c7ed6);color:#fff;font-size:16px;font-weight:700;box-shadow:0 12px 30px rgba(28,126,214,.45);">
+    Start lesson <i class="ti ti-arrow-right" style="font-size:16px;"></i>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      go: () => {
+        try {
+          localStorage.removeItem('chapterJourneyFtueCompleted');
+          localStorage.removeItem('ftueStage');
+        } catch (e) {}
+        try { window.location.href = encodeURI('Teaching Room.dc.html'); } catch (e) {}
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>

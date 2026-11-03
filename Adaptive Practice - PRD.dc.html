@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/colors.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/semantic.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/typography.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/tokens/base.css">
+<link rel="stylesheet" href="_ds/mantine-design-system-bdb30156-1a6b-4162-8181-1c297f319a1c/styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css">
+<style>
+  body{margin:0;background:#f8f5fe;
+    background-image:radial-gradient(rgba(96,74,190,.10) 1px, transparent 1px);background-size:22px 22px;}
+  a{color:#1864ab;text-decoration:none;} a:hover{color:#145591;text-decoration:underline;text-underline-offset:3px;}
+  @keyframes prdFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  /* the treadmill trace: the strip never stops moving, which is the whole point of it */
+  @keyframes paceRun{from{transform:translateX(0)}to{transform:translateX(-320px)}}
+  @keyframes ringGlow{0%,100%{opacity:.34}50%{opacity:.7}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;padding:44px 26px 90px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#211a4a;">
+<div style="max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:64px;">
+
+  <!-- ══ MASTHEAD ══ -->
+  <header style="display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span style="display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:999px;background:#211a4a;color:#fff;font-size:11.5px;font-weight:800;letter-spacing:.09em;white-space:nowrap;">PRD · DRAFT FOR BUILD</span>
+      <span style="display:inline-flex;align-items:center;padding:6px 13px;border-radius:999px;background:rgba(255,255,255,.85);font-size:11.5px;font-weight:700;letter-spacing:.05em;color:#5d5880;white-space:nowrap;">Practice Room &amp; Chapter Journey</span>
+    </div>
+    <h1 style="margin:0;font-size:34px;font-weight:700;line-height:1.15;letter-spacing:-.026em;max-width:18ch;">The Practice Shootout</h1>
+    <p style="margin:0;font-size:20px;font-weight:500;line-height:1.5;color:#5d5880;max-width:62ch;text-wrap:pretty;">A clock running down, three gears, and a live intensity read. The student races their own best score — and Vyom calls every change out loud as it happens.</p>
+  </header>
+
+  <!-- ══ 01 · THE PROBLEM ══ -->
+  <section style="display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+      <span style="font-size:13px;font-weight:800;color:#6b6786;letter-spacing:.08em;">01</span>
+      <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;">The problem</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:18px;">
+
+      <div style="border-radius:20px;padding:28px;background:rgba(255,255,255,.7);border:1px dashed rgba(120,90,200,.4);">
+        <div style="display:inline-flex;align-items:center;gap:8px;padding:5px 11px;border-radius:8px;background:rgba(120,90,200,.1);font-size:11px;font-weight:800;letter-spacing:.08em;white-space:nowrap;color:#5f3dc4;margin-bottom:16px;">TODAY</div>
+        <p style="margin:0 0 18px;font-size:16px;font-weight:500;line-height:1.55;color:#3f3a63;text-wrap:pretty;">Practice is a container. A fixed list, a hint box that is always open, a score at the end.</p>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <sc-for list="{{ todayPoints }}" as="p" hint-placeholder-count="4">
+            <div style="display:flex;align-items:flex-start;gap:10px;">
+              <i class="ti ti-x" style="flex:none;font-size:16px;color:#c92a2a;margin-top:2px;"></i>
+              <span style="font-size:14.5px;font-weight:500;line-height:1.45;color:#5d5880;">{{ p.t }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="border-radius:20px;padding:28px;background:linear-gradient(158deg,#211a4a 0%,#2d2260 58%,#3b2a75 100%);color:#fff;box-shadow:0 18px 40px -20px rgba(33,26,74,.6);">
+        <div style="display:inline-flex;align-items:center;gap:8px;padding:5px 11px;border-radius:8px;background:rgba(255,255,255,.16);font-size:11px;font-weight:800;letter-spacing:.08em;white-space:nowrap;color:#d0c7ff;margin-bottom:16px;">THE BET</div>
+        <p style="margin:0 0 18px;font-size:17px;font-weight:600;line-height:1.5;text-wrap:pretty;">Give the clock, not the list. Ask only how long they have, then make every second of it feel like it is being watched.</p>
+        <div style="padding:16px 18px;border-radius:14px;background:rgba(255,255,255,.1);border-left:3px solid #8ce99a;">
+          <p style="margin:0;font-size:15.5px;font-weight:600;line-height:1.5;color:#e9e4ff;text-wrap:pretty;">A set you can finish has a floor and a ceiling. <strong style="color:#fff;">A shootout has neither</strong> — there is always one more question, and the only opponent is your own last run.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 02 · SHOOTOUT ══ -->
+  <section style="display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+      <span style="font-size:13px;font-weight:800;color:#6b6786;letter-spacing:.08em;">02</span>
+      <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;">Every session is a shootout</h2>
+      <span style="font-size:15px;font-weight:500;color:#6b6786;">Pick a clock, answer as many as you can</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:16px;">
+      <sc-for list="{{ intents }}" as="i" hint-placeholder-count="4">
+        <div style="position:relative;overflow:hidden;border-radius:20px;padding:24px;background:#fff;box-shadow:0 1px 2px rgba(33,26,74,.05),0 10px 26px -18px rgba(33,26,74,.4);">
+          <div style="position:absolute;right:-16px;top:-14px;font-size:88px;line-height:1;color:{{ i.tint }};opacity:.1;pointer-events:none;"><i class="ti {{ i.icon }}"></i></div>
+          <div style="position:relative;">
+            <div style="display:flex;align-items:center;gap:7px;">
+              <i class="ti ti-clock-play" style="font-size:14px;color:{{ i.tint }};"></i>
+              <span style="font-size:11px;font-weight:800;letter-spacing:.1em;white-space:nowrap;color:{{ i.tint }};">{{ i.mins }}</span>
+            </div>
+            <div style="font-size:21px;font-weight:700;letter-spacing:-.016em;margin-top:6px;">{{ i.name }}</div>
+            <div style="font-size:14px;font-weight:500;line-height:1.45;color:#6b6786;margin-top:7px;min-height:42px;text-wrap:pretty;">{{ i.why }}</div>
+            <div style="height:1px;background:rgba(120,90,200,.16);margin:16px 0 14px;"></div>
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.09em;white-space:nowrap;color:#868e96;">{{ i.bestLabel }}</div>
+            <div style="display:flex;align-items:baseline;gap:7px;margin-top:5px;">
+              <span style="font-size:30px;font-weight:800;letter-spacing:-.026em;color:{{ i.tint }};">{{ i.best }}</span>
+              <span style="font-size:13px;font-weight:700;color:#6b6786;">{{ i.bestUnit }}</span>
+            </div>
+            <div style="display:flex;height:7px;border-radius:999px;overflow:hidden;margin-top:12px;background:rgba(33,26,74,.07);">
+              <div style="width:{{ i.t1 }};background:#40c057;"></div>
+              <div style="width:{{ i.t2 }};background:#fab005;"></div>
+              <div style="width:{{ i.t3 }};background:#e8590c;"></div>
+            </div>
+            <div style="font-size:12px;font-weight:600;color:#868e96;margin-top:8px;">{{ i.mix }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:16px;">
+      <div style="display:flex;align-items:flex-start;gap:13px;padding:18px 20px;border-radius:16px;background:rgba(255,255,255,.72);border:1px solid rgba(120,90,200,.22);">
+        <i class="ti ti-arrow-back-up" style="flex:none;font-size:19px;color:#1864ab;margin-top:1px;"></i>
+        <p style="margin:0;font-size:14.5px;font-weight:500;line-height:1.5;color:#3f3a63;text-wrap:pretty;">The card no longer promises a count. It shows <strong style="color:#211a4a;">their own last run</strong> — the number to beat, and how it broke down by tier.</p>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:13px;padding:18px 20px;border-radius:16px;background:rgba(255,255,255,.72);border:1px solid rgba(120,90,200,.22);">
+        <i class="ti ti-mood-happy" style="flex:none;font-size:19px;color:#237032;margin-top:1px;"></i>
+        <p style="margin:0;font-size:14.5px;font-weight:500;line-height:1.5;color:#3f3a63;text-wrap:pretty;">There is <strong style="color:#211a4a;">no fail state</strong>. A first run sets the bar; every run after either beats it or doesn't. You cannot lose a race against yourself.</p>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:0 4px;">
+      <span style="font-size:12px;font-weight:800;letter-spacing:.08em;white-space:nowrap;color:#868e96;">TIER</span>
+      <sc-for list="{{ tierKey }}" as="k" hint-placeholder-count="3">
+        <span style="display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:#5d5880;white-space:nowrap;">
+          <span style="width:11px;height:11px;border-radius:3px;background:{{ k.c }};"></span>{{ k.t }}
+        </span>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ══ 03 · THE THREE LAPS ══ -->
+  <section style="display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+      <span style="font-size:13px;font-weight:800;color:#6b6786;letter-spacing:.08em;">03</span>
+      <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;">Three gears, one clock</h2>
+      <span style="font-size:15px;font-weight:500;color:#6b6786;">A run that changes shape twice</span>
+    </div>
+
+    <!-- the timeline: proportions ARE the spec -->
+    <div style="border-radius:20px;padding:26px;background:#fff;box-shadow:0 1px 2px rgba(33,26,74,.05),0 10px 26px -18px rgba(33,26,74,.4);">
+      <div style="display:flex;height:56px;border-radius:12px;overflow:hidden;">
+        <sc-for list="{{ laps }}" as="l" hint-placeholder-count="3">
+          <div style="width:{{ l.w }};background:{{ l.band }};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-right:2px solid #fff;">
+            <span style="font-size:12px;font-weight:800;letter-spacing:.06em;white-space:nowrap;color:{{ l.ink }};">{{ l.short }}</span>
+            <span style="font-size:11px;font-weight:700;white-space:nowrap;color:{{ l.ink }};opacity:.75;">{{ l.w }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:11.5px;font-weight:700;color:#868e96;">
+        <span>start</span><span>gear change</span><span>cooldown</span><span>time</span>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:16px;">
+      <sc-for list="{{ laps }}" as="l" hint-placeholder-count="3">
+        <div style="border-radius:20px;padding:24px;background:#fff;box-shadow:0 1px 2px rgba(33,26,74,.05),0 10px 26px -18px rgba(33,26,74,.4);display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <span style="width:28px;height:28px;flex:none;border-radius:9px;display:grid;place-items:center;background:{{ l.band }};color:{{ l.ink }};font-size:13px;font-weight:800;">{{ l.n }}</span>
+            <span style="font-size:18px;font-weight:700;letter-spacing:-.014em;">{{ l.name }}</span>
+            <span style="padding:4px 10px;border-radius:7px;background:{{ l.band }};color:{{ l.ink }};font-size:11.5px;font-weight:800;white-space:nowrap;">{{ l.pts }}</span>
+          </div>
+          <p style="margin:0;font-size:14.5px;font-weight:500;line-height:1.5;color:#5d5880;text-wrap:pretty;">{{ l.body }}</p>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <sc-for list="{{ l.rules }}" as="r" hint-placeholder-count="3">
+              <div style="display:flex;align-items:flex-start;gap:9px;">
+                <i class="ti {{ r.i }}" style="flex:none;font-size:15px;color:{{ r.c }};margin-top:2px;"></i>
+                <span style="font-size:13.5px;font-weight:600;line-height:1.4;color:#3f3a63;text-wrap:pretty;">{{ r.t }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ══ IN-RUN MECHANICS ══ -->
+  <section style="display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+      <span style="font-size:13px;font-weight:800;color:#6b6786;letter-spacing:.08em;">04</span>
+      <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;">Pressure from the inside</h2>
+      <span style="font-size:15px;font-weight:500;color:#6b6786;">The clock is external. These are not.</span>
+    </div>
+    <p style="margin:0;font-size:16px;font-weight:500;line-height:1.55;color:#5d5880;max-width:70ch;text-wrap:pretty;">A countdown pushes from outside the questions. Three mechanics put the tension <em>inside</em> them — and one of them is what finally makes “you cannot lose” true in the moment, not just in the scoring.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:18px;">
+      <sc-for list="{{ mechanics }}" as="m" hint-placeholder-count="3">
+        <div style="border-radius:20px;padding:26px;background:#fff;box-shadow:0 1px 2px rgba(33,26,74,.05),0 10px 26px -18px rgba(33,26,74,.4);display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;align-items:center;gap:11px;">
+            <span style="width:34px;height:34px;flex:none;border-radius:11px;display:grid;place-items:center;background:{{ m.bg }};color:{{ m.fg }};"><i class="ti {{ m.icon }}" style="font-size:18px;"></i></span>
+            <span style="font-size:19px;font-weight:700;letter-spacing:-.014em;">{{ m.name }}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:38px;">
+            <sc-for list="{{ m.chips }}" as="ch" hint-placeholder-count="3">
+              <span style="display:inline-flex;align-items:center;padding:7px 13px;border-radius:9px;background:{{ ch.bg }};color:{{ ch.fg }};font-size:13.5px;font-weight:800;white-space:nowrap;">{{ ch.t }}</span>
+            </sc-for>
+          </div>
+          <p style="margin:0;font-size:14.5px;font-weight:500;line-height:1.5;color:#5d5880;text-wrap:pretty;">{{ m.body }}</p>
+          <div style="padding:13px 16px;border-radius:12px;background:{{ m.bg }};">
+            <p style="margin:0;font-size:13.5px;font-weight:700;line-height:1.45;color:{{ m.fg }};text-wrap:pretty;">{{ m.why }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ══ INSTRUMENTS ══ -->
+  <section style="display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+      <span style="font-size:13px;font-weight:800;color:#6b6786;letter-spacing:.08em;">05</span>
+      <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;">Two instruments, always running</h2>
+    </div>
+    <p style="margin:0;font-size:16px;font-weight:500;line-height:1.55;color:#5d5880;max-width:70ch;text-wrap:pretty;">A treadmill convinces you it is working because the readout never stops moving. The room needs the same: one instrument for <em>what you have built</em>, one for <em>how hard it is going right now</em>. They must mean different things, or they are decoration.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:18px;">
+
+      <!-- THE RING -->
+      <div style="border-radius:20px;padding:26px;background:#fff;box-shadow:0 1px 2px rgba(33,26,74,.05),0 10px 26px -18px rgba(33,26,74,.4);display:flex;flex-direction:column;gap:18px;">
+        <div>
+          <div style="font-size:11px;font-weight:800;letter-spacing:.09em;white-space:nowrap;color:#868e96;">INSTRUMENT 01</div>
+          <div style="font-size:19px;font-weight:700;letter-spacing:-.014em;margin-top:5px;">The tier rings</div>
+          <div style="font-size:14px;font-weight:600;color:#1864ab;margin-top:3px;">What you have built</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:22px;flex-wrap:wrap;">
+          <div style="position:relative;flex:none;width:140px;height:140px;">
+            <div style="position:absolute;inset:8px;border-radius:50%;background:radial-gradient(circle,rgba(64,192,87,.22),transparent 70%);animation:ringGlow 2.6s ease-in-out infinite;"></div>
+            <svg width="140" height="140" viewBox="0 0 140 140" style="position:relative;transform:rotate(-90deg);">
+              <circle cx="70" cy="70" r="52" fill="none" stroke="rgba(33,26,74,.08)" stroke-width="11"></circle>
+              <circle cx="70" cy="70" r="40" fill="none" stroke="rgba(33,26,74,.08)" stroke-width="11"></circle>
+              <circle cx="70" cy="70" r="28" fill="none" stroke="rgba(33,26,74,.08)" stroke-width="11"></circle>
+              <circle cx="70" cy="70" r="52" fill="none" stroke="#40c057" stroke-width="11" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="0"></circle>
+              <circle cx="70" cy="70" r="40" fill="none" stroke="#fab005" stroke-width="11" stroke-linecap="round" stroke-dasharray="251.3" stroke-dashoffset="72.9"></circle>
+              <circle cx="70" cy="70" r="28" fill="none" stroke="#e8590c" stroke-width="11" stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="88.0"></circle>
+            </svg>
+          </div>
+          <div style="flex:1;min-width:140px;display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ ringRows }}" as="r" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:9px;">
+                <span style="width:11px;height:11px;flex:none;border-radius:3px;background:{{ r.c }};"></span>
+                <span style="flex:1;min-width:0;font-size:13.5px;font-weight:700;color:#3f3a63;">{{ r.t }}</span>
+                <span style="font-size:15px;font-weight:800;white-space:nowrap;color:{{ r.tc }};">{{ r.v }}</span>
+                <span style="padding:3px 8px;border-radius:6px;font-size:11px;font-weight:800;white-space:nowrap;background:{{ r.chipBg }};color:{{ r.chipFg }};">{{ r.chip }}</span>
+              </div>
+            </sc-for>
+            <div style="font-size:12px;font-weight:600;line-height:1.4;color:#868e96;margin-top:2px;text-wrap:pretty;">Each arc closes at your last run's count in that tier.</div>
+          </div>
+        </div>
+        <p style="margin:0;font-size:14px;font-weight:500;line-height:1.5;color:#5d5880;text-wrap:pretty;">Three arcs — easy, medium, hard — each closing as correct answers land in that tier. It runs the whole session, so <strong style="color:#211a4a;">the end-of-run breakdown is just the rings at rest</strong>. Nothing new appears at the finish.</p>
+      </div>
+
+      <!-- THE PACE LINE -->
+      <div style="border-radius:20px;padding:26px;background:linear-gradient(158deg,#211a4a 0%,#2d2260 60%,#3b2a75 100%);color:#fff;box-shadow:0 18px 40px -22px rgba(33,26,74,.6);display:flex;flex-direction:column;gap:18px;">
+        <div>
+          <div style="font-size:11px;font-weight:800;letter-spacing:.09em;white-space:nowrap;color:#a99fd8;">INSTRUMENT 02</div>
+          <div style="font-size:19px;font-weight:700;letter-spacing:-.014em;margin-top:5px;">The pace trace</div>
+          <div style="font-size:14px;font-weight:600;color:#8ce99a;margin-top:3px;">How hard it is going right now</div>
+        </div>
+        <div style="position:relative;height:96px;border-radius:14px;overflow:hidden;background:rgba(0,0,0,.22);">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;">
+            <div style="display:flex;width:640px;animation:paceRun 3.4s linear infinite;">
+              <svg width="320" height="96" viewBox="0 0 320 96" style="flex:none;display:block;">
+                <polyline points="0,62 20,48 40,66 60,34 80,58 100,26 120,52 140,40 160,68 180,30 200,56 220,22 240,60 260,38 280,64 300,44 320,58" fill="none" stroke="#8ce99a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></polyline>
+              </svg>
+              <svg width="320" height="96" viewBox="0 0 320 96" style="flex:none;display:block;">
+                <polyline points="0,62 20,48 40,66 60,34 80,58 100,26 120,52 140,40 160,68 180,30 200,56 220,22 240,60 260,38 280,64 300,44 320,58" fill="none" stroke="#8ce99a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></polyline>
+              </svg>
+            </div>
+          </div>
+          <div style="position:absolute;right:12px;top:10px;padding:5px 10px;border-radius:7px;background:rgba(140,233,154,.16);color:#8ce99a;font-size:11px;font-weight:800;white-space:nowrap;">GEAR 1 · STEADY</div>
+        </div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;">
+          <sc-for list="{{ paceGears }}" as="g" hint-placeholder-count="3">
+            <span style="display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:8px;background:rgba(255,255,255,.1);font-size:12px;font-weight:700;white-space:nowrap;color:{{ g.c }};">
+              <span style="width:8px;height:8px;border-radius:50%;background:{{ g.c }};"></span>{{ g.t }}
+            </span>
+          </sc-for>
+        </div>
+        <p style="margin:0;font-size:14px;font-weight:500;line-height:1.5;color:#cfc8ea;text-wrap:pretty;">A trace that scrolls without ever stopping. Its <strong style="color:#fff;">amplitude is answers-per-minute</strong>, its <strong style="color:#fff;">scroll speed and colour are the gear</strong>. At a gear change the speed visibly jumps — the instrument tells you before Vyom does.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 05 · THE RITUAL ══ -->
+  <section style="display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+      <span style="font-size:13px;font-weight:800;color:#6b6786;letter-spacing:.08em;">06</span>
+      <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;">The countdown ritual</h2>
+      <span style="font-size:15px;font-weight:500;color:#6b6786;">Three times a run, the clock stops and everyone breathes</span>
+    </div>
+
+    <div style="border-radius:22px;padding:32px;background:#fff;box-shadow:0 1px 2px rgba(33,26,74,.05),0 16px 40px -24px rgba(33,26,74,.5);display:flex;flex-direction:column;gap:26px;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr));gap:14px;">
+        <sc-for list="{{ ritual }}" as="r" hint-placeholder-count="5">
+          <div style="display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center;">
+            <div style="width:100%;aspect-ratio:16/10;border-radius:12px;display:grid;place-items:center;background:{{ r.bg }};border:1px solid {{ r.bd }};">
+              <span style="font-size:{{ r.size }};font-weight:800;letter-spacing:-.03em;line-height:1;color:{{ r.fg }};">{{ r.face }}</span>
+            </div>
+            <div style="font-size:13px;font-weight:700;line-height:1.35;color:#211a4a;text-wrap:pretty;">{{ r.t }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:16px;">
+        <sc-for list="{{ ritualNotes }}" as="rn" hint-placeholder-count="3">
+          <div style="display:flex;align-items:flex-start;gap:11px;">
+            <i class="ti {{ rn.i }}" style="flex:none;font-size:18px;color:#1864ab;margin-top:1px;"></i>
+            <div style="min-width:0;">
+              <div style="font-size:14.5px;font-weight:700;line-height:1.35;">{{ rn.t }}</div>
+              <div style="font-size:13.5px;font-weight:500;line-height:1.45;color:#6b6786;margin-top:3px;text-wrap:pretty;">{{ rn.d }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding:16px 20px;border-radius:14px;background:#f6f3ff;border-left:3px solid #7048e8;">
+        <p style="margin:0;font-size:15.5px;font-weight:600;line-height:1.5;color:#3a3450;text-wrap:pretty;">“Thirty seconds. Shake it out. When we come back it's fastest-finger — twenty seconds a question, double points, and I am not slowing down for anyone.”</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 06 · WHAT A GEAR CAN SERVE ══ -->
+  <section style="display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+      <span style="font-size:13px;font-weight:800;color:#6b6786;letter-spacing:.08em;">07</span>
+      <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;">What each gear is allowed to serve</h2>
+    </div>
+    <p style="margin:0;font-size:16px;font-weight:500;line-height:1.55;color:#5d5880;max-width:70ch;text-wrap:pretty;">Format cost no longer sets the session length — the clock does. It now does a sharper job: it decides <strong style="color:#211a4a;">which formats a gear may use at all.</strong> A twenty-second cap cannot serve a match-the-pairs board, so gear 2 simply never draws one.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:18px;align-items:start;">
+      <div style="border-radius:20px;padding:26px;background:#fff;box-shadow:0 1px 2px rgba(33,26,74,.05),0 10px 26px -18px rgba(33,26,74,.4);">
+        <div style="font-size:12px;font-weight:800;letter-spacing:.08em;white-space:nowrap;color:#868e96;margin-bottom:16px;">TYPICAL TIME ON A FORMAT</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <sc-for list="{{ costs }}" as="c" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span style="flex:none;width:66px;font-size:13.5px;font-weight:700;color:#3f3a63;">{{ c.k }}</span>
+              <div style="flex:1;min-width:0;height:9px;border-radius:999px;background:rgba(33,26,74,.07);overflow:hidden;">
+                <div style="height:100%;width:{{ c.w }};border-radius:999px;background:linear-gradient(90deg,#74c0fc,#1c7ed6);"></div>
+              </div>
+              <span style="flex:none;width:38px;text-align:right;font-size:13px;font-weight:800;color:#1864ab;">{{ c.s }}</span>
+              <span style="flex:none;padding:3px 8px;border-radius:6px;font-size:10.5px;font-weight:800;white-space:nowrap;background:{{ c.bg }};color:{{ c.fg }};">{{ c.gears }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(120,90,200,.16);font-size:13px;font-weight:600;color:#6b6786;">Gear 2 draws only from formats that fit inside 20 seconds.</div>
+      </div>
+
+      <div style="border-radius:20px;padding:26px;background:rgba(255,255,255,.7);border:1px solid rgba(120,90,200,.22);">
+        <div style="font-size:12px;font-weight:800;letter-spacing:.08em;white-space:nowrap;color:#868e96;margin-bottom:16px;">SELECTION STILL READS THREE THINGS</div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <sc-for list="{{ inputs }}" as="x" hint-placeholder-count="3">
+            <div style="display:flex;align-items:flex-start;gap:12px;">
+              <span style="flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#e7f1ff;color:#1864ab;font-size:12px;font-weight:800;">{{ x.n }}</span>
+              <div style="min-width:0;">
+                <div style="font-size:14.5px;font-weight:700;line-height:1.35;">{{ x.t }}</div>
+                <div style="font-size:13px;font-weight:500;line-height:1.45;color:#6b6786;margin-top:3px;text-wrap:pretty;">{{ x.d }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:18px;padding:14px 16px;border-radius:12px;background:#fff4e6;">
+          <p style="margin:0;font-size:13.5px;font-weight:600;line-height:1.45;color:#ad4d0a;text-wrap:pretty;">Because the bank is drawn from live, a shootout never runs out. There is always one more question.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 07 · SCORING ══ -->
+  <section style="display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+      <span style="font-size:13px;font-weight:800;color:#6b6786;letter-spacing:.08em;">08</span>
+      <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;">Scoring</h2>
+      <span style="font-size:15px;font-weight:500;color:#6b6786;">Weighted by difficulty, doubled in gear 2</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:14px;">
+      <sc-for list="{{ scoring }}" as="s" hint-placeholder-count="4">
+        <div style="border-radius:16px;padding:22px;background:#fff;box-shadow:0 1px 2px rgba(33,26,74,.05),0 8px 20px -16px rgba(33,26,74,.3);">
+          <div style="font-size:26px;font-weight:800;letter-spacing:-.02em;color:{{ s.c }};">{{ s.v }}</div>
+          <div style="font-size:14.5px;font-weight:700;margin-top:6px;line-height:1.35;">{{ s.t }}</div>
+          <div style="font-size:13px;font-weight:500;line-height:1.45;color:#6b6786;margin-top:5px;text-wrap:pretty;">{{ s.d }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ══ 08 · THE FLAGSHIP MOVE ══ -->
+  <section style="display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+      <span style="font-size:13px;font-weight:800;color:#6b6786;letter-spacing:.08em;">09</span>
+      <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;">The move they'll tell a friend about</h2>
+    </div>
+
+    <div style="border-radius:24px;padding:32px;background:#fff;box-shadow:0 1px 2px rgba(33,26,74,.05),0 16px 40px -24px rgba(33,26,74,.5);display:flex;flex-direction:column;gap:26px;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:20px;align-items:center;">
+
+        <div>
+          <div style="font-size:11.5px;font-weight:800;letter-spacing:.09em;white-space:nowrap;color:#868e96;margin-bottom:12px;">DEFAULT · 65 / 35</div>
+          <div style="display:grid;grid-template-columns:65fr 35fr;gap:8px;aspect-ratio:16/9;padding:12px;border-radius:14px;background:linear-gradient(158deg,#f6f2ff,#fdfaf3);border:1px solid rgba(120,90,200,.18);">
+            <div style="display:flex;flex-direction:column;gap:6px;justify-content:center;">
+              <div style="width:80%;height:9px;border-radius:4px;background:rgba(33,26,74,.24);"></div>
+              <div style="height:20px;border-radius:6px;background:#fff;box-shadow:0 1px 3px rgba(33,26,74,.1);"></div>
+              <div style="height:20px;border-radius:6px;background:#fff;box-shadow:0 1px 3px rgba(33,26,74,.1);"></div>
+            </div>
+            <div style="border-radius:10px;background:rgba(255,255,255,.9);box-shadow:inset 0 0 0 3px #fff,0 2px 8px -2px rgba(70,46,146,.3);display:grid;place-items:center;">
+              <span style="width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,#339af0,#1c7ed6);"><i class="ti ti-bulb" style="font-size:13px;color:#fff;"></i></span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;">
+          <div style="display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;background:#ebfbee;color:#1b5e2a;font-size:12.5px;font-weight:800;white-space:nowrap;">
+            <i class="ti ti-flame" style="font-size:15px;"></i>3 straight, no hint
+          </div>
+          <i class="ti ti-arrow-narrow-right" style="font-size:30px;color:#1c7ed6;"></i>
+          <div style="font-size:13px;font-weight:600;line-height:1.45;color:#6b6786;max-width:22ch;text-wrap:pretty;">The panel folds into a disc. The question column takes the whole canvas.</div>
+        </div>
+
+        <div>
+          <div style="font-size:11.5px;font-weight:800;letter-spacing:.09em;white-space:nowrap;color:#1864ab;margin-bottom:12px;">FOLDED · FULL WIDTH</div>
+          <div style="position:relative;aspect-ratio:16/9;padding:12px;border-radius:14px;background:linear-gradient(158deg,#f6f2ff,#fdfaf3);border:1px solid rgba(120,90,200,.18);display:flex;flex-direction:column;gap:6px;justify-content:center;">
+            <div style="width:56%;height:9px;border-radius:4px;background:rgba(33,26,74,.24);margin:0 auto;"></div>
+            <div style="height:20px;border-radius:6px;background:#fff;box-shadow:0 1px 3px rgba(33,26,74,.1);"></div>
+            <div style="height:20px;border-radius:6px;background:#fff;box-shadow:0 1px 3px rgba(33,26,74,.1);"></div>
+            <div style="position:absolute;top:9px;right:9px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,#339af0,#1c7ed6);box-shadow:0 4px 10px -2px rgba(28,126,214,.5);">
+              <i class="ti ti-bulb" style="font-size:12px;color:#fff;"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:16px 20px;border-radius:14px;background:#f6f3ff;border-left:3px solid #7048e8;">
+        <p style="margin:0;font-size:15.5px;font-weight:600;line-height:1.5;color:#3a3450;text-wrap:pretty;">“Looks like that hint box isn't built for you — I'll keep it aside. Tap it if you ever want it.”</p>
+      </div>
+      <p style="margin:0;font-size:15px;font-weight:500;line-height:1.55;color:#5d5880;text-wrap:pretty;">Two wrong answers later it comes back, with a line to match. In a shootout it carries a second edge: <strong style="color:#211a4a;">a hint costs clock as well as an orb</strong> — the timer never pauses for one.</p>
+    </div>
+  </section>
+
+  <!-- ══ 09 · SIGNALS + RULES ══ -->
+  <section style="display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+      <span style="font-size:13px;font-weight:800;color:#6b6786;letter-spacing:.08em;">10</span>
+      <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;">Signals in, one move out</h2>
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <sc-for list="{{ signals }}" as="g" hint-placeholder-count="7">
+        <div style="display:inline-flex;align-items:center;gap:9px;padding:10px 15px;border-radius:12px;background:#fff;box-shadow:0 1px 2px rgba(33,26,74,.05),0 8px 20px -16px rgba(33,26,74,.3);">
+          <i class="ti {{ g.i }}" style="font-size:17px;color:#1864ab;"></i>
+          <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;font-weight:700;color:#211a4a;">{{ g.k }}</span>
+          <span style="font-size:13px;font-weight:500;color:#6b6786;">{{ g.d }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:16px 20px;border-radius:16px;background:rgba(255,255,255,.7);border:1px dashed rgba(120,90,200,.36);">
+      <span style="font-size:12px;font-weight:800;letter-spacing:.08em;white-space:nowrap;color:#868e96;">POSTURE</span>
+      <sc-for list="{{ postures }}" as="p" hint-placeholder-count="3">
+        <span style="display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border-radius:999px;background:{{ p.bg }};color:{{ p.fg }};font-size:13px;font-weight:800;white-space:nowrap;">{{ p.t }}</span>
+      </sc-for>
+      <span style="font-size:13.5px;font-weight:500;color:#6b6786;">drives tone as well as difficulty</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <sc-for list="{{ rules }}" as="r" hint-placeholder-count="10">
+        <div style="display:grid;grid-template-columns:36px minmax(0,1fr);gap:16px;align-items:start;padding:20px;border-radius:16px;background:#fff;box-shadow:0 1px 2px rgba(33,26,74,.05),0 8px 20px -16px rgba(33,26,74,.3);">
+          <span style="width:36px;height:36px;flex:none;border-radius:11px;display:grid;place-items:center;background:{{ r.bg }};color:{{ r.fg }};font-size:14px;font-weight:800;">{{ r.n }}</span>
+          <div style="min-width:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr));gap:14px;align-items:center;">
+            <div style="min-width:0;">
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.09em;white-space:nowrap;color:#868e96;margin-bottom:5px;">WHEN</div>
+              <div style="font-size:14.5px;font-weight:700;line-height:1.35;color:#211a4a;text-wrap:pretty;">{{ r.when }}</div>
+            </div>
+            <div style="min-width:0;">
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.09em;white-space:nowrap;color:#868e96;margin-bottom:5px;">THE ROOM CHANGES</div>
+              <div style="font-size:14px;font-weight:600;line-height:1.4;color:{{ r.fg }};text-wrap:pretty;">{{ r.does }}</div>
+            </div>
+            <div style="min-width:0;">
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.09em;white-space:nowrap;color:#868e96;margin-bottom:5px;">VYOM SAYS</div>
+              <div style="font-size:14px;font-weight:500;line-height:1.45;color:#5d5880;font-style:italic;text-wrap:pretty;">“{{ r.says }}”</div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="display:inline-flex;align-items:center;gap:10px;align-self:flex-start;padding:11px 17px;border-radius:12px;background:#fff4e6;color:#ad4d0a;font-size:13.5px;font-weight:700;">
+      <i class="ti ti-clock-pause" style="font-size:17px;"></i>One question of cooldown between any two moves — Vyom never chatters.
+    </div>
+  </section>
+
+  <!-- ══ 10 · CLOSE ══ -->
+  <section style="display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+      <span style="font-size:13px;font-weight:800;color:#6b6786;letter-spacing:.08em;">11</span>
+      <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;">The finish board</h2>
+    </div>
+
+    <div style="border-radius:22px;padding:32px;background:linear-gradient(158deg,#211a4a 0%,#2d2260 60%,#3b2a75 100%);color:#fff;box-shadow:0 20px 48px -24px rgba(33,26,74,.65);display:flex;flex-direction:column;gap:26px;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));gap:16px;">
+        <sc-for list="{{ finish }}" as="f" hint-placeholder-count="4">
+          <div style="padding:18px 20px;border-radius:14px;background:rgba(255,255,255,.1);">
+            <div style="font-size:11px;font-weight:800;letter-spacing:.09em;white-space:nowrap;color:#a99fd8;">{{ f.k }}</div>
+            <div style="font-size:26px;font-weight:800;letter-spacing:-.02em;margin-top:7px;color:{{ f.c }};">{{ f.v }}</div>
+            <div style="font-size:13px;font-weight:600;color:#cfc8ea;margin-top:4px;">{{ f.d }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <p style="margin:0;font-size:22px;font-weight:600;line-height:1.5;text-wrap:pretty;">“Nineteen answered, fifteen right — <strong style="color:#8ce99a;">four better than last time.</strong> You cleared every easy one, and you took two hard ones in fastest-finger. Secants are next.”</p>
+      <p style="margin:0;font-size:14.5px;font-weight:500;line-height:1.55;color:#a99fd8;text-wrap:pretty;">The rings do not animate in at the end — they have been filling the whole run. The board simply stops and labels what is already on screen.</p>
+      <div style="display:flex;align-items:flex-start;gap:13px;padding:16px 20px;border-radius:14px;background:rgba(255,255,255,.1);">
+        <i class="ti ti-timeline-event" style="flex:none;font-size:19px;color:#74c0fc;margin-top:1px;"></i>
+        <p style="margin:0;font-size:14.5px;font-weight:500;line-height:1.5;color:#cfc8ea;text-wrap:pretty;"><strong style="color:#fff;">The trace is scrubable.</strong> It was recorded all run — drag it back to find where you sped up and where you stalled. “Your best minute was 4:20 to 5:20.” The score becomes a performance you can study.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ NEXT HORIZON ══ -->
+  <section style="display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+      <span style="font-size:13px;font-weight:800;color:#6b6786;letter-spacing:.08em;">12</span>
+      <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;">Next horizon</h2>
+      <span style="font-size:15px;font-weight:500;color:#6b6786;">Not in the build order — the run works without them</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(290px,100%),1fr));gap:18px;">
+      <sc-for list="{{ horizon }}" as="h" hint-placeholder-count="3">
+        <div style="position:relative;overflow:hidden;border-radius:20px;padding:26px;background:linear-gradient(158deg,#211a4a 0%,#2d2260 60%,#3b2a75 100%);color:#fff;box-shadow:0 18px 40px -22px rgba(33,26,74,.6);display:flex;flex-direction:column;gap:14px;">
+          <div style="position:absolute;right:-14px;top:-12px;font-size:84px;line-height:1;color:#fff;opacity:.07;pointer-events:none;"><i class="ti {{ h.icon }}"></i></div>
+          <div style="position:relative;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <span style="font-size:19px;font-weight:700;letter-spacing:-.014em;">{{ h.name }}</span>
+            <span style="padding:4px 10px;border-radius:7px;background:rgba(255,255,255,.14);color:{{ h.tint }};font-size:11px;font-weight:800;white-space:nowrap;">{{ h.tag }}</span>
+          </div>
+          <p style="position:relative;margin:0;font-size:14.5px;font-weight:500;line-height:1.5;color:#cfc8ea;text-wrap:pretty;">{{ h.body }}</p>
+          <div style="position:relative;padding:13px 15px;border-radius:12px;background:rgba(255,255,255,.09);border-left:3px solid {{ h.tint }};">
+            <p style="margin:0;font-size:13.5px;font-weight:600;line-height:1.45;color:#fff;text-wrap:pretty;">{{ h.edge }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ══ BUILD ORDER ══ -->
+  <section style="display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+      <span style="font-size:13px;font-weight:800;color:#6b6786;letter-spacing:.08em;">13</span>
+      <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;">Build order</h2>
+      <span style="font-size:15px;font-weight:600;color:#237032;">{{ doneCount }} of {{ stepCount }} shipped</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:12px;">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="11">
+        <div style="display:flex;align-items:flex-start;gap:13px;padding:18px 20px;border-radius:16px;background:{{ s.bg }};border:1px solid {{ s.bd }};">
+          <i class="ti {{ s.icon }}" style="flex:none;font-size:19px;color:{{ s.fg }};margin-top:1px;"></i>
+          <div style="min-width:0;">
+            <div style="font-size:15px;font-weight:700;line-height:1.35;color:#211a4a;text-wrap:pretty;">{{ s.t }}</div>
+            <div style="font-size:12.5px;font-weight:700;letter-spacing:.04em;color:{{ s.fg }};margin-top:5px;">{{ s.status }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ══ 12 · OPEN QUESTIONS ══ -->
+  <section style="display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+      <span style="font-size:13px;font-weight:800;color:#6b6786;letter-spacing:.08em;">14</span>
+      <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;">Still open</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(270px,100%),1fr));gap:14px;">
+      <sc-for list="{{ open }}" as="o" hint-placeholder-count="4">
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:20px;border-radius:16px;background:rgba(255,255,255,.7);border:1px dashed rgba(120,90,200,.4);">
+          <i class="ti ti-help-circle" style="flex:none;font-size:19px;color:#5f3dc4;margin-top:1px;"></i>
+          <p style="margin:0;font-size:14.5px;font-weight:500;line-height:1.5;color:#3f3a63;text-wrap:pretty;">{{ o.t }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <footer style="padding-top:12px;border-top:1px solid rgba(120,90,200,.2);display:flex;gap:20px;flex-wrap:wrap;">
+    <span style="font-size:13.5px;font-weight:500;color:#6b6786;">Out of scope: server-side model · cross-session memory · question authoring</span>
+    <a href="Practice%20Room.dc.html">Open the Practice Room →</a>
+  </footer>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:1400}}">
+class Component extends DCLogic {
+  renderVals(){
+    const steps = [
+      { t:'Entry — four time cards, count replaced by personal best', done:false },
+      { t:'Countdown clock and the shootout frame', done:false },
+      { t:'3-2-1 ritual at start and at both gear changes', done:false },
+      { t:'Tier rings — live, and the finish board at rest', done:false },
+      { t:'Pace trace — scroll speed and colour follow the gear', done:false },
+      { t:'Gear 2 — 20s cap, auto-advance, 2× points', done:false },
+      { t:'Signals + rules engine, with cooldown', done:true },
+      { t:'Hint collapse and restore', done:true },
+      { t:'Tier shifts between sets', done:true },
+      { t:'Pace and progress moments', done:true },
+      { t:'Chain multiplier — pips, gold at 5, break on wrong', done:false },
+      { t:'Skip — no cost, chain survives', done:false },
+      { t:'Missed questions banked and re-offered at gear 3', done:false },
+      { t:'Finish board — breakdown against last run, scrubable trace', done:false },
+    ].map((s,i) => ({ ...s, key:'s'+i,
+      icon: s.done ? 'ti-circle-check-filled' : 'ti-circle-dashed',
+      status: s.done ? 'SHIPPED' : 'TO BUILD',
+      fg: s.done ? '#237032' : '#ad4d0a',
+      bg: s.done ? 'rgba(235,251,238,.7)' : 'rgba(255,255,255,.62)',
+      bd: s.done ? 'rgba(64,192,87,.3)' : 'rgba(120,90,200,.22)' }));
+
+    return {
+      doneCount: steps.filter(s => s.done).length,
+      stepCount: steps.length,
+      steps,
+
+      todayPoints: [
+        { key:'a', t:'Two students who behave completely differently get the identical session.' },
+        { key:'b', t:'\u201cLight stuff / Harder stuff\u201d asks a child to self-diagnose \u2014 they cannot.' },
+        { key:'c', t:'A finishable list has a ceiling. Finish it and there is no reason to push.' },
+        { key:'d', t:'Nothing on screen moves, so nothing feels urgent.' },
+      ],
+
+      /* The card can no longer promise a count \u2014 the count is what the run produces.
+         What it shows instead is the target: their own last result at this length. */
+      intents: [
+        { key:'w', name:'Warm-up',   mins:'10 MINUTES', why:'A gentle restart after time away.',
+          icon:'ti-sun', tint:'#237032', bestLabel:'YOUR BEST', best:'9', bestUnit:'correct',
+          t1:'67%', t2:'33%', t3:'0%',  mix:'6 easy \u00b7 3 medium \u00b7 0 hard' },
+        { key:'s', name:'Sprint',    mins:'20 MINUTES', why:'The default. Steady, then a burst.',
+          icon:'ti-bolt', tint:'#1864ab', bestLabel:'YOUR BEST', best:'15', bestUnit:'correct',
+          t1:'40%', t2:'47%', t3:'13%', mix:'6 easy \u00b7 7 medium \u00b7 2 hard' },
+        { key:'e', name:'Endurance', mins:'40 MINUTES', why:'Depth. Several topics, all formats.',
+          icon:'ti-mountain', tint:'#ad4d0a', bestLabel:'YOUR BEST', best:'26', bestUnit:'correct',
+          t1:'27%', t2:'46%', t3:'27%', mix:'7 easy \u00b7 12 medium \u00b7 7 hard' },
+        { key:'m', name:'Marathon',  mins:'60 MINUTES', why:'Exam simulation. Whole chapter.',
+          icon:'ti-flag', tint:'#5f3dc4', bestLabel:'FIRST RUN', best:'\u2014', bestUnit:'no record',
+          t1:'0%', t2:'0%', t3:'0%', mix:'set the bar' },
+      ],
+      tierKey: [
+        { key:'1', c:'#40c057', t:'Easy \u00b7 recall' },
+        { key:'2', c:'#fab005', t:'Medium \u00b7 apply' },
+        { key:'3', c:'#e8590c', t:'Hard \u00b7 stretch' },
+      ],
+
+      /* Percentages are of ANSWERING time only \u2014 the clock pauses through every break
+         and countdown, so a gear is never shortened by its own ritual. */
+      laps: [
+        { key:'l1', n:'1', short:'GEAR 1', w:'50%', name:'Steady lap', pts:'1\u00d7 points',
+          band:'#ebfbee', ink:'#1b5e2a',
+          body:'Open running. Each question waits for an answer, hints are available, and the engine is free to move tiers under you. On a 10-minute Warm-up this is the whole run — no gear changes.',
+          rules:[
+            { key:'a', i:'ti-infinity', c:'#237032', t:'No per-question limit' },
+            { key:'b', i:'ti-bulb', c:'#237032', t:'Hints on \u2014 but the clock keeps running' },
+            { key:'c', i:'ti-stairs-up', c:'#237032', t:'Tier can rise or fall every three questions' },
+          ] },
+        { key:'l2', n:'2', short:'GEAR 2', w:'20%', name:'Fastest finger', pts:'2\u00d7 points',
+          band:'#fff4e6', ink:'#ad4d0a',
+          body:'Twenty seconds a question. Miss it and it is gone \u2014 no penalty, no second look, straight to the next one.',
+          rules:[
+            { key:'a', i:'ti-clock-bolt', c:'#ad4d0a', t:'20s cap, per-question ring drains' },
+            { key:'b', i:'ti-player-track-next', c:'#ad4d0a', t:'Auto-advance on timeout' },
+            { key:'c', i:'ti-filter', c:'#ad4d0a', t:'Only formats that fit 20s' },
+            { key:'d', i:'ti-shield-check', c:'#ad4d0a', t:'Only tiers you already cleared in gear 1' },
+          ] },
+        { key:'l3', n:'3', short:'GEAR 3', w:'30%', name:'Cooldown lap', pts:'1\u00d7 points',
+          band:'#e7f1ff', ink:'#1864ab',
+          body:'Back to open running for the last stretch. One goal only: get as many more as you can before the clock reaches zero.',
+          rules:[
+            { key:'a', i:'ti-infinity', c:'#1864ab', t:'Question stays until answered' },
+            { key:'b', i:'ti-target', c:'#1864ab', t:'Tier settles at whatever you earned' },
+            { key:'c', i:'ti-trophy', c:'#1864ab', t:'Live count against your best' },
+          ] },
+      ],
+
+      mechanics: [
+        { key:'m1', name:'The chain', icon:'ti-link', bg:'#fff9db', fg:'#7a5200',
+          chips:[ {key:'a',t:'3 · 1.5×',bg:'#fff',fg:'#7a5200'}, {key:'b',t:'5 · 2×',bg:'#fff',fg:'#7a5200'}, {key:'c',t:'× gear 2 → 4×',bg:'#7a5200',fg:'#fff'} ],
+          body:'Consecutive correct answers build a multiplier. Any wrong answer breaks it back to 1×. In gear 2 it compounds with the doubling, so a five-chain at speed is worth four times a plain answer.',
+          why:'The clock pushes from outside the questions. A chain pushes from inside them — and gives the pace trace something to spike against.' },
+        { key:'m2', name:'Skip', icon:'ti-player-skip-forward', bg:'#e7f1ff', fg:'#1864ab',
+          chips:[ {key:'a',t:'costs nothing',bg:'#fff',fg:'#1864ab'}, {key:'b',t:'breaks no chain',bg:'#fff',fg:'#1864ab'} ],
+          body:'Abandon a question you cannot crack and move on. No penalty, no score change, and the chain survives — skipping is not failing.',
+          why:'This is what makes “you cannot lose” true in the moment rather than only in the scoring. It also teaches triage, which is the exam skill nobody practices.' },
+        { key:'m3', name:'The misses come back', icon:'ti-arrow-back-up', bg:'#f3f0ff', fg:'#5f3dc4',
+          chips:[ {key:'a',t:'offered at gear 3',bg:'#fff',fg:'#5f3dc4'} ],
+          body:'Every wrong or skipped question is held. At the cooldown lap Vyom offers them back — “three you did not get, want them?” — and they score normally.',
+          why:'Turns the last lap into an arc rather than extra volume, and means a hard question you dodged early is not lost, only deferred.' },
+      ],
+
+      horizon: [
+        { key:'h1', name:'The ghost', icon:'ti-ghost-2', tag:'BIGGEST LEVER', tint:'#8ce99a',
+          body:'Race a friend’s recorded run from your Study Group. Their pace trace runs as a faded line behind yours and their count ticks alongside.',
+          edge:'Recorded, not live — no scheduling, no sync, and nobody is watching you lose. It turns practice into something students send each other.' },
+        { key:'h2', name:'Sound', icon:'ti-volume', tag:'CHEAPEST LEVER', tint:'#ffc078',
+          body:'A tick under the final ten seconds. A rising pitch as the chain climbs. A stinger at each gear change.',
+          edge:'A shootout without audio is half a shootout. Nothing else on this page costs so little and changes the feel so much.' },
+        { key:'h3', name:'It has to move something', icon:'ti-route', tag:'CLOSES THE LOOP', tint:'#74c0fc',
+          body:'A run currently changes nothing outside itself. Coming back to Chapter Journey should visibly tick the chapter’s mastery bar.',
+          edge:'Otherwise the shootout is a closed loop, and the student learns that practice is a side room rather than the way forward.' },
+      ],
+
+      ringRows: [
+        { key:'a', c:'#40c057', tc:'#1b5e2a', t:'Easy',   v:'8', chip:'+2 · closed', chipBg:'#ebfbee', chipFg:'#1b5e2a' },
+        { key:'b', c:'#fab005', tc:'#7a5200', t:'Medium', v:'5', chip:'2 to go',        chipBg:'#f1f0f8', chipFg:'#5d5880' },
+        { key:'c', c:'#e8590c', tc:'#ad4d0a', t:'Hard',   v:'2', chip:'2 to go',        chipBg:'#f1f0f8', chipFg:'#5d5880' },
+      ],
+      paceGears: [
+        { key:'a', c:'#8ce99a', t:'Gear 1 \u00b7 steady scroll' },
+        { key:'b', c:'#ffc078', t:'Gear 2 \u00b7 3\u00d7 faster, amber' },
+        { key:'c', c:'#74c0fc', t:'Gear 3 \u00b7 eases back, blue' },
+      ],
+
+      ritual: [
+        { key:'a', face:'READY',  size:'19px', t:'Vyom names the run and the target', bg:'#f6f3ff', bd:'rgba(120,90,200,.28)', fg:'#5f3dc4' },
+        { key:'b', face:'3',      size:'38px', t:'Clock still paused', bg:'#fff', bd:'rgba(120,90,200,.2)', fg:'#211a4a' },
+        { key:'c', face:'2',      size:'38px', t:'Rings light up empty', bg:'#fff', bd:'rgba(120,90,200,.2)', fg:'#211a4a' },
+        { key:'d', face:'1',      size:'38px', t:'Pace trace starts moving', bg:'#fff', bd:'rgba(120,90,200,.2)', fg:'#211a4a' },
+        { key:'e', face:'GO',     size:'30px', t:'Clock starts, first question lands', bg:'#ebfbee', bd:'rgba(64,192,87,.35)', fg:'#1b5e2a' },
+      ],
+      ritualNotes: [
+        { key:'a', i:'ti-player-pause', t:'The clock is paused throughout',
+          d:'Countdowns and the mid-run break cost the student nothing. Every second on the clock is answering time.' },
+        { key:'b', i:'ti-repeat', t:'The same ritual runs three times',
+          d:'At the start, at the gear-2 change, and at the gear-3 change \u2014 so the shift is always felt, never noticed late.' },
+        { key:'c', i:'ti-coffee', t:'Thirty seconds at the halfway break',
+          d:'The only real pause. Vyom explains the gear, the dial visibly climbs, then 3-2-1.' },
+      ],
+
+      costs: [
+        { key:'a', k:'single', s:'70s',  w:'47%',  gears:'1 \u00b7 2 \u00b7 3', bg:'#ebfbee', fg:'#1b5e2a' },
+        { key:'b', k:'blank',  s:'80s',  w:'53%',  gears:'1 \u00b7 2 \u00b7 3', bg:'#ebfbee', fg:'#1b5e2a' },
+        { key:'c', k:'multi',  s:'95s',  w:'63%',  gears:'1 \u00b7 3',          bg:'#f1f0f8', fg:'#5d5880' },
+        { key:'d', k:'typed',  s:'110s', w:'73%',  gears:'1 \u00b7 3',          bg:'#f1f0f8', fg:'#5d5880' },
+        { key:'e', k:'match',  s:'150s', w:'100%', gears:'1 \u00b7 3',          bg:'#f1f0f8', fg:'#5d5880' },
+      ],
+      inputs: [
+        { key:'1', n:'1', t:'Chapter mastery', d:'done / count sets the opening tier.' },
+        { key:'2', n:'2', t:'Topic performance', d:'The weakest two topics carry double weight.' },
+        { key:'3', n:'3', t:'Recent formats', d:'What they just saw is deprioritised.' },
+      ],
+
+      scoring: [
+        { key:'a', v:'1 \u00b7 2 \u00b7 3', c:'#1864ab', t:'Weighted by tier', d:'A hard question is worth three easy ones.' },
+        { key:'b', v:'2\u00d7',            c:'#ad4d0a', t:'Gear 2 doubles', d:'Everything answered in fastest-finger counts twice.' },
+        { key:'c', v:'\u00bd',             c:'#5f3dc4', t:'Second try', d:'Half credit \u2014 available in gears 1 and 3 only.' },
+        { key:'d', v:'1.5× / 2×',   c:'#7a5200', t:'Chain of 3 / 5', d:'Multiplies whatever the question was worth. Breaks on a wrong answer, survives a skip.' },
+        { key:'e', v:'0',                  c:'#237032', t:'A miss costs nothing', d:'Timeouts, skips and wrong answers never subtract. There is no way to go backwards.' },
+      ],
+
+      signals: [
+        { key:'a', i:'ti-check',       k:'correct',   d:'against the key' },
+        { key:'b', i:'ti-repeat',      k:'attempts',  d:'2nd try scores half' },
+        { key:'c', i:'ti-stopwatch',   k:'ms',        d:'render \u2192 submit' },
+        { key:'d', i:'ti-bulb',        k:'hintUsed',  d:'per question' },
+        { key:'e', i:'ti-switch-3',    k:'changed',   d:'switched before submit' },
+        { key:'f', i:'ti-gauge',       k:'paceRatio', d:'ms \u00f7 expected cost' },
+        { key:'g', i:'ti-activity',    k:'rate',      d:'answers per minute, rolling' },
+      ],
+      postures: [
+        { key:'a', t:'flying',     bg:'#ebfbee', fg:'#1b5e2a' },
+        { key:'b', t:'steady',     bg:'#e7f1ff', fg:'#1864ab' },
+        { key:'c', t:'struggling', bg:'#fff4e6', fg:'#ad4d0a' },
+      ],
+
+      rules: [
+        { n:'1', when:'3 straight correct, no hint used', does:'Hint panel folds to a disc; column goes full width',
+          says:'Looks like that hint box isn\u2019t built for you \u2014 I\u2019ll keep it aside.', bg:'#ebfbee', fg:'#1b5e2a' },
+        { n:'2', when:'2 wrong in a row while hints are away', does:'Panel returns; column back to 65 / 35',
+          says:'No worries \u2014 these are getting tricky. I\u2019ve put the hints back within reach.', bg:'#fff4e6', fg:'#ad4d0a' },
+        { n:'3', when:'Set of 3 finishes at 80%+, tier below hard', does:'Tier +1; the ring you are filling switches',
+          says:'You\u2019ve got the basics spot on. Let\u2019s challenge ourselves with the tricky ones.', bg:'#e7f1ff', fg:'#1864ab' },
+        { n:'4', when:'Set finishes at 33% or less, tier above easy', does:'Tier \u22121',
+          says:'Let me dial these back a notch. No point grinding.', bg:'#f3f0ff', fg:'#5f3dc4' },
+        { n:'5', when:'50% of the clock spent', does:'Break, dial climbs, 3-2-1, gear 2 begins',
+          says:'Thirty seconds. Then it\u2019s fastest-finger \u2014 twenty seconds a question, double points.', bg:'#fff4e6', fg:'#ad4d0a' },
+        { n:'6', when:'70% of the clock spent', does:'Dial eases, 3-2-1, gear 3 begins',
+          says:'Cooldown lap. No timer on the question \u2014 just get me as many as you can.', bg:'#e7f1ff', fg:'#1864ab' },
+        { n:'7', when:'Two questions time out in a row in gear 2', does:'Next draw is one tier easier',
+          says:'Too quick? Let me send you some you can take at speed.', bg:'#fff5f5', fg:'#c92a2a' },
+        { n:'8', when:'Live count passes their previous best', does:'Rings pulse; count turns gold',
+          says:'That\u2019s your record broken \u2014 and there\u2019s still time on the clock.', bg:'#fff9db', fg:'#7a5200' },
+        { n:'9', when:'Chain reaches 5', does:'Multiplier locks at 2×; the chain pips go gold',
+          says:'Five in a row. Everything is worth double until you miss one.', bg:'#fff9db', fg:'#7a5200' },
+        { n:'10', when:'A chain of 3 or more breaks', does:'Pips reset — no other penalty',
+          says:'Chain’s gone. Start another one — you were three away from double.', bg:'#f1f0f8', fg:'#5d5880' },
+        { n:'11', when:'Gear 3 begins with misses banked', does:'Offers the missed questions back',
+          says:'Three you didn’t get. Want them back before the clock runs out?', bg:'#f3f0ff', fg:'#5f3dc4' },
+        { n:'12', when:'Wrong, answered in under 9 seconds', does:'Nothing changes \u2014 it is a reading problem',
+          says:'That one went quick. Want to read the next one twice?', bg:'#fff5f5', fg:'#c92a2a' },
+        { n:'13', when:'Final 60 seconds', does:'Clock turns red, trace runs hot',
+          says:'One minute. Everything you get now still counts.', bg:'#f1f0f8', fg:'#5d5880' },
+      ].map(r => ({ ...r, key:'r'+r.n })),
+
+      finish: [
+        { key:'a', k:'ANSWERED', v:'19', c:'#fff',    d:'in 20 minutes' },
+        { key:'b', k:'CORRECT',  v:'15', c:'#8ce99a', d:'best was 11' },
+        { key:'c', k:'BY TIER',  v:'8 / 5 / 2', c:'#fff', d:'easy · medium · hard' },
+        { key:'d', k:'GEAR 2',   v:'4', c:'#ffc078', d:'taken at 2\u00d7' },
+      ],
+
+      open: [
+        { key:'a', t:'Does a wrong answer in gear 2 also burn the remaining seconds, or advance immediately?' },
+        { key:'b', t:'Does the chain survive a timeout in gear 2, or only a deliberate skip?' },
+        { key:'c', t:'Should the pace trace show the class average as a ghost line, or is that pressure we do not want?' },
+        { key:'d', t:'If they beat their best with five minutes left, does the target move to the next band?' },
+        { key:'e', t:'Should skipping be capped? Unlimited skips make a shootout gameable — skim for easy ones only.' },
+        { key:'f', t:'Do re-offered misses count toward the record, or sit outside it as practice?' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

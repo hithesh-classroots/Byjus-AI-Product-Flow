@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Byjus.AI</title>
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:linear-gradient(180deg,#eee9fd 0%,#f8f5fe 46%,#fdfaf0 100%)}
+  #f{position:absolute;left:0;top:0;border:0;transform-origin:0 0;background:#fff}
+</style>
+</head>
+<body>
+<iframe id="f" allow="autoplay; fullscreen; microphone"></iframe>
+<script>
+/* Scale-to-fit stage: shows one fixed-size screen (default 1280x720) scaled to fit the window.
+   If the screen navigates to a page that is not a fixed-layout one, leave the stage and open it normally. */
+var q = new URLSearchParams(location.search);
+var W = +q.get('w') || 1280, H = +q.get('h') || 720, page = q.get('p') || 'Teaching Room.dc.html';
+var FIT = /^(Teaching Room|Teaching Room Spark|Teaching Room - Dark|Practice Room|Practice Room - Vyom Help|Practice Room - Guided Retry|Practice Room v1|quiz)\.dc\.html$/i;
+var f = document.getElementById('f');
+function fit() {
+  var k = Math.min(innerWidth / W, innerHeight / H);
+  f.style.width = W + 'px'; f.style.height = H + 'px';
+  f.style.transform = 'scale(' + k + ')';
+  f.style.left = Math.round((innerWidth - W * k) / 2) + 'px';
+  f.style.top = Math.round((innerHeight - H * k) / 2) + 'px';
+}
+addEventListener('resize', fit); fit();
+f.addEventListener('load', function () {
+  try {
+    var loc = f.contentWindow.location, name = decodeURIComponent(loc.pathname.split('/').pop());
+    if (!FIT.test(name)) { location.replace(loc.href); return; }
+    if (f.contentDocument.title) document.title = f.contentDocument.title;
+  } catch (e) {}
+});
+var sep = page.indexOf('?') < 0 ? '?' : '&';
+var hashAt = page.indexOf('#'); var base = hashAt < 0 ? page : page.slice(0, hashAt), hash = hashAt < 0 ? '' : page.slice(hashAt);
+f.src = encodeURI(base) + sep + 'nofit=1' + hash;
+</script>
+</body>
+</html>

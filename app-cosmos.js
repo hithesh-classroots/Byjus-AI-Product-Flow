@@ -20,7 +20,7 @@ const GOALS_URL='Goal Page.dc.html';
 function openGoals(){ try{ window.location.href=encodeURI(GOALS_URL); }catch(e){} }
 
 /* ---------- tweaks bridge (values published by the DC shell's Component) ---------- */
-function readTweaks(){ const t=window.__BYJUS_TWEAKS||{}; return { ambience:t.ambience||'cosmic', companions:t.companions||'duo', pace:t.pace||'balanced' }; }
+function readTweaks(){ const t=window.__BYJUS_TWEAKS||{}; return { ambience:t.ambience||'cosmic', companions:t.companions||'duo', pace:t.pace||'balanced', goal:t.goalState||'not set', next:t.nextStep||'learn', school:!!t.schoolTile, quest:t.quest||'fast5', popup:t.popup||'Daily Quest', quota:t.showQuota!==false }; }
 function useTweaks(){ const [tw,setTw]=useState(readTweaks); useEffect(()=>{ const h=()=>setTw(readTweaks()); window.addEventListener('byjus-tweaks',h); return ()=>window.removeEventListener('byjus-tweaks',h); },[]); return tw; }
 
 /* ---------- Mantine design tokens (verbatim from the bound system) ---------- */
@@ -198,7 +198,7 @@ function Screen({children,sx={},decor='generic'}){
 /* ---------- buddy avatar (flat brand character) ---------- */
 function Buddy({who='max',size=96,mood='smile',bob=true,excited=false,style={}}){
   const isMax=who==='max', s=size;
-  if(isMax) return html`<vyom-rive alt="Vyom" style=${{width:s,height:s,display:'inline-block',position:'relative',flex:'none',filter:'drop-shadow(0 6px 14px rgba(34,139,230,.28))',animation:bob?'bob 3.2s ease-in-out infinite':'none',...style}}/>`;
+  if(isMax) return html`<vyom-rive alt="Vyom" data-vyom-size=${s} style=${{width:s,height:s,display:'inline-block',position:'relative',flex:'none',filter:'drop-shadow(0 6px 14px rgba(34,139,230,.28))',animation:bob?'bob 3.2s ease-in-out infinite':'none',...style}}/>`;
   if(who==='spark') return html`<img src="spark-mascot-sm.png" alt="Spark" decoding="async" style=${{width:s,height:s,objectFit:'contain',flex:'none',filter:'drop-shadow(0 4px 10px rgba(240,140,0,.32))',transformOrigin:'center',animation:'sparkin .6s cubic-bezier(.2,1.4,.4,1) both, sparkwiggle 1.9s .6s ease-in-out infinite',...style}}/>`;
   const body=isMax?VIOLET:TEAL;
   const eyeW=Math.max(6,s*0.10), eyeH=Math.max(8,s*0.13), eyeY=s*0.40, eyeX=s*0.27;
@@ -804,10 +804,81 @@ const CHAPTERS=[
    right. `tc` is its text-safe sibling, used for the progress numeral and the bar fill, which
    both carry meaning and must clear contrast. Blue's accent is blue-5 (#339af0) and reads at
    2.99:1 as 12px text, so the two roles cannot share one value. */
+/* One Learn tile + one Practice tile. Each says where it was started from (the goal or a chapter). */
 const RESUME_CLASSES=[
-  {t:'Fractions & Decimals',sub:'Adding unlike denominators',p:55,c:BLUE,tc:'#1864ab',bg:BLUE0,icon:'math-symbols'},
-  {t:'Integers',sub:'Multiplication & division',p:30,c:BLUE,tc:'#1864ab',bg:BLUE0,icon:'divide'},
+  {kind:'Learn',from:'From your goal',fromIcon:'target',t:'Learn · From your goal',sub:'Adding unlike denominators',p:55,c:BLUE,tc:'#1864ab',bg:BLUE0,icon:'book-2',go:()=>openTeachingRoom()},
+  {kind:'Practice',from:'From Integers chapter',fromIcon:'map-2',t:'Practice · From Integers chapter',sub:'Multiplication & division',p:30,c:'#7048e8',tc:'#5f3dc4',bg:'#f3f0ff',icon:'target-arrow',go:()=>{ try{ window.location.href=encodeURI('Practice Room.dc.html'); }catch(e){} }},
 ];
+/* Daily Quest: shows big as a popup on landing, then settles into its Home slot. */
+function DailyChallenge({src}){
+  const tq=(readTweaks().quest)||'fast5';
+  const Q={fast5:{icon:'bolt',title:'Fast 5',meta:'5 questions · 3 min',sub:'Mix from this week',long:'Five quick questions from what you learnt this week.',cta:'Play'},
+    fix:{icon:'arrow-back-up',title:'Fix my mistakes',meta:'4 questions to fix',sub:'From your past practice',long:'Four questions you got wrong earlier. Try them again and fix them.',cta:'Fix'},
+    flash:{icon:'cards',title:'Flash cards',meta:'8 cards · 2 min',sub:'From Fractions & Decimals',long:'Flip through 8 quick cards on what you are learning now.',cta:'Start'}}[tq]||null;
+  const AMBER={c:'#f08c00',tc:'#e67700',bg:'#fff3bf',btn:'linear-gradient(180deg,#fcc419,#f08c00)'};
+  const P = !src ? {icon:Q.icon,eyebrow:'Daily Quest',title:Q.title,long:Q.long,cta:Q.cta,c:BLUE,tc:'#1864ab',bg:BLUE0,btn:BLUE}
+    : src.hero ? {...AMBER,icon:'target',eyebrow:'Your goal',title:'Set a goal with Vyom',long:'Pick your chapters and a finish date. Vyom plans each day for you.',cta:'Set a goal'}
+    : src.wide ? {...AMBER,icon:'target-arrow',eyebrow:'Up next in your goal',title:src.sub,long:src.meta+'. The next step towards Unit test 2.',cta:'Start'}
+    : {icon:src.icon,eyebrow:'Pick up where you left off',title:src.sub,long:src.from+'. '+(src.p||0)+'% done.',cta:'Continue',c:src.c,tc:src.tc,bg:src.bg,btn:src.c};
+  const slotRef=useRef(null), cardRef=useRef(null);
+  const [pop,setPop]=useState(true), [closing,setClosing]=useState(false), [fly,setFly]=useState(null);
+  const play=()=>{ if(src){ setPop(false); src.go(); return; } try{ window.location.href=encodeURI('Practice Room.dc.html'); }catch(e){} };
+  /* One card, two homes: closing morphs the popup's own box into the slot's box (position, size,
+     radius, shadow), crossfading popup content out and a snapshot of the slot in. Opening runs the reverse. */
+  const openFrom=useRef(null);
+  const MTR='left .5s cubic-bezier(.2,.8,.3,1), top .5s cubic-bezier(.2,.8,.3,1), width .5s cubic-bezier(.2,.8,.3,1), height .5s cubic-bezier(.2,.8,.3,1), border-radius .5s ease, box-shadow .5s ease';
+  const freeze=(card,r,extra)=>Object.assign(card.style,{position:'fixed',left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',margin:'0',transform:'none',animation:'none',transition:'none'},extra||{});
+  const ghostOf=(slotEl,op)=>{ const g=slotEl.cloneNode(true); g.setAttribute('aria-hidden','true'); Object.assign(g.style,{position:'absolute',inset:'0',margin:'0',opacity:op,transform:'none',boxShadow:'none',pointerEvents:'none'}); return g; };
+  const tgt=()=>src?document.querySelector('[data-pop-slot="'+src.t+'"]'):slotRef.current;
+  const close=()=>{ if(closing) return; const card=cardRef.current, slotEl=tgt();
+    if(!card||!slotEl){ setPop(false); return; }
+    const a=card.getBoundingClientRect(), b=slotEl.getBoundingClientRect(), cs=getComputedStyle(slotEl);
+    setClosing(true); freeze(card,a);
+    const kids=[...card.children]; kids.forEach(c=>{ c.style.transition='opacity .16s ease'; c.style.opacity='0'; });
+    const g=ghostOf(slotEl,'0'); g.style.transition='opacity .24s ease .26s'; card.appendChild(g);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{ card.style.transition=MTR;
+      Object.assign(card.style,{left:b.left+'px',top:b.top+'px',width:b.width+'px',height:b.height+'px',borderRadius:cs.borderRadius,boxShadow:cs.boxShadow}); g.style.opacity='1'; }));
+    setTimeout(()=>{ setPop(false); setClosing(false); },540); };
+  const open=()=>{ openFrom.current=slotRef.current&&slotRef.current.getBoundingClientRect(); setPop(true); };
+  R.useLayoutEffect(()=>{ if(!pop||!openFrom.current) return; const card=cardRef.current, slotEl=tgt(), b=openFrom.current; openFrom.current=null; if(!card||!slotEl) return;
+    const a=card.getBoundingClientRect(), cs=getComputedStyle(slotEl), ccs=getComputedStyle(card), br=ccs.borderRadius, sh=ccs.boxShadow;
+    const orig=card.getAttribute('style')||'';
+    const kids=[...card.children], kidOrig=kids.map(c=>c.getAttribute('style')||''); kids.forEach(c=>{ c.style.transition='none'; c.style.opacity='0'; });
+    const g=ghostOf(slotEl,'1'); card.appendChild(g);
+    freeze(card,b,{borderRadius:cs.borderRadius,boxShadow:cs.boxShadow});
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{ card.style.transition=MTR;
+      Object.assign(card.style,{left:a.left+'px',top:a.top+'px',width:a.width+'px',height:a.height+'px',borderRadius:br,boxShadow:sh});
+      g.style.transition='opacity .16s ease'; g.style.opacity='0'; kids.forEach(c=>{ c.style.transition='opacity .26s ease .26s'; c.style.opacity='1'; }); }));
+    const t=setTimeout(()=>{ g.remove(); card.setAttribute('style',orig.replace(/animation:[^;]*;?/,'animation: none;')); kids.forEach((c,i)=>c.setAttribute('style',kidOrig[i])); },560);
+    return ()=>clearTimeout(t); },[pop]);
+  useEffect(()=>{ const k=(e)=>{ if(e.key==='Escape') close(); }; window.addEventListener('keydown',k); return ()=>window.removeEventListener('keydown',k); });
+  const chip=html`<span style=${{whiteSpace:'nowrap',flex:'none',display:'inline-flex',alignItems:'center',gap:5,height:24,padding:'0 10px',borderRadius:999,background:'#fff4e6',color:'#d9480f',fontSize:12,fontWeight:700}}><${Icon} n="flame" size=${14}/>4 day streak</span>`;
+  const slot=html`<${HoverTile} domRef=${slotRef} onClick=${open} sx=${{position:'relative',overflow:'hidden',minWidth:0,p:'20px 22px',cursor:'pointer',display:'flex',alignItems:'center',gap:1.8,textAlign:'left',borderRadius:18,background:'#ffffff',boxShadow:'0 1px 2px rgba(33,26,74,.05), 0 14px 30px -18px rgba(70,46,146,.38)',opacity:(pop&&!src)?0:1,transition:'transform .18s cubic-bezier(.2,.8,.3,1)','&:hover':{transform:'translateY(-3px)'}}}>
+      <${Box} aria-hidden="true" sx=${{position:'absolute',right:-28,top:-28,width:120,height:120,borderRadius:'50%',background:BLUE0,opacity:.9}}/>
+      <${Box} aria-hidden="true" sx=${{position:'absolute',right:-56,top:-56,width:176,height:176,borderRadius:'50%',border:`1px solid ${BLUE}22`}}/>
+      <${Box} sx=${{position:'relative',width:56,height:56,flex:'none',borderRadius:17,display:'grid',placeItems:'center',background:BLUE0,color:BLUE}}><${Icon} n=${Q.icon} size=${28}/><//>
+      <${Box} sx=${{position:'relative',flex:1,minWidth:0,display:'flex',flexDirection:'column',gap:.6}}>
+        <${Typography} noWrap sx=${{fontWeight:700,fontSize:18,letterSpacing:'-.01em',color:INK}}>${Q.title}<//>
+        <${Box} sx=${{display:'flex',alignItems:'center',gap:1}}>${chip}<${Typography} noWrap sx=${{fontSize:13,color:DIM,fontWeight:500}}>${Q.meta} · ${Q.sub}<//><//>
+      <//>
+      <${Box} onClick=${(e)=>{ e.stopPropagation(); play(); }} sx=${{position:'relative',flex:'none',display:'inline-flex',alignItems:'center',gap:.8,height:44,px:2.2,borderRadius:999,background:BLUE,color:'#fff',fontSize:15,fontWeight:700,boxShadow:`0 8px 16px -8px ${BLUE}`}}>${Q.cta}<${Icon} n="player-play-filled" size=${14}/><//>
+    <//>`;
+  const overlay=(pop&&window.ReactDOM&&window.ReactDOM.createPortal)?window.ReactDOM.createPortal(html`<div onClick=${close} style=${{position:'fixed',inset:0,zIndex:200,display:'grid',placeItems:'center',padding:24,background:closing?'rgba(33,26,74,0)':'rgba(33,26,74,.28)',backdropFilter:closing?'blur(0px)':'blur(10px)',WebkitBackdropFilter:closing?'blur(0px)':'blur(10px)',transition:'background .45s ease, backdrop-filter .45s ease',animation:'dcFade .3s ease both'}}>
+      <div ref=${cardRef} onClick=${(e)=>e.stopPropagation()} role="dialog" aria-label="Daily Quest" style=${{position:'relative',width:'min(520px,100%)',boxSizing:'border-box',padding:'36px 36px 32px',borderRadius:28,overflow:'hidden',background:`linear-gradient(160deg,${P.bg} 0%,#ffffff 62%)`,boxShadow:'0 1px 2px rgba(33,26,74,.08), 0 40px 80px -30px rgba(70,46,146,.55)',display:'flex',flexDirection:'column',alignItems:'center',gap:18,textAlign:'center',animation:'dcPop .45s cubic-bezier(.34,1.4,.5,1) both'}}>
+        <span aria-hidden="true" style=${{position:'absolute',left:'50%',top:-140,width:380,height:380,marginLeft:-190,borderRadius:'50%',border:'1px solid rgba(240,140,0,.14)'}}></span>
+        <span aria-hidden="true" style=${{position:'absolute',left:'50%',top:-80,width:260,height:260,marginLeft:-130,borderRadius:'50%',border:'1px solid rgba(240,140,0,.18)'}}></span>
+        <button onClick=${close} aria-label="Close" style=${{position:'absolute',top:14,right:14,width:40,height:40,border:'none',borderRadius:12,background:'rgba(33,26,74,.05)',color:'#495057',cursor:'pointer',display:'grid',placeItems:'center'}}><${Icon} n="x" size=${20}/></button>
+        <span style=${{position:'relative',width:88,height:88,borderRadius:26,display:'grid',placeItems:'center',background:P.bg,color:P.c,boxShadow:`0 14px 28px -14px ${P.c}`}}><${Icon} n=${P.icon} size=${44}/></span>
+        <span style=${{position:'relative',fontSize:12,fontWeight:800,letterSpacing:'.08em',textTransform:'uppercase',color:P.tc}}>${P.eyebrow}</span>
+        <span style=${{position:'relative',fontSize:32,fontWeight:700,lineHeight:1.15,color:INK,letterSpacing:'-.01em',whiteSpace:'nowrap'}}>${P.title}</span>
+        <span style=${{position:'relative',fontSize:16,color:DIM,lineHeight:1.45,maxWidth:340}}>${P.long}</span>
+        ${src?'':chip}
+        <button onClick=${play} style=${{position:'relative',marginTop:6,height:52,padding:'0 34px',border:'none',borderRadius:999,background:P.btn,color:'#fff',fontSize:17,fontWeight:700,cursor:'pointer',display:'inline-flex',alignItems:'center',gap:8,boxShadow:`0 12px 24px -12px ${P.c}`}}>${P.cta}<${Icon} n="player-play-filled" size=${16}/></button>
+        <button onClick=${close} style=${{position:'relative',border:'none',background:'transparent',color:DIM,fontSize:15,fontWeight:600,cursor:'pointer',padding:6}}>Later</button>
+      </div>
+    </div>`,document.body):null;
+  return html`<${R.Fragment}>${slot}${overlay}<//>`;
+}
 /* The goal the phone home shows under the resume cards — same pct-led statement the Chapter
    Journey chrome uses, so the two never disagree about what the student is working towards. */
 const GOAL_HOME={pct:68,label:'of scoring 90%+ in the year-end exam'};
@@ -845,6 +916,8 @@ const FTUE_Q=[
 const FTUE_LOAD=["Looking at your learning goal…","Choosing the best lesson sequence…","Adjusting lessons to your study time…","Preparing your next step…"];
 function HomeChat({onResume,full,onExpand,onClose,onMaxClick,homeMode,widgets}){
   const [text,setText]=useState('');
+  const [,setWalletV]=useState(0);
+  useEffect(()=>{ const W=window.ByjusWallet; return W?W.on(()=>setWalletV(v=>v+1)):undefined; },[]);
   const [focus,setFocus]=useState(false);
   const [moreSug,setMoreSug]=useState(false);
   const [inHov,setInHov]=useState(false);
@@ -875,8 +948,122 @@ function HomeChat({onResume,full,onExpand,onClose,onMaxClick,homeMode,widgets}){
   const idRef=useRef(0); const seqRef=useRef([]); const scrollRef=useRef(null);
   const clearT=()=>{ seqRef.current.forEach(clearTimeout); seqRef.current=[]; };
   const push=(m)=>setMessages(x=>[...x,{id:++idRef.current,...m}]);
+
+  /* Scripted Vyom flows — 'goal' (Set a goal), 'chapter' (a chapter picked as a goal), 'school' (what's happening in class). */
+  const flowRef=useRef(null);
+  R.useEffect(()=>{ if(!convo) flowRef.current=null; },[convo]);
+  const vFly=useRef({hero:null,chat:null,prev:false,raf:0});
+  const vRect=(n)=>{ const r=n.getBoundingClientRect(); return r.width>1?{left:r.left,top:r.top,width:r.width,height:r.height}:null; };
+  const vHero=()=>[...document.querySelectorAll('vyom-rive[data-vyom-size]')].filter(n=>+n.dataset.vyomSize>40&&n.getBoundingClientRect().width>1)[0];
+  const vChat=()=>[...document.querySelectorAll('vyom-rive[data-vyom-size="29"],vyom-rive[data-vyom-size="38"]')].filter(n=>n.getBoundingClientRect().width>1)[0];
+  const vgo=(from,to,hideEl)=>{ if(!from||!to||!hideEl) return; const fl=document.createElement('div'); Object.assign(fl.style,{position:'fixed',left:from.left+'px',top:from.top+'px',width:from.width+'px',height:from.height+'px',zIndex:400,pointerEvents:'none',transformOrigin:'0 0',willChange:'transform'});
+    const v=document.createElement('vyom-rive'); Object.assign(v.style,{width:'100%',height:'100%',display:'inline-block'}); fl.appendChild(v); document.body.appendChild(fl); hideEl.style.visibility='hidden';
+    const sc=to.width/from.width, done=()=>{ fl.remove(); hideEl.style.visibility=''; };
+    try{ const an=fl.animate([{transform:'translate(0,0) scale(1)'},{transform:'translate('+(to.left-from.left)+'px,'+(to.top-from.top)+'px) scale('+sc+')'}],{duration:820,easing:'cubic-bezier(.65,0,.25,1)',fill:'forwards'}); an.onfinish=done; an.oncancel=done; setTimeout(done,1200); }catch(e){ done(); } };
+  R.useLayoutEffect(()=>{ const F=vFly.current; const h=vHero(), c=vChat();
+    if(!convo&&h){ const r=vRect(h); if(r) F.hero=r; }
+    if(convo&&c){ const r=vRect(c); if(r) F.chat=r; }
+    if(F.prev!==convo){ F.prev=convo; cancelAnimationFrame(F.raf); let n=0; const from=convo?F.hero:F.chat;
+      const tick=()=>{ const el=convo?vChat():vHero(); if(el&&from){ const to=vRect(el); if(to){ if(convo) el.style.visibility='hidden'; requestAnimationFrame(()=>vgo(from,to,el)); return; } } if(++n<420) F.raf=requestAnimationFrame(tick); };
+      tick(); } });
+  const [sugFit,setSugFit]=useState(99); const sugRowRef=useRef(null), sugMeasRef=useRef(null);
+  R.useLayoutEffect(()=>{ const m=sugMeasRef.current, r=sugRowRef.current; if(!m||!r) return; const W=r.clientWidth-12; if(W<=0) return;
+    const kids=[...m.children]; const more=kids.pop(); const ws=kids.map(k=>k.offsetWidth); const tot=ws.reduce((a,w,i)=>a+w+(i?8:0),0);
+    let n=ws.length; if(tot>W){ n=0; let used=0; const mw=more.offsetWidth+8; for(const w of ws){ const add=w+(n?8:0); if(used+add+mw<=W){ used+=add; n++; } else break; } }
+    if(n!==sugFit) setSugFit(n); });
+  const [fPick,setFPick]=useState([]);
+  const FCH=['Integers','Fractions & Decimals','Data Handling','Simple Equations','Lines & Angles','The Triangle','Perimeter & Area'];
+  const FSUB={'Integers':['Properties of integers','Multiplication & division','Word problems'],'Fractions & Decimals':['Adding unlike denominators','Multiplying fractions','Dividing decimals'],'Data Handling':['Mean, median & mode','Bar graphs','Chance & probability'],'Simple Equations':['Setting up an equation','Solving for x','Word problems'],'Lines & Angles':['Pairs of angles','Parallel lines & transversals'],'The Triangle':['Medians & altitudes','Angle sum property','Exterior angles','Pythagoras property'],'Perimeter & Area':['Area of a parallelogram','Area of a triangle','Circles']};
+  const F_TODAY=new Date(2026,9,28), F_BY=['In a week','In a fortnight','In a month'];
+  const fmtD=d=>d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  const toBy=(v)=>{ if(v&&v.date) return v; const d=new Date(F_TODAY); if(v==='In a week') d.setDate(d.getDate()+7); else if(v==='In a fortnight') d.setDate(d.getDate()+14); else if(v==='In a month') d.setMonth(d.getMonth()+1); else { const p=new Date(String(v)+' 2026'); if(!isNaN(p)) return {label:String(v),date:p}; d.setMonth(d.getMonth()+1); } return {label:String(v),date:d}; };
+  const fMsg=(f)=>{ const d=f.data, b={role:'max',flow:true,step:f.step};
+    switch(f.kind+':'+f.step){
+      case 'goal:chs': return {...b,text:"Let's set a goal. Which chapters should it cover?",choices:FCH,multi:true};
+      case 'goal:by': return {...b,text:"Good choice. By when do you want to finish "+(d.chs.length>1?'them':d.chs[0])+"?",choices:F_BY,date:true};
+      case 'chapter:by': return {...b,text:"Let's make "+d.ch+" your goal. By when do you want to finish it?",choices:F_BY,date:true};
+      case 'chapter:mins': return {...b,text:"How much time can you spend on it each day?",choices:['15 min','30 min','45 min','1 hour']};
+      case 'goal:sum': case 'chapter:sum': { const chs=f.kind==='goal'?d.chs:[d.ch]; const days=Math.max(1,Math.round((d.by.date-F_TODAY)/864e5));
+        const mins=f.kind==='goal' ? 'About '+Math.min(60,Math.max(15,Math.round(chs.length*300/days/5)*5))+' min' : d.mins;
+        return {...b,text:"Here's your goal. Shall I set it up?",card:{icon:'target',title:chs.length===1?'Finish '+chs[0]:'Finish '+chs.length+' chapters',rows:[['books','Chapters',chs.join(', ')],['calendar','Finish by',fmtD(d.by.date)+' · '+days+' days'],['clock','Each day',mins]]},choices:['Set this goal','Change something'],primary:true}; }
+      case 'goal:end': case 'chapter:end': return {...b,text:"Done. Your goal is set, and your first lesson is waiting on Home.",choices:['See my goal'],primary:true};
+      case 'school:mode': return {...b,text:"Tell me what's happening in class and I'll line up the right lessons. Quickest way: snap your latest page of class notes.",choices:['Scan my notes','Upload a photo','Answer a few questions'],icons:['camera','photo-up','list-check']};
+      case 'school:read': return {...b,text:"From your notes, your class is on The Triangle, working on the angle sum property. Did I get that right?",choices:['Yes, that\u2019s right','Not quite']};
+      case 'school:done': return {...b,text:"Which chapters has your class already finished?",choices:FCH,multi:true,allowNone:true};
+      case 'school:now': return {...b,text:"Which chapter is your class on right now?",choices:FCH.filter(c=>!(d.done||[]).includes(c))};
+      case 'school:sub': return {...b,text:"Which part of "+d.now+"?",choices:FSUB[d.now]||['Just started','Halfway','Almost done']};
+      case 'school:sum': return {...b,text:"Here's what I noted.",card:{icon:'school',title:'Your class right now',rows:[['circle-check','Finished',(d.done||[]).join(', ')||'None yet'],['book-2','Chapter',d.now],['bookmark','Topic',d.sub]]},choices:['Looks right','Change something'],primary:true};
+      case 'school:end': return {...b,text:"Thanks. I'll keep your lessons and practice in step with your class."};
+      case 'school:next': { const nxt = tw.next==='practice' ? 'Practice: Multiplication & division' : 'Continue: Adding unlike denominators';
+        return tw.goal==='set'
+          ? {...b,text:"What would you like to do now? Your next goal step is ready, or I can help with something else.",choices:[nxt,'I have a doubt','Homework help'],icons:['player-play-filled','help-circle','notebook']}
+          : {...b,text:"What next? We can set a goal, pick up your lesson, or I can help with something else.",choices:['Set a goal','Continue: Adding unlike denominators','I have a doubt','Homework help'],icons:['target','player-play-filled','help-circle','notebook']}; }
+    } return {...b,text:''}; };
+  const fGo=(st,ms)=>{ const f=flowRef.current; f.step=st; setThinking(true); seqRef.current.push(setTimeout(()=>{ setThinking(false); push(fMsg(f)); },ms||900)); };
+  const startFlow=(kind,data,keep)=>{ clearT(); goalChatRef.current=false; setFPick([]); flowRef.current={kind,step:kind==='goal'?'chs':kind==='chapter'?'by':'mode',data:data||{}}; if(!full){ onExpand&&onExpand(); } setConvo(true); if(!keep) setMessages([]); fGo(flowRef.current.step,650); };
+  const pickNotes=(cam)=>{ const i=document.createElement('input'); i.type='file'; i.accept='image/*'; if(cam) i.setAttribute('capture','environment');
+    i.onchange=()=>{ const file=i.files&&i.files[0]; if(!file) return; const r=new FileReader(); r.onload=()=>{ push({role:'student',text:'My class notes',img:r.result}); fGo('read',1800); }; r.readAsDataURL(file); }; i.click(); };
+  const fAnswer=(val,label)=>{ const f=flowRef.current; if(!f) return; const key=f.kind+':'+f.step;
+    if(key==='goal:end'||key==='chapter:end'){ try{ window.location.href=encodeURI('Goal Page.dc.html'); }catch(e){} return; }
+    if(key==='school:mode' && val!=='Answer a few questions'){ pickNotes(val==='Scan my notes'); return; }
+    if(key==='school:next'){ push({role:'student',text:String(val)});
+      if(val==='Set a goal'){ startFlow('goal',null,true); return; }
+      if(/^Continue:/.test(val)){ seqRef.current.push(setTimeout(()=>RESUME_CLASSES[0].go(),500)); flowRef.current=null; return; }
+      if(/^Practice:/.test(val)){ seqRef.current.push(setTimeout(()=>RESUME_CLASSES[1].go(),500)); flowRef.current=null; return; }
+      flowRef.current=null; setThinking(true);
+      seqRef.current.push(setTimeout(()=>{ setThinking(false); push({role:'max',text: val==='Homework help' ? "Sure. Type the homework question below, or snap a photo of it." : "Go ahead. What's the doubt? You can type it or snap a photo of it."}); },900)); return; }
+    if(f.step==='by') val=toBy(val);
+    setFPick([]); push({role:'student',text:label||(val&&val.label)||(Array.isArray(val)?val.join(', '):String(val))}); f.data[f.step]=val;
+    const NX={'goal:chs':'by','goal:by':'sum','chapter:by':'mins','chapter:mins':'sum','school:mode':'done','school:done':'now','school:now':'sub','school:sub':'sum'};
+    let nx=NX[key];
+    if(f.step==='sum'){ nx = val==='Change something' ? (f.kind==='goal'?'chs':f.kind==='chapter'?'by':'done') : 'end';
+      if(nx==='end'&&f.kind!=='school'){ try{ localStorage.setItem('byjusGoal',JSON.stringify({chapters:f.kind==='goal'?f.data.chs:[f.data.ch],by:f.data.by.date.toISOString()})); }catch(e){} } }
+    if(key==='school:read') nx = /^Yes/.test(val) ? 'end' : 'done';
+    if(nx) fGo(nx);
+    if(nx==='end'&&f.kind==='school') seqRef.current.push(setTimeout(()=>fGo('next',800),1300)); };
+  const tw=useTweaks();
+  const homeTiles=(()=>{ const L=RESUME_CLASSES[0], P=RESUME_CLASSES[1];
+    const goalT={hero:true,kind:'Goal',from:'Takes a minute',fromIcon:'clock',t:'Goal · set',sub:'Set a goal with Vyom',c:'#0ca678',tc:'#087f5b',bg:'#e6fcf5',icon:'target',go:()=>startFlow('goal')};
+    const school={kind:'School',from:'Helps me pick lessons',fromIcon:'sparkles',t:'School · now',sub:"What's happening in school?",c:'#f76707',tc:'#d9480f',bg:'#fff4e6',icon:'school',go:()=>startFlow('school')};
+    const next = tw.next==='practice' ? {...P,wide:true,from:'Next in your goal',fromIcon:'target',sub:'Multiplication & division',meta:'10 questions · about 8 min',cta:'Start practice'} : {...L,wide:true,from:'Next in your goal',sub:'Adding unlike denominators',meta:'Lesson · about 12 min',cta:'Continue'};
+    const list = tw.goal==='set' ? [next] : [goalT,{...L,from:'From Fractions chapter',fromIcon:'map-2'},P];
+    return list; })();
+  const goalWide=(r)=>{ const done=3, total=8;
+    return html`<${HoverTile} key=${r.t} domRef=${n=>{ if(n) n.setAttribute('data-pop-slot',r.t); }} onClick=${()=>r.go()} sx=${{flex:'1 1 0',minWidth:0,minHeight:isPhone()?0:190,position:'relative',overflow:'hidden',cursor:'pointer',display:'flex',flexDirection:'column',justifyContent:'space-between',gap:1.6,p:isPhone()?2:'20px 22px 20px',textAlign:'left',borderRadius:18,background:'linear-gradient(115deg,#fff3bf 0%,#fff9db 45%,#ffffff 100%)',boxShadow:'0 1px 2px rgba(33,26,74,.05), 0 14px 30px -18px rgba(240,140,0,.45)',transition:'transform .18s cubic-bezier(.2,.8,.3,1), box-shadow .18s ease','&:hover':{transform:'translateY(-3px)'},'&:hover .resume-go':{transform:'scale(1.08)'}}}>
+      <${Box} aria-hidden="true" sx=${{position:'absolute',right:-28,top:-28,width:120,height:120,borderRadius:'50%',background:'rgba(255,255,255,.6)'}}/>
+      <${Box} aria-hidden="true" sx=${{position:'absolute',right:-56,top:-56,width:176,height:176,borderRadius:'50%',border:'1px solid rgba(240,140,0,.18)'}}/>
+      <${Box} sx=${{position:'relative',display:'flex',alignItems:'center',gap:1.2}}>
+        <${Box} sx=${{width:44,height:44,flex:'none',borderRadius:13,display:'grid',placeItems:'center',background:'#ffffff',color:'#f08c00',boxShadow:'0 10px 20px -12px rgba(240,140,0,.7)'}}><${Icon} n="target-arrow" size=${22}/><//>
+        <${Typography} sx=${{fontSize:12,fontWeight:800,letterSpacing:'.08em',textTransform:'uppercase',color:'#e67700',whiteSpace:'nowrap'}}>Up next in your goal · ${r.kind}<//>
+      <//>
+      <${Typography} sx=${{position:'relative',fontWeight:700,fontSize:isPhone()?17:22,lineHeight:1.25,letterSpacing:'-.015em',color:INK}}>${r.sub}<//>
+      <${Box} sx=${{position:'relative',display:'flex',alignItems:'center',gap:1.2}}>
+        <${Icon} n="flag" size=${16} style=${{color:'#0ca678',flex:'none'}}/>
+        <${Typography} sx=${{fontSize:13,fontWeight:600,color:DIM,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis',minWidth:0}}>Unit test 2 · ${done} of ${total} done · 9 days left<//>
+        <${Box} className="resume-go" title=${r.cta} sx=${{ml:'auto',height:44,px:2.2,flex:'none',borderRadius:999,display:'inline-flex',alignItems:'center',gap:.8,background:'linear-gradient(180deg,#fcc419,#f08c00)',color:'#fff',fontSize:15,fontWeight:700,boxShadow:'0 10px 20px -10px rgba(240,140,0,.8)',transition:'transform .18s ease'}}><${Icon} n="player-play-filled" size=${15}/>Start<//>
+      <//>
+    <//>`; };
+  const goalHero=(r)=>{ const W=window.ByjusWallet, gq=W&&W.status&&W.status('goal');
+    const free = gq&&gq.unlimited ? 'Unlimited goals' : ((gq&&gq.left!=null?gq.left:2)+' free goal'+((gq&&gq.left===1)?'':'s')+' left');
+    const GR='linear-gradient(180deg,#fcc419,#f08c00)';
+    return html`<${HoverTile} key=${r.t} domRef=${n=>{ if(n) n.setAttribute('data-pop-slot',r.t); }} onClick=${()=>r.go()} sx=${{flex:'1 1 0',minWidth:0,maxWidth:'none',position:'relative',overflow:'hidden',cursor:'pointer',display:'flex',flexDirection:'column',gap:isPhone()?1.2:1.6,p:isPhone()?2:'20px 20px 18px',textAlign:'left',borderRadius:18,background:'linear-gradient(115deg,#fff3bf 0%,#fff9db 45%,#ffffff 100%)',boxShadow:'0 1px 2px rgba(33,26,74,.05), 0 14px 30px -18px rgba(240,140,0,.45)',transition:'transform .18s cubic-bezier(.2,.8,.3,1), box-shadow .18s ease','&:hover':{transform:'translateY(-3px)',boxShadow:'0 1px 2px rgba(33,26,74,.05), 0 18px 34px -16px rgba(240,140,0,.55)'},'&:hover .goal-go':{transform:'scale(1.08)'},'&:hover .goal-ring':{opacity:1}}}>
+      <svg aria-hidden="true" width="100%" height="100%" style=${{position:'absolute',inset:0,pointerEvents:'none',overflow:'visible'}}>
+        <defs><linearGradient id="goalStroke" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fcc419"/><stop offset="1" stop-color="#f08c00"/></linearGradient></defs>
+        <rect x="1.25" y="1.25" rx="17" ry="17" style=${{width:'calc(100% - 2.5px)',height:'calc(100% - 2.5px)'}} fill="none" stroke="url(#goalStroke)" stroke-width="2" stroke-dasharray="7 6" stroke-linecap="round" class="goal-dash"/>
+      </svg>
+      <${Box} sx=${{position:'relative',display:'flex',alignItems:'center',gap:1.2}}>
+        <${Box} sx=${{width:44,height:44,flex:'none',borderRadius:13,display:'grid',placeItems:'center',background:GR,color:'#fff',boxShadow:'0 8px 16px -8px rgba(240,140,0,.8)'}}><${Icon} n="target" size=${22}/><//>
+        <${Typography} sx=${{fontSize:12,fontWeight:800,letterSpacing:'.08em',textTransform:'uppercase',color:'#e67700',whiteSpace:'nowrap',flex:'none'}}>Your goal<//>
+      <//>
+      <${Typography} sx=${{position:'relative',fontWeight:700,fontSize:isPhone()?15:17,lineHeight:1.3,letterSpacing:'-.01em',color:INK,minHeight:isPhone()?0:44}}>Set a goal with Vyom<//>
+      <${Box} sx=${{position:'relative',display:'flex',alignItems:'center',gap:.8}}>
+        ${readTweaks().quota?html`<${Box} sx=${{display:'inline-flex',alignItems:'center',gap:.5,height:26,px:1.1,borderRadius:999,background:'#ffffff',color:'#d9480f',fontSize:12.5,fontWeight:700,minWidth:0}}><${Icon} n="gift" size=${13} style=${{flex:'none'}}/><span style=${{whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>${free}</span><//>`:''}
+        <${Box} className="goal-go" sx=${{ml:'auto',width:38,height:38,flex:'none',borderRadius:'50%',display:'grid',placeItems:'center',background:GR,color:'#fff',animation:'goalPulse 2.4s ease-out infinite',transition:'transform .18s ease'}}><${Icon} n="plus" size=${20}/><//>
+      <//>
+    <//>`; };
   const goalChatRef=useRef(false), goalTurnRef=useRef(0);
   useEffect(()=>{ if(!homeMode) return; let q=null; try{ q=new URLSearchParams(location.search); }catch(e){} const gc=q&&q.get('goalChat'); if(!gc) return;
+    if(gc==='chapter'||gc==='new'||gc==='school'){ const t0=setTimeout(()=>startFlow(gc==='new'?'goal':gc,{ch:q.get('ch')||'The Triangle'}),400); return ()=>clearTimeout(t0); }
     const names={g1:'Unit test 2',g2:'Master Circles',g3:'Year-end syllabus'}; const gname=names[q.get('goal')]||'your goal';
     const first = gc==='edit' ? "Let's update “"+gname+"”. What would you like to change — the date, the chapters, or how much time you spend each day?" : "Let's set up a new goal. Is there a test coming up at school, or something you want to get really good at?";
     goalChatRef.current=true; const t=setTimeout(()=>{ if(!full){ onExpand&&onExpand(); } setConvo(true); setMessages([{id:++idRef.current,role:'max',text:first}]); },400);
@@ -944,7 +1131,7 @@ function HomeChat({onResume,full,onExpand,onClose,onMaxClick,homeMode,widgets}){
   const reset=()=>{ clearT(); setMessages([]); setThinking(false); setStage('idle'); setVis('closed'); setStep(0); setTranscript([]); setHistCol(false); };
   const closeRoom=()=>{ reset(); onClose&&onClose(); };
   const resumeConversation=()=>{ clearT(); setMessages(prev=>[...prev.filter(m=>!m.summary), ...transcript.map(m=>({...m,id:++idRef.current,concept:'frac'})), {id:++idRef.current,role:'max',text:"We're back in this thread — ask me anything and I'll fold it into the summary when you're done.",concept:'frac'}]); setVis('closed'); setStage('asking'); };
-  const submit=()=>{ const t=text.trim(); if(!t) return; setText(''); if(goalChatRef.current){ clearT(); push({role:'student',text:t}); setThinking(true); goalTurnRef.current++; const turn=goalTurnRef.current; seqRef.current.push(setTimeout(()=>{ setThinking(false); push({role:'max',text: turn===1 ? "Got it. And by when do you want this done?" : "Done — I've updated your goal and reshaped your path. Head back to your Goals journey to see it."}); if(turn>=2){ seqRef.current.push(setTimeout(()=>{ try{ window.location.href=encodeURI('Goal Page.dc.html'); }catch(e){} },2600)); } },1100)); return; } if(homeMode&&!convo&&!ftueOn){ if(!full) onExpand&&onExpand(); setConvo(true); startFrac(t); return; } if(!full){ onExpand&&onExpand(); startFrac(t); return; } if(vis==='transcript'){ setTranscript(x=>[...x,{id:++idRef.current,role:'student',text:t}]); seqRef.current.push(setTimeout(()=>setTranscript(x=>[...x,{id:++idRef.current,role:'max',text:FRAC_FOLLOWUP_A}]),900)); return; } if(stage==='asking') answer('doubt',t); else startFrac(t); };
+  const submit=()=>{ const t=text.trim(); if(!t) return; setText(''); if(convo&&flowRef.current&&flowRef.current.step!=='end'){ const st=flowRef.current.step; fAnswer((st==='chs'||st==='done')?[t]:t,t); return; } if(goalChatRef.current){ clearT(); push({role:'student',text:t}); setThinking(true); goalTurnRef.current++; const turn=goalTurnRef.current; seqRef.current.push(setTimeout(()=>{ setThinking(false); push({role:'max',text: turn===1 ? "Got it. And by when do you want this done?" : "Done — I've updated your goal and reshaped your path. Head back to your Goals journey to see it."}); if(turn>=2){ seqRef.current.push(setTimeout(()=>{ try{ window.location.href=encodeURI('Goal Page.dc.html'); }catch(e){} },2600)); } },1100)); return; } if(homeMode&&!convo&&!ftueOn){ if(!full) onExpand&&onExpand(); setConvo(true); startFrac(t); return; } if(!full){ onExpand&&onExpand(); startFrac(t); return; } if(vis==='transcript'){ setTranscript(x=>[...x,{id:++idRef.current,role:'student',text:t}]); seqRef.current.push(setTimeout(()=>setTranscript(x=>[...x,{id:++idRef.current,role:'max',text:FRAC_FOLLOWUP_A}]),900)); return; } if(stage==='asking') answer('doubt',t); else startFrac(t); };
   const preset=(p,e)=>{ e&&e.stopPropagation&&e.stopPropagation(); if(!full) onExpand&&onExpand(); startFrac(); };
   const iconBtn=(n,onClick,title)=>html`<${Box} onClick=${onClick} title=${title} sx=${{width:{xs:44,md:36},height:{xs:44,md:36},flex:'none',borderRadius:isPhone()?'50%':'8px',display:'grid',placeItems:'center',cursor:'pointer',color:DIM,transition:'.15s','&:hover':{background:G0,color:INK}}}><${Icon} n=${n} size=${19}/><//>`;
 
@@ -972,16 +1159,16 @@ function HomeChat({onResume,full,onExpand,onClose,onMaxClick,homeMode,widgets}){
         ${MAXSTARS.map((s,i)=>html`<i key=${i} class="ti ti-sparkles" style=${{position:'absolute',left:0,top:0,color:s.c,fontSize:s.s,filter:`drop-shadow(0 0 5px ${s.c})`,'--dx':s.x+'px','--dy':s.y+'px',animation:`starburst ${s.d}s ${s.dl}s ease-out infinite`}}/>`)}
       <//>`:''}
     <//>
-    <${Box} sx=${{display:'flex',flexDirection:'column',alignItems:'center',width:'100%',transform:launch>=2?'translateY(78vh)':'translateY(0)',opacity:launch>=2?0:1,transition:'transform 1.6s cubic-bezier(.4,0,.2,1), opacity 1.1s ease'}}>
+    <${Box} sx=${{display:'flex',flexDirection:'column',alignItems:'center',width:'100%',transform:launch>=2?'translateY(78vh)':'translateY(0)',opacity:launch>=2?0:((focus&&!convo&&!ftueOn)?.5:1),filter:(focus&&!convo&&!ftueOn)?'blur(6px)':'none',pointerEvents:(focus&&!convo&&!ftueOn)?'none':'auto',transition:launch>=2?'transform 1.6s cubic-bezier(.4,0,.2,1), opacity 1.1s ease':'filter .3s cubic-bezier(.2,.8,.3,1), opacity .3s ease'}}>
     <${Typography} variant="h5" sx=${{fontSize:{xs:26,md:24},mt:isShort()?'4px':{xs:'12px',md:'20px'}}}>${isPhone()?'Hi Aarav':'Hi Aarav! 👋'}<//>
     ${isPhone()?'':html`<${Typography} sx=${{color:DIM,fontSize:16,mt:.7,maxWidth:340,lineHeight:1.5}}>Pick up where you left off — or ask me anything below.<//>`}
-    <${Box} sx=${{width:{xs:'100%',md:'80%'},maxWidth:full?600:'none',marginTop:isShort()?'10px':(isCompact()?'32px':{xs:'32px',md:(__vh>=900?'71px':(__vh>=700?'40px':'22px'))}),display:'flex',flexDirection:'column',gap:isPhone()?1:(isCompact()?.8:1.1)}}>
+    <${Box} sx=${{width:{xs:'100%',md:'92%'},maxWidth:full?820:'none',marginTop:isShort()?'10px':(isCompact()?'32px':{xs:'32px',md:(__vh>=900?'71px':(__vh>=700?'40px':'22px'))}),display:'flex',flexDirection:'column',gap:isPhone()?1:(isCompact()?.8:1.1)}}>
       <${Box} sx=${{display:isShort()?'none':'flex',alignItems:'center',justifyContent:'center',gap:1.2,mb:isPhone()?1.5:.2}}>
         <${Typography} sx=${{fontSize:12,fontWeight:isPhone()?500:800,letterSpacing:isPhone()?'.3px':'.6px',textTransform:'uppercase',color:isPhone()?'#6b6580':DIM,whiteSpace:'nowrap',flex:'none'}}>Pick up where you left off<//>
       <//>
-      <${Box} sx=${{display:'flex',flexDirection:isPhone()?'row':'column',alignItems:'stretch',gap:isPhone()?2:(isCompact()?.8:1.1)}}>
-      ${RESUME_CLASSES.map(r=>(isPhone()&&!isShort())
-        ? html`<${HoverTile} key=${r.t} onClick=${()=>openTeachingRoom()} sx=${{flex:'1 1 0',minWidth:0,minHeight:138,p:2,position:'relative',overflow:'hidden',cursor:'pointer',display:'flex',flexDirection:'column',justifyContent:'space-between',textAlign:'left',borderRadius:16,background:`linear-gradient(152deg,#ffffff 0%,#ffffff 34%,${r.bg} 100%)`,border:`1px solid ${r.c}1f`,boxShadow:`inset 0 1px 0 rgba(255,255,255,.95), 0 1px 2px rgba(70,46,146,.05)`,transition:'transform .16s ease, box-shadow .16s ease','&:active':{transform:'scale(.975)'}}}>
+      <${Box} sx=${{display:'flex',flexDirection:'row',alignItems:'stretch',justifyContent:'center',gap:isPhone()?2:1.6}}>
+      ${homeTiles.map(r=>r.hero ? goalHero(r) : r.wide ? goalWide(r) : (isPhone()&&!isShort())
+        ? html`<${HoverTile} key=${r.t} domRef=${n=>{ if(n) n.setAttribute('data-pop-slot',r.t); }} onClick=${()=>r.go()} sx=${{flex:'1 1 0',minWidth:0,minHeight:138,p:2,position:'relative',overflow:'hidden',cursor:'pointer',display:'flex',flexDirection:'column',justifyContent:'space-between',textAlign:'left',borderRadius:16,background:`linear-gradient(152deg,#ffffff 0%,#ffffff 34%,${r.bg} 100%)`,border:`1px solid ${r.c}1f`,boxShadow:`inset 0 1px 0 rgba(255,255,255,.95), 0 1px 2px rgba(70,46,146,.05)`,transition:'transform .16s ease, box-shadow .16s ease','&:active':{transform:'scale(.975)'}}}>
             <${Box} aria-hidden="true" sx=${{position:'absolute',right:-16,bottom:-4,lineHeight:0,color:r.c,opacity:.11,filter:'blur(.6px)',pointerEvents:'none',transform:'rotate(-10deg)'}}><${Icon} n=${r.icon} size=${92}/><//>
             <${Typography} sx=${{position:'relative',fontWeight:700,fontSize:14,lineHeight:1.35,letterSpacing:'-.01em',color:INK}}>${r.sub}<//>
             <${Box} sx=${{position:'relative',alignSelf:'flex-start',display:'flex',alignItems:'center',gap:.55,color:r.tc}}>
@@ -989,15 +1176,22 @@ function HomeChat({onResume,full,onExpand,onClose,onMaxClick,homeMode,widgets}){
               <${Typography} sx=${{fontSize:12,fontWeight:700,color:r.tc,letterSpacing:'.01em'}}>Continue<//>
             <//>
           <//>`
-        : html`<${HoverTile} key=${r.t} onClick=${()=>openTeachingRoom()} sx=${{...cardSx,flex:isShort()?'1 1 0':'none',minWidth:0,pl:isShort()?1.2:2.2,pr:isShort()?1.2:2.2,py:isShort()?'9px':'25px',cursor:'pointer',display:'flex',alignItems:'center',gap:isShort()?1:1.4,textAlign:'left',borderRadius:14,transition:'border-color .16s ease, background .16s ease, box-shadow .16s ease','&:hover':{border:`1px solid ${r.c}`,background:r.bg,boxShadow:SH_SM},'&:hover .resume-go':{transform:'scale(1.08)',boxShadow:'0 6px 16px rgba(28,126,214,.45)'}}}>
-            <${Box} sx=${{width:isShort()?34:46,height:isShort()?34:46,flex:'none',borderRadius:isShort()?10:12,display:'grid',placeItems:'center',background:r.bg,color:r.c}}><${Icon} n=${r.icon} size=${isShort()?17:23}/><//>
-            <${Box} sx=${{flex:1,minWidth:0}}>
-              <${Typography} noWrap sx=${{fontSize:12.5,color:DIM,fontWeight:600,letterSpacing:'.2px'}}>${r.t}<//>
-              <${Typography} noWrap sx=${{fontWeight:isShort()?700:800,fontSize:isShort()?14:17,mt:.15,letterSpacing:'-.01em'}}>${r.sub}<//>
+        : html`<${HoverTile} key=${r.t} domRef=${n=>{ if(n) n.setAttribute('data-pop-slot',r.t); }} onClick=${()=>r.go()} sx=${{flex:'1 1 0',minWidth:0,position:'relative',overflow:'hidden',cursor:'pointer',display:'flex',flexDirection:'column',gap:1.6,p:'20px 20px 18px',textAlign:'left',borderRadius:18,background:'#ffffff',boxShadow:'0 1px 2px rgba(33,26,74,.05), 0 14px 30px -18px rgba(70,46,146,.38)',transition:'transform .18s cubic-bezier(.2,.8,.3,1), box-shadow .18s ease','&:hover':{transform:'translateY(-3px)'},'&:hover .resume-go':{transform:'scale(1.08)'}}}>
+            <${Box} sx=${{position:'relative',display:'flex',alignItems:'center',gap:1.2}}>
+              <${Box} sx=${{width:44,height:44,flex:'none',borderRadius:13,display:'grid',placeItems:'center',background:r.bg,color:r.c}}><${Icon} n=${r.icon} size=${22}/><//>
+              <${Typography} sx=${{fontSize:12,fontWeight:800,letterSpacing:'.08em',textTransform:'uppercase',color:r.tc}}>${r.kind}<//>
             <//>
-            <${Box} className="resume-go" sx=${{width:isShort()?34:40,height:isShort()?34:40,flex:'none',borderRadius:'11px',display:'grid',placeItems:'center',background:'linear-gradient(180deg,#339af0,#1c7ed6)',color:'#fff',boxShadow:'0 4px 12px rgba(28,126,214,.35)',transition:'.18s ease'}}><${Icon} n="player-play-filled" size=${16}/><//>
+            <${Typography} sx=${{position:'relative',fontWeight:700,fontSize:17,lineHeight:1.3,letterSpacing:'-.01em',color:INK,minHeight:44}}>${r.sub}<//>
+            <${Box} sx=${{position:'relative',display:'flex',alignItems:'center',gap:1}}>
+              <${Box} sx=${{display:'inline-flex',alignItems:'center',gap:.6,height:26,px:1.1,borderRadius:999,background:'#f8f9fa',color:DIM,fontSize:12.5,fontWeight:600,minWidth:0}}><${Icon} n=${r.fromIcon} size=${13}/><span style=${{whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>${r.from}</span><//>
+              <${Box} className="resume-go" sx=${{ml:'auto',width:38,height:38,flex:'none',borderRadius:'50%',display:'grid',placeItems:'center',background:r.c,color:'#fff',boxShadow:`0 8px 16px -8px ${r.c}`,transition:'transform .18s ease'}}><${Icon} n="player-play-filled" size=${15}/><//>
+            <//>
           <//>`)}
       <//>
+      ${isShort()?'':html`<${Box} sx=${{mt:isPhone()?'28px':'40px',display:'flex',flexDirection:'column',gap:1.2}}>
+        <${Box} sx=${{display:'flex',alignItems:'center',justifyContent:'center',gap:1.2}}><${Typography} sx=${{fontSize:12,fontWeight:800,letterSpacing:'.6px',textTransform:'uppercase',color:DIM,whiteSpace:'nowrap'}}>Daily Quest<//><//>
+        <${DailyChallenge} src=${(()=>{ const p=tw.popup||'Daily Quest'; if(p==='Daily Quest') return null; if(p==='Learn'||p==='Practice'){ return homeTiles.find(t=>t.kind===p&&!t.wide)||homeTiles[0]; } return homeTiles[0]; })()}/>
+      <//>`}
     <//>
     <//>
   <//>`;
@@ -1027,6 +1221,23 @@ function HomeChat({onResume,full,onExpand,onClose,onMaxClick,homeMode,widgets}){
   const suck=(m)=> ({});
   const speak=(t)=>{ try{ window.speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(String(t)); u.rate=1; u.pitch=1.05; window.speechSynthesis.speak(u); }catch(e){} };
   const listenBtn=(t,dark)=>html`<${Box} onClick=${()=>speak(t)} sx=${{marginTop:9,display:'inline-flex',alignItems:'center',gap:5,cursor:'pointer',fontSize:11,fontWeight:700,letterSpacing:'.4px',textTransform:'uppercase',color:DIM,transition:'.15s','&:hover':{color:BLUE7}}}><i class="ti ti-volume" style=${{fontSize:14}}/>Listen<//>`;
+
+  const _fLast=messages.length?messages[messages.length-1].id:null;
+  const fUI=(m)=>{ if(!m.flow) return ''; const live=m.id===_fLast&&!thinking;
+    const card=m.card?html`<div style=${{marginTop:10,background:'#fff',border:'1px solid #e9ecef',borderRadius:12,padding:'14px 16px 6px',boxShadow:SH_XS}}>
+      <div style=${{display:'flex',alignItems:'center',gap:10,fontSize:16,fontWeight:700,color:INK,marginBottom:8}}><span style=${{width:32,height:32,flex:'none',borderRadius:9,display:'grid',placeItems:'center',background:'#f3f0ff',color:'#7048e8'}}><${Icon} n=${m.card.icon} size=${18}/></span>${m.card.title}</div>
+      ${m.card.rows.map(([ic,k,v])=>html`<div key=${k} style=${{display:'grid',gridTemplateColumns:'18px 78px minmax(0,1fr)',gap:10,alignItems:'start',padding:'9px 0',borderTop:'1px solid #f1f3f5',fontSize:14,lineHeight:1.45}}><span style=${{color:DIM,lineHeight:0,paddingTop:2}}><${Icon} n=${ic} size=${16}/></span><span style=${{color:DIM}}>${k}</span><span style=${{color:INK,fontWeight:600}}>${v}</span></div>`)}
+    </div>`:'';
+    if(!live||!m.choices) return card;
+    const chip=(label,on,fn,ic)=>html`<div key=${label} onClick=${fn} style=${{display:'inline-flex',alignItems:'center',gap:7,height:38,padding:ic?'0 15px 0 12px':'0 15px',borderRadius:999,background:on?'#7048e8':'rgba(112,72,232,.08)',color:on?'#fff':'#3f3a63',fontSize:14,fontWeight:600,cursor:'pointer',whiteSpace:'nowrap',transition:'background .15s ease, color .15s ease'}}>${ic?html`<${Icon} n=${ic} size=${17} style=${{color:on?'#fff':'#7048e8'}}/>`:''}${label}</div>`;
+    const btn=(label,fn,off)=>html`<div key=${'b'+label} onClick=${off?undefined:fn} style=${{display:'inline-flex',alignItems:'center',gap:6,height:38,padding:'0 18px',borderRadius:999,background:off?'#e9ecef':BLUE,color:off?'#adb5bd':'#fff',fontSize:14,fontWeight:700,cursor:off?'not-allowed':'pointer',boxShadow:off?'none':SH_XS,transition:'background .15s ease'}}>${label}</div>`;
+    let row;
+    if(m.multi){ const tog=c=>setFPick(p=>p.includes(c)?p.filter(x=>x!==c):[...p,c]);
+      row=[...m.choices.map(c=>chip(c,fPick.includes(c),()=>tog(c))), btn(m.allowNone&&!fPick.length?'None yet':'Done',()=>fAnswer(fPick.slice(), fPick.length?fPick.join(', '):'None yet'), !m.allowNone&&!fPick.length)]; }
+    else if(m.primary){ row=[btn(m.choices[0],()=>fAnswer(m.choices[0])), ...m.choices.slice(1).map(c=>chip(c,false,()=>fAnswer(c)))]; }
+    else { row=m.choices.map((c,k)=>chip(c,false,()=>fAnswer(c),m.icons&&m.icons[k])); }
+    if(m.date) row.push(html`<label key="date" onClick=${e=>{ const i=e.currentTarget.querySelector('input'); try{ i.showPicker(); }catch(_){} }} style=${{position:'relative',display:'inline-flex',alignItems:'center',gap:7,height:38,padding:'0 15px 0 12px',borderRadius:999,background:'rgba(112,72,232,.08)',color:'#3f3a63',fontSize:14,fontWeight:600,cursor:'pointer',overflow:'hidden'}}><${Icon} n="calendar" size=${17} style=${{color:'#7048e8'}}/>Pick a date<input type="date" min="2026-10-29" onChange=${e=>{ const v=e.target.value; if(!v) return; const [y,mo,dd]=v.split('-').map(Number); const dt=new Date(y,mo-1,dd); fAnswer({label:fmtD(dt),date:dt},'By '+fmtD(dt)); }} style=${{position:'absolute',inset:0,opacity:0,cursor:'pointer'}}/></label>`);
+    return html`<div>${card}<div style=${{display:'flex',flexWrap:'wrap',gap:8,marginTop:10,animation:'sugIn .32s cubic-bezier(.2,.8,.3,1) both'}}>${row}</div></div>`; };
   const maxRow=(m)=>rowWrap(m.id,{display:'flex',gap:isPhone()?0:11,alignItems:'flex-start',...suck(m)},html`<${R.Fragment}>
     ${avSlot(m,'left',html`<${Buddy} who="max" size=${29} bob=${false} style=${{flexShrink:0,marginTop:0}}/>`)}
     <div style=${{position:'relative',zIndex:2,flex:ftueOn?'none':1,width:ftueOn?'min(560px, 100%)':'auto',minWidth:0,maxWidth:m.visual?460:(ftueOn?'none':'none')}}>
@@ -1040,10 +1251,11 @@ function HomeChat({onResume,full,onExpand,onClose,onMaxClick,homeMode,widgets}){
         </div>`:''}
         ${(ftueOn||isPhone())?'':listenBtn(m.text)}
       </div>
+      ${fUI(m)}
     </div>
   <//>`);
   const studentRow=(m)=>rowWrap(m.id,{display:'flex',justifyContent:'flex-end',gap:isPhone()?0:10,...suck(m)},html`<${R.Fragment}>
-    <div style=${{position:'relative',zIndex:2,maxWidth:'80%',background:BLUE,color:'#fff',borderRadius:'15px 15px 4px 15px',padding:'11px 15px',fontSize:16,fontWeight:500,lineHeight:1.5,boxShadow:SH_XS}}>${m.text}</div>
+    <div style=${{position:'relative',zIndex:2,maxWidth:'80%',background:BLUE,color:'#fff',borderRadius:'15px 15px 4px 15px',padding:'11px 15px',fontSize:16,fontWeight:500,lineHeight:1.5,boxShadow:SH_XS}}>${m.img?html`<img src=${m.img} alt="Class notes" style=${{display:'block',width:180,maxWidth:'100%',borderRadius:10,marginBottom:8}}/>`:''}${m.text}</div>
     ${avSlot(m,'right',html`<div style=${{width:34,height:34,borderRadius:10,overflow:'hidden',border:`1px solid ${BORDER}`}}><img src="aarav-avatar.png" alt="Aarav" style=${{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/></div>`)}
   <//>`);
   const summaryRow=(m)=>rowWrap(m.id,{display:'flex',gap:11,alignItems:'flex-start'},html`<${R.Fragment}>
@@ -1273,15 +1485,25 @@ function HomeChat({onResume,full,onExpand,onClose,onMaxClick,homeMode,widgets}){
     <${Box} sx=${{position:'relative',zIndex:1,flex:'none',px:full?{xs:2,md:3}:1.8,pt:{xs:1.2,md:1.6},pb:homeMode?(isPhone()?`calc(${convo?24:(isShort()?92:(__vh>=800?136:100))}px + max(env(safe-area-inset-bottom,0px), var(--dp-safe-bottom,0px)))`:'74px'):(isPhone()?`calc(136px + max(env(safe-area-inset-bottom,0px), var(--dp-safe-bottom,0px)))`:'18px'),transform:launch>=2?'translateY(64vh)':'translateY(0)',opacity:launch>=2?0:(vis==='transcript'?.45:1),pointerEvents:(launch>=2||vis==='transcript')?'none':'auto',filter:vis==='transcript'?'grayscale(.4)':'none',transition:launch>=2?'transform 1.6s cubic-bezier(.4,0,.2,1), opacity 1.1s ease':'padding-bottom .42s cubic-bezier(.4,0,.2,1), opacity .3s ease'}}>
       <${Box} sx=${{position:'relative',maxWidth:full?820:'none',mx:full?'auto':0,opacity:ftueOn?.2:1,pointerEvents:ftueOn?'none':'auto',transition:'opacity .3s ease'}}>
         <div style=${{position:'absolute',inset:isPhone()?'-22px -14px':'-12px -8px',borderRadius:isPhone()?999:24,background:isPhone()?'radial-gradient(70% 150% at 50% 112%, rgba(51,154,240,.34), rgba(34,139,230,.16) 52%, transparent 76%)':'radial-gradient(62% 130% at 50% 118%, rgba(76,110,245,.22), rgba(121,80,242,.10) 55%, transparent 78%)',filter:isPhone()?'blur(16px)':'blur(11px)',pointerEvents:'none',animation:'hudglow 4s ease-in-out infinite'}}/>
+        ${(tw.school&&!convo&&!ftueOn&&!focus)?html`<div style=${{position:'relative',zIndex:2,display:'flex',justifyContent:isPhone()?'center':'flex-start',paddingLeft:isPhone()?0:18,marginBottom:-1}}>
+          <${Box} onClick=${()=>startFlow('school')} sx=${{display:'inline-flex',alignItems:'center',gap:'7px',height:36,px:'14px',pl:'11px',borderRadius:'12px 12px 0 0',background:'#ebe7fb',border:'1px solid #c6caea',borderBottom:'1px solid #ebe7fb',color:'#3f3a63',fontSize:14,fontWeight:600,cursor:'pointer',whiteSpace:'nowrap',transition:'background .15s ease','&:hover':{background:'#e1dbf9',borderBottomColor:'#e1dbf9'}}}><${Icon} n="school" size=${17} style=${{color:'#7048e8'}}/>What's happening in school?<//>
+        </div>`:''}
         <${Box} onMouseEnter=${()=>{ if(!ftueOn) setInHov(true); }} onMouseLeave=${()=>setInHov(false)} sx=${{position:'relative',borderRadius:isPhone()?'999px':'18px',p:isPhone()?0:'7px',background:isPhone()?'transparent':'linear-gradient(158deg,#f3f4fd 0%,#e9ecfa 54%,#e0e3f5 100%)',border:isPhone()?'none':`1px solid ${active?BLUE2:'#c6caea'}`,boxShadow:isPhone()?'none':(active?`0 0 0 3px ${BLUE}1f, 0 12px 30px rgba(28,18,74,.2)`:'0 10px 26px rgba(28,18,74,.14), inset 0 1px 0 rgba(255,255,255,.9)'),transition:'box-shadow .3s ease, border-color .3s ease'}}>
           ${isPhone()?'':html`<${Rivets} inset=${5} size=${5}/>`}
-          ${(()=>{ const sugOpen=(focus&&!ftueOn&&vis!=='transcript'&&!convo)||(convo&&!goalChatRef.current&&!thinking&&messages.length<=2);
-            const ALL=[['help-circle','Doubt','I have a doubt'],['target','Set a goal','I want to set a goal'],['trophy','Practice','I want to practice'],['notebook','Homework','I need homework help'],['pencil','Change goal','I want to change my goal']];
-            const list=moreSug?ALL:ALL.slice(0,3);
-            const chip=(k,ic,label,fn,d)=>html`<${Box} key=${k} onClick=${fn} sx=${{display:'inline-flex',alignItems:'center',gap:'7px',height:36,px:'14px',pl:'10px',borderRadius:999,background:'rgba(112,72,232,.08)',color:'#3f3a63',fontSize:14,fontWeight:600,cursor:'pointer',whiteSpace:'nowrap',transition:'background .15s ease',animation:sugOpen?`sugIn .32s ${d}s cubic-bezier(.2,.8,.3,1) both`:'none','&:hover':{background:'rgba(112,72,232,.14)'}}}><${Icon} n=${ic} size=${17} style=${{color:'#7048e8'}}/>${label}<//>`;
-            const chips=[...list.map(([ic,l,t],k)=>chip(l,ic,l,()=>{ setText(t); setTimeout(()=>{ const el=document.querySelector('input[placeholder]'); el&&el.focus(); },0); },k*.04)), moreSug?'':chip('more','dots','More',()=>setMoreSug(true),list.length*.04)];
+          ${(()=>{ const sugOpen=(focus&&!ftueOn&&vis!=='transcript'&&!convo)||(convo&&!goalChatRef.current&&!flowRef.current&&!thinking&&messages.length<=2);
+            const ALL=[['help-circle','Doubt','I have a doubt','doubt'],['target','Set a goal','I want to set a goal','goal'],['trophy','Practice','I want to practice','practice'],['notebook','Homework','I need homework help','homework'],['pencil','Change goal','I want to change my goal']];
+            const FULL=(tw.school&&!convo)?[['school',"What's happening in school?",'','school'],...ALL]:ALL; const list=moreSug?FULL:FULL.slice(0,isPhone()?3:sugFit); const needMore=!moreSug&&list.length<FULL.length;
+            const qBadge=(kind)=>{ if(!readTweaks().quota) return ''; const W=window.ByjusWallet, q=W&&W.status(kind); if(!q) return '';
+              const tone=q.unlimited?['#ebfbee','#2b8a3e']:q.tone==='ok'?['#ebfbee','#2b8a3e']:q.tone==='locked'?['#f3f0ff','#6741d9']:['#fff4e6','#e8590c'];
+              const ic=q.unlimited?'':q.tone==='locked'?'lock':q.tone==='out'?'bolt':'';
+              const txt=q.unlimited?'Free':q.tone==='ok'?q.left+' free':q.tone==='locked'?'Learn '+q.mins+' min':'Recharge';
+              const tip=q.unlimited?'Always free':q.tone==='ok'?q.left+' free left':q.tone==='locked'?'Next one is free after '+q.mins+' more min of study':'Free ones used up. Tap to add more';
+              return html`<span title=${tip} data-buy=${(q.unlimited||q.tone==='ok')?undefined:kind} style=${{display:'inline-flex',alignItems:'center',gap:3,height:20,padding:'0 7px',marginLeft:2,borderRadius:999,background:tone[0],color:tone[1],fontSize:12,fontWeight:700,lineHeight:1}}>${ic?html`<${Icon} n=${ic} size=${12}/>`:''}${txt}</span>`; };
+            const chip=(k,ic,label,fn,d,kind)=>html`<${Box} key=${k} onClick=${fn} sx=${{display:'inline-flex',alignItems:'center',gap:'7px',height:36,px:'14px',pl:'10px',borderRadius:999,background:'rgba(112,72,232,.08)',color:'#3f3a63',fontSize:14,fontWeight:600,cursor:'pointer',whiteSpace:'nowrap',transition:'background .15s ease',animation:sugOpen?`sugIn .32s ${d}s cubic-bezier(.2,.8,.3,1) both`:'none','&:hover':{background:'rgba(112,72,232,.14)'}}}><${Icon} n=${ic} size=${17} style=${{color:'#7048e8'}}/>${label}${kind?qBadge(kind):''}<//>`;
+            const chips=[...list.map(([ic,l,t,kind],k)=>chip(l,ic,l,()=>{ const W=window.ByjusWallet, q=kind&&W&&W.status(kind); if(kind==='school'){ startFlow('school'); return; } if(readTweaks().quota&&q&&(q.exhausted||q.locked)){ W.openBuy(kind); return; } if(kind==='goal'){ startFlow('goal'); return; } setText(t); setTimeout(()=>{ const el=document.querySelector('input[placeholder]'); el&&el.focus(); },0); },k*.04,kind)), needMore?chip('more','dots','More',()=>setMoreSug(true),list.length*.04):''];
+            const meas=(!isPhone()&&sugOpen&&!moreSug)?html`<div ref=${sugMeasRef} aria-hidden="true" style=${{position:'absolute',left:0,top:0,visibility:'hidden',pointerEvents:'none',display:'flex',gap:8,whiteSpace:'nowrap'}}>${FULL.map(([ic,l,t,kind])=>chip('m'+l,ic,l,null,0,kind))}${chip('m-more','dots','More',null,0)}</div>`:'';
             if(isPhone()) return sugOpen?html`<${Box} onMouseDown=${(e)=>e.preventDefault()} sx=${{position:'absolute',bottom:'100%',left:0,right:0,pb:'12px',display:'flex',flexWrap:'wrap',justifyContent:'center',gap:'8px',zIndex:2}}>${chips}<//>`:'';
-            return html`<div onMouseDown=${(e)=>e.preventDefault()} style=${{position:'relative',zIndex:1,display:'grid',gridTemplateRows:sugOpen?'1fr':'0fr',transition:'grid-template-rows .32s cubic-bezier(.2,.8,.3,1)'}}><div style=${{minHeight:0,overflow:'hidden'}}><div style=${{display:'flex',flexWrap:'wrap',gap:8,padding:'4px 6px 10px'}}>${sugOpen?chips:''}</div></div></div>`; })()}
+            return html`<div onMouseDown=${(e)=>e.preventDefault()} style=${{position:'relative',zIndex:1,display:'grid',gridTemplateRows:sugOpen?'1fr':'0fr',transition:'grid-template-rows .32s cubic-bezier(.2,.8,.3,1)'}}><div style=${{minHeight:0,overflow:'hidden',position:'relative'}}>${meas}<div ref=${sugRowRef} style=${{display:'flex',flexWrap:moreSug?'wrap':'nowrap',gap:8,padding:'4px 6px 10px'}}>${sugOpen?chips:''}</div></div></div>`; })()}
           <${Box} sx=${{position:'relative',zIndex:1,display:'flex',alignItems:'center',gap:.4,px:isPhone()?.9:1.1,minHeight:{xs:64,md:54},borderRadius:isPhone()?'999px':'12px',background:isPhone()?'rgba(255,255,255,.86)':CARD,backdropFilter:isPhone()?'blur(18px) saturate(1.6)':'none',WebkitBackdropFilter:isPhone()?'blur(18px) saturate(1.6)':'none',border:isPhone()?'1px solid rgba(255,255,255,.9)':`1px solid ${BORDER}`,boxShadow:(isPhone()?(active?`0 0 0 3px ${BLUE}26, 0 14px 34px -12px rgba(70,46,146,.42), inset 0 1px 0 rgba(255,255,255,.95)`:'0 12px 30px -12px rgba(70,46,146,.32), 0 2px 6px rgba(70,46,146,.10), inset 0 1px 0 rgba(255,255,255,.95)'):'none'),transition:'box-shadow .28s ease'}}>
         ${iconBtn('paperclip')}
         <input value=${text} disabled=${vis==='transcript'||ftueOn} onChange=${e=>setText(e.target.value)} onFocus=${()=>setFocus(true)} onBlur=${()=>{ setFocus(false); setMoreSug(false); }}
@@ -1512,12 +1734,14 @@ function StreakDot({on,future,size=13,today}){
 function XpOrbs(){
   const cmp=isPhone();
   return html`<${Box} sx=${{display:'flex',alignItems:'center',flex:'0 1 auto',minWidth:0,gap:cmp?.2:1,alignSelf:'center'}}>
-    <div title="Experience points" style=${{display:'flex',alignItems:'center',gap:cmp?5:8,padding:cmp?'6px 6px 6px 4px':'8px 15px 8px 12px',borderRadius:12}}>
+    <div data-quota="1" title="Your free help" style=${{display:readTweaks().quota?'flex':'none',alignItems:'center',gap:cmp?5:7,padding:cmp?'6px 6px':'8px 14px 8px 12px',borderRadius:12,color:'#7048e8',fontWeight:700,fontSize:15}}><${Icon} n="lifebuoy" size=${20}/>${cmp?'':html`<span style=${{color:'#3f3a63'}}>Free help</span>`}</div>
+    <span aria-hidden="true" style=${{width:1,height:20,flex:'none',margin:cmp?'0 2px':'0 6px',background:'linear-gradient(180deg,rgba(120,90,200,0),rgba(120,90,200,.22) 30%,rgba(120,90,200,.22) 70%,rgba(120,90,200,0))'}}/>
+    <div data-wallet="1" title="Experience points" style=${{display:'flex',alignItems:'center',gap:cmp?5:8,padding:cmp?'6px 6px 6px 4px':'8px 15px 8px 12px',borderRadius:12}}>
       <${Icon} n="star-filled" size=${20} color="#fab005"/>
       <span style=${{fontWeight:800,color:'#7a4700',fontSize:cmp?16:18,letterSpacing:'-.01em'}}>4,820</span>
     </div>
     <span aria-hidden="true" style=${{width:1,height:20,flex:'none',margin:cmp?'0 2px':'0 6px',background:'linear-gradient(180deg,rgba(120,90,200,0),rgba(120,90,200,.22) 30%,rgba(120,90,200,.22) 70%,rgba(120,90,200,0))'}}/>
-    <div title="Energy orbs" style=${{display:'flex',alignItems:'center',gap:cmp?5:8,padding:cmp?'6px 6px 6px 4px':'8px 16px 8px 13px',borderRadius:12}}>
+    <div data-wallet="1" title="Energy orbs" style=${{display:'flex',alignItems:'center',gap:cmp?5:8,padding:cmp?'6px 6px 6px 4px':'8px 16px 8px 13px',borderRadius:12}}>
       <span style=${{width:18,height:18,flex:'none',borderRadius:'50%',background:'radial-gradient(circle at 34% 28%,#fff,#ffe066 42%,#ff922b 78%,#e8590c)',boxShadow:'0 0 10px rgba(255,193,7,.95),0 0 3px rgba(255,255,255,.9)'}}/>
       <span style=${{fontWeight:800,color:'#7a4700',fontSize:cmp?16:18,letterSpacing:'-.01em'}}>32</span>
     </div>
@@ -2273,7 +2497,7 @@ function App(){
     f(); window.addEventListener('resize',f); window.addEventListener('orientationchange',f);
     return ()=>{ window.removeEventListener('resize',f); window.removeEventListener('orientationchange',f); };
   },[]);
-  const [screen,setScreen]=useState(()=>localStorage.getItem('byjus_onboarded')==='1'?'home':'onboarding');
+  const [screen,setScreen]=useState('home');
   const [moduleDone,setModuleDone]=useState(false);
   const finishOnboard=()=>{ localStorage.setItem('byjus_onboarded','1'); setScreen('home'); };
   const restart=()=>{ localStorage.setItem('byjus_onboarded','0'); setScreen('onboarding'); };
@@ -2300,7 +2524,7 @@ function App(){
     for(const h of hues){ vars+=`--mantine-color-${h}-filled:var(--mantine-color-${h}-6);--mantine-color-${h}-filled-hover:var(--mantine-color-${h}-7);--mantine-color-${h}-light:var(--mantine-color-${h}-0);--mantine-color-${h}-light-hover:var(--mantine-color-${h}-1);--mantine-color-${h}-light-color:var(--mantine-color-${h}-6);`; }
     vars+='}';
     st.textContent=vars+`
-      @keyframes sugIn{from{opacity:0;transform:translateY(6px) scale(.96)}to{opacity:1;transform:none}}@keyframes xsIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@keyframes xsDot{0%,80%,100%{transform:translateY(0);opacity:.35}40%{transform:translateY(-3px);opacity:.9}}@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+      @keyframes dcFade{from{opacity:0}to{opacity:1}}@keyframes dcPop{from{opacity:0;transform:translateY(24px) scale(.92)}to{opacity:1;transform:none}}@keyframes sugIn{from{opacity:0;transform:translateY(6px) scale(.96)}to{opacity:1;transform:none}}@keyframes xsIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@keyframes xsDot{0%,80%,100%{transform:translateY(0);opacity:.35}40%{transform:translateY(-3px);opacity:.9}}@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
       @keyframes avIn{from{opacity:0}to{opacity:1}}
       @keyframes cjspin{to{transform:rotate(360deg)}}
       @keyframes bobb{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}

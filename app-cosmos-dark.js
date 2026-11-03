@@ -774,10 +774,71 @@ const CHAPTERS=[
   {t:'Data Handling',sub:'Mean, median & mode',p:0,status:'planned'},
   {t:'Simple Equations',sub:'Solving for x',p:0,status:'planned'},
 ];
+/* One Learn tile + one Practice tile. Each says where it was started from (the goal or a chapter). */
 const RESUME_CLASSES=[
-  {t:'Fractions & Decimals',sub:'Adding unlike denominators',p:55,c:BLUE,bg:BLUE0,icon:'math-symbols'},
-  {t:'Integers',sub:'Multiplication & division',p:30,c:VIOLET,bg:VIOLET0,icon:'divide'},
+  {kind:'Learn',from:'From your goal',fromIcon:'target',t:'Learn · From your goal',sub:'Adding unlike denominators',p:55,c:BLUE,tc:'#74c0fc',bg:BLUE0,icon:'book-2',go:()=>openTeachingRoom()},
+  {kind:'Practice',from:'From Integers chapter',fromIcon:'map-2',t:'Practice · From Integers chapter',sub:'Multiplication & division',p:30,c:VIOLET,tc:'#b197fc',bg:VIOLET0,icon:'target-arrow',go:()=>{ try{ window.location.href=encodeURI('Practice Room.dc.html'); }catch(e){} }},
 ];
+/* Today's challenge: shows big as a popup on landing, then settles into its Home slot. */
+function DailyChallenge(){
+  const slotRef=useRef(null), cardRef=useRef(null);
+  const [pop,setPop]=useState(true), [closing,setClosing]=useState(false), [fly,setFly]=useState(null);
+  const play=()=>{ try{ window.location.href=encodeURI('Practice Room.dc.html'); }catch(e){} };
+  /* One card, two homes: closing morphs the popup's own box into the slot's box (position, size,
+     radius, shadow), crossfading popup content out and a snapshot of the slot in. Opening runs the reverse. */
+  const openFrom=useRef(null);
+  const MTR='left .5s cubic-bezier(.2,.8,.3,1), top .5s cubic-bezier(.2,.8,.3,1), width .5s cubic-bezier(.2,.8,.3,1), height .5s cubic-bezier(.2,.8,.3,1), border-radius .5s ease, box-shadow .5s ease';
+  const freeze=(card,r,extra)=>Object.assign(card.style,{position:'fixed',left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',margin:'0',transform:'none',animation:'none',transition:'none'},extra||{});
+  const ghostOf=(slotEl,op)=>{ const g=slotEl.cloneNode(true); g.setAttribute('aria-hidden','true'); Object.assign(g.style,{position:'absolute',inset:'0',margin:'0',opacity:op,transform:'none',boxShadow:'none',pointerEvents:'none'}); return g; };
+  const close=()=>{ if(closing) return; const card=cardRef.current, slotEl=slotRef.current;
+    if(!card||!slotEl){ setPop(false); return; }
+    const a=card.getBoundingClientRect(), b=slotEl.getBoundingClientRect(), cs=getComputedStyle(slotEl);
+    setClosing(true); freeze(card,a);
+    const kids=[...card.children]; kids.forEach(c=>{ c.style.transition='opacity .16s ease'; c.style.opacity='0'; });
+    const g=ghostOf(slotEl,'0'); g.style.transition='opacity .24s ease .26s'; card.appendChild(g);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{ card.style.transition=MTR;
+      Object.assign(card.style,{left:b.left+'px',top:b.top+'px',width:b.width+'px',height:b.height+'px',borderRadius:cs.borderRadius,boxShadow:cs.boxShadow}); g.style.opacity='1'; }));
+    setTimeout(()=>{ setPop(false); setClosing(false); },540); };
+  const open=()=>{ openFrom.current=slotRef.current&&slotRef.current.getBoundingClientRect(); setPop(true); };
+  R.useLayoutEffect(()=>{ if(!pop||!openFrom.current) return; const card=cardRef.current, slotEl=slotRef.current, b=openFrom.current; openFrom.current=null; if(!card||!slotEl) return;
+    const a=card.getBoundingClientRect(), cs=getComputedStyle(slotEl), ccs=getComputedStyle(card), br=ccs.borderRadius, sh=ccs.boxShadow;
+    const orig=card.getAttribute('style')||'';
+    const kids=[...card.children], kidOrig=kids.map(c=>c.getAttribute('style')||''); kids.forEach(c=>{ c.style.transition='none'; c.style.opacity='0'; });
+    const g=ghostOf(slotEl,'1'); card.appendChild(g);
+    freeze(card,b,{borderRadius:cs.borderRadius,boxShadow:cs.boxShadow});
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{ card.style.transition=MTR;
+      Object.assign(card.style,{left:a.left+'px',top:a.top+'px',width:a.width+'px',height:a.height+'px',borderRadius:br,boxShadow:sh});
+      g.style.transition='opacity .16s ease'; g.style.opacity='0'; kids.forEach(c=>{ c.style.transition='opacity .26s ease .26s'; c.style.opacity='1'; }); }));
+    const t=setTimeout(()=>{ g.remove(); card.setAttribute('style',orig.replace(/animation:[^;]*;?/,'animation: none;')); kids.forEach((c,i)=>c.setAttribute('style',kidOrig[i])); },560);
+    return ()=>clearTimeout(t); },[pop]);
+  useEffect(()=>{ const k=(e)=>{ if(e.key==='Escape') close(); }; window.addEventListener('keydown',k); return ()=>window.removeEventListener('keydown',k); });
+  const chip=html`<span style=${{whiteSpace:'nowrap',flex:'none',display:'inline-flex',alignItems:'center',gap:5,height:24,padding:'0 10px',borderRadius:999,background:'rgba(255,146,43,.16)',color:'#ffa94d',fontSize:12,fontWeight:700}}><${Icon} n="flame" size=${14}/>4 day streak</span>`;
+  const slot=html`<${HoverTile} domRef=${slotRef} onClick=${open} sx=${{position:'relative',overflow:'hidden',minWidth:0,p:'20px 22px',cursor:'pointer',display:'flex',alignItems:'center',gap:1.8,textAlign:'left',borderRadius:18,background:'linear-gradient(115deg,#3a2f1a 0%,#2c2433 55%,#262038 100%)',boxShadow:'0 14px 30px -18px rgba(0,0,0,.6)',opacity:pop?0:1,transition:'transform .18s cubic-bezier(.2,.8,.3,1)','&:hover':{transform:'translateY(-3px)'}}}>
+      <${Box} aria-hidden="true" sx=${{position:'absolute',left:-40,top:'50%',width:150,height:150,mt:'-75px',borderRadius:'50%',border:'1px solid rgba(252,196,25,.18)'}}/>
+      <${Box} aria-hidden="true" sx=${{position:'absolute',left:-80,top:'50%',width:230,height:230,mt:'-115px',borderRadius:'50%',border:'1px solid rgba(252,196,25,.12)'}}/>
+      <${Box} sx=${{position:'relative',width:56,height:56,flex:'none',borderRadius:17,display:'grid',placeItems:'center',background:'rgba(252,196,25,.16)',color:'#fcc419'}}><${Icon} n="bolt" size=${28}/><//>
+      <${Box} sx=${{position:'relative',flex:1,minWidth:0,display:'flex',flexDirection:'column',gap:.6}}>
+        <${Typography} noWrap sx=${{fontWeight:700,fontSize:18,letterSpacing:'-.01em',color:'#ece8f6'}}>5 questions · 3 min<//>
+        <${Box} sx=${{display:'flex',alignItems:'center',gap:1}}>${chip}<${Typography} noWrap sx=${{fontSize:13,color:'#a9a3bf',fontWeight:500}}>Mix from this week<//><//>
+      <//>
+      <${Box} onClick=${(e)=>{ e.stopPropagation(); play(); }} sx=${{position:'relative',flex:'none',display:'inline-flex',alignItems:'center',gap:.8,height:44,px:2.2,borderRadius:999,background:'linear-gradient(180deg,#fcc419,#f08c00)',color:'#1a1526',fontSize:15,fontWeight:700}}>Play<${Icon} n="player-play-filled" size=${14}/><//>
+    <//>`;
+  const overlay=(pop&&window.ReactDOM&&window.ReactDOM.createPortal)?window.ReactDOM.createPortal(html`<div onClick=${close} style=${{position:'fixed',inset:0,zIndex:200,display:'grid',placeItems:'center',padding:24,background:closing?'rgba(33,26,74,0)':'rgba(8,6,16,.55)',backdropFilter:closing?'blur(0px)':'blur(10px)',WebkitBackdropFilter:closing?'blur(0px)':'blur(10px)',transition:'background .45s ease, backdrop-filter .45s ease',animation:'dcFade .3s ease both'}}>
+      <div ref=${cardRef} onClick=${(e)=>e.stopPropagation()} role="dialog" aria-label="Today's challenge" style=${{position:'relative',width:'min(520px,100%)',boxSizing:'border-box',padding:'36px 36px 32px',borderRadius:28,overflow:'hidden',background:'linear-gradient(160deg,#3a2f1a 0%,#262038 62%)',boxShadow:'0 1px 2px rgba(33,26,74,.08), 0 40px 80px -30px rgba(70,46,146,.55)',display:'flex',flexDirection:'column',alignItems:'center',gap:18,textAlign:'center',animation:'dcPop .45s cubic-bezier(.34,1.4,.5,1) both'}}>
+        <span aria-hidden="true" style=${{position:'absolute',left:'50%',top:-140,width:380,height:380,marginLeft:-190,borderRadius:'50%',border:'1px solid rgba(240,140,0,.14)'}}></span>
+        <span aria-hidden="true" style=${{position:'absolute',left:'50%',top:-80,width:260,height:260,marginLeft:-130,borderRadius:'50%',border:'1px solid rgba(240,140,0,.18)'}}></span>
+        <button onClick=${close} aria-label="Close" style=${{position:'absolute',top:14,right:14,width:40,height:40,border:'none',borderRadius:12,background:'rgba(255,255,255,.08)',color:'#cdc7de',cursor:'pointer',display:'grid',placeItems:'center'}}><${Icon} n="x" size=${20}/></button>
+        <span style=${{position:'relative',width:88,height:88,borderRadius:26,display:'grid',placeItems:'center',background:'rgba(252,196,25,.16)',color:'#fcc419',boxShadow:'0 14px 28px -14px rgba(240,140,0,.6)'}}><${Icon} n="bolt" size=${44}/></span>
+        <span style=${{position:'relative',fontSize:12,fontWeight:800,letterSpacing:'.08em',textTransform:'uppercase',color:'#fcc419'}}>Today's challenge</span>
+        <span style=${{position:'relative',fontSize:32,fontWeight:700,lineHeight:1.15,color:INK,letterSpacing:'-.01em'}}>5 questions · 3 min</span>
+        <span style=${{position:'relative',fontSize:16,color:DIM,lineHeight:1.45,maxWidth:340}}>A quick mix from what you learnt this week.</span>
+        ${chip}
+        <button onClick=${play} style=${{position:'relative',marginTop:6,height:52,padding:'0 34px',border:'none',borderRadius:999,background:'linear-gradient(180deg,#fcc419,#f08c00)',color:'#fff',fontSize:17,fontWeight:700,cursor:'pointer',display:'inline-flex',alignItems:'center',gap:8,boxShadow:'0 12px 24px -12px rgba(240,140,0,.75)'}}>Play<${Icon} n="player-play-filled" size=${16}/></button>
+        <button onClick=${close} style=${{position:'relative',border:'none',background:'transparent',color:DIM,fontSize:15,fontWeight:600,cursor:'pointer',padding:6}}>Later</button>
+      </div>
+    </div>`,document.body):null;
+  return html`<${R.Fragment}>${slot}${overlay}<//>`;
+}
 const JOURNEY=[
   {t:'Whole Numbers',sub:'Place value & operations',status:'done',p1:'#4cbf6e',p2:'#4cbf6e',p3:'#4cbf6e',ring:false,moon:true},
   {t:'Integers',sub:'Operations & number rules',status:'now',p:30,p1:'#4da3f0',p2:'#4da3f0',p3:'#4da3f0',ring:false,moon:true},
@@ -812,6 +873,8 @@ const FTUE_Q=[
 const FTUE_LOAD=["Looking at your learning goal…","Choosing the best lesson sequence…","Adjusting lessons to your study time…","Preparing your next step…"];
 function HomeChat({onResume,full,onExpand,onClose,onMaxClick,homeMode,widgets}){
   const [text,setText]=useState('');
+  const [,setWalletV]=useState(0);
+  useEffect(()=>{ const W=window.ByjusWallet; return W?W.on(()=>setWalletV(v=>v+1)):undefined; },[]);
   const [focus,setFocus]=useState(false);
   const [moreSug,setMoreSug]=useState(false);
   const [inHov,setInHov]=useState(false);
@@ -936,18 +999,27 @@ function HomeChat({onResume,full,onExpand,onClose,onMaxClick,homeMode,widgets}){
     <${Box} sx=${{display:'flex',flexDirection:'column',alignItems:'center',width:'100%',transform:launch>=2?'translateY(78vh)':'translateY(0)',opacity:launch>=2?0:1,transition:'transform 1.6s cubic-bezier(.4,0,.2,1), opacity 1.1s ease'}}>
     <${Typography} variant="h5" sx=${{fontSize:24,mt:'20px'}}>Hi Aarav! 👋<//>
     <${Typography} sx=${{color:DIM,fontSize:16,mt:.7,maxWidth:340,lineHeight:1.5}}>Pick up where you left off — or ask me anything below.<//>
-    <${Box} sx=${{width:'80%',maxWidth:full?600:'none',marginTop:'71px',display:'flex',flexDirection:'column',gap:1.1}}>
+    <${Box} sx=${{width:'92%',maxWidth:full?820:'none',marginTop:'71px',display:'flex',flexDirection:'column',gap:1.1}}>
       <${Box} sx=${{display:'flex',alignItems:'center',justifyContent:'center',gap:1.2,mb:.2}}>
         <${Typography} sx=${{fontSize:11,fontWeight:800,letterSpacing:'.6px',textTransform:'uppercase',color:DIM,whiteSpace:'nowrap',flex:'none'}}>Pick up where you left off<//>
       <//>
-      ${RESUME_CLASSES.map(r=>html`<${HoverTile} key=${r.t} onClick=${()=>openTeachingRoom()} sx=${{...cardSx,pl:2.2,pr:2.2,py:'25px',cursor:'pointer',display:'flex',alignItems:'center',gap:1.4,textAlign:'left',borderRadius:14,transition:'border-color .16s ease, background .16s ease, box-shadow .16s ease','&:hover':{border:`1px solid ${r.c}`,background:r.bg,boxShadow:SH_SM},'&:hover .resume-go':{transform:'scale(1.08)',boxShadow:'0 6px 16px rgba(28,126,214,.45)'}}}>
-        <${Box} sx=${{width:46,height:46,flex:'none',borderRadius:12,display:'grid',placeItems:'center',background:r.bg,color:r.c}}><${Icon} n=${r.icon} size=${23}/><//>
-        <${Box} sx=${{flex:1,minWidth:0}}>
-          <${Typography} noWrap sx=${{fontSize:12.5,color:DIM,fontWeight:600,letterSpacing:'.2px'}}>${r.t}<//>
-          <${Typography} noWrap sx=${{fontWeight:800,fontSize:17,mt:.15,letterSpacing:'-.01em'}}>${r.sub}<//>
-        <//>
-        <${Box} className="resume-go" sx=${{width:40,height:40,flex:'none',borderRadius:'11px',display:'grid',placeItems:'center',background:'#4da3f0',color:DEEP,boxShadow:'0 4px 12px rgba(28,126,214,.35)',transition:'.18s ease'}}><${Icon} n="player-play-filled" size=${16}/><//>
-      <//>`)}
+      <${Box} sx=${{display:'flex',alignItems:'stretch',gap:1.6}}>${RESUME_CLASSES.map(r=>html`<${HoverTile} key=${r.t} onClick=${()=>r.go()} sx=${{flex:'1 1 0',minWidth:0,position:'relative',overflow:'hidden',cursor:'pointer',display:'flex',flexDirection:'column',gap:1.6,p:'20px 20px 18px',textAlign:'left',borderRadius:18,background:'#262038',boxShadow:'0 1px 0 rgba(255,255,255,.04) inset, 0 14px 30px -18px rgba(0,0,0,.6)',transition:'transform .18s cubic-bezier(.2,.8,.3,1), box-shadow .18s ease','&:hover':{transform:'translateY(-3px)'},'&:hover .resume-go':{transform:'scale(1.08)'}}}>
+            <${Box} aria-hidden="true" sx=${{position:'absolute',right:-28,top:-28,width:120,height:120,borderRadius:'50%',background:r.bg,opacity:.55}}/>
+            <${Box} aria-hidden="true" sx=${{position:'absolute',right:-56,top:-56,width:176,height:176,borderRadius:'50%',border:`1px solid ${r.c}22`}}/>
+            <${Box} sx=${{position:'relative',display:'flex',alignItems:'center',gap:1.2}}>
+              <${Box} sx=${{width:44,height:44,flex:'none',borderRadius:13,display:'grid',placeItems:'center',background:r.bg,color:r.c}}><${Icon} n=${r.icon} size=${22}/><//>
+              <${Typography} sx=${{fontSize:12,fontWeight:800,letterSpacing:'.08em',textTransform:'uppercase',color:r.tc}}>${r.kind}<//>
+            <//>
+            <${Typography} sx=${{position:'relative',fontWeight:700,fontSize:17,lineHeight:1.3,letterSpacing:'-.01em',color:'#ece8f6',minHeight:44}}>${r.sub}<//>
+            <${Box} sx=${{position:'relative',display:'flex',alignItems:'center',gap:1}}>
+              <${Box} sx=${{display:'inline-flex',alignItems:'center',gap:.6,height:26,px:1.1,borderRadius:999,background:'rgba(255,255,255,.06)',color:'#a9a3bf',fontSize:12.5,fontWeight:600,minWidth:0}}><${Icon} n=${r.fromIcon} size=${13}/><span style=${{whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>${r.from}</span><//>
+              <${Box} className="resume-go" sx=${{ml:'auto',width:38,height:38,flex:'none',borderRadius:'50%',display:'grid',placeItems:'center',background:r.c,color:'#fff',boxShadow:`0 8px 16px -8px ${r.c}`,transition:'transform .18s ease'}}><${Icon} n="player-play-filled" size=${15}/><//>
+            <//>
+          <//>`)}<//>
+      <${Box} sx=${{mt:'36px',display:'flex',flexDirection:'column',gap:1.2}}>
+        <${Box} sx=${{display:'flex',alignItems:'center',justifyContent:'center',gap:1.2}}><${Typography} sx=${{fontSize:11,fontWeight:800,letterSpacing:'.6px',textTransform:'uppercase',color:DIM,whiteSpace:'nowrap'}}>Today's challenge<//><//>
+        <${DailyChallenge}/>
+      <//>
     <//>
     <//>
   <//>`;
@@ -1213,10 +1285,16 @@ function HomeChat({onResume,full,onExpand,onClose,onMaxClick,homeMode,widgets}){
         <${Box} onMouseEnter=${()=>{ if(!ftueOn) setInHov(true); }} onMouseLeave=${()=>setInHov(false)} sx=${{position:'relative',borderRadius:'18px',p:'7px',background:'linear-gradient(158deg,#2e2745 0%,#262038 54%,#211c31 100%)',border:'1px solid #3d3459',boxShadow:'0 4px 12px rgba(0,0,0,.26), inset 0 1px 0 rgba(255,255,255,.06)',transition:'box-shadow .3s ease, border-color .3s ease'}}>
           <${Rivets} inset=${5} size=${5}/>
           ${(()=>{ const sugOpen=(focus&&!ftueOn&&vis!=='transcript'&&!convo)||(convo&&!goalChatRef.current&&!thinking&&messages.length<=2);
-            const ALL=[['help-circle','Doubt','I have a doubt'],['target','Set a goal','I want to set a goal'],['trophy','Practice','I want to practice'],['notebook','Homework','I need homework help'],['pencil','Change goal','I want to change my goal']];
+            const ALL=[['help-circle','Doubt','I have a doubt','doubt'],['target','Set a goal','I want to set a goal','goal'],['trophy','Practice','I want to practice','practice'],['notebook','Homework','I need homework help','homework'],['pencil','Change goal','I want to change my goal']];
             const list=moreSug?ALL:ALL.slice(0,3);
-            const chip=(k,ic,label,fn,d)=>html`<${Box} key=${k} onClick=${fn} sx=${{display:'inline-flex',alignItems:'center',gap:'7px',height:36,px:'14px',pl:'10px',borderRadius:999,background:'rgba(177,151,252,.12)',color:'#d0c8ea',fontSize:14,fontWeight:600,cursor:'pointer',whiteSpace:'nowrap',transition:'background .15s ease',animation:sugOpen?`sugIn .32s ${d}s cubic-bezier(.2,.8,.3,1) both`:'none','&:hover':{background:'rgba(177,151,252,.2)'}}}><${Icon} n=${ic} size=${17} style=${{color:'#b197fc'}}/>${label}<//>`;
-            const chips=[...list.map(([ic,l,t],k)=>chip(l,ic,l,()=>{ setText(t); setTimeout(()=>{ const el=document.querySelector('input[placeholder]'); el&&el.focus(); },0); },k*.04)), moreSug?'':chip('more','dots','More',()=>setMoreSug(true),list.length*.04)];
+            const qBadge=(kind)=>{ const W=window.ByjusWallet, q=W&&W.status(kind); if(!q) return '';
+              const tone=q.unlimited?['rgba(64,192,87,.18)','#69db7c']:q.tone==='ok'?['rgba(64,192,87,.18)','#69db7c']:q.tone==='locked'?['rgba(177,151,252,.18)','#b197fc']:['rgba(255,146,43,.2)','#ffa94d'];
+              const ic=q.unlimited?'':q.tone==='locked'?'lock':q.tone==='out'?'bolt':'';
+              const txt=q.unlimited?'Free':q.tone==='ok'?q.left+' free':q.tone==='locked'?'Learn '+q.mins+' min':'Recharge';
+              const tip=q.unlimited?'Always free':q.tone==='ok'?q.left+' free left':q.tone==='locked'?'Next one is free after '+q.mins+' more min of study':'Free ones used up. Tap to add more';
+              return html`<span title=${tip} data-buy=${(q.unlimited||q.tone==='ok')?undefined:kind} style=${{display:'inline-flex',alignItems:'center',gap:3,height:20,padding:'0 7px',marginLeft:2,borderRadius:999,background:tone[0],color:tone[1],fontSize:12,fontWeight:700,lineHeight:1}}>${ic?html`<${Icon} n=${ic} size=${12}/>`:''}${txt}</span>`; };
+            const chip=(k,ic,label,fn,d,kind)=>html`<${Box} key=${k} onClick=${fn} sx=${{display:'inline-flex',alignItems:'center',gap:'7px',height:36,px:'14px',pl:'10px',borderRadius:999,background:'rgba(177,151,252,.12)',color:'#d0c8ea',fontSize:14,fontWeight:600,cursor:'pointer',whiteSpace:'nowrap',transition:'background .15s ease',animation:sugOpen?`sugIn .32s ${d}s cubic-bezier(.2,.8,.3,1) both`:'none','&:hover':{background:'rgba(177,151,252,.2)'}}}><${Icon} n=${ic} size=${17} style=${{color:'#b197fc'}}/>${label}${kind?qBadge(kind):''}<//>`;
+            const chips=[...list.map(([ic,l,t,kind],k)=>chip(l,ic,l,()=>{ const W=window.ByjusWallet, q=kind&&W&&W.status(kind); if(q&&(q.exhausted||q.locked)){ W.openBuy(kind); return; } setText(t); setTimeout(()=>{ const el=document.querySelector('input[placeholder]'); el&&el.focus(); },0); },k*.04,kind)), moreSug?'':chip('more','dots','More',()=>setMoreSug(true),list.length*.04)];
             return html`<div onMouseDown=${(e)=>e.preventDefault()} style=${{position:'relative',zIndex:1,display:'grid',gridTemplateRows:sugOpen?'1fr':'0fr',transition:'grid-template-rows .32s cubic-bezier(.2,.8,.3,1)'}}><div style=${{minHeight:0,overflow:'hidden'}}><div style=${{display:'flex',flexWrap:'wrap',gap:8,padding:'4px 6px 10px'}}>${sugOpen?chips:''}</div></div></div>`; })()}
           <${Box} sx=${{position:'relative',zIndex:1,display:'flex',alignItems:'center',px:1.1,minHeight:54,borderRadius:'12px',background:CARD,border:`1px solid ${BORDER}`}}>
         ${iconBtn('paperclip')}
@@ -1687,6 +1765,7 @@ function HomeWidgets({onNav,onRestart,streakRef,streakCele,onHome,floating}){
     ${floating?'':html`<${Box} onClick=${onHome} onMouseEnter=${()=>setLogoHov(true)} onMouseLeave=${()=>setLogoHov(false)} title="Home" sx=${{width:40,height:40,flex:'none',borderRadius:11,overflow:'hidden',display:'grid',placeItems:'center',background:'transparent',opacity:logoHov?.82:1,cursor:'pointer',transition:'.15s'}}><img src="logo.png" alt="Byjus.AI — home" style=${{width:'100%',height:'100%',objectFit:'contain'}}/><//>`}
     <${RotatingGoals}/>
     <${Box} sx=${{flex:1}}/>
+    <div data-quota="1" title="Your free help" style=${{display:'flex',alignItems:'center',gap:7,padding:'8px 14px 8px 12px',marginRight:6,borderRadius:12,color:'#b197fc',fontWeight:700,fontSize:15,alignSelf:'center'}}><${Icon} n="lifebuoy" size=${20}/><span style=${{color:'#cdc7de'}}>Free help</span></div>
     <${StreakWidget} streakRef=${streakRef} streakCele=${streakCele}/>
     <${Box} ref=${pref2} sx=${{position:'relative',flex:'none',display:'none'}}>
       <${Box} onClick=${()=>setProfOpen(o=>!o)} sx=${{display:'flex',alignItems:'center',gap:.8,pl:.5,pr:1,py:.5,borderRadius:12,cursor:'pointer',...hudSx,borderColor:profOpen?BLUE2:'#3d3459'}}>
@@ -2179,7 +2258,7 @@ function RoomFrame({onExit,onComplete,solo}){
    ========================================================= */
 function App(){
   const tw=useTweaks();
-  const [screen,setScreen]=useState(()=>localStorage.getItem('byjus_onboarded')==='1'?'home':'onboarding');
+  const [screen,setScreen]=useState('home');
   const [moduleDone,setModuleDone]=useState(false);
   const finishOnboard=()=>{ localStorage.setItem('byjus_onboarded','1'); setScreen('home'); };
   const restart=()=>{ localStorage.setItem('byjus_onboarded','0'); setScreen('onboarding'); };
@@ -2206,7 +2285,7 @@ function App(){
     for(const h of hues){ vars+=`--mantine-color-${h}-filled:var(--mantine-color-${h}-6);--mantine-color-${h}-filled-hover:var(--mantine-color-${h}-7);--mantine-color-${h}-light:var(--mantine-color-${h}-0);--mantine-color-${h}-light-hover:var(--mantine-color-${h}-1);--mantine-color-${h}-light-color:var(--mantine-color-${h}-6);`; }
     vars+='}';
     st.textContent=vars+`
-      @keyframes sugIn{from{opacity:0;transform:translateY(6px) scale(.96)}to{opacity:1;transform:none}}@keyframes xsIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@keyframes xsDot{0%,80%,100%{transform:translateY(0);opacity:.35}40%{transform:translateY(-3px);opacity:.9}}@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+      @keyframes dcFade{from{opacity:0}to{opacity:1}}@keyframes dcPop{from{opacity:0;transform:translateY(24px) scale(.92)}to{opacity:1;transform:none}}@keyframes sugIn{from{opacity:0;transform:translateY(6px) scale(.96)}to{opacity:1;transform:none}}@keyframes xsIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@keyframes xsDot{0%,80%,100%{transform:translateY(0);opacity:.35}40%{transform:translateY(-3px);opacity:.9}}@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
       @keyframes avIn{from{opacity:0}to{opacity:1}}
       @keyframes cjspin{to{transform:rotate(360deg)}}
       @keyframes bobb{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}

@@ -1,4 +1,224 @@
-<!doctype html>
-<html><head><meta charset="utf-8"><title>Byjus.AI — Product Flow</title>
-<meta http-equiv="refresh" content="0;url=Product%20Flow.dc.html">
-</head><body><a href="Product%20Flow.dc.html">Open the Byjus.AI product flow</a></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Byjus.AI Prototype Viewer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;font:13px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#343a40;background:#e9e6f7}
+  #app{display:grid;grid-template-columns:260px 1fr;height:100%}
+  aside{background:#fff;border-right:1px solid #e5dbff;overflow:auto;padding:14px}
+  h1{font-size:15px;margin:0 0 2px;color:#5f3dc4}
+  .sub{color:#868e96;margin-bottom:14px;font-size:12px}
+  .grp{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#adb5bd;margin:10px 0 2px 10px}
+  h2{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#868e96;margin:18px 0 6px}
+  .page{display:block;width:100%;text-align:left;border:0;background:none;padding:7px 10px;border-radius:8px;font:inherit;cursor:pointer;color:#343a40}
+  .page:hover{background:#f3f0ff}
+  .page.on{background:#7048e8;color:#fff}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:7px 0}
+  .row label{flex:1}
+  select,input[type=text],input[type=number]{font:inherit;padding:4px 6px;border:1px solid #dee2e6;border-radius:6px;max-width:130px}
+  input[type=range]{width:100%}
+  .note{font-size:11px;color:#868e96;margin-top:8px;line-height:1.4}
+  main{display:flex;flex-direction:column;min-width:0}
+  #bar{display:flex;gap:10px;align-items:center;padding:8px 12px;background:#fff;border-bottom:1px solid #e5dbff;flex-wrap:wrap}
+  #bar button{font:inherit;border:1px solid #d0bfff;background:#f3f0ff;border-radius:8px;padding:4px 10px;cursor:pointer;color:#5f3dc4}
+  #bar button.on{background:#7048e8;color:#fff;border-color:#7048e8}
+  #stage{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:14px}
+  #frameWrap{transform-origin:top center;flex:none}
+  iframe{border:0;background:#fff;border-radius:10px;box-shadow:0 14px 30px -18px rgba(70,46,146,.5);display:block}
+  #err{display:none;margin:12px;padding:10px 12px;background:#fff4e6;border:1px solid #ffd8a8;border-radius:8px;color:#d9480f}
+</style>
+</head>
+<body>
+<div id="app">
+  <aside>
+    <h1>Byjus.AI prototypes</h1>
+    <div class="sub">Viewer for the handoff — pages, tweaks and zoom</div>
+    <h2>Pages</h2>
+    <div id="pages"></div>
+    <h2>Tweaks</h2>
+    <div id="tweaks"></div>
+    <div class="note">These are the same controls the Claude Design Tweaks panel offered. They apply live to the page on the right.</div>
+  </aside>
+  <main>
+    <div id="bar">
+      <b>Size</b>
+      <button data-size="fit" class="on">Fit</button>
+      <button data-size="1">100%</button>
+      <button data-size="0.85">85%</button>
+      <button data-size="0.7">70%</button>
+      <span style="margin-left:8px"><b>Canvas</b></span>
+      <select id="canvas">
+        <option value="1180x760">Design size 1180×760</option>
+        <option value="1440x900">Laptop 1440×900</option>
+        <option value="1280x720">Stage 1280×720</option>
+        <option value="1920x1080" selected>Desktop 1920×1080</option>
+        <option value="768x1024">Tablet 768×1024</option>
+        <option value="470x900">Mobile 470×900</option>
+      </select>
+      <button id="reload">Reload</button>
+      <a id="openTab" target="_blank" style="margin-left:auto;color:#5f3dc4">Open in new tab ↗</a>
+    </div>
+    <div id="err"></div>
+    <div id="stage"><div id="frameWrap"><iframe id="f"></iframe></div></div>
+  </main>
+</div>
+<script>
+const room = [
+  {k:'studentName',t:'text',l:'Student name',d:'Aarav'},
+  {k:'sparkOn',t:'bool',l:'Spark on',d:true},
+  {k:'streak',t:'int',l:'Streak',d:3},
+  {k:'points',t:'int',l:'Points',d:120},
+  {k:'orbs',t:'int',l:'Orbs',d:6},
+];
+const layoutTest = {k:'layoutTest',t:'bool',l:'Layout test questions',d:false};
+const feel = [
+  {k:'ambience',t:'enum',o:['cosmic','serene','spotlight'],l:'Ambience',d:'spotlight'},
+  {k:'companions',t:'enum',o:['duo','solo'],l:'Companions',d:'duo'},
+  {k:'pace',t:'enum',o:['calm','balanced','spirited'],l:'Pace',d:'balanced'},
+];
+const homeTw = [
+  {k:'goalState',t:'enum',o:['not set','set'],l:'Goal state',d:'not set'},
+  {k:'nextStep',t:'enum',o:['learn','practice'],l:'Next step',d:'learn'},
+  {k:'schoolTile',t:'bool',l:"\u201CWhat's happening in school?\u201D",d:false},
+  {k:'dailyQuest',t:'enum',o:['Fast 5','Fix my mistakes','Flash cards'],l:'Daily Quest',d:'Fast 5'},
+  {k:'landingPopup',t:'enum',o:['Daily Quest','Goal card','Learn','Practice'],l:'Landing popup',d:'Daily Quest'},
+  {k:'showFreeInfo',t:'bool',l:'Show free / buy info',d:true},
+  ...feel,
+];
+const goalTw = [
+  {k:'resumeAt',t:'enum',o:['midIdea','checkpoint'],l:'Resume at',d:'midIdea'},
+  {k:'pathUpdate',t:'enum',o:['none','fastTrack','moreHelp'],l:'Path update',d:'none'},
+  {k:'brainCapacity',t:'range',min:0,max:100,step:10,l:'Brain capacity %',d:60},
+];
+const profileTw = [
+  {k:'defaultPane',t:'enum',o:['profile','courses','stats','goals'],l:'Default pane',d:'profile'},
+  {k:'showParentAccess',t:'bool',l:'Show parent access',d:true},
+  {k:'weeklyTargetMins',t:'range',min:60,max:420,step:30,l:'Weekly target (min)',d:180},
+];
+const P = (g,n,f,w,h,tw=[]) => ({g,n,f,w,h,tw});
+const PAGES = [
+  P('Start here','Product Flow (walkthrough)','Product Flow',1280,900),
+  P('Start here','FTUE Demo','FTUE Demo',1280,800),
+  P('Main screens','Onboarding','Onboarding',470,900),
+  P('Main screens','Home','Home Page',1180,760,homeTw),
+  P('Main screens','Goal','Goal Page',1180,760,goalTw),
+  P('Main screens','Chapter Journey','Chapter Journey - L&P',1180,760),
+  P('Main screens','Teaching Room','Teaching Room',1280,720,room),
+  P('Main screens','Teaching Room (Spark)','Teaching Room Spark',1280,720,room),
+  P('Main screens','Practice Room','Practice Room',1280,720,[...room,layoutTest]),
+  P('Main screens','Assessment','Assessment',1280,900),
+  P('Main screens','Profile','Profile',1280,900,profileTw),
+  P('Practice','Practice: Vyom Help','Practice Room - Vyom Help',1280,720,[...room,layoutTest]),
+  P('Practice','Practice: Guided Retry','Practice Room - Guided Retry',1280,720,[...room,layoutTest]),
+  P('Practice','Guided Retry storyboard','Guided Retry - Storyboard',1280,900),
+  P('Practice','Triangles Quiz','quiz',1280,720,[...room,layoutTest]),
+  P('Practice','Question types','Practice Question Types',1280,900),
+  P('Practice','Practice flow: boards','Practice Flow - Boards',1280,900),
+  P('Practice','Practice Room v1','Practice Room v1',1280,720,room),
+  P('Dark mode','Home (dark)','Home Page - Dark',1180,760,feel),
+  P('Dark mode','Chapter Journey (dark)','Chapter Journey - Dark',1180,760),
+  P('Dark mode','Teaching Room (dark)','Teaching Room - Dark',1280,720,room),
+  P('Docs & other','Adaptive Practice PRD','Adaptive Practice - PRD',1180,1000),
+  P('Docs & other','Chapter Journey (older)','Chapter Journey',1180,760),
+  P('Docs & other','Device Preview','Device Preview',1180,1120),
+  P('Docs & other','Teaching Room handover','Teaching Room - Product Handover-print-mlnxue',1180,1000),
+];
+const state = {}; // per-page tweak values
+let cur = null, sizeMode = 'fit';
+const $ = s => document.querySelector(s);
+const frame = $('#f'), wrap = $('#frameWrap'), stage = $('#stage');
+
+/* the viewer is served from the handoff folder; pages sit beside this file (needs http) */
+function url(p){ return encodeURIComponent(p.f) + '.dc.html'; }
+
+function buildPages(){
+  $('#pages').innerHTML = '';
+  let lastG = null;
+  PAGES.forEach(p=>{
+    if(p.g!==lastG){ lastG=p.g; const h=document.createElement('div'); h.className='grp'; h.textContent=p.g; $('#pages').appendChild(h); }
+    const b = document.createElement('button');
+    b.className = 'page'; b.textContent = p.n;
+    b.onclick = () => open(p);
+    p._b = b; $('#pages').appendChild(b);
+  });
+}
+
+function buildTweaks(){
+  const box = $('#tweaks'); box.innerHTML = '';
+  if(!cur.tw.length){ box.innerHTML = '<div class="note">This page has no tweaks.</div>'; return; }
+  const st = state[cur.f] ||= {};
+  cur.tw.forEach(c=>{
+    if(!(c.k in st)) st[c.k] = c.d;
+    const row = document.createElement('div'); row.className = 'row';
+    row.innerHTML = '<label>'+c.l+'</label>';
+    let el;
+    if(c.t==='bool'){ el = document.createElement('input'); el.type='checkbox'; el.checked = st[c.k]; el.onchange = ()=>set(c.k, el.checked); }
+    else if(c.t==='enum'){ el = document.createElement('select'); c.o.forEach(o=>{const op=document.createElement('option');op.textContent=o;op.value=o;el.appendChild(op)}); el.value = st[c.k]; el.onchange = ()=>set(c.k, el.value); }
+    else if(c.t==='int'){ el = document.createElement('input'); el.type='number'; el.min=0; el.max=9999; el.style.width='70px'; el.value = st[c.k]; el.oninput = ()=>set(c.k, +el.value||0); }
+    else if(c.t==='range'){ el = document.createElement('input'); el.type='range'; el.min=c.min; el.max=c.max; el.step=c.step; el.value = st[c.k]; el.style.width='110px'; el.oninput = ()=>set(c.k, +el.value); }
+    else { el = document.createElement('input'); el.type='text'; el.value = st[c.k]; el.oninput = ()=>set(c.k, el.value); }
+    row.appendChild(el); box.appendChild(row);
+  });
+}
+
+function apply(){
+  try{
+    const w = frame.contentWindow;
+    if(w.__dcSetProps && w.__dcRootName) w.__dcSetProps(w.__dcRootName(), state[cur.f] || {});
+  }catch(e){ $('#err').style.display='block'; $('#err').textContent = 'Could not reach the page to set tweaks. Open this viewer over http (see README note), not file://.'; }
+}
+function set(k,v){ (state[cur.f] ||= {})[k] = v; apply(); }
+
+function layout(){
+  const [cw,ch] = $('#canvas').value.split('x').map(Number);
+  frame.style.width = cw+'px'; frame.style.height = ch+'px';
+  let s = sizeMode==='fit' ? Math.min((stage.clientWidth-28)/cw, (stage.clientHeight-28)/ch, 1) : +sizeMode;
+  wrap.style.transform = 'scale('+s+')';
+  wrap.style.width = cw+'px'; wrap.style.height = ch+'px';
+  wrap.style.marginBottom = (-(ch*(1-s)))+'px';
+  wrap.style.marginRight = (-(cw*(1-s)))+'px';
+  wrap.style.transformOrigin = 'top left';
+  if(sizeMode==='fit'){ stage.style.justifyContent='center'; wrap.style.marginRight=(-(cw*(1-s)))+'px'; }
+}
+
+function open(p, keep){
+  cur = p;
+  PAGES.forEach(x=>x._b.classList.toggle('on', x===p));
+  buildTweaks(); layout();
+  frame.src = url(p);
+  $('#openTab').href = url(p);
+  history.replaceState(null,'','#'+encodeURIComponent(p.f));
+}
+
+frame.addEventListener('load', ()=>{
+  /* if the page navigated itself (nav rail, Start buttons…), follow it */
+  try{
+    const name = decodeURIComponent(frame.contentWindow.location.pathname.split('/').pop()).replace(/\.dc\.html$/,'');
+    const p = PAGES.find(x=>x.f===name);
+    if(p && p!==cur){ cur=p; PAGES.forEach(x=>x._b.classList.toggle('on', x===p)); buildTweaks(); $('#openTab').href=url(p); history.replaceState(null,'','#'+encodeURIComponent(p.f)); }
+  }catch(e){}
+  /* the runtime boots async; apply tweaks once it is ready */
+  let tries = 0;
+  const t = setInterval(()=>{
+    tries++;
+    try{ const w=frame.contentWindow; if(w.__dcSetProps && w.__dcRootName && w.__dcRootName()){ apply(); if(tries>4) clearInterval(t); } }catch(e){}
+    if(tries>40) clearInterval(t);
+  }, 250);
+});
+
+document.querySelectorAll('#bar [data-size]').forEach(b=>b.onclick=()=>{
+  sizeMode=b.dataset.size; document.querySelectorAll('#bar [data-size]').forEach(x=>x.classList.toggle('on',x===b)); layout();
+});
+$('#canvas').onchange = layout;
+$('#reload').onclick = ()=>frame.contentWindow.location.reload();
+window.addEventListener('resize', layout);
+
+buildPages();
+const start = PAGES.find(p=>p.f===decodeURIComponent(location.hash.slice(1))) || PAGES[0];
+open(start);
+</script>
+</body>
+</html>

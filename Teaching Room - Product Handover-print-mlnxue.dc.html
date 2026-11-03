@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style data-omelette-print-defaults>
+@media print {
+  @page { margin: 0.5in; }
+  h1, h2, h3, h4, h5, h6 { break-after: avoid; }
+  figure, table, pre, blockquote, img, svg, tr, [class~="card" i] { break-inside: avoid; }
+  img, svg { max-width: 100%; }
+  p { orphans: 3; widows: 3; }
+}
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;background:#e9e6f2;}
+  doc-page:not(:defined){visibility:hidden;}
+  *{box-sizing:border-box;}
+  .doc{font-family:'Inter',-apple-system,sans-serif;color:#1f2430;font-size:15px;line-height:1.62;}
+  .doc h1,.doc h2,.doc h3{font-family:'Fraunces',Georgia,serif;color:#2a2140;line-height:1.2;text-wrap:balance;}
+  .doc h1{font-size:34px;font-weight:600;margin:0 0 6px;letter-spacing:-.01em;}
+  .doc h2{font-size:23px;font-weight:600;margin:34px 0 12px;padding-top:16px;border-top:2px solid #ece8f6;}
+  .doc h3{font-size:17px;font-weight:600;margin:22px 0 6px;color:#4a3c6b;font-family:'Inter',sans-serif;letter-spacing:-.005em;}
+  .doc p{margin:0 0 11px;text-wrap:pretty;}
+  .doc ul{margin:0 0 12px;padding-left:20px;}
+  .doc li{margin:0 0 6px;text-wrap:pretty;}
+  .doc strong{color:#2a2140;font-weight:600;}
+  .lede{font-size:16.5px;color:#4a4560;line-height:1.6;margin:0 0 6px;}
+  .kicker{font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7c5cff;margin:18px 0 14px;}
+  .meta{display:flex;gap:26px;flex-wrap:wrap;font-size:13px;color:#6b6580;border-top:1px solid #ece8f6;border-bottom:1px solid #ece8f6;padding:12px 0;margin:18px 0 30px;}
+  .meta b{display:block;color:#2a2140;font-weight:600;font-size:13px;margin-bottom:1px;}
+  .callout{background:#f6f3ff;border:1px solid #e5ddfb;border-radius:12px;padding:16px 18px;margin:16px 0;break-inside:avoid;}
+  .callout .ctitle{font-weight:700;font-size:13px;letter-spacing:.03em;text-transform:uppercase;color:#7c5cff;margin:0 0 6px;}
+  .step{break-inside:avoid;border-left:3px solid #d9cffb;padding:2px 0 2px 16px;margin:0 0 16px;}
+  .step .sn{font-family:'Fraunces',serif;font-size:13px;font-weight:600;color:#a99adf;letter-spacing:.04em;}
+  .step .st{font-weight:600;color:#2a2140;font-size:15px;margin:1px 0 4px;}
+  .step .sd{font-size:14px;color:#514c66;margin:0;}
+  .tag{display:inline-block;font-size:11px;font-weight:600;background:#efeafd;color:#6544d6;border-radius:5px;padding:1px 7px;margin-left:7px;vertical-align:middle;letter-spacing:.02em;}
+  table{width:100%;border-collapse:collapse;margin:12px 0 16px;font-size:13.5px;}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #ece8f6;vertical-align:top;}
+  th{font-weight:600;color:#2a2140;border-bottom:1.5px solid #ddd5f0;font-size:12px;letter-spacing:.03em;text-transform:uppercase;}
+  td code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;background:#f3f0fb;padding:1px 5px;border-radius:4px;color:#5a3fc0;}
+  .hdr{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:#9990b3;letter-spacing:.04em;}
+  .ftr{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#a9a2bd;}
+</style>
+</helmet>
+<x-import component-from-global-scope="doc-page" from="./doc-page.js" size="letter" margin="0.8in" hint-size="100%,100%">
+  <div slot="header" class="hdr"><span>BYJU'S · AI Teaching Room</span><span>Handover</span></div>
+  <div slot="footer" class="ftr"><span>Confidential — Internal</span><span>Area of a Trapezoid · v2</span></div>
+
+  <div class="doc">
+    <p class="kicker">Product Handover Document</p>
+    <h1>AI Teaching Room</h1>
+    <p class="lede">An AI-guided, single-topic interactive lesson experience. A student is walked through one concept end-to-end by an on-screen AI tutor, moving through a fixed sequence of teaching screens that mix narration, hands-on manipulatives, video, and a quiz — with a live chat/voice channel available throughout.</p>
+
+    <div class="meta">
+      <div><b>Reference build</b>Area of a Trapezoid</div>
+      <div><b>Version</b>v2</div>
+      <div><b>Format</b>Interactive lesson (14 steps)</div>
+      <div><b>Default learner</b>Aarav</div>
+    </div>
+
+    <h2>1. Concept &amp; characters</h2>
+    <p>The Teaching Room presents <strong>one lesson topic</strong> as a linear, narrated journey. The learner advances step by step; each step is a full-screen "teaching mode" with its own layout and interaction. Two AI characters carry the experience:</p>
+    <ul>
+      <li><strong>Max</strong> — the primary AI tutor. Max narrates every step (text + synthesized voice), poses questions, and reacts to the learner's actions. Max is the character who docks into the chat bar and stays present throughout.</li>
+      <li><strong>Spark</strong> — a secondary companion character. Spark appears at specific moments (the intro fly-in, the video pause beat) as an optional co-presence. Spark can be turned off entirely.</li>
+    </ul>
+
+    <h2>2. Screen layout</h2>
+    <p>Every step shares one frame:</p>
+    <ul>
+      <li><strong>The stage</strong> — the main teaching canvas (title, manipulative, video, quiz, etc.). The canvas is <strong>always 16:9</strong>. It occupies the full width when the chat is closed and narrows when the chat opens.</li>
+      <li><strong>The chat panel</strong> — a right-hand column (372px wide) for the conversation between the learner, Max, and Spark. It is <strong>closed by default on every step</strong>, including the first.</li>
+      <li><strong>The dock</strong> — bottom-left, where Max lives once docked, alongside the Chat and Speak (mic) entry buttons.</li>
+    </ul>
+
+    <div class="callout">
+      <p class="ctitle">Key layout rule</p>
+      <p style="margin:0;">The stage <strong>resizes with the chat</strong>. Opening the chat reserves the 372px column and shrinks the stage; closing it releases the column back to <code>0px</code> so the stage uses the full width and shifts to fill the space. When the chat is closed, the Chat / Speak buttons and docked Max float as an overlay over the full-width stage so they stay reachable.</p>
+    </div>
+
+    <h2>3. The chat &amp; voice panel</h2>
+    <ul>
+      <li><strong>Closed by default</strong> on load and on every step change — the learner opens it themselves.</li>
+      <li>Two entry points from the dock: <strong>Chat</strong> (opens the panel with the text field focused) and <strong>Speak</strong> (opens the panel in mic / recording state).</li>
+      <li>While the chat is closed, new tutor messages surface as <strong>floating pop-up bubbles</strong> above the dock, then auto-dismiss; opening the chat shows the full running transcript.</li>
+      <li>Messages reveal progressively and are narrated aloud (Max, and Spark when enabled) via the browser's speech synthesis.</li>
+    </ul>
+
+    <h2>4. Intro sequence (Step&nbsp;1)</h2>
+    <p>The first screen is the title card. On load:</p>
+    <ol style="padding-left:20px;">
+      <li>Max and Spark appear at their <strong>starting position on the board</strong> (title area).</li>
+      <li>Within the first <strong>~5 seconds</strong>, they <strong>automatically fly to the dock</strong> — Max landing bottom-left beside the Chat / Speak pill, Spark flying off.</li>
+      <li>Only <strong>after Max has docked</strong> does the first tutor message appear. No message is shown before docking.</li>
+    </ol>
+
+    <h2>5. Lesson flow — the 14 steps</h2>
+    <p>The reference lesson ("Area of a Trapezoid") runs the following fixed sequence. Each step's mode determines its layout and the tab it maps to.</p>
+
+    <div class="step"><span class="sn">STEP 01</span><span class="tag">Standard</span><p class="st">Title — "Area of a trapezoid"</p><p class="sd">Intro card + mascot dock-in. Max introduces the topic.</p></div>
+    <div class="step"><span class="sn">STEP 02</span><span class="tag">Teach</span><p class="st">Learning objectives</p><p class="sd">Three objectives reveal one by one, each narrated and highlighted in sequence, ending with a "Got it" confirmation.</p></div>
+    <div class="step"><span class="sn">STEP 03</span><span class="tag">Applet</span><p class="st">Parallelogram manipulative</p><p class="sd">An embedded interactive: the learner drags the top corner of a parallelogram to deform it into a trapezoid. The system detects interaction, guides toward the goal, and confirms on success.</p></div>
+    <div class="step"><span class="sn">STEP 04</span><span class="tag">Teach</span><p class="st">Definition — "This new shape is a trapezoid"</p><p class="sd">Defines the trapezoid: a quadrilateral with only one pair of parallel sides. Question + answer options render directly beneath the trapezoid figure (fixed 50px gap).</p></div>
+    <div class="step"><span class="sn">STEP 05</span><span class="tag">Video</span><p class="st">Watch &amp; learn (video)</p><p class="sd">A lesson video showing how the shape is transformed to find its area. Custom player; includes a scripted pause beat (see §6).</p></div>
+    <div class="step"><span class="sn">STEP 06</span><span class="tag">Teach</span><p class="st">Do &amp; learn — duplicate into a parallelogram</p><p class="sd">Learner duplicates the trapezoid and rotates the copy so the two together form a parallelogram.</p></div>
+    <div class="step"><span class="sn">STEP 07</span><span class="tag">Quiz</span><p class="st">Shout out loud — recall the formula</p><p class="sd">Multiple choice: which formula gives the area of a trapezoid? Options: ½×(a+b)×h · (a+b)×h · ½×a×b · a×b×h. Correct: ½×(a+b)×h.</p></div>
+    <div class="step"><span class="sn">STEP 08</span><span class="tag">Screen</span><p class="st">Formula reveal — "That's right!"</p><p class="sd">Confirms and displays Area = ½ × (a + b) × h, defining a, b (parallel sides) and h (height).</p></div>
+    <div class="step"><span class="sn">STEP 09</span><span class="tag">Screen</span><p class="st">Do &amp; learn — cut &amp; rearrange into a triangle</p><p class="sd">Learner cuts and rearranges the trapezoid into a triangle, showing the area is preserved.</p></div>
+    <div class="step"><span class="sn">STEP 10</span><span class="tag">Teach</span><p class="st">Math vault — "The area always stays the same"</p><p class="sd">Reinforces that area depends only on the parallel sides and height, invariant under rearrangement.</p></div>
+    <div class="step"><span class="sn">STEP 11</span><span class="tag">Applet</span><p class="st">Practice — find the missing height</p><p class="sd">Interactive practice problem; learner works toward the answer.</p></div>
+    <div class="step"><span class="sn">STEP 12</span><span class="tag">Applet</span><p class="st">Practice solved</p><p class="sd">Worked solution state: Area ÷ average base = 300 ÷ 30 = 10 cm.</p></div>
+    <div class="step"><span class="sn">STEP 13</span><span class="tag">Teach</span><p class="st">Module complete — key ideas</p><p class="sd">Recap of the three key takeaways and the final formula.</p></div>
+
+    <h2>6. Video player (Step&nbsp;5)</h2>
+    <ul>
+      <li>Opens as a framed thumbnail centered on the stage, then expands to full-bleed on play.</li>
+      <li><strong>Control bar layout:</strong> volume icon + volume slider on the <strong>left</strong>; skip-back / play-pause / skip-forward grouped in the <strong>center</strong>; a <strong>playback-speed pill</strong> on the right (tap to cycle through speeds).</li>
+      <li><strong>Scripted pause beat at 1:09</strong> — a Lottie pause animation plays center-screen; partway through, a Spark message appears. This is the dedicated <code>SparkVideoPause</code> moment.</li>
+    </ul>
+
+    <h2>7. Background feedback</h2>
+    <p>Correct / incorrect actions tint the stage background from the bottom edge using two design tokens:</p>
+    <table>
+      <thead><tr><th>Token</th><th>Meaning</th><th>Coverage</th></tr></thead>
+      <tbody>
+        <tr><td><code>--success-bg-color</code></td><td>Green glow on a correct action</td><td>Bottom <strong>50%</strong> of stage height</td></tr>
+        <tr><td><code>--fail-bg-color</code></td><td>Red glow on an incorrect action</td><td>Bottom <strong>50%</strong> of stage height</td></tr>
+      </tbody>
+    </table>
+    <p>Both are layered gradients (a radial glow rising from the bottom-center plus a linear fade) tuned so the color reads over the bottom half and fades to transparent above it.</p>
+
+    <h2>8. Configuration</h2>
+    <table>
+      <thead><tr><th>Option</th><th>Effect</th><th>Default</th></tr></thead>
+      <tbody>
+        <tr><td><code>studentName</code></td><td>Personalizes tutor dialogue ("Hi {name}!")</td><td>Aarav</td></tr>
+        <tr><td><code>sparkOn</code> / <code>?spark=0</code></td><td>Enables/disables the Spark companion and its messages</td><td>On</td></tr>
+      </tbody>
+    </table>
+
+    <h2>9. Requirements changelog (latest)</h2>
+    <p>The behaviors below are the current, confirmed requirements as they stand in v2:</p>
+    <ul>
+      <li><strong>Background feedback</strong> — success/fail gradients cover the bottom <strong>50%</strong> of the stage height (raised from 30%).</li>
+      <li><strong>Question &amp; options placement</strong> — render in normal flow directly beneath the trapezoid figure, with a fixed <strong>50px gap</strong> (not pinned to the bottom of the window).</li>
+      <li><strong>Chat default</strong> — closed by default on every step, including the first.</li>
+      <li><strong>Stage resizing</strong> — the stage must resize when the chat opens/closes (full width when closed).</li>
+      <li><strong>Intro dock-then-message</strong> — Max &amp; Spark start on the board, auto-dock within ~5s, and the first message appears only after Max docks.</li>
+      <li><strong>Video controls</strong> — volume left, transport centered, playback-speed pill right.</li>
+      <li><strong>Video pause beat</strong> — Lottie pause animation + Spark message at 1:09 (<code>SparkVideoPause</code>).</li>
+    </ul>
+  </div>
+</x-import>
+</x-dc>
+<script>
+(async () => {
+  if (!document.title || !document.title.trim()) document.title = "Teaching Room - Product Handover";
+  // Prepend so page-supplied @page / break rules (deck-stage's margin:0,
+  // author CSS) keep source-order precedence over the baseline.
+  const baseCss = document.createElement('style');
+  baseCss.textContent = "@media print {\n  figure, table { break-inside: avoid; }\n  *, *::before, *::after {\n    print-color-adjust: exact; -webkit-print-color-adjust: exact;\n    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;\n    animation-delay: -99s !important; animation-duration: .001s !important;\n    animation-iteration-count: 1 !important; animation-fill-mode: both !important;\n    animation-play-state: running !important; transition-duration: 0s !important;\n  }\n}";
+  document.head.prepend(baseCss);
+  if (document.readyState === 'loading') {
+    await new Promise((r) => document.addEventListener('DOMContentLoaded', r, { once: true }));
+  }
+  let ds = document.querySelector('deck-stage');
+  // whenDefined never resolves when nothing registers the element, so only
+  // await it when a <deck-stage> tag exists (and race a timeout regardless).
+  if (ds && !customElements.get('deck-stage')) {
+    try {
+      await Promise.race([
+        customElements.whenDefined('deck-stage'),
+        new Promise((r) => setTimeout(r, 3000)),
+      ]);
+    } catch (e) {}
+    ds = document.querySelector('deck-stage');
+  }
+  // dc-runtime assigns window.DCLogic at init and mounts into #dc-root on
+  // DOMContentLoaded; settle on that subtree so React has rendered before
+  // print(). Non-DC pages fall through to weighing body.
+  const isDc = !ds && 'DCLogic' in window;
+  const settleRoot = ds || (isDc ? document.getElementById('dc-root') : null) || document.body;
+  if (settleRoot) {
+    // Weigh only content children — skip script/style/template so inline
+    // Babel/CSS doesn't register as stable "content" before the framework
+    // has mounted anything.
+    const MEDIA = 'img,svg,canvas,video,picture,iframe,embed,object';
+    const weigh = () => {
+      let text = 0, media = 0;
+      for (const c of settleRoot.children) {
+        const t = c.tagName;
+        if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+        text += (c.textContent || '').trim().length;
+        media += c.querySelectorAll(MEDIA).length + (c.matches(MEDIA) ? 1 : 0);
+      }
+      return text + media * 100;
+    };
+    // "Non-zero and stable" alone is not sufficient to mean rendered: generic
+    // body can carry a static shell while async main content is pending, and
+    // #dc-root can carry the root DC's static text while child refs are still
+    // .sc-placeholder boxes. Gate generic on readyState 'complete', and never
+    // accept stability while a dc-runtime placeholder is present.
+    const isGeneric = settleRoot === document.body;
+    const deadline = Date.now() + 15000;
+    let last = -1, stable = 0;
+    while (Date.now() < deadline) {
+      const n = weigh();
+      const ready =
+        (!isGeneric || document.readyState === 'complete') &&
+        !settleRoot.querySelector('.sc-placeholder');
+      if (n > 0 && n === last && ready) { if (++stable >= 2) break; } else { stable = 0; }
+      last = n;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+  }
+  // Project support.js may predate runtime default-seeding; push via bridge.
+  if (isDc && window.__dcSetProps && window.__dcRootName) {
+    try {
+      const dpEl = document.querySelector('script[data-dc-script]');
+      const meta = JSON.parse((dpEl && dpEl.getAttribute('data-props')) || '{}');
+      const bag = {};
+      for (const k in meta)
+        if (k[0] !== '$' && meta[k] && meta[k].default !== undefined)
+          bag[k] = meta[k].default;
+      if (Object.keys(bag).length) {
+        window.__dcSetProps(window.__dcRootName(), bag);
+        await new Promise((r) => setTimeout(r, 50));
+      }
+    } catch (e) {}
+  }
+  // Reveal content gated on scroll or visibility before printing. Lazy <img>,
+  // IntersectionObserver fade-ins, and collapsed <details> don't render while
+  // off-screen, so a long page would print with them blank or closed. Open
+  // every <details>, force native-lazy images eager, and scroll the document
+  // through its full height to trip lazy-load + IO; then wait (bounded) for the
+  // newly-triggered images. Inert for deck-stage (slides aren't scroll-gated).
+  try {
+    for (const d of document.querySelectorAll('details')) d.open = true;
+    for (const img of document.querySelectorAll('img[loading="lazy"]'))
+      img.loading = 'eager';
+    const scroller = document.scrollingElement || document.documentElement;
+    const full = Math.max(scroller.scrollHeight, document.body.scrollHeight);
+    const step = window.innerHeight || 800;
+    for (let y = 0; y <= full; y += step) {
+      window.scrollTo(0, y);
+      await new Promise((r) => requestAnimationFrame(r));
+    }
+    window.scrollTo(0, 0);
+    await Promise.race([
+      Promise.all(
+        [...document.images].map((img) =>
+          img.complete
+            ? null
+            : new Promise((res) => {
+                img.addEventListener('load', res, { once: true });
+                img.addEventListener('error', res, { once: true });
+              })
+        )
+      ),
+      new Promise((r) => setTimeout(r, 4000)),
+    ]);
+  } catch (e) {}
+  try { await document.fonts.ready; } catch (e) {}
+  // Jump every animation to its end state so print() never captures a slide
+  // mid-entrance. Ordering matters: the 0s-transition style must be live
+  // BEFORE data-deck-active is set so attribute-keyed transitions don't
+  // start a (now-0s) run from the pre-active base.
+  const st = document.createElement('style');
+  st.textContent = '*,*::before,*::after{animation-delay:-99s !important;animation-duration:.001s !important;animation-iteration-count:1 !important;animation-fill-mode:both !important;animation-play-state:running !important;transition-duration:0s !important}';
+  document.head.appendChild(st);
+  for (const d of document.querySelectorAll('deck-stage')) {
+    for (const c of d.children) {
+      const t = c.tagName;
+      if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+      c.setAttribute('data-deck-active', '');
+    }
+  }
+  // Re-append deck-stage's @page last so no author @page can add a margin and
+  // spill each full-bleed slide onto two sheets. Backstop for old copies.
+  if (ds) {
+    let pg = document.getElementById('deck-stage-print-page');
+    if (!pg) {
+      pg = document.createElement('style');
+      pg.textContent = '@page{size:' + (+ds.getAttribute('width') || 1920) +
+        'px ' + (+ds.getAttribute('height') || 1080) + 'px;margin:0}';
+    }
+    document.body.appendChild(pg);
+  }
+  try {
+    const sweep = () => {
+      for (const a of document.getAnimations()) {
+        try { a.finish(); } catch (e) {
+          try { a.currentTime = (a.effect && a.effect.getComputedTiming().duration) || 0; a.pause(); } catch (e2) {}
+        }
+      }
+    };
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+  } catch (e) {}
+  // A document that owns its print CSS (the doc-page starter injects the
+  // meta at runtime; hand-rolled print designs author it) gets no automatic
+  // page geometry and keeps its forced breaks: strip the injected default
+  // @page — write time cannot see a runtime-injected meta — skip the frame
+  // override below, and skip the fakepage-flattening further down. What
+  // still applies: the print baseline and break-hygiene defaults (no @page
+  // in either; low specificity, so the document's own print CSS wins) and
+  // the break-inside relaxation on >page elements (avoid on those cannot
+  // be honored whoever authored it).
+  var ownsPrint = !!document.querySelector('meta[name="omelette-owns-print" i]');
+  if (ownsPrint) {
+    var dst = document.querySelector('style[data-omelette-print-defaults]');
+    if (dst && dst.textContent) {
+      dst.textContent = dst.textContent.replace(/@page\b[^{}]*\{[^}]*\}/, '');
+    }
+  }
+  // Size the PDF page to the rendered design unless the file opted into
+  // standard paper via @page{size:letter|A4|…} or declared print ownership
+  // via the meta above. Decks own their own @page.
+  // Wrappers (body, …) lose padding+margin so the frame sits at (0,0); the
+  // frame itself loses only margin — its padding is INSIDE the measured
+  // rect and must stay, or content shifts and leaves a gap at bottom/right.
+  var __m = null;
+  try { __m = (() => {
+  var STAMP = true;
+  var docEl = document.documentElement;
+  var doc = { width: docEl.scrollWidth, height: docEl.scrollHeight };
+  // Name-presence check, case-insensitive — the same contract as the
+  // instant-PDF path's runtime check in deck-stage-export.ts. The name is
+  // a string literal here because that file interpolates this script into
+  // its print script, so importing a shared constant from it would be a
+  // cycle; measure.test.ts pins the literal so the two cannot drift apart
+  // silently.
+  var ownsPrint = !!document.querySelector('meta[name="omelette-owns-print" i]');
+
+  var ds = document.querySelector('deck-stage');
+  if (ds) {
+    var dw = Number(ds.getAttribute('width')) || 1920;
+    var dh = Number(ds.getAttribute('height')) || 1080;
+    var n = typeof ds.length === 'number' ? ds.length : ds.children.length;
+    var idx = typeof ds.index === 'number' ? ds.index : 0;
+    var frames = [];
+    for (var i = 0; i < n; i++) frames.push({ left: 0, top: 0, width: dw, height: dh });
+    return { kind: 'deck', source: 'declared', doc: doc, frames: frames,
+      authored: frames.map(function(){return{width:true,height:true}}),
+      deck: { width: dw, height: dh, slideCount: n, index: idx },
+      signals: { paperPage: false, pxPage: false, ownsPrint: ownsPrint } };
+  }
+
+  // Declared kind: a doc-page tag names the kind outright, so no signal
+  // heuristics run (like the deck branch above, signals report false —
+  // they describe inferred classifications only). The tag alone is not
+  // trusted: the element must have upgraded (shadowRoot present), so a
+  // leftover tag whose script was deleted falls through to the heuristics
+  // that handle plain markup.
+  var stageSx = window.scrollX || 0, stageSy = window.scrollY || 0;
+  var dp = document.querySelector('doc-page');
+  if (dp && dp.shadowRoot) {
+    // Crop to the sheet, not the host — the desk around it is screen-only
+    // chrome that must not land in PNG exports.
+    var sheet = dp.shadowRoot.querySelector('.sheet');
+    var sr = (sheet || dp).getBoundingClientRect();
+    return { kind: 'paper-doc', source: 'declared', doc: doc,
+      frames: [{ left: sr.left + stageSx, top: sr.top + stageSy,
+        width: sr.width, height: sr.height }],
+      authored: [{ width: false, height: false }],
+      signals: { paperPage: false, pxPage: false, ownsPrint: ownsPrint } };
+  }
+  var paperPage = false, pxPage = false;
+  var eachRule = function (fn) {
+    for (var s = 0; s < document.styleSheets.length; s++) {
+      var rs; try { rs = document.styleSheets[s].cssRules; } catch (e) { continue; }
+      for (var r = 0; r < rs.length; r++) {
+        fn(rs[r]);
+        if (rs[r].cssRules) for (var n = 0; n < rs[r].cssRules.length; n++) fn(rs[r].cssRules[n]);
+      }
+    }
+  };
+  eachRule(function (r) {
+    if (r.type !== 6) return;
+    var m = /\bsize\s*:\s*([^;}]+)/i.exec(r.cssText || '');
+    if (!m) return;
+    if (/\b(letter|a[3-5]|legal|ledger)\b/i.test(m[1])) paperPage = true;
+    if (/\d+(?:\.\d+)?px\b/i.test(m[1])) pxPage = true;
+  });
+  var signals = { paperPage: paperPage, pxPage: pxPage, ownsPrint: ownsPrint };
+
+  var pxVal = function (v) {
+    var m = /^(\d+(?:\.\d+)?)px$/.exec(v || ''); return m ? +m[1] : 0;
+  };
+  var authoredPx = function (el, prop) {
+    if (pxVal(el.style[prop])) return true;
+    var attr = el.getAttribute(prop);
+    if (attr && /^\d+$/.test(attr)) return true;
+    var hit = false;
+    eachRule(function (r) {
+      if (hit || r.type !== 1 || !r.style) return;
+      try { if (el.matches(r.selectorText) && pxVal(r.style[prop])) hit = true; } catch (e) {}
+    });
+    return hit;
+  };
+
+  var el = document.body, rootPxW = false;
+  for (;;) {
+    var kids = [];
+    for (var c = 0; c < el.children.length; c++) {
+      var t = el.children[c].tagName;
+      if (t !== 'SCRIPT' && t !== 'STYLE' && t !== 'TEMPLATE') kids.push(el.children[c]);
+    }
+    if (kids.length !== 1 || !(kids[0] instanceof HTMLElement)) break;
+    if (STAMP) el.setAttribute('data-om-frame-wrap', '');
+    el = kids[0];
+    rootPxW = authoredPx(el, 'width');
+    if (rootPxW) break;
+  }
+  if (!rootPxW) rootPxW = authoredPx(el, 'width');
+
+  // @page{size:letter} alone is a flowing doc; with a px-width root it's a
+  // fixed sheet pretending to be paper — fall through and size to render.
+  if (paperPage && !rootPxW) {
+    return { kind: 'paper-doc', source: 'inferred', doc: doc, signals: signals,
+      frames: [{ left: 0, top: 0, width: doc.width, height: doc.height }],
+      authored: [{ width: false, height: false }] };
+  }
+
+  var sx = window.scrollX || 0, sy = window.scrollY || 0;
+  var rectOf = function (e) {
+    var r = e.getBoundingClientRect();
+    var oy; try { oy = getComputedStyle(e).overflowY; } catch (err) {}
+    var h = oy === 'visible' ? Math.max(r.height, e.scrollHeight || 0) : r.height;
+    return { left: r.left + sx, top: r.top + sy, width: r.width, height: h };
+  };
+
+  // Multi-frame: off unless the page opts in via data-om-multi-frame on the
+  // stop element — the explicit opt-in is what guards against card grids
+  // and pricing tables that match the geometry but aren't separate
+  // canvases. Two ways to name the frames, explicit first:
+  // 1. Descendants marked data-om-frame-export (the social-frames starter
+  //    marks each asset frame; shells/panels around them are presentation,
+  //    so nesting is expected). Document order.
+  // 2. Fallback, no marked descendants: direct children with an authored px
+  //    width AND height (the original geometry heuristic).
+  // Frames may be different sizes (a gallery mixes 1080×1920 stories with
+  // 728×90 banners); data-om-frame-label rides along for export filenames.
+  if (el.hasAttribute('data-om-multi-frame')) {
+    var visOk = function (e) {
+      var cs; try { cs = getComputedStyle(e); } catch (err) { return false; }
+      return cs.display !== 'none' && cs.visibility !== 'hidden' && cs.position !== 'fixed';
+    };
+    // A frame's crop is its VISUAL box — never the scrollHeight-inflated
+    // rect that rectOf computes for page roots. Shadow-DOM hover controls
+    // (image-slot's Replace bar parks 29px below its host) and similar
+    // escaping UI contribute scrollable overflow to the frame, and the
+    // inflated height both squashes the nominal-size resize and drags
+    // content below the frame into the crop. Zoom-independent; bit every
+    // slot-bearing frame.
+    var frameRectOf = function (e) {
+      var r = e.getBoundingClientRect();
+      return { left: r.left + sx, top: r.top + sy, width: r.width, height: r.height };
+    };
+    var pushCand = function (list, e) {
+      if (!visOk(e)) return;
+      var rc = frameRectOf(e);
+      if (rc.width < 2 || rc.height < 2) return;
+      var lbl = e.getAttribute('data-om-frame-label');
+      if (lbl) rc.label = lbl;
+      list.push(rc);
+    };
+    var cands = [];
+    var marked = el.querySelectorAll('[data-om-frame-export]');
+    if (marked.length) {
+      for (var mk = 0; mk < marked.length; mk++) pushCand(cands, marked[mk]);
+    } else {
+      for (var k = 0; k < el.children.length; k++) {
+        var ch = el.children[k];
+        if (!authoredPx(ch, 'width') || !authoredPx(ch, 'height')) continue;
+        pushCand(cands, ch);
+      }
+    }
+    if (cands.length >= 2) {
+      return { kind: 'multi-frame', source: 'inferred', doc: doc, signals: signals,
+        frames: cands, authored: cands.map(function(){return{width:true,height:true}}) };
+    }
+  }
+
+  if (STAMP) el.setAttribute('data-om-frame', '');
+  return { kind: 'single-canvas', source: 'inferred', doc: doc, signals: signals,
+    frames: [rectOf(el)],
+    authored: [{ width: rootPxW, height: authoredPx(el, 'height') }] };
+})(); } catch (e) {}
+  var frame = null;
+  if (!ownsPrint && __m && __m.kind === 'single-canvas') {
+    var f = __m.frames && __m.frames[0];
+    if (f && f.width >= 200 && f.height >= 200) {
+      frame = f;
+      var fst = document.createElement('style');
+      fst.textContent = '@media print{@page{size:' + Math.ceil(f.width) + 'px ' +
+        Math.ceil(f.height) + 'px;margin:0}' +
+        'html,body,[data-om-frame-wrap]{padding:0!important;margin:0!important;background:none!important}' +
+        '[data-om-frame]{margin:0!important}}';
+      document.body.appendChild(fst);
+    }
+  }
+  // Relax break-inside on oversized elements. An element taller than a
+  // printable page can't honor break-inside: avoid — browsers either overflow
+  // it or push it whole to the next page, leaving a blank gap, then break it
+  // anyway at an arbitrary point. After the final layout (content revealed,
+  // animations jumped), find elements taller than a page that still compute
+  // break-inside: avoid and reset them to auto, so the browser breaks them at
+  // their children's boundaries instead (children keep their own avoid). PAGE_PX
+  // is a conservative portrait estimate at 96 CSS px/in — Letter/A4 usable
+  // height minus our 0.5in margins — so only clearly-oversized elements are
+  // touched and under-page elements still stay whole. Skipped for decks (slides
+  // are sized to the page) and for fixed-size canvases (frame set, or an author
+  // px-based @page) — runs as before for flowing docs on letter/A4.
+  try {
+    if (!ds && !frame && !(__m && __m.signals && __m.signals.pxPage)) {
+      const PAGE_PX = 1024;
+      // Our print defaults add a real @page margin only when the source has
+      // no @page of its own; computed style can't tell us (it reports screen
+      // media), so read the injected rule directly.
+      const defaults = document.querySelector('style[data-omelette-print-defaults]');
+      const pageInset = /@page\s*\{[^}]*margin/.test(defaults ? defaults.textContent || '' : '');
+      const SEL = 'section,article,figure,table,pre,blockquote,[class~="card" i],[class~="page" i],[class~="sheet" i]';
+      for (const el of document.body.querySelectorAll(SEL)) {
+        if (el instanceof HTMLElement && el.offsetHeight > PAGE_PX) {
+          el.setAttribute('data-om-oversized', '');
+          // Fake-paged docs simulate sheets with over-tall break-after:page
+          // boxes; honoring the break spills half-blank pages and ends a
+          // colored box mid-sheet. Flow them, and (only when we own the page
+          // inset) drop the redundant padding/background via the rule below.
+          const cs = getComputedStyle(el);
+          // An owns-print doc's forced breaks are intentional sheet
+          // boundaries, never fake-paged simulation — don't strip them.
+          // The break-inside relaxation above still applies: avoid on a
+          // >page element is impossible to honor whoever authored it.
+          if (
+            !ownsPrint &&
+            (cs.breakAfter === 'page' || cs.pageBreakAfter === 'always')
+          ) {
+            el.setAttribute('data-om-fakepage', '');
+          }
+        }
+      }
+      const ost = document.createElement('style');
+      ost.textContent = '@media print{' +
+        '[data-om-oversized]{break-inside:auto !important;page-break-inside:auto !important}' +
+        '[data-om-fakepage]{break-after:auto !important;page-break-after:auto !important}' +
+        (pageInset ? '[data-om-fakepage]{padding:0 !important;background:none !important}' : '') +
+        '}';
+      document.head.appendChild(ost);
+    }
+  } catch (e) {}
+  // macOS Preview renders Skia-PDF Luminosity soft-masks as opaque grey boxes;
+  // swap the CSS that triggers them for Preview-safe forms.
+  try {
+    for (const el of document.body.querySelectorAll('*')) {
+      const cs = getComputedStyle(el);
+
+      if (cs.boxShadow !== 'none' && cs.filter === 'none') {
+        const outs = [], kept = [];
+        for (const s of cs.boxShadow.split(/,(?![^(]*[)])/)) {
+          const t = s.trim();
+          const m = t.match(/^(rgba?[(][^)]+[)]) (-?[0-9.]+px) (-?[0-9.]+px) ([0-9.]+px) -?[0-9.]+px$/);
+          if (m && parseFloat(m[4]) > 0) outs.push('drop-shadow(' + m[2] + ' ' + m[3] + ' ' + m[4] + ' ' + m[1] + ')');
+          else kept.push(t);
+        }
+        if (outs.length) {
+          el.style.setProperty('filter', outs.join(' '), 'important');
+          el.style.setProperty('box-shadow', kept.join(', ') || 'none', 'important');
+        }
+      }
+
+      const mask = cs.maskImage && cs.maskImage !== 'none' ? cs.maskImage : cs.webkitMaskImage;
+      if (mask && mask !== 'none' && cs.filter === 'none') el.style.setProperty('filter', 'opacity(1)', 'important');
+    }
+  } catch (e) {}
+  setTimeout(() => { try { window.print(); } catch (e) {} }, 200);
+})();
+</script>
+</body>
+</html>

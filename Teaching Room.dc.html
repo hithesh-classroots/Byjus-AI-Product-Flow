@@ -3,11 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="fit.js" data-w="1280" data-h="720"></script>
 <script src="./support.js"></script>
 </head>
 <body>
 <x-dc>
 <helmet>
+<script src="wallet.js"></script>
 <link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="preload" as="script" href="https://unpkg.com/@rive-app/canvas@2.26.4">
 <script src="vyom-rive.js"></script>
@@ -241,7 +243,7 @@
   #dockPill{transition:transform .5s cubic-bezier(.4,0,.2,1);}
   #dockPill.pill-shift{transform:translateX(72px);}
   #dockPill.pill-home{transform:translateX(-72px);}
-  .b60{zoom:.727;}
+  .b60{}
   @keyframes recpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
 </style>
 </helmet>
@@ -291,12 +293,12 @@
     </div>
     <div style="flex:1;min-width:0;"></div>
     <div style="display:flex;align-items:center;flex:none;gap:8px;">
-      <div id="xpWidget" class="{{ xpPulseClass }}" style="display:flex;align-items:center;gap:8px;padding:8px 15px 8px 12px;border-radius:12px;" title="Experience points">
+      <div data-wallet="1" id="xpWidget" class="{{ xpPulseClass }}" style="display:flex;align-items:center;gap:8px;padding:8px 15px 8px 12px;border-radius:12px;" title="Experience points">
         <i class="ti ti-star-filled" style="font-size:20px;color:#fab005;filter:drop-shadow(0 1px 2px rgba(180,120,0,.35));"></i>
         <span style="font-weight:800;color:#7a4700;font-size:18px;letter-spacing:-.01em;">{{ pointsDisp }}</span>
       </div>
       <span aria-hidden="true" style="width:1px;height:20px;flex:none;margin:0 6px;background:linear-gradient(180deg,rgba(120,90,200,0),rgba(120,90,200,.22) 30%,rgba(120,90,200,.22) 70%,rgba(120,90,200,0));"></span>
-      <div id="orbWidget" class="{{ orbPulseClass }}" style="display:flex;align-items:center;gap:8px;padding:8px 16px 8px 13px;border-radius:12px;" title="Energy orbs">
+      <div data-wallet="1" id="orbWidget" class="{{ orbPulseClass }}" style="display:flex;align-items:center;gap:8px;padding:8px 16px 8px 13px;border-radius:12px;" title="Energy orbs">
         <span style="width:18px;height:18px;flex:none;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff,#ffe066 42%,#ff922b 78%,#e8590c);box-shadow:0 0 10px rgba(255,193,7,.95),0 0 3px rgba(255,255,255,.9);"></span>
         <span style="font-weight:800;color:#7a4700;font-size:18px;letter-spacing:-.01em;">{{ orbsDisp }}</span>
       </div>

@@ -524,6 +524,8 @@
           <div class="cd-stat"><div class="cd-stat-val" style="color:#8f5806;"><i class="ti ti-bolt-filled"></i>{{ ch.xp }}</div><div class="cd-stat-label">XP earned</div></div>
           <div class="cd-stat"><div class="cd-stat-val" style="color:#8f5806;"><i class="ti ti-circle-dot-filled"></i>{{ ch.orbs }}</div><div class="cd-stat-label">Orbs</div></div>
         </div>
+
+        <div onClick="{{ ch.setGoal }}" role="button" tabindex="0" style="margin:24px 0 0;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;background:rgba(112,72,232,.08);box-shadow:inset 0 0 0 1px rgba(112,72,232,.18);color:#5f3dc4;font-size:15px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s ease;" style-hover="background:rgba(112,72,232,.14);"><i class="ti ti-target" style="font-size:18px;"></i>Set this chapter as a goal</div>
       </div>
       <div class="cj-close" onClick="{{ goNextChapter }}" title="Next chapter" style="flex:none;width:44px;height:44px;background:transparent;border:none;box-shadow:0 8px 22px rgba(150,120,215,.14);border-radius:11px;display:grid;place-items:center;cursor:pointer;color:#4c4870;font-size:20px;pointer-events:{{ nextNavPE }};opacity:{{ nextNavOp }};transition:opacity .2s ease;"><i class="ti ti-arrow-right"></i></div>
       </div>
@@ -2786,6 +2788,7 @@ class Component extends DCLogic {
       const _nw = String(ch.name || '').trim().split(' ');
       ch.nameTail = _nw.pop() || '';
       ch.nameLead = _nw.length ? _nw.join(' ') + ' ' : '';
+      { const _cn = String(ch.name || '').trim(); ch.setGoal = () => { try { window.location.href = 'Home Page.dc.html?goalChat=chapter&ch=' + encodeURIComponent(_cn); } catch (e) {} }; }
       ch.heroSize = 190;
       ch.heroRingSize = ch.heroSize + 40;
       ch.heroRingHalf = Math.round(ch.heroRingSize / 2);

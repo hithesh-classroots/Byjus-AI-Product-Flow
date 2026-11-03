@@ -8,6 +8,7 @@
 <body>
 <x-dc>
 <helmet>
+<script src="wallet.js"></script>
 <link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="preload" as="script" href="https://unpkg.com/@rive-app/canvas@2.26.4">
 <script src="vyom-rive.js"></script>
@@ -104,16 +105,19 @@
      is grounded here: gray-7 clears 4.5:1 on the glass pill in any engine. opacity:1 stops
      Firefox applying its own placeholder fade on top. */
   #byjus-host input::placeholder{color:#495057;opacity:1;}
+  @keyframes goalPulse{0%{box-shadow:0 0 0 0 rgba(240,140,0,.45)}70%{box-shadow:0 0 0 12px rgba(240,140,0,0)}100%{box-shadow:0 0 0 0 rgba(240,140,0,0)}}
+  @keyframes goalDash{to{stroke-dashoffset:-26}}
+  @media (prefers-reduced-motion: reduce){.goal-go,.goal-dash{animation:none !important;}}
 </style>
 <script src="./mobile-nav.js"></script>
-<script type="module" src="./app-cosmos.js?v=145"></script>
+<script type="module" src="./app-cosmos.js?v=166"></script>
 </helmet>
 <div id="app-root"></div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:760},&quot;ambience&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;cosmic&quot;,&quot;serene&quot;,&quot;spotlight&quot;],&quot;default&quot;:&quot;spotlight&quot;,&quot;tsType&quot;:&quot;'cosmic'|'serene'|'spotlight'&quot;,&quot;section&quot;:&quot;Feel&quot;},&quot;companions&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;duo&quot;,&quot;solo&quot;],&quot;default&quot;:&quot;duo&quot;,&quot;tsType&quot;:&quot;'duo'|'solo'&quot;,&quot;section&quot;:&quot;Feel&quot;},&quot;pace&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;calm&quot;,&quot;balanced&quot;,&quot;spirited&quot;],&quot;default&quot;:&quot;balanced&quot;,&quot;tsType&quot;:&quot;'calm'|'balanced'|'spirited'&quot;,&quot;section&quot;:&quot;Feel&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:760},&quot;goalState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;not set&quot;,&quot;set&quot;],&quot;default&quot;:&quot;not set&quot;,&quot;tsType&quot;:&quot;'not set'|'set'&quot;,&quot;section&quot;:&quot;Home mode&quot;},&quot;nextStep&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;learn&quot;,&quot;practice&quot;],&quot;default&quot;:&quot;learn&quot;,&quot;tsType&quot;:&quot;'learn'|'practice'&quot;,&quot;section&quot;:&quot;Home mode&quot;},&quot;schoolTile&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Home mode&quot;},&quot;dailyQuest&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Fast 5&quot;,&quot;Fix my mistakes&quot;,&quot;Flash cards&quot;],&quot;default&quot;:&quot;Fast 5&quot;,&quot;tsType&quot;:&quot;'Fast 5'|'Fix my mistakes'|'Flash cards'&quot;,&quot;section&quot;:&quot;Home mode&quot;},&quot;landingPopup&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Daily Quest&quot;,&quot;Goal card&quot;,&quot;Learn&quot;,&quot;Practice&quot;],&quot;default&quot;:&quot;Daily Quest&quot;,&quot;tsType&quot;:&quot;'Daily Quest'|'Goal card'|'Learn'|'Practice'&quot;,&quot;section&quot;:&quot;Home mode&quot;},&quot;showFreeInfo&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Home mode&quot;},&quot;ambience&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;cosmic&quot;,&quot;serene&quot;,&quot;spotlight&quot;],&quot;default&quot;:&quot;spotlight&quot;,&quot;tsType&quot;:&quot;'cosmic'|'serene'|'spotlight'&quot;,&quot;section&quot;:&quot;Feel&quot;},&quot;companions&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;duo&quot;,&quot;solo&quot;],&quot;default&quot;:&quot;duo&quot;,&quot;tsType&quot;:&quot;'duo'|'solo'&quot;,&quot;section&quot;:&quot;Feel&quot;},&quot;pace&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;calm&quot;,&quot;balanced&quot;,&quot;spirited&quot;],&quot;default&quot;:&quot;balanced&quot;,&quot;tsType&quot;:&quot;'calm'|'balanced'|'spirited'&quot;,&quot;section&quot;:&quot;Feel&quot;}}">
 class Component extends DCLogic {
   renderVals(){
-    const t={ ambience:this.props.ambience??'cosmic', companions:this.props.companions??'duo', pace:this.props.pace??'balanced' };
+    const t={ ambience:this.props.ambience??'cosmic', companions:this.props.companions??'duo', pace:this.props.pace??'balanced', goalState:this.props.goalState??'not set', nextStep:this.props.nextStep??'learn', schoolTile:this.props.schoolTile??false, popup:this.props.landingPopup??'Daily Quest', showQuota:this.props.showFreeInfo??true, quest:({'Fast 5':'fast5','Fix my mistakes':'fix','Flash cards':'flash'})[this.props.dailyQuest]||'fast5' };
     try{ window.__BYJUS_TWEAKS=t; window.dispatchEvent(new CustomEvent('byjus-tweaks',{detail:t})); }catch(e){}
     return {};
   }
