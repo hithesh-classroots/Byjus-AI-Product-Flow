@@ -856,7 +856,7 @@
               </sc-if>
             </div>
             <div id="qsQText" style="flex:none;height:120px;box-sizing:border-box;padding-top:24px;overflow:hidden;text-align:center;visibility:{{ qsBodyVis }};">
-              <div class="pq-q" style="width:100%;font-weight:700;color:#212529;letter-spacing:-.01em;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 10px;"><sc-for list="{{ qsParts }}" as="p" hint-placeholder-count="1"><sc-if value="{{ p.isT }}" hint-placeholder-val="{{ true }}"><span style="white-space:pre-wrap;text-wrap:balance;">{{ p.t }}</span></sc-if><sc-if value="{{ p.isF }}" hint-placeholder-val="{{ false }}"><span data-qf="{{ p.key }}" style="display:inline-flex;flex-direction:column;align-items:center;padding:2px 10px;border-radius:12px;line-height:1.05;background:{{ p.bg }};box-shadow:{{ p.sh }};transition:background .3s ease, box-shadow .3s ease;"><span>{{ p.n }}</span><span style="align-self:stretch;height:3px;margin:2px 0;border-radius:2px;background:#212529;"></span><span>{{ p.d }}</span></span></sc-if></sc-for></div>
+              <div class="pq-q" style="width:100%;font-weight:700;color:#212529;letter-spacing:-.01em;font-size:{{ qsQFs }};display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 10px;"><sc-for list="{{ qsParts }}" as="p" hint-placeholder-count="1"><sc-if value="{{ p.isT }}" hint-placeholder-val="{{ true }}"><span style="white-space:pre-wrap;text-wrap:balance;">{{ p.t }}</span></sc-if><sc-if value="{{ p.isF }}" hint-placeholder-val="{{ false }}"><span data-qf="{{ p.key }}" style="display:inline-flex;flex-direction:column;align-items:center;padding:2px 10px;border-radius:12px;line-height:1.05;background:{{ p.bg }};box-shadow:{{ p.sh }};transition:background .3s ease, box-shadow .3s ease;"><span>{{ p.n }}</span><span style="align-self:stretch;height:3px;margin:2px 0;border-radius:2px;background:#212529;"></span><span>{{ p.d }}</span></span></sc-if></sc-for></div>
             </div>
             <div id="qsBody" style="position:relative;box-sizing:border-box;padding-bottom:{{ qsColPadB }};flex:1;min-height:0;display:grid;grid-template-columns:{{ qsGridCols }};column-gap:{{ qsGridGap }};row-gap:24px;grid-template-rows:minmax(0,1fr);align-items:center;justify-content:center;visibility:{{ qsBodyVis }};transition:grid-template-columns .5s cubic-bezier(.2,.8,.2,1),column-gap .5s cubic-bezier(.2,.8,.2,1);">
             <div style="min-width:0;min-height:0;box-sizing:border-box;padding-left:{{ qsLeftPadL }};display:flex;flex-direction:column;justify-content:center;">
@@ -1200,7 +1200,7 @@
 
                 <sc-if value="{{ vhWide }}" hint-placeholder-val="{{ false }}">
                 <div id="vhBox" data-noflip="1" style="position:absolute;left:0;top:0;bottom:80px;width:{{ vhBoxW }};z-index:6;box-sizing:border-box;display:flex;border-radius:16px;background:#ffffff;border:2px solid {{ vhRingC }};box-shadow:0 0 0 5px {{ vhRingS }}, 0 18px 36px -22px {{ vhRingG }};overflow:hidden;transition:border-color .45s ease, box-shadow .45s ease;">
-                  <div class="vh-fade" style="flex:none;width:196px;box-sizing:border-box;display:flex;flex-direction:column;gap:4px;padding:14px 10px;overflow-y:auto;scrollbar-width:none;background:#f8f9fa;border-right:1px solid #f1f3f5;">
+                  <div class="vh-fade" style="flex:none;width:196px;box-sizing:border-box;display:flex;flex-direction:column;gap:6px;padding:14px 10px;overflow-y:auto;scrollbar-width:none;background:#f8f9fa;border-right:1px solid #f1f3f5;">
                     <sc-for list="{{ vhRail }}" as="r" hint-placeholder-count="5">
                       <sc-if value="{{ r.isAct }}" hint-placeholder-val="{{ true }}">
                         <div style="display:flex;align-items:center;gap:9px;height:30px;padding:0 6px;font-size:14px;font-weight:{{ r.aW }};color:{{ r.aTxt }};white-space:nowrap;">
@@ -1208,7 +1208,7 @@
                         </div>
                       </sc-if>
                       <sc-if value="{{ r.isStep }}" hint-placeholder-val="{{ false }}">
-                        <button onClick="{{ r.go }}" style="position:relative;display:flex;align-items:center;gap:10px;height:42px;margin-left:12px;padding:0 12px 0 8px;box-sizing:border-box;border:{{ r.bd }};border-radius:12px;background:{{ r.bg }};color:{{ r.ink }};font:inherit;font-size:15px;font-weight:700;text-align:left;cursor:{{ r.cur }};overflow:hidden;transition:background .2s ease, border-color .2s ease, color .2s ease;">
+                        <button onClick="{{ r.go }}" style="position:relative;display:flex;flex:none;align-items:center;gap:10px;min-height:44px;margin-left:12px;padding:8px 12px 8px 8px;box-sizing:border-box;border:{{ r.bd }};border-radius:12px;background:{{ r.bg }};box-shadow:{{ r.sh }};color:{{ r.ink }};font:inherit;font-size:14px;line-height:1.25;font-weight:700;text-align:left;cursor:{{ r.cur }};overflow:hidden;transition:background .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease;">
                         <span style="flex:none;width:28px;height:28px;border-radius:50%;background:{{ r.dot }};color:{{ r.dotInk }};display:grid;place-items:center;font-size:13px;font-weight:800;transition:background .2s ease;"><sc-if value="{{ r.done }}" hint-placeholder-val="{{ false }}"><i class="ti ti-check" style="font-size:16px;"></i></sc-if>{{ r.n }}</span>{{ r.label }}
                         <span style="position:absolute;left:8px;right:8px;bottom:5px;height:3px;border-radius:999px;background:{{ r.track }};overflow:hidden;"><span key="{{ r.key }}" class="{{ r.cls }}" style="position:absolute;inset:0 auto 0 0;width:0;background:{{ vhAccent }};animation-duration:{{ r.dur }};animation-play-state:{{ r.ps }};"></span></span>
                       </button>
@@ -1220,7 +1220,7 @@
                       <div key="{{ vhBadgeKey }}" class="vh-say" style="display:flex;align-items:center;gap:8px;"><span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px 0 8px;border-radius:999px;background:{{ vhAccent }};color:#ffffff;font-size:13px;font-weight:700;white-space:nowrap;"><i class="ti {{ vhBadgeIcon }}" style="font-size:14px;"></i>{{ vhBadge }}</span><span style="font-size:14px;font-weight:600;color:{{ vhStageInk }};white-space:nowrap;">{{ vhStage }}</span><span onClick="{{ vhGotIt }}" class="vh-tip" role="button" tabindex="0" aria-label="Close explanation and submit the answer" style="position:relative;margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 14px 0 10px;border-radius:999px;border:1.5px solid #d0bfff;background:#ffffff;color:#5f3dc4;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;" style-hover="background:#f3f0ff;"><i class="ti ti-check" style="font-size:15px;"></i>Got it<span class="vh-tipbox">Close explanation and submit the answer</span></span></div>
                       <div style="font-size:20px;font-weight:700;line-height:1.35;color:#212529;letter-spacing:-.01em;text-wrap:pretty;">{{ vhTitle }}</div>
                     </div>
-                    <div style="flex:1;min-height:0;border-radius:14px;background:#f8f9fa;padding:8px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;overflow:hidden;">
+                    <div style="flex:1;min-height:0;border-radius:14px;background:#f8f9fa;padding:8px 18px;display:flex;flex-direction:{{ vhStageDir }};align-items:center;justify-content:center;gap:{{ vhStageGap }};overflow:hidden;">
                       <sc-if value="{{ vhFrOn }}" hint-placeholder-val="{{ false }}">
                         <div style="flex:none;display:flex;align-items:center;justify-content:center;gap:{{ vhFrGap }};padding:{{ vhFrPad }};font-size:{{ vhFrFs }};font-weight:700;color:#212529;opacity:{{ vhFrOp }};transition:opacity .35s ease;"><span data-vhfr="a" style="display:inline-flex;flex-direction:column;align-items:center;padding:6px 14px;border-radius:16px;background:{{ vhHlABg }};box-shadow:{{ vhHlASh }};transition:background .3s ease, box-shadow .3s ease;"><span data-vhfn="a" style="padding:0 8px;border-radius:10px;background:{{ vhHlAnBg }};box-shadow:{{ vhHlAnSh }};transition:background .3s ease, box-shadow .3s ease;">{{ vhFrAN }}</span><span style="align-self:stretch;height:4px;margin:4px 0;border-radius:2px;background:#212529;"></span><span data-vhfd="a" style="padding:0 8px;border-radius:10px;background:{{ vhHlAdBg }};box-shadow:{{ vhHlAdSh }};transition:background .3s ease, box-shadow .3s ease;">{{ vhFrAD }}</span></span><span>+</span><span data-vhfr="b" style="display:inline-flex;flex-direction:column;align-items:center;padding:6px 14px;border-radius:16px;background:{{ vhHlBBg }};box-shadow:{{ vhHlBSh }};transition:background .3s ease, box-shadow .3s ease;"><span data-vhfn="b" style="padding:0 8px;border-radius:10px;background:{{ vhHlBnBg }};box-shadow:{{ vhHlBnSh }};transition:background .3s ease, box-shadow .3s ease;">{{ vhFrBN }}</span><span style="align-self:stretch;height:4px;margin:4px 0;border-radius:2px;background:#212529;"></span><span data-vhfd="b" style="padding:0 8px;border-radius:10px;background:{{ vhHlBdBg }};box-shadow:{{ vhHlBdSh }};transition:background .3s ease, box-shadow .3s ease;">{{ vhFrBD }}</span></span><sc-if value="{{ vhFrSumOn }}" hint-placeholder-val="{{ false }}"><span>=</span><span data-vhfr="sum" style="display:inline-flex;flex-direction:column;align-items:center;padding:6px 14px;border-radius:16px;background:{{ vhHlSBg }};box-shadow:{{ vhHlSSh }};transition:background .3s ease, box-shadow .3s ease;"><span data-vhfn="sum" style="padding:0 8px;border-radius:10px;background:{{ vhHlSnBg }};box-shadow:{{ vhHlSnSh }};transition:background .3s ease, box-shadow .3s ease;">{{ vhFrSN }}</span><span style="align-self:stretch;height:4px;margin:4px 0;border-radius:2px;background:#212529;"></span><span data-vhfd="sum" style="padding:0 8px;border-radius:10px;background:{{ vhHlSdBg }};box-shadow:{{ vhHlSdSh }};transition:background .3s ease, box-shadow .3s ease;">{{ vhFrSD }}</span></span></sc-if></div>
                       </sc-if>
@@ -1244,12 +1244,13 @@
                         <div style="text-align:center;font-size:15px;line-height:1.4;color:#495057;text-wrap:balance;">{{ vhCap }}</div>
                       </sc-if>
                       <sc-if value="{{ vhWorkOn }}" hint-placeholder-val="{{ false }}">
-                        <div style="align-self:stretch;display:flex;flex-direction:column;gap:8px;">
+                        <div style="align-self:stretch;flex:{{ vhWorkFlex }};min-width:0;display:flex;flex-direction:column;justify-content:center;gap:8px;">
                           <sc-for list="{{ vhWork }}" as="w" hint-placeholder-count="1">
                             <div class="vh-say" style="display:flex;align-items:flex-start;gap:10px;font-size:16px;line-height:1.5;color:{{ w.col }};text-wrap:pretty;"><i class="ti {{ w.icon }}" style="flex:none;font-size:19px;margin-top:2px;color:{{ w.ic }};"></i><span>{{ w.t }}</span></div>
                           </sc-for>
                         </div>
                       </sc-if>
+                      <sc-if value="{{ vhFigIn }}" hint-placeholder-val="{{ false }}"><div id="vhFigSlot" style="flex:none;width:{{ vhSlotW }};height:{{ vhSlotH }};"></div></sc-if>
                     </div>
                     <div style="flex:none;display:flex;flex-direction:{{ vhRowDir }};align-items:center;gap:18px;min-height:56px;">
                       <sc-if value="{{ vhIsSteps }}" hint-placeholder-val="{{ false }}">
@@ -1337,7 +1338,7 @@
             </div>
             <!-- RIGHT PANEL · 35% — the question's figure, shown from the start. On submit the
                  parts that carry the answer light up on the same drawing, with the verdict below. -->
-            <div style="min-width:0;min-height:0;max-height:100%;align-self:stretch;padding:0;display:flex;overflow:hidden;opacity:{{ qsFigOp }};transform:{{ qsFigTf }};transition:opacity .3s ease {{ qsFigDelay }},transform .4s cubic-bezier(.2,.8,.3,1) {{ qsFigDelay }};">
+            <div style="min-width:0;min-height:0;max-height:100%;align-self:stretch;padding:0;display:flex;overflow:{{ qsFigCellOv }};opacity:{{ qsFigOp }};transform:{{ qsFigTf }};transition:opacity .3s ease {{ qsFigDelay }},transform .4s cubic-bezier(.2,.8,.3,1) {{ qsFigDelay }};">
               <sc-if value="{{ bdPanelOn }}" hint-placeholder-val="{{ false }}">
                 <div style="position:relative;flex:1;min-width:0;min-height:0;align-self:{{ bdPanelAlign }};aspect-ratio:{{ bdPanelAR }};border-radius:var(--cc-r-shape);background:{{ bdPanelBg }};box-shadow:{{ bdPanelSh }};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:{{ bdPanelPad }};overflow:hidden;user-select:none;">
                   <span aria-hidden="true" style="position:absolute;inset:0;border-radius:inherit;box-shadow:{{ bdPanelRing }};animation:{{ bdPanelAnim }};transition:box-shadow .6s ease;pointer-events:none;z-index:3;"></span>
@@ -1371,8 +1372,8 @@
 
               </sc-if>
               <sc-if value="{{ qsHasFig }}" hint-placeholder-val="{{ false }}">
-                <div style="flex:none;margin:auto;max-width:100%;min-height:0;box-sizing:border-box;border-radius:var(--cc-r-shape);background:#ffffff;box-shadow:inset 0 0 0 1px #e9ecef;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:16px 20px;overflow:hidden;">
-                  <div style="position:relative;width:420px;max-width:100%;aspect-ratio:3/2;flex:none;margin:auto 0;">
+                <div id="qsFigCard" style="position:relative;z-index:{{ qsFigZ }};flex:none;margin:auto;max-width:100%;min-height:0;box-sizing:border-box;border-radius:var(--cc-r-shape);background:#ffffff;box-shadow:inset 0 0 0 1px #e9ecef;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:16px 20px;overflow:hidden;">
+                  <div id="qsFigBox" style="position:relative;width:420px;max-width:100%;aspect-ratio:3/2;flex:none;margin:auto 0;">
                   <svg viewBox="0 0 300 200" style="position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible;">
                     <sc-for list="{{ qsFigPolys }}" as="p" hint-placeholder-count="0">
                       <polygon points="{{ p.pts }}" fill="{{ p.fill }}" stroke="none"></polygon>
@@ -2224,7 +2225,33 @@ class Component extends DCLogic {
             {name:'17 ninths', vis:'a', cap:'17/9 means 17 ninths: 17 small hops.', eq:3, ms:3800},
             {name:'Add 41 more', vis:'b', cap:'41/9 is 41 more hops. Same unit, so add the counts: 17 + 41 = 58.', eq:7, ms:4600},
             {name:'58/9', vis:'done', cap:'58 ninths is 58/9, which is 6 wholes and 4 ninths.', eq:9, ms:4000}] }};
-      this._qsAll=[ FRAC, tag(T[0],'Parallel sides'), NUM2, NUM5, tag(I[2],'Bases & height'),
+      const N=(name,ask,cap,ans,unit,ok,hint)=>({name, input:'num', ask, cap, ans, unit, ok, hint});
+      const GRAIN={type:'single', topic:'Surface area', calc:true, fig:{shape:'grain'},
+        q:'A grain store is a cuboid 8 m long, 6 m wide and 3 m high, with a triangular prism roof on top. Each roof end is a triangle with base 6 m and height 4 m, and the roof is 8 m long. The whole outside except the floor is painted with one coat. The door and windows, 8 m\u00b2 in all, are not painted. One litre of paint covers 6 m\u00b2 and costs \u20b9150. What does the paint cost?',
+        opts:['\u20b93,900','\u20b94,100','\u20b94,500','\u20b94,700'], ans:2,
+        hints:['Split the outside into parts you can find: the walls, the two triangle ends, and the sloping roof.','Add every painted area, take away the door and windows, divide by 6 for the litres, then multiply by \u20b9150.'],
+        why:{ok:'The paint area is 180 m\u00b2, so 30 litres, and 30 \u00d7 \u20b9150 = \u20b94,500.', no:'The paint area is 180 m\u00b2, so 30 litres, and 30 \u00d7 \u20b9150 = \u20b94,500.'},
+        vhSteps:[
+          {name:'Given and to find', input:'ack', ask:'First, write down what we know. What is given, and what do we find?', cap:'Cuboid 8 m long, 6 m wide, 3 m high. Roof triangle: base 6 m, height 4 m, roof 8 m long. Not painted: the floor, and the door and windows (8 m\u00b2 together). Paint: 1 litre covers 6 m\u00b2 and costs \u20b9150. We need the cost of the paint for the whole outside of the store.'},
+          N('Long walls','What is the area of the two long walls?','Each long wall is a rectangle, 8 m long and 3 m high. Area = length \u00d7 height, and there are two of them.',48,'m\u00b2','One long wall is 8 \u00d7 3 = 24 m\u00b2, so two make 48 m\u00b2.','Multiply 8 by 3 for one wall, then double it.'),
+          N('Short walls','What is the area of the two short walls?','Each short wall is a rectangle, 6 m wide and 3 m high.',36,'m\u00b2','One short wall is 6 \u00d7 3 = 18 m\u00b2, so two make 36 m\u00b2.','Multiply 6 by 3 for one wall, then double it.'),
+          N('Gable triangles','What is the area of the two gable triangles?','The gables are the triangles above the two short walls. Area of a triangle = \u00bd \u00d7 base \u00d7 height, with base 6 m and height 4 m.',24,'m\u00b2','One gable is \u00bd \u00d7 6 \u00d7 4 = 12 m\u00b2, so two make 24 m\u00b2.','Half of 6 times 4 gives one gable. Then double it.'),
+          N('Slant side','How long is the slant side of the roof?','Each roof panel is a rectangle, and its width is the slant side of the triangle. The slant side is the long side of a right triangle with sides 3 m (half the base) and 4 m (the height): slant\u00b2 = 3\u00b2 + 4\u00b2.',5,'m','3\u00b2 + 4\u00b2 = 9 + 16 = 25, and \u221a25 = 5 m.','Square 3 and 4, add them, then take the square root.'),
+          N('Roof panels','What is the area of the two roof panels?','Each roof panel is a rectangle: slant side \u00d7 length = 5 \u00d7 8.',80,'m\u00b2','One panel is 5 \u00d7 8 = 40 m\u00b2, so two make 80 m\u00b2.','Multiply the slant side 5 by the roof length 8, then double it.'),
+          N('Total area','What is the total area painted outside?','Paint the walls, the gables and the roof. The floor is not painted, and the top of the cuboid is covered by the roof. Total = 48 + 36 + 24 + 80.',188,'m\u00b2','48 + 36 + 24 + 80 = 188 m\u00b2.','Add the four areas you found: 48, 36, 24 and 80.'),
+          N('Take away','How much area is left to paint?','The door and the two windows together cover 8 m\u00b2 and are not painted.',180,'m\u00b2','188 \u2212 8 = 180 m\u00b2 to paint.','Take the 8 m\u00b2 of door and windows away from 188.'),
+          N('Litres','How many litres of paint are needed?','1 litre of paint covers 6 m\u00b2, so litres = area to paint \u00f7 6.',30,'litres','180 \u00f7 6 = 30 litres.','Share 180 m\u00b2 into groups of 6 m\u00b2. Each group needs one litre.'),
+          N('Cost','How much does the paint cost, in rupees?','1 litre of paint costs \u20b9150, so cost = litres \u00d7 price per litre.',4500,'rupees','30 \u00d7 \u20b9150 = \u20b94,500.','Multiply the 30 litres by \u20b9150.')
+        ]};
+      const COMPARE={type:'single', topic:'Fractions', q:'Which is greater: 3/4 or 5/8?', opts:['3/4','5/8','They are equal','Cannot tell'], ans:0,
+        hints:['Pick a common bottom number for 4 and 8.','Write both fractions with the same bottom, then compare the tops.'],
+        why:{ok:'3/4 = 6/8, and 6/8 is more than 5/8.', no:'3/4 = 6/8, and 6/8 is more than 5/8.'},
+        vhSteps:[
+          {name:'Common denominator', input:'choice', ask:'Pick a bottom number that both 4 and 8 go into.', cap:'To compare fairly, both fractions need the same bottom number.', opts:[{t:'4',i:0},{t:'8',i:1},{t:'12',i:2}], ans:1, ok:'Yes. 8 works for both 4 and 8.', hint:'The bottom number must be a multiple of both 4 and 8. Count up in 8s.'},
+          {name:'Write 3/4 in eighths', input:'frac', den:8, ask:'Write 3/4 with 8 on the bottom.', cap:'The bottom went from 4 to 8, so we doubled it. Do the same to the top.', ans:[6,8], ok:'Yes. 3/4 = 6/8.', hint:'You doubled the bottom, so double the top as well: 3 \u00d7 2.', traps:[{n:3,d:8,msg:'The top has to change too. Double the 3.'}]},
+          {name:'Compare 6/8 and 5/8', input:'choice', ask:'Same bottom now. Which sign fits 6/8 ? 5/8?', cap:'The pieces are the same size, so the fraction with more pieces is greater.', opts:[{t:'>',i:0},{t:'=',i:1},{t:'<',i:2}], ans:0, ok:'6 is more than 5, so 6/8 is greater than 5/8.', hint:'Same size pieces: the one with more pieces is greater. 6 is more than 5.'}
+        ]};
+      this._qsAll=[ FRAC, GRAIN, COMPARE, tag(T[0],'Parallel sides'), NUM2, NUM5, tag(I[2],'Bases & height'),
         tag(P[0],'Spotting a trapezoid'), tag(P[1],'Spotting a trapezoid'), tag(I[3],'Bases & height'),
         tag(I[4],'Area formula'), tag(T[6],'Naming the parts'), tag(I[6],'Naming the parts'),
         {type:'order', q:'Put the steps for finding the area of a trapezoid in order.', topic:'Area formula',
@@ -2270,6 +2297,13 @@ class Component extends DCLogic {
      rest recede, so the answer is shown ON the figure rather than beside it. */
   _qsFigure(q, done){
     const f=q.fig; if(!f) return null;
+    if(f.shape==='grain'){ const E='#5f3dc4', L=(k,a,b)=>({key:'g'+k, x1:a[0],y1:a[1],x2:b[0],y2:b[1], c:E, w:2, dash:'none', op:'1'}), pts=a=>a.map(p=>p.join(',')).join(' ');
+      const wall=[[45,106],[195,106],[195,162],[45,162]], side=[[195,162],[243,134],[243,78],[195,106]], roof=[[45,106],[195,106],[219,17],[69,17]], gable=[[195,106],[243,78],[219,17]];
+      const edges=(n,a)=>a.map((p,i)=>L(n+i,p,a[(i+1)%a.length]));
+      const lab=(k,x,y,tf,s)=>({key:'gt'+k, left:(x/3)+'%', top:(y/2)+'%', tf, s, c:'#495057', op:'1'});
+      return { polys:[{key:'gp1',pts:pts(side),fill:'#e5dbff'},{key:'gp2',pts:pts(wall),fill:'#f3f0ff'},{key:'gp3',pts:pts(roof),fill:'#d0bfff'},{key:'gp4',pts:pts(gable),fill:'#b197fc'}],
+        lines:[].concat(edges('w',wall),edges('s',side),edges('r',roof),edges('g',gable),[{key:'gh',x1:219,y1:17,x2:219,y2:92,c:E,w:1.5,dash:'5 4',op:'1'}]),
+        texts:[lab('a',120,181,'translate(-50%,-50%)','8 m'), lab('b',28,134,'translate(-100%,-50%)','3 m'), lab('c',252,152,'translate(0,-50%)','6 m'), lab('d',213,58,'translate(-100%,-50%)','4 m')] }; }
     const P = f.shape==='para'
       ? {A:[90,50],B:[250,50],C:[210,160],D:[50,160]}
       : {A:[100,50],B:[200,50],C:[260,160],D:[40,160]};
@@ -2601,6 +2635,9 @@ class Component extends DCLogic {
     this._vhCache.set(q,H); return H; }
   /* Standard template: every question gets step-by-step + watch-it-solved, built from its own data. */
   _vhGen(q){ const uniq=a=>a.filter((x,i)=>x && a.indexOf(x)===i);
+    if(q.vhSteps){ const why=q.why ? (q.why.no||q.why.ok||'') : '';
+      return { line:false, steps:q.vhSteps, frames:q.vhSteps.filter(x=>x.cap).map(x=>({cap:x.cap, ms:Math.max(3200, x.cap.length*55)})), done:{cap:why}, watchTitle:'Watch it solved, one part at a time',
+        summary:(ok,left)=>(ok?'Nice, you got there. ':'')+why+(!ok&&left>0?' Now you try it.':'') }; }
     const hints=uniq([this._qsHint(q,1), this._qsHint(q,2)]), why = q.why ? (q.why.no||q.why.ok||'') : '';
     const O=q.opts||[]; let ansText='', steps=[];
     if((q.type==='single'||q.type==='truefalse'||!q.type) && O.length && typeof q.ans==='number'){
@@ -2775,6 +2812,7 @@ class Component extends DCLogic {
     if(kind==='choice'){ const sweep=(S.opts||[]).filter(o=>o.i!==S.ans).slice(0,2).map(o=>({el:'[data-vhopt="'+o.i+'"]', fly:700, hold:350})), pick=(S.opts||[]).find(o=>o.i===S.ans);
       return { acts:[q].concat(sweep, [{el:'[data-vhopt="'+S.ans+'"]', say:'I’ll go with “'+(pick?pick.t:'this one')+'”.', pick:S.ans, tap:true, fly:800, hold:900}]), post:S.ok||'' }; }
     if(kind==='num') return { acts:[q].concat(digits(S.ans)), post:S.ok||'' };
+    if(kind==='frac') return { acts:[q].concat(enter('num',ans[0]), preDen?[]:enter('den',ans[1])), post:S.ok||'' };
     return { acts:[q], post:'' }; }
   _vhRun(list, done){ const go=k=>{ if(k>=list.length){ done&&done(); return; } const a=list[k];
       const go2=()=>{ if(a.say) this._vhSparkSay(a.say);
@@ -2818,7 +2856,7 @@ class Component extends DCLogic {
     const submit=()=>{ const b=[...document.querySelectorAll('#qsDesign button')].find(x=>/^Submit/.test((x.textContent||'').trim()));
       go(b, el=>{ this._pilotTap(el); setTimeout(()=>{ this.setState({qsSparkHl:false}); this._qsSubmit(); setTimeout(()=>this._sparkSolved(), 1800); }, 280); }); };
     if(num) go(document.querySelector('#qsDesign input'), ()=>setTimeout(submit, 1100));
-    else { const el=[...document.querySelectorAll('#qsBody *')].filter(e=>(e.textContent||'').trim()===txt).pop(); go(el, ()=>setTimeout(submit, 900)); } }
+    else { const nz=x=>String(x||'').replace(/[\s,]/g,''); const el=[...document.querySelectorAll('#qsBody .def-opt')].find(e=>nz(e.textContent).indexOf(nz(txt))>=0) || [...document.querySelectorAll('#qsBody *')].filter(e=>(e.textContent||'').trim()===txt).pop(); go(el, ()=>setTimeout(submit, 900)); } }
   _sparkSolved(){ this._sparkSolving=false; this._pilotHide(); const q=this._qsQ(), H=this._vhH(), variant=!!(q && q.help && H && H.line);
     this._vhSparkSay('That\u2019s how I solved it! Want to try one like it?', this._sparkOn() ? {tryBtn:true, tryLabel: variant?'Try one like it':'Next question'} : null); }
   _vhTryLike(c){ this._tryUsed=this._tryUsed||{}; if(this._tryUsed[c.id]) return; this._tryUsed[c.id]=true;
@@ -2858,7 +2896,7 @@ class Component extends DCLogic {
     const live = !!(H && onQ && v.qIdx===(st.qsIdx||0));
     const open = live && !!v.open, wide = live && !!v.wide;
     const vw=window.innerWidth||1200, vhh=window.innerHeight||800, split = wide && vw>=1000 && vhh<880, short = vhh<720;
-    const R={ vhOpen:open, vhWide:wide, vhNarrow:!wide, chatLayerW:'372px', vhChipText: v.ended ? 'See the solution' : 'Continue step-by-step',
+    const R={ vhFigIn:false, vhSlotW:'0px', vhSlotH:'0px', vhStageDir:'column', vhStageGap:'2px', vhWorkFlex:'none', vhOpen:open, vhWide:wide, vhNarrow:!wide, chatLayerW:'372px', vhChipText: v.ended ? 'See the solution' : 'Continue step-by-step',
       vhQBlur: wide ? 'blur(6px) saturate(.85)' : 'none', vhQOp: wide ? '.6' : '1', vhQPE: wide ? 'none' : 'auto',
       vhMiniIcon: v.ended ? (v.solved?'ti-circle-check':'ti-player-play') : 'ti-stairs-up',
       vhMiniText: v.ended ? (v.solved ? 'Solved together: '+(H.line?H.sum[0]+'/'+H.sum[1]:'') : 'Watched the full solution') : (v.mode==='auto' ? 'Watching the solution' : 'Step '+((v.step||0)+1)+' of 3 \u00b7 paused'),
@@ -2933,7 +2971,7 @@ class Component extends DCLogic {
         const mx=v.maxStep||0;
         const stepRow=(x,i,w)=>{ const done = w ? (allDone || i<cur) : (v.solved || v.watched || i<mx || (v.demo && i===cur && v.tone==='ok')), on = i===cur, reach = w ? (allDone || i<=cur) : (i<=mx || v.solved);
           return { isAct:false, isStep:true, n: done && !on ? '' : String(i+1), done: done && !on, label:nm(x,i,w),
-            bg: on ? '#ffffff' : 'transparent', bd: on ? '1.5px solid '+acc : '1.5px solid transparent', ink: on ? accInk : (done||reach) ? '#212529' : '#adb5bd',
+            bg: on ? '#ffffff' : 'transparent', sh: on ? '0 4px 12px -6px rgba(112,72,232,.55)' : 'none', bd: on ? '1.5px solid '+acc : '1.5px solid transparent', ink: on ? accInk : (done||reach) ? '#212529' : '#adb5bd',
             dot: on ? acc : done ? '#40c057' : '#e9ecef', dotInk: (on||done) ? '#ffffff' : '#868e96', cur: reach && !on ? 'pointer' : 'default',
             go: !reach ? ()=>{} : w ? ()=>this._vhJump(i) : ()=>this._vhStepTo(i), op: reach ? '1' : '.55',
             track: on && w ? '#e9ecef' : 'transparent', cls: on && w && !v.ended ? 'vh-fill' : '', dur: ((x.ms||3600)/1000)+'s', ps: v.playing ? 'running' : 'paused', key:'r'+(w?'w':'s')+i+'-'+cur+'-'+(v.ended?1:0)+(v.viaSteps?'v':'') }; };
@@ -2989,6 +3027,19 @@ class Component extends DCLogic {
   componentDidUpdate(pp, ps){ this._measureSparkPin(); this._fitStage(); this._vhWatchChat();
     if(this._vhMorph){ const bx=document.getElementById('vhBox'); if(bx){ const F=this._vhMorph; this._vhMorph=null; bx.style.opacity='0'; requestAnimationFrame(()=>requestAnimationFrame(()=>{ bx.style.opacity=''; this._vhMorphRun(bx,F); })); } }
     { const bx=document.getElementById('vhBox'), qt=document.getElementById('qsQText'); if(bx && qt && bx.offsetParent){ const dz=document.getElementById('qsDesign'), sc=dz?((dz.getBoundingClientRect().height/720)||1):1; const t=Math.max(0, Math.round((qt.getBoundingClientRect().bottom - bx.offsetParent.getBoundingClientRect().top)/sc + 16)); if(Math.abs(t-(this._vhBoxTopPx||0))>1){ this._vhBoxTopPx=t; this.forceUpdate(); } } }
+    /* The question's own picture slides into the solution panel at its original size, stays glued to its slot there, and slides back out when the panel closes. */
+    { const card=document.getElementById('qsFigCard'), slot=document.getElementById('vhFigSlot'), dz=document.getElementById('qsDesign'), sc=dz ? (dz.getBoundingClientRect().width/dz.offsetWidth)||1 : 1;
+      if(card && !slot && !this._figLive && !this._figPend){ const r=card.getBoundingClientRect(); this._figSize={w:Math.round(r.width/sc), h:Math.round(r.height/sc)}; }
+      if(card && slot && !this._figLive && !this._figPend){ this._figPend=setTimeout(()=>{ this._figPend=null; const c=document.getElementById('qsFigCard'); if(!c || !document.getElementById('vhFigSlot') || this._figLive) return;
+          this._figUnclip=[]; { const stop=document.getElementById('qsBody'); for(let p=c.parentElement; p && p!==stop; p=p.parentElement){ if(getComputedStyle(p).overflow!=='visible'){ this._figUnclip.push([p,p.style.overflow]); p.style.overflow='visible'; } } }
+          c.style.transform='none'; const base=c.getBoundingClientRect(), t0=performance.now(), D=760; this._figLive=true;
+          const tick=(now)=>{ const sl=document.getElementById('vhFigSlot'), cc=document.getElementById('qsFigCard'); if(!sl||!cc){ this._figLive=false; return; }
+            const sr=sl.getBoundingClientRect(), p=Math.min(1,(now-t0)/D), e=1-Math.pow(1-p,4); cc.style.transform='translate('+((sr.left-base.left)/sc*e)+'px,'+((sr.top-base.top)/sc*e)+'px)';
+            if(p>=1 && !this._figChecked){ this._figChecked=true; const cr=cc.getBoundingClientRect(), st=sl.parentElement.getBoundingClientRect(); if(cr.left<st.left-1||cr.right>st.right+1||cr.top<st.top-1||cr.bottom>st.bottom+1) console.warn('[practice] the question picture does not fit inside the solution panel; see docs/practice-solution-panel.md rule 2'); }
+            this._figRaf=requestAnimationFrame(tick); };
+          this._figRaf=requestAnimationFrame(tick); }, 380); }
+      if(!slot && (this._figLive || this._figPend)){ this._figChecked=false; clearTimeout(this._figPend); this._figPend=null; cancelAnimationFrame(this._figRaf); this._figLive=false; { const un=this._figUnclip||[]; this._figUnclip=null; setTimeout(()=>un.forEach(([p,o])=>{ p.style.overflow=o; }), 460); }
+        if(card){ const t=getComputedStyle(card).transform; card.style.transform=''; if(t && t!=='none'){ try{ card.animate([{transform:t},{transform:'none'}],{duration:420, easing:'cubic-bezier(.22,1,.36,1)'}); }catch(e){} } } } }
     { const b=this.state.vh, a=ps&&ps.vh; if(b && b.wide && !this._vhFlipped && this._vhFrom){ this._vhFlipped=true; (()=>{ const c=document.getElementById('vhCard'), dz=document.getElementById('qsDesign'); if(!c||!dz) return;
         const dr=dz.getBoundingClientRect(), sc=(dr.height/720)||1, r=c.getBoundingClientRect(), F=this._vhFrom;
         const cx=(r.left-dr.left+r.width/2)/sc, cy=(r.top-dr.top+r.height/2)/sc, cw=r.width/sc, ch=r.height/sc;
@@ -3294,7 +3345,7 @@ class Component extends DCLogic {
     const st=this.state, on = st.step===this.IDX.qset;
     const q = on ? this._qsQ() : null;
     const base = { isQset:on, qsStats:[], qsBars:[], qsOptions:[], qsLeft:[], qsRight:[], qsPaths:[], qsMatchDots:[],
-      qsIsChoice:false, qsIsImgChoice:false, qsImgOpts:[], qsIsField:false, qsIsMatch:false, qsIsOrder:false, qsOrder:[], qsQ:'', qsParts:[],
+      qsIsChoice:false, qsIsImgChoice:false, qsImgOpts:[], qsIsField:false, qsIsMatch:false, qsIsOrder:false, qsOrder:[], qsQ:'', qsParts:[], qsQFs:'', qsFigZ:'auto', qsFigCellOv:'hidden',
       qsIsIx:false, ixSvgOn:false, ixGridLines:[], ixPolys:[], ixLines:[], ixHits:[], ixSpots:[], ixTexts:[], ixMarks:[],
       ixSliderOn:false, ixMin:0, ixMax:10, ixStep:1, ixVal:0, ixSlide:()=>{}, ixRead:'', ixReadInk:'#495057',
       ixChipsOn:false, ixChips:[], ixSlotsOn:false, ixSlots:[], ixBucketsOn:false, ixBuckets:[], ixStepsOn:false, ixSteps:[],
@@ -3425,7 +3476,7 @@ class Component extends DCLogic {
     /* While another try is allowed, a wrong answer only marks the student's own picks; the answer is revealed on a right answer or the last try. */
     const reveal = done && (right || ((st.qsTries||{})[st.qsIdx||0]||1) >= this.QS_MAX_TRIES);
     base.qsReveal = reveal;
-    base.qsQ = q.q;
+    base.qsQ = q.q; base.qsQFs = String(q.q||'').length>170 ? '18px' : '';
     base.qsParts = (()=>{ const t=String(q.q||''), re=/(\d+)\/(\d+)/g, out=[], foc=this.state.qsFocus; let last=0, m, n=0;
       while((m=re.exec(t))){ if(m.index>last) out.push({isT:true,isF:false,t:t.slice(last,m.index)}); const key=n===0?'a':n===1?'b':'x'+n, on=foc===key;
         out.push({isF:true,isT:false,n:m[1],d:m[2],key,bg:on?'#fff3bf':'transparent',sh:on?'0 0 0 3px #fcc419':'none'}); last=m.index+m[0].length; n++; }
@@ -3719,9 +3770,10 @@ class Component extends DCLogic {
       Object.assign(a,{ qsUnsubmitted:true, qsShowNext:false, qsCanRetry:false, qsRetryNextDisp:'none', qsSubmit:g.primary, qsSubmitLabel:g.pLabel,
         qsMainSubOff:!g.pOn, qsMainSubState:g.pOn?'emphasis':'disabled', qsMainSubSh:g.pOn?'':'none',
         qsSkipDisp:g.sOn?'flex':'none', qsSkipLabel:g.sLabel, qsSkip:g.secondary, qsSkipOff:false, qsSkipTab:0, qsFbOn:false });
-      if(a.qsHasFig) a.qsGridCols='minmax(0,1fr) minmax(0,340px)';
+      /* A question's picture becomes part of the explanation: the panel takes the full width and the picture sits inside it. */
+      if(a.qsHasFig && !b.vhLineOn){ const sz=this._figSize||{w:362,h:245}; b.vhFigIn=true; b.vhSlotW=sz.w+'px'; b.vhSlotH=sz.h+'px'; b.vhStageDir='row'; b.vhStageGap='28px'; b.vhWorkFlex='1 1 0'; a.qsFigZ='8'; a.qsFigCellOv='visible'; }
       b.vhBoxTop = (this._vhBoxTopPx||0)+'px';
-      b.vhBoxW = a.qsHasFig ? 'calc(100% - 340px - '+(a.qsGridGap||'48px')+')' : '100%'; }
+      b.vhBoxW = '100%'; }
     else if(st.qsGuideAt===(st.qsIdx||0) && st.qsSubmitted){ a.qsShowNext=false; a.qsUnsubmitted=true; a.qsMainSubOff=true; a.qsMainSubState='disabled'; a.qsMainSubSh='none'; a.qsSubmitLabel='Submit again'; a.qsSubIco=true; }
     a.qsSubShkCls = st.qsSubShk ? 'vh-shake' : '';
     if(st.qsSparkHl){ a.qsFieldBorder='#fcc419'; a.qsFieldBg='#fff9db'; }
