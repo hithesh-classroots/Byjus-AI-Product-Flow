@@ -57,10 +57,89 @@ Code: `renderVals` (the `vhWide` block) reserves the slot (`vhFigIn`, `vhSlotW`,
 - A fraction written as `3/4` in a question is shown stacked, numerator over denominator, with a bar between.
 - A picture is mandatory only if the numbers in the question come from it.
 
-## 6. Writing a step
+## 6. How a step is shown: a short working card
 
-- One answer per step, typed or chosen: `num`, `frac`, `choice`, or `ack` (read and continue).
-- A step has: a short **name** (rule 3), a **question**, a short **explanation** (what the formula or fact is), the **answer**, a one-line **confirmation** that shows the working, and a **hint**.
-- The hint says what to do, never the answer.
+A step is never a paragraph of advice. It is a small card in the same shape the student writes in their notes.
 
-Questions that use this format: question 2 (grain store) and question 3 (compare 3/4 and 5/8). Their steps live next to their questions in `_qsAll` as `vhSteps`.
+| Row | What it holds |
+|---|---|
+| NOTE | one sentence of context, only when the step needs it (italic, 14 px) |
+| FORMULA | the rule being used, one line (14.5 px) |
+| WORKING | the sum written out, one line per calculation (15 px). The values the student must find are **blanks inside the line** |
+
+- Card: white, 12 radius, 14 / 16 padding, 10 between rows. Label column 80 wide (labels 10.5 px, capitals). Given rows use the same card, with the item name in the label column.
+- Blanks: 30 tall, 8 radius. Empty = dashed grey, **active** = purple border and the typed value, **done** = green with the value.
+- The student fills the blanks **one at a time**, in order, each with its own check. The intermediate values (for example one wall, then two walls) are therefore never skipped. The keypad and box at the bottom feed the active blank and show its unit.
+- A wrong blank gives that blank's own hint, not the whole step's. Two wrong answers on a step hand over to Spark.
+- The first step of a worked problem is **Given and to find**: a table of what is given and one row stating what to find. No answer is typed.
+- Step names are 20 characters or fewer (rule 3).
+
+## 7. The picture does the explaining
+
+Every step of a question with a picture says which part of it the step is about, and the picture shows it.
+
+- A step carries `hl`: which **faces** (`f`), **edges** (`e`) and **labels** (`l`) to light. The picture is drawn again for every step, so it follows the student, and follows Spark when Spark is working.
+- Lit faces are filled amber (`#ffe066`) with amber outlines (`#e67700`, 3 wide). Lit labels turn orange (`#d9480f`).
+- Everything that is not lit stays visible but dims (outlines at 35 % opacity, faces pale lilac, labels at 40 %).
+- A step with no `hl` shows the picture unlit and unchanged. Steps that are only arithmetic (take away, litres, cost) have no `hl`.
+- A step that adds the parts together lights all the parts it adds.
+- Use one set of label tokens per picture. The grain store uses `L` (8 m), `W` (6 m), `Hc` (3 m, wall height) and `Hg` (4 m, gable height); faces `wall`, `side`, `roof`, `gable`; edges `slant`, `height`, `base`.
+- Spark opens each step by pointing at the picture, says what it is looking at, then enters the blanks one by one through the keypad.
+
+Code: a step is `W(name, ask, note, formula, lines, hl, ok, sp)` next to its question in `_qsAll`; the card is built in `_vhVals` (`vhRows`); the highlight is drawn by `_qsFigure(q, done, hl)` using `_vhHl()`.
+
+## 8. Steps where the student does nothing: read and explore
+
+The first step of a worked problem ("Given and to find") asks for no answer. It must not be a block of text.
+
+- It is a table of the given items, one row each (Cuboid, Roof, Not painted, Paint) plus a **To find** row. The label column is 92 wide, with an eye icon at the right of every row.
+- **Every row is clickable.** Clicking a row marks it (soft yellow fill, yellow outline, eye-check icon) and lights the part of the picture it names. Clicking it again clears it. Only one row is marked at a time.
+- A row that has nothing to show on the picture (for example Paint) still marks itself but lights nothing.
+- A line at the bottom of the card says what to do: "Click each item to see it on the picture. Then click Next step to continue." The student never has to type anything here.
+- Spark does the same: it taps each row in turn and says one line about it.
+- In data, a row is `[name, text, hl]` and the table has `findHl` for the To find row and `footer` for the line at the bottom.
+
+## 9. Closing the panel is not losing it
+
+- **Got it** closes the panel, keeps every step already done, and gives the answer back to the student (the picture slides back beside the question).
+- In the action row, **Skip is replaced by Step-by-step** for as long as the panel has been closed this way and the question is unanswered. Clicking it opens the panel again at the same step, with the same blanks filled, and the picture slides back in.
+- If the student answers wrong again while the panel is closed, the panel reopens by itself on the same step, with Vyom saying "Let's pick up where we left off."
+- While Spark is working, Got it ends the demonstration and starts the question afresh (there is nothing to resume).
+
+## 10. These rules apply to every question
+
+Nothing in this document is specific to one question.
+
+- Every question's steps use the same card. A question that has no authored working still gets the card: its step text becomes the NOTE row.
+- Every question with a picture gets the picture inside the panel and the slide in and out (rule 2).
+- Every picture lights the right parts. A step can say which parts (`hl`). If it does not, a picture that already knows its key parts (for example the trapezoid pictures) lights those and dims the rest.
+- Closing, reopening and resuming (rule 9) are the same for every question.
+- When a new picture is added, give it highlight tokens (faces, edges, labels) and use them from the steps.
+
+## 11. Writing a new question's steps
+
+1. Write the working a student would write in their notes: formula, then the sums.
+2. Make each calculation a line, and each number the student must find a blank. Do not hide intermediate values.
+3. Start with a read-and-explore step if there is anything to read, with a picture highlight per row.
+4. For each step decide what on the picture it is about, and give it an `hl`.
+5. Give each blank a one-line hint that says what to do, never the answer.
+6. Give Spark a line to open each step, then one line per blank, in the first person.
+7. Keep the question text under 330 characters (rule 5).
+
+## 12. A step never shows its own answer
+
+Anything visible while a blank is waiting for the student must not contain that blank's answer.
+
+- **Later lines use references, not numbers.** If a line uses an earlier blank's value ("Two long walls = 2 × 24"), write it as a reference to that blank. It shows `?` until that blank is filled, then shows the value. In data this is `R(0)` for blank 0 of the step (a reference never counts as a blank).
+- Values from **earlier steps** may be written out: the student has already found them.
+- Words matter as much as numbers: a step's question, its note, its caption and the labels on a number line or a picture must not give the answer away. A label that would show the answer (for example the landing point on a number line) shows `?` until the step is answered.
+- Hints may point at the method ("Multiply the length by the height") but not hand over the result.
+- **Run the audit** after adding or changing any steps: in the browser console, `__TR._vhLeakAudit()` lists every question and step where the question, note, formula, caption or a working line shows an answer. The list must be empty, or each entry must be a deliberate mention of a number that is given in the question.
+- Labels drawn on a picture or a number line are not covered by the audit. Check them by looking at each step once.
+
+## 13. The keypad
+
+- The keypad feeds the active blank of a working step, the number box of a number step, and the top or bottom box of a fraction step.
+- A number can be up to 6 digits in a working or number step, and 3 digits in a fraction box.
+- Always test a new step type by clicking the keys, not only by setting values in code.
+

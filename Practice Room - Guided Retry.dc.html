@@ -1243,6 +1243,25 @@
                         </div></div>
                         <div style="text-align:center;font-size:15px;line-height:1.4;color:#495057;text-wrap:balance;">{{ vhCap }}</div>
                       </sc-if>
+                      <sc-if value="{{ vhStructOn }}" hint-placeholder-val="{{ false }}">
+                        <div style="align-self:stretch;flex:{{ vhWorkFlex }};min-width:0;display:flex;flex-direction:column;justify-content:center;">
+                          <div style="display:flex;flex-direction:column;gap:10px;padding:14px 16px;border-radius:12px;background:#ffffff;box-shadow:inset 0 0 0 1px #e9ecef;">
+                            <sc-for list="{{ vhRows }}" as="r" hint-placeholder-count="3">
+                              <div data-vhg="{{ r.gi }}" onClick="{{ r.go }}" style="display:grid;grid-template-columns:{{ r.cols }};column-gap:12px;align-items:baseline;padding:{{ r.pad }};border-radius:8px;background:{{ r.bg }};box-shadow:{{ r.ring }};cursor:{{ r.cur }};transition:background .15s ease,box-shadow .15s ease;">
+                                <span style="font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#868e96;line-height:1.4;">{{ r.label }}</span>
+                                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;font-size:{{ r.fs }};font-weight:{{ r.fw }};font-style:{{ r.fst }};color:{{ r.ink }};line-height:1.5;">
+                                  <sc-for list="{{ r.parts }}" as="p" hint-placeholder-count="1">
+                                    <sc-if value="{{ p.isT }}" hint-placeholder-val="{{ true }}"><span style="white-space:pre-wrap;">{{ p.t }}</span></sc-if>
+                                    <sc-if value="{{ p.isB }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:{{ p.w }};height:30px;padding:0 8px;box-sizing:border-box;border-radius:8px;background:{{ p.bg }};border:{{ p.bd }};color:{{ p.ink }};font-weight:700;transition:background .2s ease,border-color .2s ease;">{{ p.v }}</span></sc-if>
+                                  </sc-for>
+                                </div>
+                                <sc-if value="{{ r.hasIcon }}" hint-placeholder-val="{{ false }}"><i class="ti {{ r.icon }}" style="font-size:16px;color:{{ r.iconInk }};align-self:center;"></i></sc-if>
+                              </div>
+                            </sc-for>
+                            <sc-if value="{{ vhStructNoteOn }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:flex-start;gap:8px;margin-top:2px;padding-top:10px;border-top:1px solid #f1f3f5;font-size:13px;font-weight:600;color:#6b6786;line-height:1.45;"><i class="ti ti-pointer" style="font-size:15px;margin-top:1px;flex:none;"></i><span>{{ vhStructNote }}</span></div></sc-if>
+                          </div>
+                        </div>
+                      </sc-if>
                       <sc-if value="{{ vhWorkOn }}" hint-placeholder-val="{{ false }}">
                         <div style="align-self:stretch;flex:{{ vhWorkFlex }};min-width:0;display:flex;flex-direction:column;justify-content:center;gap:8px;">
                           <sc-for list="{{ vhWork }}" as="w" hint-placeholder-count="1">
@@ -2216,7 +2235,7 @@ class Component extends DCLogic {
             {name:'Add the counts', vis:'a', cap:'17/9 is 17 hops of one ninth.', ask:'Now hop 41 more ninths. How many ninths is that altogether?', den:9, ans:[58,9], ok:'Right. 17 + 41 = 58 ninths.',
               hint:'Same unit, so just add the counts: 17 + 41.',
               traps:[{n:41,d:9,msg:'That is only the second jump. Add it to the 17 you already have.'},{n:24,d:9,msg:'That is 41 \u2212 17. We are adding, so put them together.'},{n:48,d:9,msg:'Close. Check the ones: 7 + 1 = 8, and 10 + 40 = 50.'}]},
-            {name:'Write the answer', vis:'b', cap:'17 ninths and 41 more land on 58 ninths.', ask:'So what is 17/9 + 41/9?', ans:[58,9], ok:'That\u2019s it.',
+            {name:'Write the answer', vis:'b', cap:'Both sets of hops end at the same spot on the line. Which fraction is that?', ask:'So what is 17/9 + 41/9?', ans:[58,9], ok:'That\u2019s it.',
               hint:'You counted 58 ninths. Write that as a fraction.',
               traps:[{n:58,d:18,msg:'Careful: the unit stays ninths. Only the counts add, so the bottom stays 9.'},{n:58,d:81,msg:'The bottom names the unit. We are still counting ninths, so it stays 9.'}]} ],
           done:{vis:'done', cap:'58/9 is 6 wholes and 4 ninths more.'},
@@ -2225,31 +2244,54 @@ class Component extends DCLogic {
             {name:'17 ninths', vis:'a', cap:'17/9 means 17 ninths: 17 small hops.', eq:3, ms:3800},
             {name:'Add 41 more', vis:'b', cap:'41/9 is 41 more hops. Same unit, so add the counts: 17 + 41 = 58.', eq:7, ms:4600},
             {name:'58/9', vis:'done', cap:'58 ninths is 58/9, which is 6 wholes and 4 ninths.', eq:9, ms:4000}] }};
-      const N=(name,ask,cap,ans,unit,ok,hint)=>({name, input:'num', ask, cap, ans, unit, ok, hint});
+      /* A step is a short working card: NOTE, FORMULA, then WORKING lines whose blanks the student fills one at a time. hl lights the part of the picture the step is about. */
+      const B=(b,u,h)=>({b,u,h}), R=(r)=>({r});
+      const W=(name,ask,note,formula,lines,hl,ok,sp)=>({name, input:'work', ask, ok, hl, sp, work:{note,formula,lines}, cap:ask, hint:'Look at the formula and fill the working line by line.'});
       const GRAIN={type:'single', topic:'Surface area', calc:true, fig:{shape:'grain'},
-        q:'A grain store is a cuboid 8 m long, 6 m wide and 3 m high, with a triangular prism roof on top. Each roof end is a triangle with base 6 m and height 4 m, and the roof is 8 m long. The whole outside except the floor is painted with one coat. The door and windows, 8 m\u00b2 in all, are not painted. One litre of paint covers 6 m\u00b2 and costs \u20b9150. What does the paint cost?',
-        opts:['\u20b93,900','\u20b94,100','\u20b94,500','\u20b94,700'], ans:2,
-        hints:['Split the outside into parts you can find: the walls, the two triangle ends, and the sloping roof.','Add every painted area, take away the door and windows, divide by 6 for the litres, then multiply by \u20b9150.'],
-        why:{ok:'The paint area is 180 m\u00b2, so 30 litres, and 30 \u00d7 \u20b9150 = \u20b94,500.', no:'The paint area is 180 m\u00b2, so 30 litres, and 30 \u00d7 \u20b9150 = \u20b94,500.'},
+        q:'A grain store is a cuboid 8 m long, 6 m wide and 3 m high, with a triangular prism roof on top. Each roof end is a triangle with base 6 m and height 4 m, and the roof is 8 m long. The whole outside except the floor is painted with one coat. The door and windows, 8 m² in all, are not painted. One litre of paint covers 6 m² and costs ₹150. What does the paint cost?',
+        opts:['₹3,900','₹4,100','₹4,500','₹4,700'], ans:2,
+        hints:['Split the outside into parts you can find: the walls, the two triangle ends, and the sloping roof.','Add every painted area, take away the door and windows, divide by 6 for the litres, then multiply by ₹150.'],
+        why:{ok:'The paint area is 180 m², so 30 litres, and 30 × ₹150 = ₹4,500.', no:'The paint area is 180 m², so 30 litres, and 30 × ₹150 = ₹4,500.'},
         vhSteps:[
-          {name:'Given and to find', input:'ack', ask:'First, write down what we know. What is given, and what do we find?', cap:'Cuboid 8 m long, 6 m wide, 3 m high. Roof triangle: base 6 m, height 4 m, roof 8 m long. Not painted: the floor, and the door and windows (8 m\u00b2 together). Paint: 1 litre covers 6 m\u00b2 and costs \u20b9150. We need the cost of the paint for the whole outside of the store.'},
-          N('Long walls','What is the area of the two long walls?','Each long wall is a rectangle, 8 m long and 3 m high. Area = length \u00d7 height, and there are two of them.',48,'m\u00b2','One long wall is 8 \u00d7 3 = 24 m\u00b2, so two make 48 m\u00b2.','Multiply 8 by 3 for one wall, then double it.'),
-          N('Short walls','What is the area of the two short walls?','Each short wall is a rectangle, 6 m wide and 3 m high.',36,'m\u00b2','One short wall is 6 \u00d7 3 = 18 m\u00b2, so two make 36 m\u00b2.','Multiply 6 by 3 for one wall, then double it.'),
-          N('Gable triangles','What is the area of the two gable triangles?','The gables are the triangles above the two short walls. Area of a triangle = \u00bd \u00d7 base \u00d7 height, with base 6 m and height 4 m.',24,'m\u00b2','One gable is \u00bd \u00d7 6 \u00d7 4 = 12 m\u00b2, so two make 24 m\u00b2.','Half of 6 times 4 gives one gable. Then double it.'),
-          N('Slant side','How long is the slant side of the roof?','Each roof panel is a rectangle, and its width is the slant side of the triangle. The slant side is the long side of a right triangle with sides 3 m (half the base) and 4 m (the height): slant\u00b2 = 3\u00b2 + 4\u00b2.',5,'m','3\u00b2 + 4\u00b2 = 9 + 16 = 25, and \u221a25 = 5 m.','Square 3 and 4, add them, then take the square root.'),
-          N('Roof panels','What is the area of the two roof panels?','Each roof panel is a rectangle: slant side \u00d7 length = 5 \u00d7 8.',80,'m\u00b2','One panel is 5 \u00d7 8 = 40 m\u00b2, so two make 80 m\u00b2.','Multiply the slant side 5 by the roof length 8, then double it.'),
-          N('Total area','What is the total area painted outside?','Paint the walls, the gables and the roof. The floor is not painted, and the top of the cuboid is covered by the roof. Total = 48 + 36 + 24 + 80.',188,'m\u00b2','48 + 36 + 24 + 80 = 188 m\u00b2.','Add the four areas you found: 48, 36, 24 and 80.'),
-          N('Take away','How much area is left to paint?','The door and the two windows together cover 8 m\u00b2 and are not painted.',180,'m\u00b2','188 \u2212 8 = 180 m\u00b2 to paint.','Take the 8 m\u00b2 of door and windows away from 188.'),
-          N('Litres','How many litres of paint are needed?','1 litre of paint covers 6 m\u00b2, so litres = area to paint \u00f7 6.',30,'litres','180 \u00f7 6 = 30 litres.','Share 180 m\u00b2 into groups of 6 m\u00b2. Each group needs one litre.'),
-          N('Cost','How much does the paint cost, in rupees?','1 litre of paint costs \u20b9150, so cost = litres \u00d7 price per litre.',4500,'rupees','30 \u00d7 \u20b9150 = \u20b94,500.','Multiply the 30 litres by \u20b9150.')
+          {name:'Given and to find', input:'ack', ask:'First, write down what we know. What is given, and what do we find?', cap:'Read what is given and what we need to find.',
+            sp:['Let me read what we know first. I can tap each item to see it on the picture.','The cuboid is 8 metres long, 6 wide and 3 high.','The roof is a triangular prism: the triangle is 6 wide and 4 tall, and the roof is 8 long.','The floor, the door and the windows are not painted.','One litre of paint covers 6 square metres and costs 150 rupees.','So we need the cost of the paint for the whole outside of the store.'],
+            work:{given:[['Cuboid','length 8 m · width 6 m · height 3 m',{f:['wall','side'],l:['L','W','Hc']}],['Roof','triangular prism · triangle base 6 m · height 4 m · length 8 m',{f:['roof','gable'],e:['height'],l:['L','W','Hg']}],['Not painted','the floor, and the door and windows (8 m² together)',{e:['floor']}],['Paint','1 litre covers 6 m² · costs ₹150 a litre',null]],
+              find:'The cost of the paint for the whole outside of the store.', findHl:{f:['wall','side','roof','gable']}, footer:'Click each item to see it on the picture. Then click Next step to continue.'}},
+          W('Long walls','What is the area of the two long walls?',null,'Area of a rectangle = length × height',
+            [['One long wall = 8 × 3 = ',B(24,'m²','Multiply the length 8 by the height 3.'),' m²'],['Two long walls = 2 × ',R(0),' = ',B(48,'m²','There are two long walls, so double 24.'),' m²']],
+            {f:['wall'],l:['L','Hc']},'The two long walls make 48 m².',['The two long walls are rectangles. One of them is 8 wide and 3 tall.','Eight times three is 24.','There are two of them, so I double it: 48.']),
+          W('Short walls','What is the area of the two short walls?',null,'Area of a rectangle = width × height',
+            [['One short wall = 6 × 3 = ',B(18,'m²','Multiply the width 6 by the height 3.'),' m²'],['Two short walls = 2 × ',R(0),' = ',B(36,'m²','There are two short walls, so double 18.'),' m²']],
+            {f:['side'],l:['W','Hc']},'The two short walls make 36 m².',['Next, the two short walls. They are 6 wide and 3 tall.','Six times three is 18.','Two of them: 36.']),
+          W('Gable triangles','What is the area of the two gable triangles?','The gables are the triangles above the two short walls.','Area of a triangle = ½ × base × height',
+            [['One gable = ½ × 6 × 4 = ',B(12,'m²','Half of 6 times 4.'),' m²'],['Two gables = 2 × ',R(0),' = ',B(24,'m²','There are two gables, so double 12.'),' m²']],
+            {f:['gable'],e:['height'],l:['W','Hg']},'The two gables make 24 m².',['The triangles above the short walls. A triangle is half base times height.','Half of 6 times 4 is 12.','Two gables: 24.']),
+          W('Slant side','How long is the slant side of the roof?','Each roof panel is a rectangle. Its width is the slant side of the triangle.','Pythagoras: slant² = (half the base)² + height²',
+            [['Half the base = 6 ÷ 2 = ',B(3,'m','Half of the base 6.'),' m'],['slant² = ',R(0),'² + 4² = 9 + 16 = ',B(25,'','Square 3 and 4, then add: 9 + 16.')],['slant = √',R(1),' = ',B(5,'m','Which number times itself makes 25?'),' m']],
+            {f:['gable'],e:['slant','height','base'],l:['Hg']},'The slant side is 5 m.',['The roof panels need the slant side. I will use Pythagoras with half the base and the height.','Half of the base 6 is 3.','Three squared plus four squared: nine plus sixteen is 25.','The square root of 25 is 5, so the slant side is 5 metres.']),
+          W('Roof panels','What is the area of the two roof panels?',null,'Area of a rectangle = slant side × length',
+            [['One roof panel = 5 × 8 = ',B(40,'m²','Multiply the slant side 5 by the length 8.'),' m²'],['Two roof panels = 2 × ',R(0),' = ',B(80,'m²','There are two roof panels, so double 40.'),' m²']],
+            {f:['roof'],e:['slant'],l:['L']},'The two roof panels make 80 m².',['Each roof panel is a rectangle: the slant side times the length.','Five times eight is 40.','Two panels: 80.']),
+          W('Total area','What is the total area painted outside?','Paint the walls, the gables and the roof. The floor is not painted, and the top of the cuboid is covered by the roof.','Total = long walls + short walls + gables + roof',
+            [['Total = 48 + 36 + 24 + 80 = ',B(188,'m²','Add 48 + 36 + 24 + 80.'),' m²']],
+            {f:['wall','side','roof','gable']},'The painted area is 188 m².',['Now I add every painted part: long walls, short walls, gables and roof.','Forty-eight plus 36 plus 24 plus 80 is 188.']),
+          W('Take away','How much area is left to paint?','The door and the two windows together cover 8 m² and are not painted.',null,
+            [['Area to paint = 188 − 8 = ',B(180,'m²','Take 8 away from 188.'),' m²']],
+            null,'There are 180 m² to paint.',['The door and windows are not painted, so I take their 8 away.','188 minus 8 is 180.']),
+          W('Litres','How many litres of paint are needed?','1 litre of paint covers 6 m².','Litres = area to paint ÷ area covered by 1 litre',
+            [['Litres = 180 ÷ 6 = ',B(30,'L','Divide 180 by 6.'),' L']],
+            null,'We need 30 litres.',['One litre covers 6 square metres, so I divide.','180 divided by 6 is 30 litres.']),
+          W('Cost','How much does the paint cost, in rupees?','1 litre of paint costs ₹150.','Cost = litres × price per litre',
+            [['Cost = 30 × 150 = ₹',B(4500,'rupees','Multiply 30 by 150.')]],
+            null,'The paint costs ₹4,500.',['Each litre costs 150 rupees, so I multiply by 30 litres.','30 times 150 is 4500.'])
         ]};
       const COMPARE={type:'single', topic:'Fractions', q:'Which is greater: 3/4 or 5/8?', opts:['3/4','5/8','They are equal','Cannot tell'], ans:0,
         hints:['Pick a common bottom number for 4 and 8.','Write both fractions with the same bottom, then compare the tops.'],
         why:{ok:'3/4 = 6/8, and 6/8 is more than 5/8.', no:'3/4 = 6/8, and 6/8 is more than 5/8.'},
         vhSteps:[
-          {name:'Common denominator', input:'choice', ask:'Pick a bottom number that both 4 and 8 go into.', cap:'To compare fairly, both fractions need the same bottom number.', opts:[{t:'4',i:0},{t:'8',i:1},{t:'12',i:2}], ans:1, ok:'Yes. 8 works for both 4 and 8.', hint:'The bottom number must be a multiple of both 4 and 8. Count up in 8s.'},
-          {name:'Write 3/4 in eighths', input:'frac', den:8, ask:'Write 3/4 with 8 on the bottom.', cap:'The bottom went from 4 to 8, so we doubled it. Do the same to the top.', ans:[6,8], ok:'Yes. 3/4 = 6/8.', hint:'You doubled the bottom, so double the top as well: 3 \u00d7 2.', traps:[{n:3,d:8,msg:'The top has to change too. Double the 3.'}]},
-          {name:'Compare 6/8 and 5/8', input:'choice', ask:'Same bottom now. Which sign fits 6/8 ? 5/8?', cap:'The pieces are the same size, so the fraction with more pieces is greater.', opts:[{t:'>',i:0},{t:'=',i:1},{t:'<',i:2}], ans:0, ok:'6 is more than 5, so 6/8 is greater than 5/8.', hint:'Same size pieces: the one with more pieces is greater. 6 is more than 5.'}
+          {name:'Common denominator', input:'choice', ask:'Pick a bottom number that both bottom numbers go into.', cap:'To compare fairly, both fractions need the same bottom number.', work:{note:'To compare fairly, both fractions need the same bottom number.'}, opts:[{t:'4',i:0},{t:'8',i:1},{t:'12',i:2}], ans:1, ok:'Yes. 8 works for both 4 and 8.', hint:'The bottom number must be a multiple of both 4 and 8. Count up in 8s.'},
+          {name:'Write 3/4 in eighths', input:'frac', den:8, ask:'Write 3/4 with 8 on the bottom.', cap:'The bottom went from 4 to 8, so we doubled it. Do the same to the top.', work:{note:'The bottom went from 4 to 8, so we doubled it.', formula:'Multiply the top and the bottom by the same number'}, ans:[6,8], ok:'Yes. 3/4 = 6/8.', hint:'You doubled the bottom, so double the top as well: 3 \u00d7 2.', traps:[{n:3,d:8,msg:'The top has to change too. Double the 3.'}]},
+          {name:'Compare 6/8 and 5/8', input:'choice', ask:'Same bottom now. Which sign fits 6/8 ? 5/8?', cap:'The pieces are the same size, so the fraction with more pieces is greater.', work:{note:'The pieces are the same size, so the fraction with more pieces is greater.'}, opts:[{t:'>',i:0},{t:'=',i:1},{t:'<',i:2}], ans:0, ok:'6 is more than 5, so 6/8 is greater than 5/8.', hint:'Same size pieces: the one with more pieces is greater. 6 is more than 5.'}
         ]};
       this._qsAll=[ FRAC, GRAIN, COMPARE, tag(T[0],'Parallel sides'), NUM2, NUM5, tag(I[2],'Bases & height'),
         tag(P[0],'Spotting a trapezoid'), tag(P[1],'Spotting a trapezoid'), tag(I[3],'Bases & height'),
@@ -2295,15 +2337,18 @@ class Component extends DCLogic {
   /* Builds the drawing as plain primitives. Before submit it is the question's image in the
      neutral violet; after, the parts listed in fig.key turn green with parallel marks and the
      rest recede, so the answer is shown ON the figure rather than beside it. */
-  _qsFigure(q, done){
-    const f=q.fig; if(!f) return null;
-    if(f.shape==='grain'){ const E='#5f3dc4', L=(k,a,b)=>({key:'g'+k, x1:a[0],y1:a[1],x2:b[0],y2:b[1], c:E, w:2, dash:'none', op:'1'}), pts=a=>a.map(p=>p.join(',')).join(' ');
+  _qsFigure(q, done, hlSet){
+    const f=q.fig; if(!f) return null; if(hlSet && hlSet.all) done=true;
+    if(f.shape==='grain'){ const HF=new Set((hlSet&&hlSet.f)||[]), HE=new Set((hlSet&&hlSet.e)||[]), HL=new Set((hlSet&&hlSet.l)||[]), any=!!(HF.size||HE.size||HL.size), E='#5f3dc4', AM='#e67700', HI='#ffe066';
+      const pts=a=>a.map(p=>p.join(',')).join(' ');
       const wall=[[45,106],[195,106],[195,162],[45,162]], side=[[195,162],[243,134],[243,78],[195,106]], roof=[[45,106],[195,106],[219,17],[69,17]], gable=[[195,106],[243,78],[219,17]];
-      const edges=(n,a)=>a.map((p,i)=>L(n+i,p,a[(i+1)%a.length]));
-      const lab=(k,x,y,tf,s)=>({key:'gt'+k, left:(x/3)+'%', top:(y/2)+'%', tf, s, c:'#495057', op:'1'});
-      return { polys:[{key:'gp1',pts:pts(side),fill:'#e5dbff'},{key:'gp2',pts:pts(wall),fill:'#f3f0ff'},{key:'gp3',pts:pts(roof),fill:'#d0bfff'},{key:'gp4',pts:pts(gable),fill:'#b197fc'}],
-        lines:[].concat(edges('w',wall),edges('s',side),edges('r',roof),edges('g',gable),[{key:'gh',x1:219,y1:17,x2:219,y2:92,c:E,w:1.5,dash:'5 4',op:'1'}]),
-        texts:[lab('a',120,181,'translate(-50%,-50%)','8 m'), lab('b',28,134,'translate(-100%,-50%)','3 m'), lab('c',252,152,'translate(0,-50%)','6 m'), lab('d',213,58,'translate(-100%,-50%)','4 m')] }; }
+      const faces=[['side',side,'#e5dbff','s'],['wall',wall,'#f3f0ff','w'],['roof',roof,'#d0bfff','r'],['gable',gable,'#b197fc','g']];
+      const L=(k,a,b,on,spec)=>({key:'g'+k, x1:a[0],y1:a[1],x2:b[0],y2:b[1], c:(on||spec)?AM:E, w:(on||spec)?3:2, dash:'none', op:(any && !on && !spec)?'.35':'1'});
+      const lines=[]; faces.forEach(([name,poly,fill,pre])=>{ poly.forEach((p,i)=>{ const q2=poly[(i+1)%poly.length], spec = (name==='gable' && ((i===0 && HE.has('base')) || ((i===1||i===2) && HE.has('slant')))) || (HE.has('floor') && ((name==='wall' && i===2) || (name==='side' && i===0))); lines.push(L(pre+i,p,q2,HF.has(name),spec)); }); });
+      lines.push({key:'gh', x1:219,y1:17,x2:219,y2:92, c:HE.has('height')?AM:E, w:HE.has('height')?2.5:1.5, dash:'5 4', op:(any && !HE.has('height'))?'.35':'1'});
+      const lab=(k,t,x,y,tf,s2)=>({key:'gt'+k, left:(x/3)+'%', top:(y/2)+'%', tf, s:s2, c:HL.has(t)?'#d9480f':'#495057', op:(any && !HL.has(t))?'.4':'1'});
+      return { polys:faces.map(([name,poly,fill],i)=>({key:'gp'+i, pts:pts(poly), fill: HF.has(name) ? HI : (any ? '#f6f3ff' : fill)})), lines,
+        texts:[lab('a','L',120,181,'translate(-50%,-50%)','8 m'), lab('b','Hc',28,134,'translate(-100%,-50%)','3 m'), lab('c','W',252,152,'translate(0,-50%)','6 m'), lab('d','Hg',213,58,'translate(-100%,-50%)','4 m')] }; }
     const P = f.shape==='para'
       ? {A:[90,50],B:[250,50],C:[210,160],D:[50,160]}
       : {A:[100,50],B:[200,50],C:[260,160],D:[40,160]};
@@ -2628,7 +2673,7 @@ class Component extends DCLogic {
      offer (compact card by Vyom) -> steps (wide panel, guided) -> auto (watch it solved) -> done (close the loop on the question). */
   _vh(){ return this.state.vh || {open:false}; }
   _vhSet(p, cb){ this.setState(s=>({vh:Object.assign({}, s.vh||{}, typeof p==='function'?p(s.vh||{}):p)}), cb); }
-  _vhH(){ const q=this._qsQ(); if(!q) return null; this._vhCache=this._vhCache||new Map(); if(this._vhCache.has(q)) return this._vhCache.get(q);
+  _vhH(q0){ const q=q0||this._qsQ(); if(!q) return null; this._vhCache=this._vhCache||new Map(); if(this._vhCache.has(q)) return this._vhCache.get(q);
     const H = q.help ? Object.assign({line:true, watchTitle:q.help.a[0]+'/'+q.help.a[1]+' + '+q.help.b[0]+'/'+q.help.b[1]+', one part at a time',
       summary:(ok,left)=>(ok?'You did it: ':'So ')+q.help.a[0]+'/'+q.help.a[1]+' + '+q.help.b[0]+'/'+q.help.b[1]+' = '+q.help.sum[0]+'/'+q.help.sum[1]+'. When the bottoms match, only the tops add.'+(!ok&&left>0?' Now you try it.':'')}, q.help)
       : this._vhGen(q);
@@ -2667,7 +2712,9 @@ class Component extends DCLogic {
     const t = H.summary(!!v.solved, left);
     const line = H.line ? (v.solved ? 'Same unit, so only the tops add.' : 'When the bottoms match, only the tops add.') : ((H.done && H.done.cap) || 'That\u2019s the idea.');
     clearTimeout(this._vhDT); this._vhDT=setTimeout(()=>{ this._vhSet({doneSent:true, coach:line, tone:'ok'}); this._vhPush(t); }, 1600); }
-  _vhOpen(){ const H=this._vhH(); if(!H) return; const st=this.state, given=String(st.qsVal||'').trim();
+  _vhOpen(){ const H=this._vhH(); if(!H) return;
+    { const p0=this._vh(), i0=this.state.qsIdx||0; if(p0.open && p0.paused && p0.qIdx===i0 && p0.mode==='steps' && !p0.demo){ this._vhPush('Let\u2019s pick up where we left off.'); this._vhSet({wide:true, paused:false, locked:false}); return; } }
+    const st=this.state, given=String(st.qsVal||'').trim();
     const m=H.line ? given.replace(/\s+/g,'').match(/^(\d+)\/(\d+)$/) : null, [an,ad]=H.a||[0,1], [bn,bd]=H.b||[0,1];
     let intro;
     if(!H.line) intro='Not quite. Let\u2019s go through it step by step.';
@@ -2719,13 +2766,16 @@ class Component extends DCLogic {
     const T=H.steps[back]; this._vhSet({ mode:'steps', review:false, step:back, num:C.num||'', den:C.den||(T.den?String(T.den):''), box:C.box||'num', pick:C.pick!=null?C.pick:null, wrong:C.wrong||0, coach:'', tone:'info', vis:T.vis, locked:false, cur0:null }); }
   _vhClose(forget){ clearTimeout(this._vhT); clearTimeout(this._vhP); if(!this._sparkSolving) this._pilotHide();
     clearTimeout(this._vhDT); this._vhSet(v=>({wide:false, playing:false, open: forget ? false : v.open, finished: forget ? true : v.finished})); }
-  _vhReopen(){ const vq=this._vh().qIdx; if(vq!=null && (this.state.qsIdx||0)!==vq && this._qsGo) this._qsGo(vq); this._vhShowChat(); this._vhSet(v=>({open:true, wide:true, playing: v.mode==='auto' && !v.ended}), ()=>{ const v=this._vh(); if(v.mode==='auto' && v.playing) this._vhTick(); }); }
+  /* Got it: close the panel, keep every step done so far, and give the answer back to the student. */
+  _vhPause(){ this._vhClose(false); this._vhSet({paused:true}); this.setState({qsHintFor:-1, qsGuideAt:-1}); this._qsRetry(); this.setState({qsVal:''}); }
+  _vhReopen(){ const vq=this._vh().qIdx; if(vq!=null && (this.state.qsIdx||0)!==vq && this._qsGo) this._qsGo(vq); this._vhShowChat(); this._vhSet(v=>({open:true, wide:true, paused:false, playing: v.mode==='auto' && !v.ended}), ()=>{ const v=this._vh(); if(v.mode==='auto' && v.playing) this._vhTick(); }); }
   _vhKeyPress(k){ const v=this._vh(); if(v.mode!=='steps' || v.locked) return; const S=this._vhH().steps[v.step];
-    if(S.input && S.input!=='frac' && S.input!=='num') return;
-    if(k==='swap'){ if(!S.den && S.input!=='num') this._vhSet({box: v.box==='num'?'den':'num'}); return; }
-    const f = (S.den || S.input==='num') ? 'num' : v.box;
+    if(S.input && S.input!=='frac' && S.input!=='num' && S.input!=='work') return;
+    const isNum = S.input==='num' || S.input==='work';
+    if(k==='swap'){ if(!S.den && !isNum) this._vhSet({box: v.box==='num'?'den':'num'}); return; }
+    const f = (S.den || isNum) ? 'num' : v.box;
     if(k==='del'){ const cur=v[f]||''; if(!cur && f==='den'){ this._vhSet({box:'num'}); return; } this._vhSet({[f]:cur.slice(0,-1)}); return; }
-    const cur=v[f]||''; if(cur.length>=3) return; const nx=(cur==='0'?'':cur)+k;
+    const cur=v[f]||''; if(cur.length>=(isNum?6:3)) return; const nx=(cur==='0'?'':cur)+k;
     this._vhSet({[f]:nx, coach: v.tone==='warn' ? v.coach : v.coach}); }
   _vhOnKey(e){ const v=this._vh(); if(!v.open || !v.wide) return;
     if(e.key==='Escape'){ e.preventDefault(); this._vhClose(false); return; }
@@ -2745,8 +2795,30 @@ class Component extends DCLogic {
     const w=v.wrong+1;
     if(w>=2){ this._vhSet({wrong:w, coach:'Let\u2019s watch Spark do it.', tone:'warn', shake:v.shake+1, locked:true}); this._vhT=setTimeout(()=>this._vhAuto(true), 1700); return; }
     this._vhSet({wrong:w, coach:S.hint||'Not quite. Look at the hint again.', tone:'warn', shake:v.shake+1, pick:null}); }
+  _vhHl(){ const v=this._vh(); if(!v.open || !v.wide || v.mode==='offer' || v.mode==='done') return null; const H=this._vhH(), S=H && H.steps[v.step||0]; if(!S) return null;
+    if(S.work && S.work.given){ const g=S.work.given, i=(v.gsel==null)?-1:v.gsel; if(i<0) return null; return i<g.length ? (g[i][2]||null) : (S.work.findHl||null); }
+    if(S.hl) return S.hl;
+    const q=this._qsQ(); if(q && q.fig && q.fig.key && !H.line) return {all:true};
+    return null; }
+  /* Dev audit: lists every place a step shows its own answer before the student gives it. Run in the console: __TR._vhLeakAudit() */
+  _vhLeakAudit(){ const out=[], hit=(t,a)=>{ const e=String(a).replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); return t && new RegExp('(^|[^0-9.])'+e+'([^0-9.]|$)').test(String(t)); };
+    this.QSET.forEach((q,qi)=>{ const H=this._vhH(q); if(!H) return; H.steps.forEach((S,si)=>{ const W=S.work||{}, bl=this._vhBlanks(S);
+      const seen={ask:S.ask, note:W.note||S.cap, formula:W.formula, title:S.name, cap:S.cap }; (W.given||[]).forEach((g,i)=>{ seen['given'+i]=g[1]; });
+      (W.lines||[]).forEach((ln,li)=>{ seen['line'+li]=ln.map(p=>(p&&typeof p==='object')?('b' in p?'□':'?'):p).join(''); });
+      const answers=[]; if(bl.length) bl.forEach((b,k)=>answers.push({k:'blank'+k, a:b.ans})); else if(S.input==='num') answers.push({k:'answer',a:S.ans}); else if(S.input==='frac'&&Array.isArray(S.ans)) answers.push({k:'answer',a:S.ans[0]+'/'+S.ans[1]}); else if(S.input==='choice'){ const o=(S.opts||[]).find(x=>x.i===S.ans); if(o) answers.push({k:'choice',a:o.t}); }
+      answers.forEach(an=>{ Object.keys(seen).forEach(f=>{ if(seen[f] && hit(seen[f], an.a)) out.push('Q'+(qi+1)+' step '+(si+1)+' ('+S.name+'): '+f+' shows '+an.k+' = '+an.a+'  →  '+String(seen[f]).slice(0,70)); }); }); }); });
+    return out; }
+  _vhBlanks(S){ const out=[]; ((S.work&&S.work.lines)||[]).forEach(ln=>ln.forEach(p=>{ if(p && typeof p==='object' && 'b' in p) out.push({ans:Number(p.b), u:p.u||'', h:p.h||''}); })); return out; }
+  _vhWorkIdx(v){ return v.wvStep===v.step ? (v.bi||0) : 0; }
+  /* Spark: take the typed value into the working line without moving on to the next step */
+  _vhWorkCommit(){ const v=this._vh(); this._vhSet({wvStep:v.step, bi:this._vhWorkIdx(v)+1, num:'', box:'num'}); }
   _vhCheck(){ const v=this._vh(), H=this._vhH(); if(!H || v.mode!=='steps' || v.locked) return; const S=H.steps[v.step];
     if(S.input==='ack'){ this._vhGo(v,H,true); return; }
+    if(S.input==='work'){ const bl=this._vhBlanks(S), bi=this._vhWorkIdx(v), cur=bl[bi], n=parseFloat(v.num); if(!cur) return;
+      if(isNaN(n)){ this._vhSet({coach:'Type your answer first.', tone:'warn'}); return; }
+      if(Math.abs(n-cur.ans)<1e-9){ if(bi>=bl.length-1){ this._vhSet({wvStep:v.step, bi:bi+1}); this._vhGo(v,H,true); return; } this._vhSet({wvStep:v.step, bi:bi+1, num:'', box:'num', coach:'', tone:'info', wrong:0}); return; }
+      const w=v.wrong+1; if(w>=2){ this._vhSet({wrong:w, coach:'Let\u2019s watch Spark do it.', tone:'warn', shake:v.shake+1, locked:true}); this._vhT=setTimeout(()=>this._vhAuto(true), 1700); return; }
+      this._vhSet({wrong:w, coach:cur.h||S.hint||'Not quite. Look at the formula again.', tone:'warn', shake:v.shake+1}); return; }
     if(S.input==='choice'){ if(v.pick==null){ this._vhSet({coach:'Pick one first.', tone:'warn'}); return; } this._vhGo(v,H,v.pick===S.ans); return; }
     if(S.input==='num'){ const n=parseFloat(v.num); if(isNaN(n)){ this._vhSet({coach:'Type your answer first.', tone:'warn'}); return; } this._vhGo(v,H,Math.abs(n-S.ans)<1e-9); return; }
     const n=parseInt(v.num,10), d=S.den || parseInt(v.den,10);
@@ -2765,7 +2837,7 @@ class Component extends DCLogic {
       this._vhT=setTimeout(()=>this._vhAuto(true), 1700); return; }
     this._vhSet({wrong:w, coach: trap ? trap.msg : S.hint, tone:'warn', shake:v.shake+1, box: (!S.den && trap && trap.n===S.ans[0]) ? 'den' : 'num'}); }
   _vhAuto(fromSteps){ clearTimeout(this._vhT); clearTimeout(this._vhP); clearTimeout(this._vhDT); const H=this._vhH(); if(!H) return;
-    this._vhSet({mode:'steps', demo:true, wide:true, open:true, doneSent:false, playing:true, ended:false, solved:false, review:false, viaSteps:!!fromSteps, locked:true, answers:{}, maxStep:0, step:0, num:'', den:'', pick:null, wrong:0, tone:'info', coach:'', sparkOn:false, ds:{stage:'frac', show:false, hl:null, hops:0, sum:false, done:false}}, ()=>{ this.setState({qsFocus:null});
+    this._vhSet({mode:'steps', demo:true, wide:true, open:true, doneSent:false, playing:true, ended:false, solved:false, review:false, viaSteps:!!fromSteps, locked:true, answers:{}, wvStep:-1, bi:0, maxStep:0, step:0, num:'', den:'', pick:null, wrong:0, tone:'info', coach:'', sparkOn:false, ds:{stage:'frac', show:false, hl:null, hops:0, sum:false, done:false}}, ()=>{ this.setState({qsFocus:null});
       this._vhSparkSay('Okay, watch me! I\u2019ll start again from step 1.');
       this._vhDemoWait(2200, ()=>this._vhDemoStep(0)); }); }
   _vhDemoWait(ms,fn){ clearTimeout(this._vhP); this._vhP=setTimeout(()=>{ const v=this._vh(); if(!v.open || !v.demo) return; if(!v.playing){ this._vhResume=fn; return; } fn(); }, ms); }
@@ -2808,7 +2880,12 @@ class Component extends DCLogic {
       return { acts:[
         {pre:ds({sum:true, hl:'sum'}), preMs:600, el:'[data-vhfr="sum"]', say:'So '+an+' over '+D+' plus '+bn+' over '+D+' is '+sm+' over '+D+'. The bottom stays '+D+', because we’re still counting '+u+'.', fly:1100, hold:3600}
       ].concat(nums(sm, 'I’ll write '+sm+' on top…'), dens(D, '…and '+D+' on the bottom.')), post:'Done! We just added the counts.' }; }
-    const q={el:'#qsQText', say: S.cap ? 'Let me think. '+S.cap : 'Let me read the question again.'};
+    const q={el:'#qsQText', say: (S.sp && S.sp[0]) ? S.sp[0] : (S.cap ? 'Let me think. '+S.cap : 'Let me read the question again.')};
+    if(kind==='ack' && S.work && S.work.given){ const sp=S.sp||[], n=S.work.given.length+(S.work.find?1:0), acts=[{el: document.getElementById('qsFigCard') ? '#qsFigCard' : '#qsQText', say:sp[0], fly:900}];
+      for(let i=0;i<n;i++) acts.push({el:'[data-vhg="'+i+'"]', say:sp[i+1], tap:true, fn:()=>this._vhSet({gsel:i}), fly:800}); return { acts, post:'' }; }
+    if(kind==='work'){ const bl=this._vhBlanks(S), sp=S.sp||[], acts=[{el: document.getElementById('qsFigCard') ? '#qsFigCard' : '#qsQText', say:sp[0]||('Let me work out '+String(S.name||'this').toLowerCase()+'.'), fly:900}];
+      bl.forEach((b,k)=>{ acts.push({el:'[data-vhbox="num"]', say:sp[k+1], tap:true, fn:()=>this._vhSet({box:'num'}), fly:900, hold:420}); [...String(b.ans)].forEach(c=>acts.push(keyTap('num',c))); acts.push({el:'[data-vhbox="num"]', fn:()=>this._vhWorkCommit(), fly:500, hold:700}); });
+      return { acts, post:S.ok||'' }; }
     if(kind==='choice'){ const sweep=(S.opts||[]).filter(o=>o.i!==S.ans).slice(0,2).map(o=>({el:'[data-vhopt="'+o.i+'"]', fly:700, hold:350})), pick=(S.opts||[]).find(o=>o.i===S.ans);
       return { acts:[q].concat(sweep, [{el:'[data-vhopt="'+S.ans+'"]', say:'I’ll go with “'+(pick?pick.t:'this one')+'”.', pick:S.ans, tap:true, fly:800, hold:900}]), post:S.ok||'' }; }
     if(kind==='num') return { acts:[q].concat(digits(S.ans)), post:S.ok||'' };
@@ -2896,13 +2973,13 @@ class Component extends DCLogic {
     const live = !!(H && onQ && v.qIdx===(st.qsIdx||0));
     const open = live && !!v.open, wide = live && !!v.wide;
     const vw=window.innerWidth||1200, vhh=window.innerHeight||800, split = wide && vw>=1000 && vhh<880, short = vhh<720;
-    const R={ vhFigIn:false, vhSlotW:'0px', vhSlotH:'0px', vhStageDir:'column', vhStageGap:'2px', vhWorkFlex:'none', vhOpen:open, vhWide:wide, vhNarrow:!wide, chatLayerW:'372px', vhChipText: v.ended ? 'See the solution' : 'Continue step-by-step',
+    const R={ vhStructOn:false, vhRows:[], vhStructNote:'', vhStructNoteOn:false, vhFigIn:false, vhSlotW:'0px', vhSlotH:'0px', vhStageDir:'column', vhStageGap:'2px', vhWorkFlex:'none', vhOpen:open, vhWide:wide, vhNarrow:!wide, chatLayerW:'372px', vhChipText: v.ended ? 'See the solution' : 'Continue step-by-step',
       vhQBlur: wide ? 'blur(6px) saturate(.85)' : 'none', vhQOp: wide ? '.6' : '1', vhQPE: wide ? 'none' : 'auto',
       vhMiniIcon: v.ended ? (v.solved?'ti-circle-check':'ti-player-play') : 'ti-stairs-up',
       vhMiniText: v.ended ? (v.solved ? 'Solved together: '+(H.line?H.sum[0]+'/'+H.sum[1]:'') : 'Watched the full solution') : (v.mode==='auto' ? 'Watching the solution' : 'Step '+((v.step||0)+1)+' of 3 \u00b7 paused'),
       vhMiniCta: v.ended ? 'Open' : 'Continue', vhCols: split ? 'minmax(0,1.4fr) minmax(0,1fr)' : 'minmax(0,1fr)', vhTipDisp: split||short ? 'none' : 'block',
       vhKeyW: short ? '56px' : '64px', vhKeyH: short ? '44px' : '50px', vhChipOn: live && !wide && !v.finished && !!v.mode && v.mode!=='offer' && v.mode!=='self',
-      vhGotIt:()=>this._vhFinish('retry'), vhReopen:()=>this._vhReopen(), vhClose:()=>this._vhClose(false), vhForget:()=>this._vhClose(true) };
+      vhGotIt:()=>{ if(this._vh().demo) this._vhFinish('retry'); else this._vhPause(); }, vhReopen:()=>this._vhReopen(), vhClose:()=>this._vhClose(false), vhForget:()=>this._vhClose(true) };
     if(!H || !live) return Object.assign(R,{vhIsOffer:false, vhRail:[], vhWork:[], vhChoices:[], vhBars:[], vhAct:null, vhWide:false, vhIsWork:false, vhTicks:[], vhLabels:[], vhHops:[], vhEq:[], vhKeys:[], vhStepDots:[], vhFrames:[]});
     const mode=v.mode||'offer', S=H.steps[Math.min(v.step||0,H.steps.length-1)];
     const left=this._vhTriesLeft();
@@ -2925,7 +3002,7 @@ class Component extends DCLogic {
       vhPickNum:()=>this._vhSet({box:'num'}), vhPickDen:()=>{ if(!S.den) this._vhSet({box:'den'}); },
       vhKeys:['1','2','3','4','5','6','7','8','9','0','del','swap'].map(k=>({ k, label: /\d/.test(k)?k:'', isIcon: !/\d/.test(k),
         icon: k==='del' ? 'ti-backspace' : (v.box==='den' ? 'ti-arrow-up' : 'ti-arrow-down'),
-        op: k==='swap' && (S.den || S.input==='num') ? '.3' : '1', go:()=>this._vhKeyPress(k) })),
+        op: k==='swap' && (S.den || S.input==='num' || S.input==='work') ? '.3' : '1', go:()=>this._vhKeyPress(k) })),
       vhCheck:()=>this._vhCheck(), vhCheckBg: (v.num && (S.den||v.den) && !v.locked) ? '#7048e8' : '#e9ecef', vhCheckInk:(v.num && (S.den||v.den) && !v.locked) ? '#ffffff' : '#adb5bd', vhCheckSh:(v.num && (S.den||v.den) && !v.locked) ? '0 10px 20px -10px rgba(112,72,232,.8)' : 'none',
       vhPadPE: v.locked ? 'none' : 'auto', vhPadOp: (v.locked && !v.demo) ? '.55' : '1',
       vhPlayIcon: v.ended ? 'ti-rotate-clockwise' : v.playing ? 'ti-player-pause-filled' : 'ti-player-play-filled',
@@ -2955,10 +3032,11 @@ class Component extends DCLogic {
       R.vhBadge = auto ? 'Watch it solved' : 'Step-by-step'; R.vhBadgeIcon = auto ? 'ti-player-play-filled' : 'ti-stairs-up'; R.vhBadgeKey = auto ? 'bw' : 'bs';
       R.vhNumOn = !auto && mode!=='done'; R.vhIconOn = auto || mode==='done'; R.vhStepNo = String((v.step||0)+1); R.vhTitleIcon = auto ? 'ti-eye' : 'ti-check';
       R.vhTitle = auto ? H.watchTitle : R.vhTitle;
-      const kind = S.input || 'frac', stepsOn = mode==='steps';
+      const kind = S.input==='work' ? 'num' : (S.input || 'frac'), stepsOn = mode==='steps';
       R.vhLineOn = !!H.line; R.vhWorkOn = !H.line;
       R.vhInFrac = stepsOn && kind==='frac'; R.vhInNum = stepsOn && kind==='num'; R.vhInChoice = stepsOn && kind==='choice'; R.vhPadOn = (R.vhInFrac || R.vhInNum) && !v.review; R.vhDemo = !!v.demo && mode==='steps'; R.vhRowDir = 'row'; R.vhSparkOn = R.vhDemo && !!v.sparkOn; R.vhSparkOp = '0'; R.vhSparkY = v.sparkOn ? '0px' : '4px';
       R.vhUnit = S.unit || ''; R.vhHasUnit = !!S.unit;
+      if(S.input==='work'){ const bl=this._vhBlanks(S), u=(bl[this._vhWorkIdx(v)]||{}).u||''; R.vhUnit=u; R.vhHasUnit=!!u; }
       R.vhChoices = kind==='choice' ? (S.opts||[]).map((o,k)=>{ const on=v.pick===o.i; return { t:o.t, idx:o.i, n:String(k+1), go:()=>this._vhSet({pick:o.i}), bg: on?'#f3f0ff':'#ffffff', bd: on?'2px solid #7048e8':'1px solid #dee2e6', ink: on?'#5f3dc4':'#212529', kb: on?'#7048e8':'#f1f3f5', kbInk: on?'#ffffff':'#495057' }; }) : [];
       const ready = kind==='ack' || (kind==='choice' ? v.pick!=null : kind==='num' ? !!v.num : !!(v.num && (S.den||v.den)));
       R.vhCheckW = kind==='ack' ? '220px' : '150px'; R.vhCheckH = kind==='ack' ? '52px' : '98px'; R.vhCheckDir = kind==='ack' ? 'row-reverse' : 'column'; R.vhCheckGap = kind==='ack' ? '8px' : '4px';
@@ -2986,9 +3064,22 @@ class Component extends DCLogic {
         else if(mode==='steps') R.vhAct={ primary:()=>this._vhCheck(), pLabel: kind==='ack' ? (v.step>=H.steps.length-1 ? 'Got it' : 'Next step') : 'Check step', pOn: ready && !v.locked, secondary:()=>this._vhAuto(true), sLabel:'Watch it solved', sOn:true };
         else if(auto && !v.ended) R.vhAct={ primary:()=>this._vhToggle(), pLabel: v.playing ? 'Pause' : 'Play', pOn:true, secondary:()=>{}, sLabel:'', sOn:false };
         else R.vhAct={ primary:()=>this._vhFinish('next'), pLabel:'Next question', pOn:true, secondary:()=>this._vhAuto(v.viaSteps), sLabel: v.solved ? 'Watch it solved' : 'Watch again', sOn:true }; }
-      if(!H.line){ const lines = auto ? H.frames.slice(0,(v.frame||0)+1).map(f=>f.cap) : (mode==='done' ? [H.steps.map(x=>x.cap).filter(Boolean)[0] || ''] : [S.cap]);
+      R.vhStructOn=false; R.vhRows=[];
+      const WkG = S.work || ((mode==='steps' && S.cap) ? {note:S.cap} : null);
+      if(!H.line && WkG && !auto){ const Wk=WkG, bl=this._vhBlanks(S), bi=this._vhWorkIdx(v), stepDone=(v.step||0)<(v.maxStep||0) || !!v.solved || mode==='done' || !!v.watched; let ix=0;
+        const T=t=>({isT:true,isB:false,t}), rows=[], row=(label,parts,o)=>rows.push(Object.assign({label, parts, cols:'80px 1fr', fs:'15px', fw:'600', fst:'normal', ink:'#343a40', go:()=>{}, cur:'default', bg:'transparent', ring:'none', pad:'0', hasIcon:false, icon:'ti-eye', iconInk:'#adb5bd', gi:''}, o||{}));
+        if(Wk.given){ const gl=Wk.given.slice(), gs=(v.gsel==null)?-1:v.gsel; if(Wk.find) gl.push(['To find',Wk.find]);
+          gl.forEach((g,i)=>{ const on=i===gs, fnd=g[0]==='To find'; row(g[0],[T(g[1])],{cols:'92px 1fr 20px', go:()=>this._vhSet({gsel:on?-1:i}), cur:'pointer', bg:on?'#fff9db':'transparent', ring:on?'inset 0 0 0 1.5px #ffd43b':'none', pad:'6px 8px', hasIcon:true, icon:on?'ti-eye-check':'ti-eye', iconInk:on?'#e67700':'#adb5bd', fw:fnd?'700':'600', ink:fnd?'#212529':'#343a40', gi:String(i)}); }); }
+        if(Wk.note) row('Note',[T(Wk.note)],{fst:'italic', fw:'500', ink:'#5d5880', fs:'14px'});
+        if(Wk.formula) row('Formula',[T(Wk.formula)],{fs:'14.5px'});
+        (Wk.lines||[]).forEach((ln,li)=>{ const parts=ln.map(p=>{ if(!(p && typeof p==='object')) return T(p); if('r' in p) return T((stepDone || p.r<bi) ? String(bl[p.r].ans) : '?'); const k=ix++, filled=stepDone || k<bi, act=!filled && k===bi && !v.review;
+          return {isT:false,isB:true, v: filled ? String(p.b) : (act ? (v.num||'') : ''), w:(String(p.b).length*13+30)+'px', bg: filled?'#ebfbee':(act?'#f3f0ff':'#ffffff'), bd: filled?'1.5px solid #8ce99a':(act?'2px solid #7048e8':'1.5px dashed #ced4da'), ink: filled?'#2b8a3e':'#212529'}; });
+          row(li===0?'Working':'',parts,{fs:'15px', fw:'600'}); });
+        R.vhRows=rows; R.vhStructOn=rows.length>0; R.vhStructNote=Wk.footer||''; R.vhStructNoteOn=!!Wk.footer; }
+      if(!H.line && !R.vhStructOn){ const lines = auto ? H.frames.slice(0,(v.frame||0)+1).map(f=>f.cap) : (mode==='done' ? [H.steps.map(x=>x.cap).filter(Boolean)[0] || ''] : [S.cap]);
         R.vhWork = lines.filter(Boolean).map((t,k,a)=>({t, icon: auto ? (k===a.length-1 && !v.ended ? 'ti-point-filled' : 'ti-check') : 'ti-bulb', col: auto ? (k===a.length-1 ? '#212529' : '#868e96') : '#212529', ic: auto ? (k===a.length-1 && !v.ended ? '#1c7ed6' : '#40c057') : '#f59f00'}));
         R.vhCap=''; } else R.vhWork=[];
+      if(R.vhStructOn) R.vhWorkOn=false;
       R.vhWatchBg = (v.wrong||0)>=1 ? '#e7f5ff' : 'transparent'; R.vhWatchInk = (v.wrong||0)>=1 ? '#1864ab' : '#495057';
       R.vhBars = auto ? R.vhFrames.map((f,i)=>({go:f.go, cur:'pointer', bg:f.bg, key:f.key, cls:f.cls, dur:f.dur, ps:f.ps}))
         : H.steps.map((x,i)=>({go:()=>{}, cur:'default', bg: (mode==='done'&&v.solved)||i<(v.step||0) ? '#7048e8' : i===(v.step||0) ? '#d0bfff' : '#e9ecef', key:'s'+i, cls:'', dur:'0s', ps:'paused'})); }
@@ -3004,7 +3095,7 @@ class Component extends DCLogic {
     const P=x=>(x/900*100).toFixed(2)+'%';
     Object.assign(R,{ vhXAP:P(xA), vhXBP:P(xB), vhMidAP:P((x0+xA)/2), vhMidBP:P((xA+xB)/2), vhXA:xA.toFixed(1), vhXB:xB.toFixed(1), vhMidA:((x0+xA)/2).toFixed(1), vhMidB:((xA+xB)/2).toFixed(1),
       vhAOp: dm ? ((ds.hops||0)>=an?'1':'0') : (rank>=2?'1':'0'), vhBOp: dm ? ((ds.hops||0)>=tot?'1':'0') : (rank>=3?'1':'0'), vhDoneOp: dm ? (ds.done?'1':'0') : (rank>=4?'1':'0'), vhBDelay: dm ? '0s' : (rank>=3 ? (H.b[0]*0.04)+'s' : '0s'), vhADelay: dm ? '0s' : (rank>=2 ? (an*0.055)+'s' : '0s'),
-      vhALab: an+' ninths', vhBLab: (H.line?H.b[0]:0)+' more ninths', vhAVal: an+'/'+D, vhBVal: tot+'/'+D, vhMixed: H.line ? '= '+H.mixed[0]+' '+H.mixed[1]+'/'+H.mixed[2] : '' });
+      vhALab: an+' ninths', vhBLab: (H.line?H.b[0]:0)+' more ninths', vhAVal: an+'/'+D, vhBVal: (!dm && !v.review && mode==='steps' && (v.step||0)>=H.steps.length-1) ? '?' : tot+'/'+D, vhMixed: H.line ? '= '+H.mixed[0]+' '+H.mixed[1]+'/'+H.mixed[2] : '' });
     /* the working, built up during the watch-through */
     const fr=!H.line ? 0 : v.watched ? 9 : v.mode==='auto'||(v.mode==='done'&&!v.solved) ? (H.frames[v.frame||0]||{}).eq||3 : 0;
     const T=!H.line ? [] : [{f:1,n:H.a[0],d:D},{o:'+'},{f:1,n:H.b[0],d:D},{o:'='},{f:1,n:H.a[0]+' + '+H.b[0],d:D},{o:'='},{f:1,n:tot,d:D},{o:'='},{m:1,w:H.mixed[0],n:H.mixed[1],d:H.mixed[2]}];
@@ -3490,7 +3581,7 @@ class Component extends DCLogic {
       base.qsVerdictIcon = right ? 'ti-check' : 'ti-x';
       base.qsWhy = q.why ? (right ? (q.why.ok||'') : q.why.no) : '';
     }
-    const fig = q.fig ? this._qsFigure(q, reveal) : (fbOnly ? this._qsFigure({fig:q.fbFig}, true) : null);
+    const fig = q.fig ? this._qsFigure(q, reveal, this._vhHl()) : (fbOnly ? this._qsFigure({fig:q.fbFig}, true) : null);
     if(fig){
       base.qsHasFig = true; base.qsFigTf='none'; base.qsLeftPadL='0px'; base.qsGridCols = 'minmax(0,380px) auto'; base.qsGridGap='48px'; base.qsFigOp='1'; base.qsFigDelay= fbOnly ? '.22s' : '0s';
       base.qsFigPolys = fig.polys; base.qsFigLines = fig.lines; base.qsFigTexts = fig.texts;
@@ -3766,6 +3857,7 @@ class Component extends DCLogic {
     const dis=st.qsDiscard||0; a.qsDisInk = dis ? '#c92a2a' : '#212529'; a.qsDisDeco = dis ? 'line-through' : 'none'; a.qsDisOp = dis===2 ? '0' : '1'; a.qsDisCls = dis===1 ? 'vh-shake' : '';
     if(dis){ a.qsFieldBorder='#ffa8a8'; a.qsFieldBg='#fff5f5'; a.qsMainSubOff=true; a.qsMainSubState='disabled'; a.qsMainSubSh='none'; }
     const again = st.qsHintFor===(st.qsIdx||0) && !st.qsSubmitted; a.qsSubmitLabel = again ? 'Submit again' : 'Submit'; a.qsSubIco = again; a.qsSkipOff=!!st.qsSubmitted;
+    { const vv=st.vh||{}; if(vv.open && vv.paused && !b.vhWide && vv.qIdx===(st.qsIdx||0) && !st.qsSubmitted){ a.qsSkipLabel='Step-by-step'; a.qsSkip=()=>this._vhReopen(); a.qsSkipOff=false; a.qsSkipDisp='flex'; a.qsSkipTab=0; } }
     if(b.vhWide && b.vhAct){ const g=b.vhAct; a.calcShow=false; a.calcOpen=false; a.qsSubIco=false;
       Object.assign(a,{ qsUnsubmitted:true, qsShowNext:false, qsCanRetry:false, qsRetryNextDisp:'none', qsSubmit:g.primary, qsSubmitLabel:g.pLabel,
         qsMainSubOff:!g.pOn, qsMainSubState:g.pOn?'emphasis':'disabled', qsMainSubSh:g.pOn?'':'none',
