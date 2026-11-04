@@ -10,19 +10,29 @@ Locked rules for the step-by-step panel ("solution panel") in `Practice Room - G
 
 ## 2. A question's picture joins the solution
 
-The picture shown with the question is **the same picture** all the way through. It is never swapped for a copy, never shrunk, and never hidden while help opens.
+The picture shown with the question is **the same picture** all the way through, and it has **one home**: it sits in the same place beside the question and inside the solution panel. It never moves when help opens; the panel opens around it.
 
-- When the panel appears (second wrong answer), the panel takes the full width. The picture card stays where it is for 380 ms while the panel lands, then **slides into the panel** and rests on the right of the explanation, vertically centred against the text.
-- It keeps its size: the card is the same width and height inside the panel as it was beside the question (for example 460 × 312 for the grain store).
-- To make that possible the panel reserves an empty slot of exactly the card's size on the right of its content area, with 28 between the explanation text and the slot. The card sits above the panel while it travels (z-index 8).
-- The slide takes 760 ms with an ease-out (quartic). The card follows its slot on every frame, so it lands exactly in the slot even while the panel is still settling.
-- When the panel closes (Got it, or Spark finishing), the card slides back to its original place in 420 ms.
-- **Nothing may crop the picture.** The card leaves the grid cell it normally sits in, so while it travels the cell around it must not clip: the cell's overflow is `visible` whenever the panel is open (`qsFigCellOv`), and as a guard the code also lifts `overflow` on every ancestor between the card and the question area for the duration of the move, then restores it 460 ms after the card is back. Any new wrapper added around the picture is covered by the guard; do not add a clip that the guard does not lift.
-- **Self-check.** When the card lands, the code checks that it sits fully inside the panel's content area and logs a console warning naming this rule if it does not. A picture that is too large for the panel is a content problem: shrink the picture, never let it overflow.
-- To verify a change: open help on a question with a picture at 1024 × 768, 1280 × 720 and 1440 × 900 and confirm the whole picture is visible each time.
+**Where the home is (measured in design units, the same at every window size).**
+- Horizontally: the picture's right edge is **42 in from the right edge of the question area**. That is the panel's own inset: 2 border + 22 panel padding + 18 content padding.
+- Vertically: the picture is centred on the panel's centre line. The panel's content centre sits about 2.5 below the panel's centre, so the question area shifts its columns down by **129** (half of the 204 reserved for the answer buttons, less the 80 the panel stops short of the bottom, plus the 2.5).
+- Size: the picture card keeps its size (for example 460 × 312 for the grain store) beside the question and inside the panel.
+
+**The layout that goes with it.**
+- With a picture, the question area is two columns: the options on the left, taking the space the picture leaves, and the picture on the right. Gap 40.
+- Options are **420 wide** (wider than the 358 used without a picture) and centred in their column, so the pair reads as balanced with the picture pushed to the right.
+- The options and the picture share one centre line (the same vertical shift is applied to both).
+- Questions whose picture only appears as feedback, after answering, keep the old centred layout.
+
+**When the panel opens.**
+- The panel takes the full width and reserves an empty slot of exactly the card's size at the picture's home. Because the home and the slot are the same place, the card does not travel (offset 0 at 1024 × 768, 1280 × 720 and 1440 × 900).
+- The card sits above the panel (z-index 8) so it reads as part of the explanation.
+- The code still glues the card to its slot on every frame, so if a future layout change puts the two apart by a few units the card closes the gap smoothly (760 ms) instead of jumping. When the panel closes it eases back in 420 ms. Aim for an offset of zero; treat any visible movement as a layout bug.
+- **Nothing may crop the picture.** While the card is moving the cell around it must not clip: the cell's overflow is `visible` whenever the panel is open (`qsFigCellOv`), and as a guard the code also lifts `overflow` on every ancestor between the card and the question area for the duration of the move, then restores it 460 ms after the card is back. Do not add a clip the guard does not lift.
+- **Self-check.** When the card lands, the code checks it sits fully inside the panel's content area and logs a console warning naming this rule if it does not. A picture too large for the panel is a content problem: shrink the picture, never let it overflow.
+- To verify a layout change: open help on a question with a picture at 1024 × 768, 1280 × 720 and 1440 × 900. The picture must be fully visible, in the same place before and after, and level with the options.
 - Questions with no picture keep the explanation text centred on its own. Number-line questions (the fraction question) draw their own line in the panel and have no separate picture.
 
-Code: `renderVals` (the `vhWide` block) reserves the slot (`vhFigIn`, `vhSlotW`, `vhSlotH`) and lifts the card (`qsFigZ`); the slide and the return are in `componentDidUpdate` (`#qsFigCard`, `#vhFigSlot`); the picture itself is drawn by `_qsFigure`.
+Code: `_rv0` (the figure branch) sets the two-column layout, the 42 inset (`qsFigMargin`) and the shift (`qsColShift`); `renderVals` (the `vhWide` block) reserves the slot (`vhFigIn`, `vhSlotW`, `vhSlotH`) and lifts the card (`qsFigZ`); the glue is in `componentDidUpdate` (`#qsFigCard`, `#vhFigSlot`).
 
 ## 3. The step rail (left of the panel)
 

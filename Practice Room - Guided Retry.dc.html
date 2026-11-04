@@ -859,7 +859,7 @@
               <div class="pq-q" style="width:100%;font-weight:700;color:#212529;letter-spacing:-.01em;font-size:{{ qsQFs }};display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 10px;"><sc-for list="{{ qsParts }}" as="p" hint-placeholder-count="1"><sc-if value="{{ p.isT }}" hint-placeholder-val="{{ true }}"><span style="white-space:pre-wrap;text-wrap:balance;">{{ p.t }}</span></sc-if><sc-if value="{{ p.isF }}" hint-placeholder-val="{{ false }}"><span data-qf="{{ p.key }}" style="display:inline-flex;flex-direction:column;align-items:center;padding:2px 10px;border-radius:12px;line-height:1.05;background:{{ p.bg }};box-shadow:{{ p.sh }};transition:background .3s ease, box-shadow .3s ease;"><span>{{ p.n }}</span><span style="align-self:stretch;height:3px;margin:2px 0;border-radius:2px;background:#212529;"></span><span>{{ p.d }}</span></span></sc-if></sc-for></div>
             </div>
             <div id="qsBody" style="position:relative;box-sizing:border-box;padding-bottom:{{ qsColPadB }};flex:1;min-height:0;display:grid;grid-template-columns:{{ qsGridCols }};column-gap:{{ qsGridGap }};row-gap:24px;grid-template-rows:minmax(0,1fr);align-items:center;justify-content:center;visibility:{{ qsBodyVis }};transition:grid-template-columns .5s cubic-bezier(.2,.8,.2,1),column-gap .5s cubic-bezier(.2,.8,.2,1);">
-            <div style="min-width:0;min-height:0;box-sizing:border-box;padding-left:{{ qsLeftPadL }};display:flex;flex-direction:column;justify-content:center;">
+            <div style="min-width:0;min-height:0;box-sizing:border-box;padding-left:{{ qsLeftPadL }};padding-top:{{ qsColShift }};display:flex;flex-direction:column;justify-content:center;">
               <div style="width:100%;flex:none;display:flex;flex-direction:column;align-items:stretch;gap:36px;">
 
 
@@ -1357,7 +1357,7 @@
             </div>
             <!-- RIGHT PANEL · 35% — the question's figure, shown from the start. On submit the
                  parts that carry the answer light up on the same drawing, with the verdict below. -->
-            <div style="min-width:0;min-height:0;max-height:100%;align-self:stretch;padding:0;display:flex;overflow:{{ qsFigCellOv }};opacity:{{ qsFigOp }};transform:{{ qsFigTf }};transition:opacity .3s ease {{ qsFigDelay }},transform .4s cubic-bezier(.2,.8,.3,1) {{ qsFigDelay }};">
+            <div style="min-width:0;min-height:0;max-height:100%;align-self:stretch;padding:{{ qsColShift }} 0 0 0;box-sizing:border-box;display:flex;overflow:{{ qsFigCellOv }};opacity:{{ qsFigOp }};transform:{{ qsFigTf }};transition:opacity .3s ease {{ qsFigDelay }},transform .4s cubic-bezier(.2,.8,.3,1) {{ qsFigDelay }};">
               <sc-if value="{{ bdPanelOn }}" hint-placeholder-val="{{ false }}">
                 <div style="position:relative;flex:1;min-width:0;min-height:0;align-self:{{ bdPanelAlign }};aspect-ratio:{{ bdPanelAR }};border-radius:var(--cc-r-shape);background:{{ bdPanelBg }};box-shadow:{{ bdPanelSh }};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:{{ bdPanelPad }};overflow:hidden;user-select:none;">
                   <span aria-hidden="true" style="position:absolute;inset:0;border-radius:inherit;box-shadow:{{ bdPanelRing }};animation:{{ bdPanelAnim }};transition:box-shadow .6s ease;pointer-events:none;z-index:3;"></span>
@@ -1391,7 +1391,7 @@
 
               </sc-if>
               <sc-if value="{{ qsHasFig }}" hint-placeholder-val="{{ false }}">
-                <div id="qsFigCard" style="position:relative;z-index:{{ qsFigZ }};flex:none;margin:auto;max-width:100%;min-height:0;box-sizing:border-box;border-radius:var(--cc-r-shape);background:#ffffff;box-shadow:inset 0 0 0 1px #e9ecef;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:16px 20px;overflow:hidden;">
+                <div id="qsFigCard" style="position:relative;z-index:{{ qsFigZ }};flex:none;margin:{{ qsFigMargin }};max-width:100%;min-height:0;box-sizing:border-box;border-radius:var(--cc-r-shape);background:#ffffff;box-shadow:inset 0 0 0 1px #e9ecef;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:16px 20px;overflow:hidden;">
                   <div id="qsFigBox" style="position:relative;width:420px;max-width:100%;aspect-ratio:3/2;flex:none;margin:auto 0;">
                   <svg viewBox="0 0 300 200" style="position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible;">
                     <sc-for list="{{ qsFigPolys }}" as="p" hint-placeholder-count="0">
@@ -3424,7 +3424,7 @@ class Component extends DCLogic {
       : (v.qsWhy || (v.ixMsgOn ? v.ixMsg : '') || (q && q.why ? (ok ? q.why.ok : q.why.no) : '') || '');
     /* Long options read better left-aligned and a little wider; short ones stay centred. */
     const cq=st.step===this.IDX.qset ? this._qsQ() : null, longOpt=!!(cq && Array.isArray(cq.opts) && cq.opts.some(o=>typeof o==='string' && o.length>26));
-    v.qsOptAlign = longOpt ? 'left' : 'center'; v.qsOptW = longOpt ? (v.qsHasFig ? '380px' : '460px') : '358px';
+    v.qsOptAlign = longOpt ? 'left' : 'center'; v.qsOptW = (v.qsHasFig && v.qsColShift!=='0px') ? '420px' : (longOpt ? (v.qsHasFig ? '380px' : '460px') : '358px');
     Object.assign(v,{ qsFbOn:on, qsFbText: ok?'Correct':(retry && !this._vhH() ? 'Not quite \u00b7 '+(left===1?'1 try left':left+' tries left') : 'Not quite'), qsFbIcon: ok?'ti-check':'ti-x', qsFbFg: ok?'#2b8a3e':'#c92a2a', qsFbBg: ok?'#ebfbee':'#fff5f5',
       qsFbWhy: why, qsFbHasWhy: !!why, qsFbNote: (on && v.bdFbNote) || '', qsFbHasNote: !!(on && v.bdFbNote), qsVerdictOn:false, qsImgFbOn:false, ixMsgOn:false });
     if(on && !hintOn && st.qsGuideAt===(st.qsIdx||0) && !ok && !(st.vh&&st.vh.wide)) Object.assign(v,{ qsFbText:'Still not right', qsFbIcon:'ti-x', qsFbFg:'#c92a2a', qsFbBg:'#fff5f5', qsFbWhy:'Let\u2019s try to solve it step by step.', qsFbHasWhy:true, qsFbHasNote:false });
@@ -3436,7 +3436,7 @@ class Component extends DCLogic {
     const st=this.state, on = st.step===this.IDX.qset;
     const q = on ? this._qsQ() : null;
     const base = { isQset:on, qsStats:[], qsBars:[], qsOptions:[], qsLeft:[], qsRight:[], qsPaths:[], qsMatchDots:[],
-      qsIsChoice:false, qsIsImgChoice:false, qsImgOpts:[], qsIsField:false, qsIsMatch:false, qsIsOrder:false, qsOrder:[], qsQ:'', qsParts:[], qsQFs:'', qsFigZ:'auto', qsFigCellOv:'hidden',
+      qsIsChoice:false, qsIsImgChoice:false, qsImgOpts:[], qsIsField:false, qsIsMatch:false, qsIsOrder:false, qsOrder:[], qsQ:'', qsParts:[], qsQFs:'', qsFigZ:'auto', qsFigCellOv:'hidden', qsFigMargin:'auto', qsColShift:'0px',
       qsIsIx:false, ixSvgOn:false, ixGridLines:[], ixPolys:[], ixLines:[], ixHits:[], ixSpots:[], ixTexts:[], ixMarks:[],
       ixSliderOn:false, ixMin:0, ixMax:10, ixStep:1, ixVal:0, ixSlide:()=>{}, ixRead:'', ixReadInk:'#495057',
       ixChipsOn:false, ixChips:[], ixSlotsOn:false, ixSlots:[], ixBucketsOn:false, ixBuckets:[], ixStepsOn:false, ixSteps:[],
@@ -3584,6 +3584,8 @@ class Component extends DCLogic {
     const fig = q.fig ? this._qsFigure(q, reveal, this._vhHl()) : (fbOnly ? this._qsFigure({fig:q.fbFig}, true) : null);
     if(fig){
       base.qsHasFig = true; base.qsFigTf='none'; base.qsLeftPadL='0px'; base.qsGridCols = 'minmax(0,380px) auto'; base.qsGridGap='48px'; base.qsFigOp='1'; base.qsFigDelay= fbOnly ? '.22s' : '0s';
+      /* A question's own picture has one home: where its slot in the solution panel is (42 in from the right, level with the panel's centre), so it never moves when help opens. */
+      if(!fbOnly){ base.qsGridCols='minmax(0,1fr) auto'; base.qsGridGap='40px'; base.qsFigMargin='auto 42px auto auto'; base.qsColShift=((this.state.step===this.IDX.qset && !this.state.qsDone) ? '129px' : '0px'); }
       base.qsFigPolys = fig.polys; base.qsFigLines = fig.lines; base.qsFigTexts = fig.texts;
       if(done){
         base.qsVerdictOn = true;
