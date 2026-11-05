@@ -8,6 +8,15 @@ Locked rules for the step-by-step panel ("solution panel") in `Practice Room - G
 - It starts at the bottom of the question text and ends 80 above the bottom of the canvas. It is full width, with a 16 radius and a 2 border.
 - When the chat opens or closes the canvas keeps one size and only slides sideways. Nothing inside the panel resizes.
 
+**The panel fades from top to bottom: border and fill.** The panel is strongest at the top edge and gone by the bottom, so the Check step and Watch it solved buttons under it read as part of it.
+- **Fill of the page area:** white at the top, linear to fully transparent at the bottom edge (the white belongs to the panel itself; the page div on top of it has no fill).
+- **Fill of the step rail:** the rail's grey (`#f8f9fa`) fades the same way, linear to transparent at the bottom. Its 1 px divider line fades with it.
+- **Border:** 2 wide, drawn as a hollow ring that is part of the panel (a pseudo-element, `.vh-frame::after`): full accent colour from 0 to 12 % of the height, fading to transparent by 92 %. The ring is the outer edge minus the inner edge, so the rounded corners stay clean. The accent follows the mode (purple for step-by-step, blue for Spark watching, green when solved).
+- **Gradient pitfall:** every gradient on an element that has a border (the panel's white fill and the ring) must use `background-origin: border-box` and `no-repeat`. By default a gradient is sized to the inner (padding) area and repeats into the 2 px border band, so the bottom 2 px restart from the strongest colour and draw a solid line along the bottom edge (a purple line for the ring, a white line for the fill). Always check the bottom edge by eye after touching the frame.
+- **Shadow:** only a faint glow above the top edge (`0 -10px 26px -18px`). No shadow below, no uniform outline.
+- **The ring must not be a separate element behind the panel.** A layer behind it shows on its own while the panel is still fading in, which reads as a stray coloured block just before the panel opens. Anything that belongs to the frame is part of the panel.
+- **The question's own answer blocks are hidden while the panel is open.** Because the panel fill becomes transparent, anything left behind it would show through (options, the red wrong-answer outline). The answer blocks fade out (0.2 s) when the panel opens and back in when it closes. Only the answer blocks are hidden: the panel and the picture are never part of that group.
+
 ## 2. A question's picture joins the solution
 
 The picture shown with the question is **the same picture** all the way through, and it has **one home**: it sits in the same place beside the question and inside the solution panel. It never moves when help opens; the panel opens around it.
@@ -27,7 +36,7 @@ The picture shown with the question is **the same picture** all the way through,
 - The panel takes the full width and reserves an empty slot of exactly the card's size at the picture's home. Because the home and the slot are the same place, the card does not travel (offset 0 at 1024 × 768, 1280 × 720 and 1440 × 900).
 - The card sits above the panel (z-index 8) so it reads as part of the explanation.
 - **The picture must follow the canvas, not the screen.** When the chat opens or closes the whole canvas slides sideways (the question area, the panel and the picture all move together). Anything that places the picture relative to the slot must therefore work from positions read **on the same frame** and must never reuse a number measured earlier. The glue re-reads the card's natural position and the slot's position on every frame; a position measured once and reused made the picture drift out of the panel when the chat opened.
-- A recorded picture size is only trusted when it is a sensible size (over 150 × 100); a reading taken while the question area's columns are still animating is ignored.
+- **The slot always takes the card's real size.** The size recorded before the panel opens is only a starting value (and is ignored unless sensible, over 150 × 100). On every frame the glue copies the card's current size onto the slot, so a size read while the question area's columns were still animating can never leave the card larger than its slot and overhanging the panel.
 - To verify: with the panel open, open and close the chat. At rest the picture must be level with its slot (offset 0) and fully inside the panel's content area with the chat open and with it closed.
 - The code still glues the card to its slot on every frame, so if a future layout change puts the two apart by a few units the card closes the gap smoothly (760 ms) instead of jumping. When the panel closes it eases back in 420 ms. Aim for an offset of zero; treat any visible movement as a layout bug.
 - **Nothing may crop the picture.** While the card is moving the cell around it must not clip: the cell's overflow is `visible` whenever the panel is open (`qsFigCellOv`), and as a guard the code also lifts `overflow` on every ancestor between the card and the question area for the duration of the move, then restores it 460 ms after the card is back. Do not add a clip the guard does not lift.
@@ -155,4 +164,10 @@ Anything visible while a blank is waiting for the student must not contain that 
 - The keypad feeds the active blank of a working step, the number box of a number step, and the top or bottom box of a fraction step.
 - A number can be up to 6 digits in a working or number step, and 3 digits in a fraction box.
 - Always test a new step type by clicking the keys, not only by setting values in code.
+
+## 14. Changing step is a fade, not a slide
+
+- When the student moves from one step to the next, the step's content (title, working card, lines, coach messages) **fades in** (about 0.3 s, opacity only). Nothing slides in from the side or rises from below: a slide reads as a new page loading, and the student has not left the problem.
+- The rail, the picture and the panel frame stay still while the content fades.
+- New animations inside the panel are opacity-only unless a rule above says otherwise (the picture sliding into its slot is the only movement).
 

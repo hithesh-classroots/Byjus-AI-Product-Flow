@@ -247,13 +247,15 @@
   @keyframes bdAttnB{0%,100%{box-shadow:inset 0 0 0 2px #7950f2}50%{box-shadow:inset 0 0 0 5px rgba(121,80,242,.55)}}
   @keyframes vhPop{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:none}}
   .vh-pop{animation:vhPop .42s cubic-bezier(.22,1,.36,1) both;}
-  @keyframes vhIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-  .vh-in{animation:vhIn .45s cubic-bezier(.22,1,.36,1) .25s both;}
-  .vh-say{animation:vhIn .35s cubic-bezier(.22,1,.36,1) both;}
+  @keyframes vhIn{from{opacity:0}to{opacity:1}}
+  .vh-in{animation:vhIn .45s ease .25s both;}
+  .vh-say{animation:vhIn .3s ease both;}
   @keyframes vhSheet{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
   .vh-sheet{animation:vhSheet .55s cubic-bezier(.22,1,.36,1) both;}
-  @keyframes vhPage{from{opacity:0;transform:translateX(48px)}to{opacity:1;transform:none}}
-  .vh-page{animation:vhPage .45s cubic-bezier(.22,1,.36,1) both;}
+  /* the panel's frame: a hollow 2px ring (outer edge minus inner edge, so the rounded corners stay clean) that is strongest at the top and gone near the bottom */
+  .vh-frame::after{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;border:2px solid transparent;pointer-events:none;background-image:linear-gradient(180deg,var(--vh-ring) 0%,var(--vh-ring) 12%,rgba(255,255,255,0) 92%);background-origin:border-box;background-clip:border-box;background-repeat:no-repeat;-webkit-mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0) border-box;-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) padding-box exclude,linear-gradient(#000 0 0) border-box;}
+  @keyframes vhPage{from{opacity:0}to{opacity:1}}
+  .vh-page{animation:vhPage .35s ease both;}
   @keyframes vhGrow{from{clip-path:inset(calc(100% - 112px) 6% 0 6% round 12px)}to{clip-path:inset(0 0 0 0 round 16px)}}
   .vh-grow{animation:vhGrow .75s cubic-bezier(.22,1,.36,1) both;}
   @keyframes vhFade{0%,40%{opacity:0}100%{opacity:1}}
@@ -861,6 +863,7 @@
             <div id="qsBody" style="position:relative;box-sizing:border-box;padding-bottom:{{ qsColPadB }};flex:1;min-height:0;display:grid;grid-template-columns:{{ qsGridCols }};column-gap:{{ qsGridGap }};row-gap:24px;grid-template-rows:minmax(0,1fr);align-items:center;justify-content:center;visibility:{{ qsBodyVis }};transition:grid-template-columns .5s cubic-bezier(.2,.8,.2,1),column-gap .5s cubic-bezier(.2,.8,.2,1);">
             <div style="min-width:0;min-height:0;box-sizing:border-box;padding-left:{{ qsLeftPadL }};padding-top:{{ qsColShift }};display:flex;flex-direction:column;justify-content:center;">
               <div style="width:100%;flex:none;display:flex;flex-direction:column;align-items:stretch;gap:36px;">
+                <div style="display:flex;flex-direction:column;align-items:stretch;gap:36px;opacity:{{ qsBehindOp }};pointer-events:{{ qsBehindPE }};transition:opacity .2s ease;">
 
 
                 <!-- SINGLE + MULTIPLE CHOICE + TRUE/FALSE -->
@@ -1198,9 +1201,10 @@
                   </div>
                 </sc-if>
 
+                </div>
                 <sc-if value="{{ vhWide }}" hint-placeholder-val="{{ false }}">
-                <div id="vhBox" data-noflip="1" style="position:absolute;left:0;top:0;bottom:80px;width:{{ vhBoxW }};z-index:6;box-sizing:border-box;display:flex;border-radius:16px;background:#ffffff;border:2px solid {{ vhRingC }};box-shadow:0 0 0 5px {{ vhRingS }}, 0 18px 36px -22px {{ vhRingG }};overflow:hidden;transition:border-color .45s ease, box-shadow .45s ease;">
-                  <div class="vh-fade" style="flex:none;width:196px;box-sizing:border-box;display:flex;flex-direction:column;gap:6px;padding:14px 10px;overflow-y:auto;scrollbar-width:none;background:#f8f9fa;border-right:1px solid #f1f3f5;">
+                <div id="vhBox" class="vh-frame" data-noflip="1" style="--vh-ring:{{ vhRingC }};position:absolute;left:0;top:0;bottom:80px;width:{{ vhBoxW }};z-index:6;box-sizing:border-box;display:flex;border-radius:16px;border:2px solid transparent;background-image:linear-gradient(180deg,#ffffff 0%,rgba(255,255,255,0) 100%);background-origin:border-box;background-repeat:no-repeat;box-shadow:0 -10px 26px -18px {{ vhRingG }};overflow:hidden;">
+                  <div class="vh-fade" style="flex:none;width:196px;box-sizing:border-box;display:flex;flex-direction:column;gap:6px;padding:14px 10px;overflow-y:auto;scrollbar-width:none;background:linear-gradient(180deg,#f8f9fa 0%,rgba(248,249,250,0) 100%);border-right:1px solid #f1f3f5;border-image:linear-gradient(180deg,#f1f3f5 0%,rgba(241,243,245,0) 100%) 1;">
                     <sc-for list="{{ vhRail }}" as="r" hint-placeholder-count="5">
                       <sc-if value="{{ r.isAct }}" hint-placeholder-val="{{ true }}">
                         <div style="display:flex;align-items:center;gap:9px;height:30px;padding:0 6px;font-size:14px;font-weight:{{ r.aW }};color:{{ r.aTxt }};white-space:nowrap;">
@@ -3126,7 +3130,8 @@ class Component extends DCLogic {
           c.style.transform='none'; this._figT={x:0,y:0}; const t0=performance.now(), D=760; this._figLive=true;
           /* Every frame: find where the card would be without our own offset, then close the gap to the slot. The canvas itself slides when the chat opens or closes, so nothing may be measured once and reused. */
           const tick=(now)=>{ const sl=document.getElementById('vhFigSlot'), cc=document.getElementById('qsFigCard'); if(!sl||!cc){ this._figLive=false; return; }
-            const cr=cc.getBoundingClientRect(), sr=sl.getBoundingClientRect(), T=this._figT||{x:0,y:0}, nl=cr.left-T.x*sc, nt=cr.top-T.y*sc, p=Math.min(1,(now-t0)/D), e=1-Math.pow(1-p,4);
+            const cr=cc.getBoundingClientRect(); { const w=cr.width/sc, h=cr.height/sc; if(w>150 && h>100 && (Math.abs(w-(parseFloat(sl.style.width)||0))>0.5 || Math.abs(h-(parseFloat(sl.style.height)||0))>0.5)){ sl.style.width=w+'px'; sl.style.height=h+'px'; this._figSize={w:Math.round(w), h:Math.round(h)}; } }
+            const sr=sl.getBoundingClientRect(), T=this._figT||{x:0,y:0}, nl=cr.left-T.x*sc, nt=cr.top-T.y*sc, p=Math.min(1,(now-t0)/D), e=1-Math.pow(1-p,4);
             const tx=(sr.left-nl)/sc*e, ty=(sr.top-nt)/sc*e; this._figT={x:tx,y:ty}; cc.style.transform=(Math.abs(tx)<0.05 && Math.abs(ty)<0.05) ? 'none' : 'translate('+tx+'px,'+ty+'px)';
             if(p>=1 && !this._figChecked){ this._figChecked=true; const r2=cc.getBoundingClientRect(), st=sl.parentElement.getBoundingClientRect(); if(r2.left<st.left-1||r2.right>st.right+1||r2.top<st.top-1||r2.bottom>st.bottom+1) console.warn('[practice] the question picture does not fit inside the solution panel; see docs/practice-solution-panel.md rule 2'); }
             this._figRaf=requestAnimationFrame(tick); };
@@ -3438,7 +3443,7 @@ class Component extends DCLogic {
     const st=this.state, on = st.step===this.IDX.qset;
     const q = on ? this._qsQ() : null;
     const base = { isQset:on, qsStats:[], qsBars:[], qsOptions:[], qsLeft:[], qsRight:[], qsPaths:[], qsMatchDots:[],
-      qsIsChoice:false, qsIsImgChoice:false, qsImgOpts:[], qsIsField:false, qsIsMatch:false, qsIsOrder:false, qsOrder:[], qsQ:'', qsParts:[], qsQFs:'', qsFigZ:'auto', qsFigCellOv:'hidden', qsFigMargin:'auto', qsColShift:'0px',
+      qsIsChoice:false, qsIsImgChoice:false, qsImgOpts:[], qsIsField:false, qsIsMatch:false, qsIsOrder:false, qsOrder:[], qsQ:'', qsParts:[], qsQFs:'', qsFigZ:'auto', qsFigCellOv:'hidden', qsFigMargin:'auto', qsColShift:'0px', qsBehindOp:'1', qsBehindPE:'auto',
       qsIsIx:false, ixSvgOn:false, ixGridLines:[], ixPolys:[], ixLines:[], ixHits:[], ixSpots:[], ixTexts:[], ixMarks:[],
       ixSliderOn:false, ixMin:0, ixMax:10, ixStep:1, ixVal:0, ixSlide:()=>{}, ixRead:'', ixReadInk:'#495057',
       ixChipsOn:false, ixChips:[], ixSlotsOn:false, ixSlots:[], ixBucketsOn:false, ixBuckets:[], ixStepsOn:false, ixSteps:[],
@@ -3862,6 +3867,8 @@ class Component extends DCLogic {
     if(dis){ a.qsFieldBorder='#ffa8a8'; a.qsFieldBg='#fff5f5'; a.qsMainSubOff=true; a.qsMainSubState='disabled'; a.qsMainSubSh='none'; }
     const again = st.qsHintFor===(st.qsIdx||0) && !st.qsSubmitted; a.qsSubmitLabel = again ? 'Submit again' : 'Submit'; a.qsSubIco = again; a.qsSkipOff=!!st.qsSubmitted;
     { const vv=st.vh||{}; if(vv.open && vv.paused && !b.vhWide && vv.qIdx===(st.qsIdx||0) && !st.qsSubmitted){ a.qsSkipLabel='Step-by-step'; a.qsSkip=()=>this._vhReopen(); a.qsSkipOff=false; a.qsSkipDisp='flex'; a.qsSkipTab=0; } }
+    /* the question's own answer area sits behind the panel: hide it while the panel is open, the panel's fill fades so it must not show through */
+    a.qsBehindOp = b.vhWide ? '0' : '1'; a.qsBehindPE = b.vhWide ? 'none' : 'auto';
     if(b.vhWide && b.vhAct){ const g=b.vhAct; a.calcShow=false; a.calcOpen=false; a.qsSubIco=false;
       Object.assign(a,{ qsUnsubmitted:true, qsShowNext:false, qsCanRetry:false, qsRetryNextDisp:'none', qsSubmit:g.primary, qsSubmitLabel:g.pLabel,
         qsMainSubOff:!g.pOn, qsMainSubState:g.pOn?'emphasis':'disabled', qsMainSubSh:g.pOn?'':'none',
