@@ -121,6 +121,16 @@ def apply(path):
 
     s = RULE.sub(repl, s)
 
+    # The practice icon carries three decorative rings as aria-hidden spans --
+    # two hairline circles and a blurred glow. They are dropped here.
+    rings = 0
+    for span in [
+        '<span style="position:absolute;width:280px;height:280px;border-radius:50%;border:1px solid rgba(205,199,222,0.16);"></span>',
+        '<span style="position:absolute;width:190px;height:190px;border-radius:50%;border:1px solid rgba(205,199,222,0.22);"></span>',
+        '<span style="position:absolute;width:120px;height:120px;border-radius:50%;background:rgba(205,199,222,0.28);filter:blur(18px);"></span>',
+    ]:
+        if span in s: s = s.replace(span, ""); rings += 1
+
     # JS-computed style objects. The Practice-with-Vyom panel is built from one
     # of these, which is why it came out a bright purple fill with near-black
     # type -- no stylesheet is involved at all.
@@ -160,10 +170,10 @@ def apply(path):
         if old in s: s = s.replace(old, new); hero += 1
 
     io.open(path, "w", encoding="utf-8").write(s)
-    return recipes, contrast, hero, log, js
+    return recipes, contrast, hero, log, js, rings
 
 if __name__ == "__main__":
-    r, c, h, lg, j = apply(sys.argv[1])
+    r, c, h, lg, j, rg = apply(sys.argv[1])
     print(f"  recipes: {len(r)} -> {', '.join(r)}")
     print(f"  contrast fixes (dark text on a dark surface): {len(c)} -> {', '.join(sorted(set(c))[:10])}")
-    print(f"  hero inline type: {h}   practice-log cards: {lg}   js style objects: {j}")
+    print(f"  hero inline type: {h}   practice-log cards: {lg}   js style objects: {j}   decorative rings removed: {rg}")
