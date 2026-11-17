@@ -23,13 +23,21 @@ BUBBLE  = "rgba(36,31,54,.98)"            # Teaching Room (dark) .spk-bubble
 SHADOW  = "0 1px 0 rgba(255,255,255,.04) inset, 0 14px 30px -18px rgba(0,0,0,.6)"
 SHADOW_H= "0 1px 0 rgba(255,255,255,.04) inset, 0 22px 44px -20px rgba(0,0,0,.7)"
 HOME_CARD = {"background": CARD, "border": "none", "border-radius": "18px", "box-shadow": SHADOW}
+# Home (dark)'s "Today's challenge" card
+CHALLENGE_BG     = "linear-gradient(115deg,#3a2f1a 0%,#2c2433 55%,#262038 100%)"
+CHALLENGE_SHADOW = "0 14px 30px -18px rgba(0,0,0,.6)"
 
 RECIPES = {
-    ".cd-mesh":         {"background": CARD},
-    # Home's resume card decorates with one faint accent disc off the top-right
-    # corner (120px, opacity .55) and a hairline ring behind it
-    ".cd-mesh::before": {"background": "radial-gradient(120px 120px at calc(100% + 28px) -28px,rgba(163,133,250,.30) 0%,rgba(163,133,250,.30) 99%,transparent 100%),"
-                                       "radial-gradient(176px 176px at calc(100% + 56px) -56px,transparent 97%,rgba(163,133,250,.13) 98%,transparent 100%)"},
+    # The practice hero takes Home (dark)'s "Today's challenge" card, copied
+    # from app-cosmos-dark.js: the warm 115deg wash, radius 18, the long soft
+    # drop, and the two hairline amber rings that sit off its left edge
+    # (150px at left:-40 and 230px at left:-80, both centred vertically).
+    ".cd-mesh":         {"background": CHALLENGE_BG,
+                         "border-radius": "18px",
+                         "box-shadow": CHALLENGE_SHADOW},
+    ".cd-mesh::before": {"inset": "0",
+                         "background": "radial-gradient(circle 75px at -40px 50%,transparent 74px,rgba(252,196,25,.18) 74px 75px,transparent 75px),"
+                                       "radial-gradient(circle 115px at -80px 50%,transparent 114px,rgba(252,196,25,.12) 114px 115px,transparent 115px)"},
     ".cd-pcard":        dict(HOME_CARD),
     ".cd-pcard:hover":  {"box-shadow": SHADOW_H, "transform": "translateY(-3px)"},
     ".cd-intent":       dict(HOME_CARD),
