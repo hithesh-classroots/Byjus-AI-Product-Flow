@@ -2514,22 +2514,22 @@ class Component extends DCLogic {
       // one glass material for all three states; only the wash strength, bloom hue and shadow change
       const glass = {
         done: {
-          bg: 'linear-gradient(158deg,#1a1526 0%,#1a1526 46%,#1a1526 100%)',
-          shadow: '0 30px 58px -22px rgba(77,163,240,.44),0 4px 12px rgba(77,163,240,.14),inset 0 1px 0 rgba(205,199,222,0.92)',
+          bg: 'linear-gradient(158deg,#262038 0%,rgba(76,191,110,.20) 100%),#262038',
+          shadow: '0 30px 58px -22px rgba(77,163,240,.44),0 4px 12px rgba(77,163,240,.14),inset 0 1px 0 rgba(255,255,255,.92)',
           accent: 'linear-gradient(90deg,#4cbf6e,#4cbf6e)',
-          bloom: 'radial-gradient(circle,rgba(76,191,110,.30) 0%,rgba(76,191,110,.10) 52%,rgba(47,158,68,0) 72%)',
+          bloom: 'none',
         },
         ongoing: {
-          bg: 'linear-gradient(158deg,#1a1526 0%,rgba(36,31,54,.98) 44%,#b57a24 100%)',
-          shadow: '0 38px 70px -24px rgba(232,165,63,.5),0 5px 14px rgba(163,133,250,.16),inset 0 1px 0 rgba(205,199,222,0.95)',
+          bg: 'linear-gradient(158deg,#262038 0%,rgba(232,165,63,.22) 100%),#262038',
+          shadow: '0 38px 70px -24px rgba(232,165,63,.5),0 5px 14px rgba(163,133,250,.16),inset 0 1px 0 rgba(255,255,255,.95)',
           accent: 'linear-gradient(90deg,#e8a53f,#e8a53f)',
-          bloom: 'radial-gradient(circle,rgba(232,165,63,.30) 0%,rgba(232,165,63,.11) 52%,rgba(247,103,7,0) 72%)',
+          bloom: 'none',
         },
         new: {
-          bg: 'linear-gradient(158deg,#1a1526 0%,#1a1526 48%,#262038 100%)',
-          shadow: '0 20px 40px -18px rgba(77,163,240,.34),0 2px 8px rgba(77,163,240,.1),inset 0 1px 0 rgba(205,199,222,0.72)',
+          bg: 'linear-gradient(158deg,#262038 0%,#1a1526 100%)',
+          shadow: '0 20px 40px -18px rgba(77,163,240,.34),0 2px 8px rgba(77,163,240,.1),inset 0 1px 0 rgba(255,255,255,.72)',
           accent: 'linear-gradient(90deg,rgba(77,163,240,.9),rgba(77,163,240,.9))',
-          bloom: 'radial-gradient(circle,rgba(77,163,240,.20) 0%,rgba(77,163,240,.07) 52%,rgba(122,110,196,0) 72%)',
+          bloom: 'none',
         },
       }[p.status];
       p.islBg = glass.bg; p.islShadow = glass.shadow; p.accent = glass.accent; p.bloom = glass.bloom;
