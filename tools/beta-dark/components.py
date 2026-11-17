@@ -18,18 +18,22 @@ LINE    = "#3d3459"
 # the accent-wash surface Chapter Journey (dark) uses for its island tiles
 WASH_V  = "linear-gradient(158deg,#262038 0%,rgba(163,133,250,.22) 100%),#262038"
 BUBBLE  = "rgba(36,31,54,.98)"            # Teaching Room (dark) .spk-bubble
+# Home (dark)'s resume card, copied from app-cosmos-dark.js: no border, the
+# radius is 18, an inset top highlight over a long soft drop, lift on hover.
 SHADOW  = "0 1px 0 rgba(255,255,255,.04) inset, 0 14px 30px -18px rgba(0,0,0,.6)"
 SHADOW_H= "0 1px 0 rgba(255,255,255,.04) inset, 0 22px 44px -20px rgba(0,0,0,.7)"
+HOME_CARD = {"background": CARD, "border": "none", "border-radius": "18px", "box-shadow": SHADOW}
 
 RECIPES = {
-    ".cd-mesh":         {"background": WASH_V},
-    ".cd-mesh::before": {"background": "radial-gradient(40% 50% at 20% 30%,rgba(163,133,250,.20) 0%,transparent 70%),"
-                                       "radial-gradient(45% 55% at 80% 20%,rgba(77,163,240,.16) 0%,transparent 70%),"
-                                       "radial-gradient(50% 60% at 60% 85%,rgba(232,165,63,.10) 0%,transparent 70%)"},
-    ".cd-pcard":        {"background": CARD, "border": "1.5px solid " + LINE, "box-shadow": SHADOW},
-    ".cd-pcard:hover":  {"box-shadow": SHADOW_H},
-    ".cd-intent":       {"background": CARD, "border": "1.5px solid " + LINE, "box-shadow": SHADOW},
-    ".cd-intent:hover": {"box-shadow": SHADOW_H, "border-color": "#4da3f0"},
+    ".cd-mesh":         {"background": CARD},
+    # Home's resume card decorates with one faint accent disc off the top-right
+    # corner (120px, opacity .55) and a hairline ring behind it
+    ".cd-mesh::before": {"background": "radial-gradient(120px 120px at calc(100% + 28px) -28px,rgba(163,133,250,.30) 0%,rgba(163,133,250,.30) 99%,transparent 100%),"
+                                       "radial-gradient(176px 176px at calc(100% + 56px) -56px,transparent 97%,rgba(163,133,250,.13) 98%,transparent 100%)"},
+    ".cd-pcard":        dict(HOME_CARD),
+    ".cd-pcard:hover":  {"box-shadow": SHADOW_H, "transform": "translateY(-3px)"},
+    ".cd-intent":       dict(HOME_CARD),
+    ".cd-intent:hover": {"box-shadow": SHADOW_H, "transform": "translateY(-3px)", "border-color": "transparent"},
     ".cd-snack":        {"background": CARD, "border": "1px solid " + LINE, "color": INK, "box-shadow": SHADOW},
     ".ftue-speech":     {"background": BUBBLE, "color": INK},
     ".cd-tile-done":    {"background": "rgba(255,255,255,.08)", "border-color": LINE},
@@ -108,6 +112,16 @@ def apply(path):
 
     s = RULE.sub(repl, s)
 
+    # the practice-log cards are inline-styled, so no rule reaches them either.
+    # Same CSS as Home's resume card.
+    log = 0
+    for old, new in [
+        ("background:rgba(205,199,222,0.78);box-shadow:inset 0 0 0 1px rgba(0,0,0,0.18);",
+         "background:%s;box-shadow:%s;" % (CARD, SHADOW)),
+        ('style-hover="background:#1a1526;"', 'style-hover="background:#2e2745;"'),
+    ]:
+        if old in s: s = s.replace(old, new); log += 1
+
     # the practice hero's type sits on .cd-mesh, so no rule can reach it
     hero = 0
     for old, new in [('color:#1a1526;line-height:1.15;">Practice this chapter',
@@ -117,10 +131,10 @@ def apply(path):
         if old in s: s = s.replace(old, new); hero += 1
 
     io.open(path, "w", encoding="utf-8").write(s)
-    return recipes, contrast, hero
+    return recipes, contrast, hero, log
 
 if __name__ == "__main__":
-    r, c, h = apply(sys.argv[1])
+    r, c, h, lg = apply(sys.argv[1])
     print(f"  recipes: {len(r)} -> {', '.join(r)}")
     print(f"  contrast fixes (dark text on a dark surface): {len(c)} -> {', '.join(sorted(set(c))[:10])}")
-    print(f"  hero inline type: {h}")
+    print(f"  hero inline type: {h}   practice-log cards: {lg}")
