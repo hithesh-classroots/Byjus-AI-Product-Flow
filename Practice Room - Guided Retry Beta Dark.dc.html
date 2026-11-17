@@ -63,7 +63,7 @@
   .tr-snode-cel{animation:snodePop .78s cubic-bezier(.25,1.7,.45,1);box-shadow:0 0 16px 5px rgba(0,0,0,0.55);}
   /* soft core flash — sells the "energy released" beat the thin rings alone can't */
   @keyframes snodeFlash{0%{transform:translate(-50%,-50%) scale(.4);opacity:0}18%{opacity:.95}100%{transform:translate(-50%,-50%) scale(3.4);opacity:0}}
-  .tr-flash{position:absolute;left:50%;top:50%;width:34px;height:34px;border-radius:50%;background:radial-gradient(circle,rgba(205,199,222,0.95),rgba(77,163,240,.7) 42%,rgba(34,139,230,0) 72%);animation:snodeFlash .7s ease-out forwards;pointer-events:none;}
+  .tr-flash{position:absolute;left:50%;top:50%;width:34px;height:34px;border-radius:50%;background:radial-gradient(circle,#262038,rgba(77,163,240,.7) 42%,rgba(34,139,230,0) 72%);animation:snodeFlash .7s ease-out forwards;pointer-events:none;}
   @keyframes snodeRipple{0%{transform:translate(-50%,-50%) scale(.4);opacity:1}100%{transform:translate(-50%,-50%) scale(8);opacity:0}}
   .tr-ripple{position:absolute;left:50%;top:50%;width:12px;height:12px;border-radius:50%;border:3px solid #4da3f0;animation:snodeRipple 1.15s cubic-bezier(.15,.7,.3,1) forwards;pointer-events:none;}
   .tr-ripple.r2{animation-delay:.15s;border-color:#4da3f0;border-width:2.5px;}
@@ -111,7 +111,7 @@
   @keyframes confShoot{0%{opacity:0;transform:translate(0,0) rotate(0)}8%{opacity:1}45%{opacity:1;transform:translate(var(--mx),var(--my)) rotate(var(--mr))}100%{opacity:.92;transform:translate(var(--ex),var(--ey)) rotate(var(--er))}}
   .cel-streak{position:absolute;border-radius:999px;filter:blur(.3px);animation:streakSweep var(--sd,2.4s) cubic-bezier(.3,.5,.4,1) var(--sdl,0s) infinite;}
   @keyframes smokeRise{0%{opacity:0;transform:translate(-50%,10%) scale(.5)}18%{opacity:.55}100%{opacity:0;transform:translate(-50%,-120%) scale(2.4)}}
-  .cel-smoke span{position:absolute;left:50%;bottom:0;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle,rgba(205,199,222,0.9),rgba(232,165,63,.15) 70%,transparent);animation:smokeRise var(--kd,2.6s) ease-out var(--kdl,0s) infinite;}
+  .cel-smoke span{position:absolute;left:50%;bottom:0;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle,#262038,rgba(232,165,63,.15) 70%,transparent);animation:smokeRise var(--kd,2.6s) ease-out var(--kdl,0s) infinite;}
   @keyframes celStarBurst{0%{opacity:0;transform:translate(-50%,-50%) rotate(0) scale(0)}30%{opacity:1;transform:translate(calc(-50% + var(--bx,0px)),calc(-50% + var(--by,0px))) rotate(180deg) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--bx,0px)),calc(-50% + var(--by,0px))) rotate(320deg) scale(.6)}}
   .cel-burst-star{position:absolute;left:50%;top:50%;animation:celStarBurst var(--bd,1.5s) cubic-bezier(.3,.7,.4,1) var(--bdl,0s) both;}
   @keyframes rwPulse{0%{transform:scale(1)}30%{transform:scale(1.22)}55%{transform:scale(.97)}100%{transform:scale(1)}}
@@ -1135,7 +1135,7 @@
                       </div>
                       <div style="position:relative;width:358px;max-width:calc(100vw - 80px);height:{{ qsOrdH }};">
                         <sc-if value="{{ qsOrdGhostOn }}" hint-placeholder-val="{{ false }}">
-                          <div style="position:absolute;left:0;right:0;top:0;height:56px;box-sizing:border-box;border-radius:10px;border:2px dashed #a385fa;background:rgba(205,199,222,0.7);transform:{{ qsOrdGhostTf }};transition:transform .18s cubic-bezier(.2,.8,.3,1);"></div>
+                          <div style="position:absolute;left:0;right:0;top:0;height:56px;box-sizing:border-box;border-radius:10px;border:2px dashed #a385fa;background:#262038;transform:{{ qsOrdGhostTf }};transition:transform .18s cubic-bezier(.2,.8,.3,1);"></div>
                         </sc-if>
                         <sc-for list="{{ qsOrder }}" as="t" hint-placeholder-count="4">
                           <div onPointerDown="{{ t.down }}" class="pq-lbl" style="position:absolute;left:0;right:0;top:0;z-index:{{ t.z }};height:56px;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:14px;border-radius:10px;border:2px solid {{ t.border }};background:{{ t.bg }};cursor:{{ t.cur }};font-weight:600;color:#cdc7de;opacity:{{ t.op }};transform:{{ t.tf }};box-shadow:{{ t.sh }};transition:{{ t.tr }};transition-delay:{{ t.delay }};">
@@ -1547,7 +1547,7 @@
           <div class="vid-frame {{ vidFrameClass }} {{ videoFullClass }}" onMouseMove="{{ vidHover }}">
             <video ref="{{ videoRef }}" src="lesson-video.mp4" preload="metadata" playsinline="{{ true }}" controls="{{ false }}" onClick="{{ vidToggle }}" onTimeUpdate="{{ onVideoTime }}" onPlay="{{ onVideoPlay }}" onPause="{{ onVideoPause }}" onEnded="{{ onVideoEnded }}" style="width:100%;height:100%;object-fit:contain;display:block;background:transparent;border-radius:inherit;cursor:pointer;"></video>
             <sc-if value="{{ vidThumbShow }}" hint-placeholder-val="{{ true }}">
-              <div onClick="{{ vidThumb }}" class="vctl-center" style="background:rgba(163,133,250,.92);border-color:rgba(205,199,222,0.5);"><i class="ti ti-player-play-filled" style="font-size:30px;margin-left:3px;"></i></div>
+              <div onClick="{{ vidThumb }}" class="vctl-center" style="background:rgba(163,133,250,.92);border-color:#262038;"><i class="ti ti-player-play-filled" style="font-size:30px;margin-left:3px;"></i></div>
             </sc-if>
             <sc-if value="{{ vidCenterShow }}" hint-placeholder-val="{{ false }}">
               <div onClick="{{ vidToggle }}" class="vctl-center"><i class="ti ti-player-play-filled" style="font-size:30px;margin-left:3px;"></i></div>
@@ -3220,7 +3220,7 @@ class Component extends DCLogic {
     });
     const poly=(f)=>rows.map(r=>pt(r.i,f(r)).map(v=>v.toFixed(1)).join(',')).join(' ');
     return {
-      radRings:[0,25,50,75,100].map((p,k)=>({key:'rg'+p, pts:rows.map(r=>pt(r.i,p).map(v=>v.toFixed(1)).join(',')).join(' '), fill: k%2 ? 'rgba(205,199,222,0.55)' : 'rgba(205,199,222,0.25)'})).reverse(),
+      radRings:[0,25,50,75,100].map((p,k)=>({key:'rg'+p, pts:rows.map(r=>pt(r.i,p).map(v=>v.toFixed(1)).join(',')).join(' '), fill: k%2 ? '#262038' : 'rgba(205,199,222,0.25)'})).reverse(),
       radAxes: rows.map(r=>{ const [x,y]=pt(r.i,100); return {key:'ax'+r.i, x:x.toFixed(1), y:y.toFixed(1)}; }),
       radBefore: poly(r=>r.before),
       radNow: poly(r=>r.v),
@@ -4189,7 +4189,7 @@ class Component extends DCLogic {
       calcSubmitState: this._calcEval(st.calcE)==null ? 'disabled' : 'emphasis',
       calcSubmit: ()=>this._calcSubmit(),
       ...(()=>{ const ok=this._calcEval(st.calcE)!=null; return {
-        calcSubmitBg: ok ? '#e8a53f' : 'rgba(205,199,222,0.16)', calcSubmitFg: ok ? '#b57a24' : 'rgba(205,199,222,0.72)',
+        calcSubmitBg: ok ? '#e8a53f' : 'rgba(205,199,222,0.16)', calcSubmitFg: ok ? '#b57a24' : '#262038',
         calcSubmitSh: ok ? '0 3px 0 #e8a53f' : 'none', calcSubmitCur: ok ? 'pointer' : 'not-allowed' }; })(),
       calcOutShort: (()=>{ const v=this._calcEval(st.calcE); return v==null ? '' : String(v); })(),
       calcExpr: st.calcE || '',

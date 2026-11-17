@@ -5,11 +5,11 @@ the designer already made (Teaching Room, Chapter Journey, Home), then applied
 with a few rules about what a colour is *for*, since a colour-for-colour swap
 gets surfaces and accents wrong.
 """
-import os, sys, pickle, io
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import sys, pickle, io
+sys.path.insert(0, "/private/tmp/claude-502/-Users-administrator-Downloads-VyomReact/77d1c8df-b2bb-43b1-98f1-69a838d39a48/scratchpad/theme")
 from lib import COLOR, role_of, norm, rgb_of, to_css
 
-M = pickle.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model.pkl"), "rb"))
+M = pickle.load(open("/private/tmp/claude-502/-Users-administrator-Downloads-VyomReact/77d1c8df-b2bb-43b1-98f1-69a838d39a48/scratchpad/theme/model.pkl", "rb"))
 CAND, KEEP = M["cand"], M["keep"]
 
 # the dark ramp, read off the designer's own builds
@@ -88,6 +88,11 @@ def _translucent_white(role, n):
         return None
     if min(r[:3]) < 230 or _chroma(n) > 0.08:
         return None
+    # a nearly-opaque white surface is a card, and on a dark page it has to be
+    # a dark card -- carrying it across as a light veil is what produced the
+    # washed-out practice log. Only a genuinely translucent wash stays a veil.
+    if r[3] >= 0.5:
+        return DARK_SURFACE
     return to_css((205, 199, 222, r[3]), "rgba")
 
 # ---------- choosing a target ----------

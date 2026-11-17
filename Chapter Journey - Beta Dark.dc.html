@@ -320,7 +320,7 @@
   .cd-tile-meta{font-size:12px;font-weight:700;color:#918aac;display:flex;align-items:center;gap:6px;}
   .cd-tile-done{background:rgba(255,255,255,.08);border-color:#3d3459;box-shadow:0 1px 2px rgba(0,0,0,0.18),0 6px 14px -14px rgba(0,0,0,0.22);}
   .cd-tile-done .cd-thumb{filter:saturate(.55) opacity(.72);}
-  .cd-tile-done:hover{transform:translateY(-3px);border-color:rgba(205,199,222,0.8);}
+  .cd-tile-done:hover{transform:translateY(-3px);border-color:#262038;}
   .cd-tile-score{position:absolute;top:8px;right:8px;padding:3px 9px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap;background:rgba(255,255,255,.10);color:#cdc7de;box-shadow:0 1px 3px rgba(0,0,0,0.36);}
   .cd-tile-tag{position:absolute;top:8px;right:8px;padding:3px 8px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.34);}
   .cd-tile-bar{display:block;height:5px;border-radius:999px;background:rgba(77,163,240,.10);overflow:hidden;margin:0 0 7px;}
@@ -525,7 +525,7 @@
 
     <div class="cd-right cj-scroll {{ rightPanelClass }}" style="pointer-events:auto;--cd-wash:{{ cdWashStop }};">
       <div class="cd-modesw" style="position:sticky;z-index:35;height:0;display:flex;align-items:flex-start;justify-content:center;pointer-events:none;">
-        <div role="tablist" aria-label="Mode" style="pointer-events:auto;position:relative;display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:999px;background:rgba(205,199,222,0.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:inset 0 0 0 1px rgba(0,0,0,0.18),0 8px 22px rgba(0,0,0,0.18);">
+        <div role="tablist" aria-label="Mode" style="pointer-events:auto;position:relative;display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:999px;background:#262038;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:inset 0 0 0 1px rgba(0,0,0,0.18),0 8px 22px rgba(0,0,0,0.18);">
           <span aria-hidden="true" style="position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:999px;background:{{ modeKnobBg }};box-shadow:{{ modeKnobGlow }};transform:{{ modeKnobX }};transition:transform .38s cubic-bezier(.34,1.4,.5,1),background .3s ease,box-shadow .3s ease;"></span>
           <div onClick="{{ goLearn }}" role="tab" aria-selected="{{ learnSel }}" tabindex="0" style="position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 22px;border-radius:999px;font-size:15px;font-weight:700;color:{{ learnInk }};cursor:pointer;transition:color .25s ease;white-space:nowrap;"><i class="ti ti-book-2" style="font-size:18px;"></i>Learn</div>
           <div onClick="{{ goPractice }}" role="tab" aria-selected="{{ practiceSel }}" tabindex="0" style="position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 22px;border-radius:999px;font-size:15px;font-weight:700;color:{{ practiceInk }};cursor:pointer;transition:color .25s ease;white-space:nowrap;"><i class="ti ti-trophy" style="font-size:18px;"></i>Practice</div>
@@ -533,7 +533,7 @@
       </div>
       <sc-if value="{{ ch.chLocked }}" hint-placeholder-val="{{ false }}">
         <div style="position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;pointer-events:none;">
-          <div style="width:120px;height:120px;border-radius:50%;background:linear-gradient(158deg,rgba(205,199,222,0.72),#1a1526);border:1px solid rgba(205,199,222,0.8);display:grid;place-items:center;box-shadow:0 20px 40px -18px rgba(0,0,0,0.50),inset 0 1px 0 rgba(0,0,0,0.75);"><i class="ti ti-lock" style="font-size:58px;color:#4da3f0;"></i></div>
+          <div style="width:120px;height:120px;border-radius:50%;background:linear-gradient(158deg,#262038,#1a1526);border:1px solid #262038;display:grid;place-items:center;box-shadow:0 20px 40px -18px rgba(0,0,0,0.50),inset 0 1px 0 rgba(0,0,0,0.75);"><i class="ti ti-lock" style="font-size:58px;color:#4da3f0;"></i></div>
           <div style="text-align:center;max-width:300px;">
             <div style="font-size:20px;font-weight:700;color:#4da3f0;margin-bottom:8px;">Chapter locked</div>
             <div style="font-size:14px;font-weight:700;color:#4da3f0;line-height:1.5;">Finish the earlier chapters to unlock these lessons.</div>
@@ -720,7 +720,7 @@
               <div class="cd-libhead" style="margin-bottom:16px;">Your practice log · {{ cdDoneCount }}</div>
               <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;">
                 <sc-for list="{{ cdLog }}" as="m" hint-placeholder-count="3">
-                  <div onClick="{{ m.start }}" role="button" tabindex="0" style="display:flex;flex-direction:column;gap:12px;padding:18px 20px;border-radius:18px;background:#262038;box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 14px 30px -18px rgba(0,0,0,.6);cursor:pointer;transition:background .15s ease;" style-hover="background:#2e2745;">
+                  <div onClick="{{ m.start }}" role="button" tabindex="0" style="display:flex;flex-direction:column;gap:12px;padding:18px 20px;border-radius:18px;background:#262038;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.18);cursor:pointer;transition:background .15s ease;" style-hover="background:#2e2745;">
                     <div style="display:flex;align-items:center;gap:12px;">
                       <div style="width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:{{ m.soft }};color:{{ m.ink }};"><i class="ti {{ m.icon }}" style="font-size:20px;"></i></div>
                       <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;">
@@ -1820,7 +1820,7 @@ class Component extends DCLogic {
     const mk = (on, dark) => (sh && on ? tiles : []).map(t => {
       const s = t.sel === 'true';
       return Object.assign({}, t, dark
-        ? { bg: s ? '#1a1526' : 'rgba(205,199,222,0.1)', ink: s ? '#a385fa' : 'rgba(205,199,222,0.72)', ring: s ? '0 6px 14px -8px rgba(61,52,89,0.5)' : 'inset 0 0 0 1px rgba(205,199,222,0.28)', dotBg: s ? '#a385fa' : 'transparent', dotRing: s ? 'none' : 'inset 0 0 0 1.5px rgba(205,199,222,0.6)', chkInk: '#1a1526', chkOp: s ? 1 : 0 }
+        ? { bg: s ? '#1a1526' : 'rgba(255,255,255,.08)', ink: s ? '#a385fa' : '#262038', ring: s ? '0 6px 14px -8px rgba(61,52,89,0.5)' : 'inset 0 0 0 1px rgba(205,199,222,0.28)', dotBg: s ? '#a385fa' : 'transparent', dotRing: s ? 'none' : 'inset 0 0 0 1.5px #262038', chkInk: '#1a1526', chkOp: s ? 1 : 0 }
         : { bg: s ? '#262038' : '#1a1526', ink: s ? '#3d3459' : '#918aac', ring: s ? 'none' : 'inset 0 0 0 1px #3d3459', dotBg: s ? '#4da3f0' : 'transparent', dotRing: s ? 'none' : 'inset 0 0 0 1.5px #3d3459', chkInk: '#1a1526', chkOp: s ? 1 : 0 });
     });
     const card = (id, base, dark) => {
@@ -1842,7 +1842,7 @@ class Component extends DCLogic {
       o[id + 'TopDelay'] = open ? '.2s' : '0s';
       o[id + 'Tiles'] = mk(open, dark);
       o[id + 'StartBg'] = k ? (dark ? '#1a1526' : 'linear-gradient(135deg,#e8a53f 0%,#e8a53f 100%)') : (dark ? 'rgba(205,199,222,0.18)' : '#3d3459');
-      o[id + 'StartInk'] = k ? (dark ? '#a385fa' : '#1a1526') : (dark ? 'rgba(205,199,222,0.55)' : '#918aac');
+      o[id + 'StartInk'] = k ? (dark ? '#a385fa' : '#1a1526') : (dark ? '#262038' : '#918aac');
       o[id + 'StartShadow'] = k ? (dark ? '0 12px 22px -12px rgba(61,52,89,0.6)' : '0 10px 20px -12px rgba(232,165,63,0.75)') : 'none';
       return o;
     };
@@ -1866,13 +1866,13 @@ class Component extends DCLogic {
   _sheetDead() {
     const mesh = true;
     const T = mesh ? {
-      cardBg: '#a385fa', cardShadow: '0 1px 2px rgba(61,52,89,0.08),0 28px 52px -24px rgba(163,133,250,0.8)',
-      ink: '#1a1526', sub: 'rgba(205,199,222,0.86)', accent: '#e8a53f', icon: 'ti-users-group', closeBg: 'rgba(205,199,222,0.16)',
+      cardBg: '#262038', cardShadow: '0 1px 2px rgba(61,52,89,0.08),0 28px 52px -24px rgba(163,133,250,0.8)',
+      ink: '#1a1526', sub: '#262038', accent: '#e8a53f', icon: 'ti-users-group', closeBg: 'rgba(205,199,222,0.16)',
       optA: '#1a1526', optAInk: '#a385fa', optAIconBg: '#262038',
       optB: 'rgba(205,199,222,0.14)', optBRing: 'inset 0 0 0 1.5px rgba(205,199,222,0.35)', optBInk: '#1a1526', optBIconBg: 'rgba(205,199,222,0.18)',
       tOn: '#1a1526', tOnInk: '#a385fa', tOnRing: 'none', tOff: 'rgba(205,199,222,0.12)', tOffInk: '#1a1526', tOffRing: 'inset 0 0 0 1px rgba(205,199,222,0.28)',
-      dotOn: '#a385fa', dotOffRing: 'inset 0 0 0 2px rgba(205,199,222,0.55)',
-      startOn: '#1a1526', startOnInk: '#a385fa', startOff: 'rgba(205,199,222,0.18)', startOffInk: 'rgba(205,199,222,0.6)', startShadow: '0 12px 22px -12px rgba(61,52,89,0.6)',
+      dotOn: '#a385fa', dotOffRing: 'inset 0 0 0 2px #262038',
+      startOn: '#1a1526', startOnInk: '#a385fa', startOff: 'rgba(205,199,222,0.18)', startOffInk: '#262038', startShadow: '0 12px 22px -12px rgba(61,52,89,0.6)',
     } : {
       cardBg: 'linear-gradient(160deg,#262038 0%,#1a1526 46%)', cardShadow: '0 1px 2px rgba(61,52,89,0.06),0 24px 44px -24px rgba(232,165,63,0.45)',
       ink: '#3d3459', sub: '#3d3459', accent: '#e8a53f', icon: 'ti-notebook', closeBg: 'rgba(61,52,89,0.06)',
@@ -1941,7 +1941,7 @@ class Component extends DCLogic {
     const k = sel.length;
     const allOn = !part || k === n;
     const chip = (key, name, on, tap) => ({ key, name, tap, sel: on ? 'true' : 'false',
-      bg: on ? '#262038' : 'rgba(205,199,222,0.75)', ink: on ? '#4da3f0' : '#4da3f0',
+      bg: on ? '#262038' : '#262038', ink: on ? '#4da3f0' : '#4da3f0',
       ring: on ? 'inset 0 0 0 2px #4da3f0' : 'inset 0 0 0 1px rgba(163,133,250,0.14)',
       dotBg: on ? '#4da3f0' : 'transparent', dotRing: on ? 'none' : 'inset 0 0 0 2px #3d3459', dotOp: on ? 1 : 0 });
     const prChips = [chip('all', 'All topics', allOn, () => put({ prPart: false, prSel: null }))].concat(list.map(t => {
@@ -1986,7 +1986,7 @@ class Component extends DCLogic {
 
     const VI = '#a385fa';
     const scopeCard = (k, on, icon, title, sub, pick) => ({ key: k, icon, title, sub, pick, sel: on ? 'true' : 'false',
-      bg: on ? '#1a1526' : 'rgba(205,199,222,0.6)',
+      bg: on ? '#1a1526' : '#262038',
       ring: on ? 'inset 0 0 0 2px ' + VI + ',0 14px 28px -18px rgba(163,133,250,0.6)' : 'inset 0 0 0 1px rgba(163,133,250,0.12)',
       iconBg: on ? '#262038' : '#262038', iconInk: on ? VI : '#918aac',
       dotBg: on ? VI : 'transparent', dotRing: on ? 'none' : 'inset 0 0 0 2px #3d3459', dotOp: on ? 1 : 0 });
@@ -2014,7 +2014,7 @@ class Component extends DCLogic {
       const on = has(t.i);
       return { key: 'tl' + t.i, name: t.name, num: t.i + 1, sel: on ? 'true' : 'false',
         toggle: () => { const base = sel.slice(); const next = on ? base.filter(x => x !== t.i) : base.concat(t.i); if (!next.length) return; put({ prMode: 'own', prSel: next.sort((a, b) => a - b) }); },
-        bg: on ? '#262038' : 'rgba(205,199,222,0.9)', ring: on ? 'inset 0 0 0 2px #4da3f0' : 'inset 0 0 0 1px #3d3459',
+        bg: on ? '#262038' : '#262038', ring: on ? 'inset 0 0 0 2px #4da3f0' : 'inset 0 0 0 1px #3d3459',
         ink: on ? '#4da3f0' : '#918aac', numBg: on ? '#4da3f0' : '#3d3459', numInk: on ? '#1a1526' : '#918aac',
         dotBg: on ? '#4da3f0' : 'transparent', dotRing: on ? 'none' : 'inset 0 0 0 2px #3d3459', dotOp: on ? 1 : 0, scale: on ? 'scale(1.02)' : 'scale(1)' };
     });
@@ -2421,9 +2421,9 @@ class Component extends DCLogic {
     const shellSpec = [
       { drop: 0.10, open: true, wob: (x) => 34 * Math.sin(x * 0.00096 + 0.4) + 14 * Math.sin(x * 0.00287 + 2.9), fill: 'none', stroke: 'rgba(205,199,222,0.3)', sw: 2 },
       { drop: 0.58, open: true, wob: (x) => 28 * Math.sin(x * 0.00141 + 3.8) + 11 * Math.sin(x * 0.00392 + 1.2), fill: 'none', stroke: 'rgba(205,199,222,0.24)', sw: 2 },
-      { drop: 0.85, wob: null, fill: 'rgba(205,199,222,0.32)', stroke: 'rgba(205,199,222,0.62)', sw: 2 },
-      { drop: 0.90, wob: (x) => 22 * Math.sin(x * 0.00185 + 2.6) + 9 * Math.sin(x * 0.0043 + 0.9), fill: 'rgba(205,199,222,0.52)', stroke: 'rgba(205,199,222,0.78)', sw: 2 },
-      { drop: 0.95, wob: (x) => 26 * Math.sin(x * 0.00078 + 1.7) + 17 * Math.sin(x * 0.00251 + 4.9) + 8 * Math.sin(x * 0.0061 + 2.2), fill: '#262038', stroke: 'rgba(205,199,222,0.9)', sw: 10 },
+      { drop: 0.85, wob: null, fill: 'rgba(205,199,222,0.32)', stroke: '#262038', sw: 2 },
+      { drop: 0.90, wob: (x) => 22 * Math.sin(x * 0.00185 + 2.6) + 9 * Math.sin(x * 0.0043 + 0.9), fill: '#262038', stroke: '#262038', sw: 2 },
+      { drop: 0.95, wob: (x) => 26 * Math.sin(x * 0.00078 + 1.7) + 17 * Math.sin(x * 0.00251 + 4.9) + 8 * Math.sin(x * 0.0061 + 2.2), fill: '#262038', stroke: '#262038', sw: 10 },
     ];
     // drops are fractions of the space BELOW the rail, so short viewports keep every shell on screen
     // crest sits at a fraction of (vh - 40) measured from the top, carrying the rail's curve shape

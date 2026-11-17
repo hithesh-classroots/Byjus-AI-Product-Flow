@@ -112,6 +112,24 @@ def apply(path):
 
     s = RULE.sub(repl, s)
 
+    # JS-computed style objects. The Practice-with-Vyom panel is built from one
+    # of these, which is why it came out a bright purple fill with near-black
+    # type -- no stylesheet is involved at all.
+    js = 0
+    for old_s, new_s in [
+        ("cardBg: '#a385fa'",                "cardBg: '" + CARD + "'"),
+        ("ink: '#1a1526', sub: 'rgba(205,199,222,0.86)'",
+         "ink: '" + INK + "', sub: '" + DIM + "'"),
+        ("bg: on ? '#262038' : 'rgba(205,199,222,0.75)'",
+         "bg: on ? '#262038' : 'rgba(255,255,255,.08)'"),
+        ("bg: on ? '#262038' : 'rgba(205,199,222,0.9)'",
+         "bg: on ? '#262038' : 'rgba(255,255,255,.08)'"),
+        ("bg: s ? '#1a1526' : 'rgba(205,199,222,0.1)'",
+         "bg: s ? '#1a1526' : 'rgba(255,255,255,.08)'"),
+        ("ink: s ? '#a385fa' : 'rgba(205,199,222,0.72)'",
+         "ink: s ? '#a385fa' : '" + INK + "'"),
+    ]:
+        if old_s in s: s = s.replace(old_s, new_s); js += 1
     # the practice-log cards are inline-styled, so no rule reaches them either.
     # Same CSS as Home's resume card.
     log = 0
@@ -131,10 +149,10 @@ def apply(path):
         if old in s: s = s.replace(old, new); hero += 1
 
     io.open(path, "w", encoding="utf-8").write(s)
-    return recipes, contrast, hero, log
+    return recipes, contrast, hero, log, js
 
 if __name__ == "__main__":
-    r, c, h, lg = apply(sys.argv[1])
+    r, c, h, lg, j = apply(sys.argv[1])
     print(f"  recipes: {len(r)} -> {', '.join(r)}")
     print(f"  contrast fixes (dark text on a dark surface): {len(c)} -> {', '.join(sorted(set(c))[:10])}")
-    print(f"  hero inline type: {h}   practice-log cards: {lg}")
+    print(f"  hero inline type: {h}   practice-log cards: {lg}   js style objects: {j}")
