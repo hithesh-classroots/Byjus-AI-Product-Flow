@@ -35,9 +35,10 @@ RECIPES = {
     ".cd-mesh":         {"background": CHALLENGE_BG,
                          "border-radius": "18px",
                          "box-shadow": CHALLENGE_SHADOW},
-    ".cd-mesh::before": {"inset": "0",
-                         "background": "radial-gradient(circle 75px at -40px 50%,transparent 74px,rgba(252,196,25,.18) 74px 75px,transparent 75px),"
-                                       "radial-gradient(circle 115px at -80px 50%,transparent 114px,rgba(252,196,25,.12) 114px 115px,transparent 115px)"},
+    # The decorative layer is animated (cdMesh, 14s), so anything drawn on it
+    # drifts. The challenge card's rings are static, and read as moving circles
+    # here, so the layer is dropped entirely and the card keeps just its wash.
+    ".cd-mesh::before": {"display": "none", "background": "none", "animation": "none"},
     ".cd-pcard":        dict(HOME_CARD),
     ".cd-pcard:hover":  {"box-shadow": SHADOW_H, "transform": "translateY(-3px)"},
     ".cd-intent":       dict(HOME_CARD),
