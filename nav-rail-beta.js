@@ -13,7 +13,7 @@
       this.style.cssText = 'position:fixed;left:0;top:0;width:72px;z-index:60;display:block;pointer-events:none;';
       this.innerHTML = `
 <nav aria-label="Main" style="display:flex;flex-direction:column;align-items:center;">
-  <a href="Chapter Journey - Beta.dc.html" title="Byjus.AI" style="pointer-events:auto;margin-top:24px;width:40px;height:40px;flex:none;border-radius:8px;overflow:hidden;display:grid;place-items:center;"><img src="logo.png" alt="Byjus.AI" style="width:100%;height:100%;object-fit:contain;"></a>
+  <a href="${(window.byjusTheme === 'dark' ? 'Chapter Journey - Beta Dark.dc.html' : 'Chapter Journey - Beta.dc.html')}" title="Byjus.AI" style="pointer-events:auto;margin-top:24px;width:40px;height:40px;flex:none;border-radius:8px;overflow:hidden;display:grid;place-items:center;"><img src="logo.png" alt="Byjus.AI" style="width:100%;height:100%;object-fit:contain;"></a>
 </nav>`;
     }
   }

@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./beta-theme.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -1278,7 +1279,7 @@ class Component extends DCLogic {
   }
   _ftueResumeLearn() {
     try { localStorage.setItem('chapterJourneyFtueCompleted', 'true'); localStorage.removeItem('ftueStage'); localStorage.setItem('ftueResumeModule', '2'); } catch (e) {}
-    try { window.location.href = encodeURI('Teaching Room.dc.html'); } catch (e) {}
+    try { window.location.href = encodeURI('Teaching Room - Beta.dc.html'); } catch (e) {}
   }
   _measureRight() {
     const el = document.querySelector('.cd-right');
@@ -1805,7 +1806,7 @@ class Component extends DCLogic {
   _openPractice(mode, title, attempt, mins) {
     const id = this.state.active != null ? this.state.active : 3;
     try {
-      window.location.href = 'Practice Room.dc.html?chapter=' + id
+      window.location.href = 'Practice Room - Guided Retry Beta.dc.html?chapter=' + id
         + '&mode=' + encodeURIComponent(mode) + '&title=' + encodeURIComponent(title || '')
         + (mins ? '&mins=' + mins : '')
         + (attempt ? '&attempt=' + encodeURIComponent(attempt) : '');
@@ -2057,7 +2058,7 @@ class Component extends DCLogic {
     this.setState({ rightMode: mode });
     requestAnimationFrame(() => { const el = document.querySelector('.cd-right'); if (el) el.scrollTop = 0; });
   }
-  openLibItem() { try { window.location.href = encodeURI('Teaching Room.dc.html'); } catch (e) {} }
+  openLibItem() { try { window.location.href = encodeURI('Teaching Room - Beta.dc.html'); } catch (e) {} }
   openModule(m) {
     if (m.st === 'locked') {
       this.setState({ lockMsgId: m.key });
@@ -2065,7 +2066,7 @@ class Component extends DCLogic {
       this._lockTimer = setTimeout(() => this.setState(s => (s.lockMsgId === m.key ? { lockMsgId: null } : null)), 2200);
       return;
     }
-    try { window.location.href = encodeURI('Teaching Room.dc.html'); } catch (e) {}
+    try { window.location.href = encodeURI('Teaching Room - Beta.dc.html'); } catch (e) {}
   }
   buildModules(ch, pathW) {
     const total = Math.max(4, Math.min(10, Math.round(ch.count / 6) || 4));
@@ -3024,12 +3025,7 @@ class Component extends DCLogic {
       isDark: this.state.theme === 'dark',
       themeIcon: this.state.theme === 'dark' ? 'moon' : 'sun',
       themeLabel: this.state.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode',
-      toggleTheme: () => this.setState(st => {
-        const theme = st.theme === 'dark' ? 'light' : 'dark';
-        try { localStorage.setItem('byjusTheme', theme); } catch (e) {}
-        try { document.documentElement.setAttribute('data-theme', theme); } catch (e) {}
-        return { theme };
-      }),
+      toggleTheme: () => { try { if (window.byjusToggleTheme) window.byjusToggleTheme(); } catch (e) {} },
       doneCount, totalCount, overallPct, miniNodes, miniRailLeft, miniRailRight, cardMasks, shells, stageH: vh,
       goalRow, goalPct, openGoals,
       goalsClosed: !this.state.goalsOpen,
@@ -3203,7 +3199,7 @@ class Component extends DCLogic {
       journeyOnCls: isJourney ? 'on' : '', libraryOnCls: isLibraryMode ? 'on' : '',
       practiceOnCls: isPractice ? 'on' : '',
       cdIntents, cdSpecific, cdDone, cdHasDone, cdWays, cdStartMain, cdStartPaper, cdLog, cdDoneCount, cdHasLog,
-      goAssess: (e) => { if (e) e.preventDefault(); const id = this.state.active; try { window.location.href = encodeURI('Practice Room - Guided Retry.dc.html') + (id != null ? '?ch=' + id : ''); } catch (err) {} }, cdShowLog: cdHasLog && !this.state.prSheet,
+      goAssess: (e) => { if (e) e.preventDefault(); const id = this.state.active; try { window.location.href = encodeURI('Practice Room - Guided Retry Beta.dc.html') + (id != null ? '?ch=' + id : ''); } catch (err) {} }, cdShowLog: cdHasLog && !this.state.prSheet,
       snack: this.state.snack, hasSnack: !!this.state.snack,
       hintOpacity: this.state.active != null ? 0 : 1,
       topWidgetsPE: this.state.active != null ? 'none' : 'auto',
