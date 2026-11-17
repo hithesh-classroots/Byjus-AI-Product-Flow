@@ -142,7 +142,9 @@ def apply(path):
 
     # the practice hero's type sits on .cd-mesh, so no rule can reach it
     hero = 0
-    for old, new in [('color:#1a1526;line-height:1.15;">Practice this chapter',
+    for old, new in [('color:#1a1526;">Practice with Vyom',
+                      'color:%s;">Practice with Vyom' % INK),
+                     ('color:#1a1526;line-height:1.15;">Practice this chapter',
                       'color:%s;line-height:1.15;">Practice this chapter' % INK),
                      ('color:rgba(26,21,38,0.86);line-height:1.45',
                       'color:%s;line-height:1.45' % DIM)]:
