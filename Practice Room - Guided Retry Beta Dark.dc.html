@@ -63,7 +63,7 @@
   .tr-snode-cel{animation:snodePop .78s cubic-bezier(.25,1.7,.45,1);box-shadow:0 0 16px 5px rgba(0,0,0,0.55);}
   /* soft core flash — sells the "energy released" beat the thin rings alone can't */
   @keyframes snodeFlash{0%{transform:translate(-50%,-50%) scale(.4);opacity:0}18%{opacity:.95}100%{transform:translate(-50%,-50%) scale(3.4);opacity:0}}
-  .tr-flash{position:absolute;left:50%;top:50%;width:34px;height:34px;border-radius:50%;background:radial-gradient(circle,rgba(26,21,38,0.95),rgba(77,163,240,.7) 42%,rgba(77,163,240,0) 72%);animation:snodeFlash .7s ease-out forwards;pointer-events:none;}
+  .tr-flash{position:absolute;left:50%;top:50%;width:34px;height:34px;border-radius:50%;background:radial-gradient(circle,#262038,rgba(77,163,240,.7) 42%,rgba(77,163,240,0) 72%);animation:snodeFlash .7s ease-out forwards;pointer-events:none;}
   @keyframes snodeRipple{0%{transform:translate(-50%,-50%) scale(.4);opacity:1}100%{transform:translate(-50%,-50%) scale(8);opacity:0}}
   .tr-ripple{position:absolute;left:50%;top:50%;width:12px;height:12px;border-radius:50%;border:3px solid #4da3f0;animation:snodeRipple 1.15s cubic-bezier(.15,.7,.3,1) forwards;pointer-events:none;}
   .tr-ripple.r2{animation-delay:.15s;border-color:#4da3f0;border-width:2.5px;}
@@ -111,7 +111,7 @@
   @keyframes confShoot{0%{opacity:0;transform:translate(0,0) rotate(0)}8%{opacity:1}45%{opacity:1;transform:translate(var(--mx),var(--my)) rotate(var(--mr))}100%{opacity:.92;transform:translate(var(--ex),var(--ey)) rotate(var(--er))}}
   .cel-streak{position:absolute;border-radius:999px;filter:blur(.3px);animation:streakSweep var(--sd,2.4s) cubic-bezier(.3,.5,.4,1) var(--sdl,0s) infinite;}
   @keyframes smokeRise{0%{opacity:0;transform:translate(-50%,10%) scale(.5)}18%{opacity:.55}100%{opacity:0;transform:translate(-50%,-120%) scale(2.4)}}
-  .cel-smoke span{position:absolute;left:50%;bottom:0;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle,rgba(26,21,38,0.9),rgba(232,165,63,.15) 70%,transparent);animation:smokeRise var(--kd,2.6s) ease-out var(--kdl,0s) infinite;}
+  .cel-smoke span{position:absolute;left:50%;bottom:0;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle,#262038,rgba(232,165,63,.15) 70%,transparent);animation:smokeRise var(--kd,2.6s) ease-out var(--kdl,0s) infinite;}
   @keyframes celStarBurst{0%{opacity:0;transform:translate(-50%,-50%) rotate(0) scale(0)}30%{opacity:1;transform:translate(calc(-50% + var(--bx,0px)),calc(-50% + var(--by,0px))) rotate(180deg) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--bx,0px)),calc(-50% + var(--by,0px))) rotate(320deg) scale(.6)}}
   .cel-burst-star{position:absolute;left:50%;top:50%;animation:celStarBurst var(--bd,1.5s) cubic-bezier(.3,.7,.4,1) var(--bdl,0s) both;}
   @keyframes rwPulse{0%{transform:scale(1)}30%{transform:scale(1.22)}55%{transform:scale(.97)}100%{transform:scale(1)}}
@@ -162,9 +162,9 @@
   .vc-in{transform:translateX(0);opacity:1;}
   .vsk-bob{animation:bob2 2.6s ease-in-out infinite;}
   .vctl-fade{transition:opacity .28s ease;}
-  .vctl-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:rgba(8,6,14,0.62);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(26,21,38,0.22);color:#1a1526;cursor:pointer;z-index:26;box-shadow:0 10px 30px rgba(0,0,0,0.4);transition:opacity .28s ease,transform .18s ease;}
+  .vctl-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:rgba(8,6,14,0.62);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.1);color:#1a1526;cursor:pointer;z-index:26;box-shadow:0 10px 30px rgba(0,0,0,0.4);transition:opacity .28s ease,transform .18s ease;}
   .vctl-center:hover{transform:translate(-50%,-50%) scale(1.06);}
-  .vctl-bar{position:absolute;left:0;right:0;bottom:0;z-index:27;display:flex;flex-direction:column;gap:9px;padding:14px 18px 12px;background:rgba(8,6,14,.68);backdrop-filter:blur(28px) saturate(1.2);-webkit-backdrop-filter:blur(28px) saturate(1.2);border-top:1px solid rgba(26,21,38,0.1);}
+  .vctl-bar{position:absolute;left:0;right:0;bottom:0;z-index:27;display:flex;flex-direction:column;gap:9px;padding:14px 18px 12px;background:rgba(8,6,14,.68);backdrop-filter:blur(28px) saturate(1.2);-webkit-backdrop-filter:blur(28px) saturate(1.2);border-top:1px solid rgba(255,255,255,0.1);}
   .vctl-seek{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:1.5px;cursor:pointer;outline:none;margin:0;align-self:center;flex:1;}
   .vctl-seek::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:3px;height:15px;border-radius:1px;background:#1a1526;box-shadow:0 0 2px rgba(0,0,0,0.45);cursor:pointer;margin-top:-6px;}
   .vctl-seek::-moz-range-thumb{width:3px;height:15px;border:none;border-radius:1px;background:#1a1526;box-shadow:0 0 2px rgba(0,0,0,0.45);cursor:pointer;}
@@ -176,7 +176,7 @@
   .vctl-vol{max-width:84px;flex:none;width:84px;}
   .vctl-play{width:44px;height:44px;}
   .vctl-seekrow{display:flex;align-items:center;gap:12px;}
-  .vctl-speed{min-width:40px;height:30px;padding:0 11px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#1a1526;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;background:rgba(26,21,38,0.14);transition:background .14s ease;}
+  .vctl-speed{min-width:40px;height:30px;padding:0 11px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#1a1526;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;background:rgba(255,255,255,0.1);transition:background .14s ease;}
   .vctl-speed:hover{background:rgba(205,199,222,.26);}
   .vc-lift{bottom:98px !important;}
   @keyframes vpause-in{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}22%{opacity:1;transform:translate(-50%,-50%) scale(1)}78%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.12)}}
@@ -328,14 +328,14 @@
       </div>
       <span aria-hidden="true" style="width:1px;height:20px;flex:none;margin:0 6px;background:linear-gradient(180deg,rgba(163,133,250,0),rgba(163,133,250,.26) 30%,rgba(163,133,250,.26) 70%,rgba(163,133,250,0));"></span>
       <div data-wallet="1" id="orbWidget" class="{{ orbPulseClass }}" style="display:flex;align-items:center;gap:8px;padding:8px 16px 8px 13px;border-radius:12px;" title="Energy orbs">
-        <span style="width:18px;height:18px;flex:none;border-radius:50%;background:radial-gradient(circle at 34% 28%,#1a1526,#e8a53f 42%,#e8a53f 78%,#e8a53f);box-shadow:0 0 10px rgba(0,0,0,0.55),0 0 3px rgba(26,21,38,0.9);"></span>
+        <span style="width:18px;height:18px;flex:none;border-radius:50%;background:radial-gradient(circle at 34% 28%,#1a1526,#e8a53f 42%,#e8a53f 78%,#e8a53f);box-shadow:0 0 10px rgba(0,0,0,0.55),0 0 3px rgba(255,255,255,0.1);"></span>
         <span style="font-weight:800;color:#e8a53f;font-size:18px;letter-spacing:-.01em;">{{ orbsDisp }}</span>
       </div>
     </div>
     <div style="position:relative;flex:none;margin-left:auto;">
       <div onClick="{{ toggleFlag }}" title="Report an issue" style="width:44px;height:44px;background:{{ flagBtnBg }};backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid {{ flagBtnBorder }};box-shadow:0 8px 22px rgba(0,0,0,0.30);border-radius:11px;display:grid;place-items:center;cursor:pointer;color:{{ flagBtnColor }};font-size:20px;"><i class="ti ti-flag-3"></i></div>
       <sc-if value="{{ flagOpen }}" hint-placeholder-val="{{ false }}">
-        <div style="position:absolute;top:52px;right:0;z-index:40;width:288px;background:#1a1526;border:1px solid rgba(255,255,255,.10);border-radius:14px;box-shadow:0 18px 44px rgba(0,0,0,0.40);padding:15px;text-align:left;">
+        <div style="position:absolute;top:52px;right:0;z-index:40;width:288px;background:#1a1526;border:1px solid #1a1526;border-radius:14px;box-shadow:0 18px 44px rgba(0,0,0,0.40);padding:15px;text-align:left;">
           <sc-if value="{{ flagNotSent }}" hint-placeholder-val="{{ true }}">
             <div style="font-size:14px;font-weight:800;color:#cdc7de;margin-bottom:3px;">Report an issue</div>
             <div style="font-size:12px;color:#918aac;margin-bottom:11px;">Spotted a bug or something wrong? Tell us and we'll fix it.</div>
@@ -354,7 +354,7 @@
     <div style="position:relative;flex:none;">
       <div onClick="{{ toggleAudioMenu }}" title="Audio settings" style="width:44px;height:44px;background:{{ audioBtnBg }};backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid {{ audioBtnBorder }};box-shadow:0 8px 22px rgba(0,0,0,0.30);border-radius:11px;display:grid;place-items:center;cursor:pointer;color:{{ audioBtnColor }};font-size:20px;"><i class="ti ti-volume"></i></div>
       <sc-if value="{{ audioMenu }}" hint-placeholder-val="{{ false }}">
-        <div style="position:absolute;top:52px;right:0;z-index:40;width:262px;background:#1a1526;border:1px solid rgba(255,255,255,.10);border-radius:14px;box-shadow:0 18px 44px rgba(0,0,0,0.40);padding:8px;text-align:left;">
+        <div style="position:absolute;top:52px;right:0;z-index:40;width:262px;background:#1a1526;border:1px solid #1a1526;border-radius:14px;box-shadow:0 18px 44px rgba(0,0,0,0.40);padding:8px;text-align:left;">
           <div onClick="{{ toggleNarrator }}" style="display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:10px;cursor:pointer;">
             <div style="width:34px;height:34px;flex:none;border-radius:9px;display:grid;place-items:center;background:#1a1526;color:#4da3f0;"><i class="ti ti-microphone-2" style="font-size:16px;"></i></div>
             <div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:700;color:#cdc7de;">Narrator voice</div><div style="font-size:11px;color:#918aac;">Vyom &amp; Spark speaking</div></div>
@@ -412,7 +412,7 @@
             </div>
             <div style="display:flex;gap:14px;">
               <sc-if value="{{ calcSci }}" hint-placeholder-val="{{ false }}">
-                <div style="flex:3 1 0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-right:14px;border-right:1px solid rgba(26,21,38,0.22);">
+                <div style="flex:3 1 0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-right:14px;border-right:1px solid rgba(255,255,255,0.1);">
                   <sc-for list="{{ calcSciKeys }}" as="k" hint-placeholder-count="15">
                     <div onClick="{{ k.press }}" role="button" title="{{ k.tip }}" style="height:36px;border-radius:10px;display:grid;place-items:center;cursor:pointer;user-select:none;font-size:14px;font-weight:700;background:rgba(26,21,38,0.2);color:#1a1526;transition:filter .1s ease;" style-active="filter:brightness(.92);">{{ k.t }}</div>
                   </sc-for>
@@ -488,7 +488,7 @@
           <sc-if value="{{ m.isMax }}" hint-placeholder-val="{{ true }}">
             <div class="brow" style="display:{{ m.disp }};gap:10px;align-items:flex-start;--brow-op:{{ m.op }};opacity:{{ m.op }};pointer-events:{{ m.pe }};">
               <div style="min-width:0;">
-                <div data-max-bubble class="{{ m.fsClass }}" style="background:#1a1526;color:#cdc7de;padding:10px 13px;border-radius:14px 14px 14px 4px;font-size:14px;line-height:1.5;"><sc-for list="{{ m.words }}" as="w" hint-placeholder-count="0"><span style="white-space:pre-wrap;opacity:{{ w.op }};transition:opacity .22s ease;">{{ w.t }}</span></sc-for><sc-if value="{{ m.showBtns }}" hint-placeholder-val="{{ false }}"><div class="btn-rise" style="display:flex;gap:9px;margin-top:11px;"><div onClick="{{ m.b1 }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:#4cbf6e;color:#1a1526;font-size:14px;font-weight:700;padding:10px 14px;border-radius:11px;cursor:pointer;box-shadow:0 6px 14px rgba(0,0,0,0.51);"><i class="ti ti-check"></i>{{ m.b1Label }}</div><div onClick="{{ m.b2 }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:#f07171;color:#1a1526;font-size:14px;font-weight:700;padding:10px 14px;border-radius:11px;cursor:pointer;box-shadow:0 6px 14px rgba(0,0,0,0.48);">{{ m.b2Label }}</div></div></sc-if><sc-if value="{{ m.showSelfCheck }}" hint-placeholder-val="{{ false }}"><div class="btn-rise" style="display:flex;gap:9px;margin-top:11px;"><div onClick="{{ m.pickGot }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:{{ m.gotBg }};color:{{ m.gotFg }};font-size:14px;font-weight:700;padding:10px 14px;border-radius:11px;cursor:pointer;box-shadow:{{ m.gotSh }};transition:background .15s ease,box-shadow .15s ease;"><i class="ti ti-check"></i>Got it</div><div onClick="{{ m.pickRev }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:{{ m.revBg }};color:{{ m.revFg }};font-size:14px;font-weight:700;padding:10px 14px;border-radius:11px;cursor:pointer;box-shadow:{{ m.revSh }};transition:background .15s ease,box-shadow .15s ease;">Need revision</div></div></sc-if></div>
+                <div data-max-bubble class="{{ m.fsClass }}" style="background:#262038;color:#cdc7de;padding:10px 13px;border-radius:14px 14px 14px 4px;font-size:14px;line-height:1.5;"><sc-for list="{{ m.words }}" as="w" hint-placeholder-count="0"><span style="white-space:pre-wrap;opacity:{{ w.op }};transition:opacity .22s ease;">{{ w.t }}</span></sc-for><sc-if value="{{ m.showBtns }}" hint-placeholder-val="{{ false }}"><div class="btn-rise" style="display:flex;gap:9px;margin-top:11px;"><div onClick="{{ m.b1 }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:#4cbf6e;color:#1a1526;font-size:14px;font-weight:700;padding:10px 14px;border-radius:11px;cursor:pointer;box-shadow:0 6px 14px rgba(0,0,0,0.51);"><i class="ti ti-check"></i>{{ m.b1Label }}</div><div onClick="{{ m.b2 }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:#f07171;color:#1a1526;font-size:14px;font-weight:700;padding:10px 14px;border-radius:11px;cursor:pointer;box-shadow:0 6px 14px rgba(0,0,0,0.48);">{{ m.b2Label }}</div></div></sc-if><sc-if value="{{ m.showSelfCheck }}" hint-placeholder-val="{{ false }}"><div class="btn-rise" style="display:flex;gap:9px;margin-top:11px;"><div onClick="{{ m.pickGot }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:{{ m.gotBg }};color:{{ m.gotFg }};font-size:14px;font-weight:700;padding:10px 14px;border-radius:11px;cursor:pointer;box-shadow:{{ m.gotSh }};transition:background .15s ease,box-shadow .15s ease;"><i class="ti ti-check"></i>Got it</div><div onClick="{{ m.pickRev }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:{{ m.revBg }};color:{{ m.revFg }};font-size:14px;font-weight:700;padding:10px 14px;border-radius:11px;cursor:pointer;box-shadow:{{ m.revSh }};transition:background .15s ease,box-shadow .15s ease;">Need revision</div></div></sc-if></div>
               </div>
             </div>
           </sc-if>
@@ -567,7 +567,7 @@
             </div>
             <h1 style="margin:0 0 14px;font-size:38px;line-height:1.1;font-weight:800;color:#cdc7de;letter-spacing:-.01em;"><span class="title-hi {{ titleHiClass }}" style="display:inline-block;padding:2px 14px;">{{ boardTitle }}</span></h1>
             <p style="margin:0 0 20px;font-size:20px;font-weight:500;color:#918aac;max-width:560px;line-height:1.5;">{{ boardSub }}</p>
-            <div style="display:flex;align-items:center;gap:14px;background:#1a1526;border:1px solid #3d3459;border-radius:16px;padding:12px 26px;box-shadow:0 2px 6px -3px rgba(0,0,0,.42);font-size:30px;font-weight:800;letter-spacing:-.015em;line-height:1.2;color:#cdc7de;white-space:nowrap;line-height:1.1;">Area = <span style="display:inline-flex;flex-direction:column;align-items:center;font-size:20px;font-weight:800;color:#e8a53f;line-height:1.05;"><span style="border-bottom:2px solid #e8a53f;padding:0 5px 2px;">b + a</span><span style="padding-top:2px;">2</span></span> × <span style="color:#4da3f0;">h</span></div>
+            <div style="display:flex;align-items:center;gap:14px;background:#1a1526;border:1px solid #3d3459;border-radius:16px;padding:12px 26px;box-shadow:0 2px 6px -3px rgba(0,0,0,.42);font-size:30px;font-weight:800;letter-spacing:-.015em;line-height:1.2;color:#cdc7de;white-space:nowrap;line-height:1.1;">Area = <span style="display:inline-flex;flex-direction:column;align-items:center;font-size:20px;font-weight:800;color:#a385fa;line-height:1.05;"><span style="border-bottom:2px solid #a385fa;padding:0 5px 2px;">b + a</span><span style="padding-top:2px;">2</span></span> × <span style="color:#e8a53f;">h</span></div>
           </div>
         </sc-if>
 
@@ -598,12 +598,12 @@
                 </sc-if>
                 <sc-if value="{{ celCollect }}" hint-placeholder-val="{{ false }}">
                   <div id="celTray" class="cel-pop" style="position:absolute;bottom:23%;left:0;right:0;display:flex;justify-content:center;gap:18px;z-index:5;">
-                    <div style="position:relative;display:flex;align-items:center;gap:10px;white-space:nowrap;background:#1a1526;border:1px solid rgba(232,165,63,.42);box-shadow:0 10px 28px rgba(0,0,0,0.32);border-radius:16px;padding:12px 22px;">
+                    <div style="position:relative;display:flex;align-items:center;gap:10px;white-space:nowrap;background:#262038;border:1px solid rgba(232,165,63,.42);box-shadow:0 10px 28px rgba(0,0,0,0.32);border-radius:16px;padding:12px 22px;">
                       <div style="position:absolute;inset:0;pointer-events:none;"><sc-for list="{{ celBurstStars }}" as="b" hint-placeholder-count="20"><i class="ti ti-star-filled cel-burst-star" style="font-size:14px;color:#e8a53f;--bx:{{ b.bx }};--by:{{ b.by }};--bd:{{ b.bd }};--bdl:{{ b.bdl }};"></i></sc-for></div>
                       <i class="ti ti-star-filled" style="font-size:24px;color:#e8a53f;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.51));"></i>
                       <span style="font-size:20px;font-weight:800;color:#e8a53f;">+20 XP</span>
                     </div>
-                    <div style="display:flex;align-items:center;gap:10px;white-space:nowrap;background:#1a1526;border:1px solid rgba(240,113,113,.42);box-shadow:0 10px 28px rgba(0,0,0,0.40);border-radius:16px;padding:12px 22px;">
+                    <div style="display:flex;align-items:center;gap:10px;white-space:nowrap;background:#262038;border:1px solid rgba(240,113,113,.42);box-shadow:0 10px 28px rgba(0,0,0,0.40);border-radius:16px;padding:12px 22px;">
                       <span style="width:22px;height:22px;flex:none;border-radius:50%;background:radial-gradient(circle at 34% 28%,#1a1526,#e8a53f 42%,#e8a53f 78%,#e8a53f);box-shadow:0 0 10px rgba(0,0,0,0.55);"></span>
                       <span style="font-size:20px;font-weight:800;color:#e8a53f;">+2 Orbs</span>
                     </div>
@@ -627,12 +627,12 @@
               <line x1="130" y1="30" x2="130" y2="150" stroke="#918aac" stroke-width="1.5" stroke-dasharray="6 4"></line>
               <text x="130" y="20" text-anchor="middle" font-size="17" font-style="italic" fill="#e8a53f" font-weight="700">b</text>
               <text x="130" y="172" text-anchor="middle" font-size="17" font-style="italic" fill="#e8a53f" font-weight="700">a</text>
-              <text x="142" y="94" font-size="17" font-style="italic" fill="#4da3f0" font-weight="700">h</text>
+              <text x="142" y="94" font-size="17" font-style="italic" fill="#e8a53f" font-weight="700">h</text>
             </svg>
             </sc-if>
             <sc-if value="{{ defQuizShow }}" hint-placeholder-val="{{ false }}">
               <div class="def-quiz popin" style="margin-top:50px;flex:none;width:min(92%,560px);pointer-events:auto;">
-                <div style="font-size:20px;font-weight:800;color:#cdc7de;text-align:center;margin:0 0 14px;">What do <span style="font-style:italic;color:#e8a53f;">a</span> and <span style="font-style:italic;color:#e8a53f;">b</span> stand for?</div>
+                <div style="font-size:20px;font-weight:800;color:#cdc7de;text-align:center;margin:0 0 14px;">What do <span style="font-style:italic;color:#a385fa;">a</span> and <span style="font-style:italic;color:#a385fa;">b</span> stand for?</div>
                 <div style="display:flex;flex-direction:column;gap:10px;">
                   <sc-for list="{{ defOptions }}" as="o" hint-placeholder-count="3">
                     <div onClick="{{ o.onClick }}" class="def-opt" style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:14px;cursor:pointer;border:2px solid {{ o.borderColor }};background:{{ o.bg }};box-shadow:0 4px 14px rgba(0,0,0,0.28);transition:border-color .18s ease,background .18s ease;">
@@ -999,7 +999,7 @@
                           <label class="pq-lbl" style="display:flex;align-items:center;gap:12px;padding:8px 8px 8px 14px;border-radius:10px;border:2px solid #3d3459;background:#1a1526;font-weight:600;color:#cdc7de;box-shadow:0 4px 13px rgba(0,0,0,0.28);">
                             <span style="width:14px;height:14px;flex:none;border-radius:50%;background:{{ f.sw }};"></span>
                             <span style="flex:1;min-width:0;">{{ f.name }}</span>
-                            <input value="{{ f.val }}" onChange="{{ f.onChange }}" readOnly="{{ qsSubmitted }}" inputMode="numeric" placeholder="?" class="pq-slot" style="width:72px;height:44px;box-sizing:border-box;border-radius:8px;border:2px {{ f.bs }} {{ f.bd }};background:{{ f.bg }};text-align:center;font:inherit;font-size:20px;font-weight:700;color:#cdc7de;outline:none;cursor:pointer;transition:border-color .15s ease,background .15s ease,box-shadow .15s ease;" style-hover="border-color:#e8a53f;" style-focus="border-style:solid;border-color:#e8a53f;background:#1a1526;box-shadow:0 0 0 4px rgba(232,165,63,0.22);cursor:text;">
+                            <input value="{{ f.val }}" onChange="{{ f.onChange }}" readOnly="{{ qsSubmitted }}" inputMode="numeric" placeholder="?" class="pq-slot" style="width:72px;height:44px;box-sizing:border-box;border-radius:8px;border:2px {{ f.bs }} {{ f.bd }};background:{{ f.bg }};text-align:center;font:inherit;font-size:20px;font-weight:700;color:#cdc7de;outline:none;cursor:pointer;transition:border-color .15s ease,background .15s ease,box-shadow .15s ease;" style-hover="border-color:#a385fa;" style-focus="border-style:solid;border-color:#a385fa;background:#1a1526;box-shadow:0 0 0 4px rgba(232,165,63,0.22);cursor:text;">
                           </label>
                         </sc-for>
                       </div>
@@ -1135,7 +1135,7 @@
                       </div>
                       <div style="position:relative;width:358px;max-width:calc(100vw - 80px);height:{{ qsOrdH }};">
                         <sc-if value="{{ qsOrdGhostOn }}" hint-placeholder-val="{{ false }}">
-                          <div style="position:absolute;left:0;right:0;top:0;height:56px;box-sizing:border-box;border-radius:10px;border:2px dashed #a385fa;background:rgba(26,21,38,0.7);transform:{{ qsOrdGhostTf }};transition:transform .18s cubic-bezier(.2,.8,.3,1);"></div>
+                          <div style="position:absolute;left:0;right:0;top:0;height:56px;box-sizing:border-box;border-radius:10px;border:2px dashed #a385fa;background:#262038;transform:{{ qsOrdGhostTf }};transition:transform .18s cubic-bezier(.2,.8,.3,1);"></div>
                         </sc-if>
                         <sc-for list="{{ qsOrder }}" as="t" hint-placeholder-count="4">
                           <div onPointerDown="{{ t.down }}" class="pq-lbl" style="position:absolute;left:0;right:0;top:0;z-index:{{ t.z }};height:56px;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:14px;border-radius:10px;border:2px solid {{ t.border }};background:{{ t.bg }};cursor:{{ t.cur }};font-weight:600;color:#cdc7de;opacity:{{ t.op }};transform:{{ t.tf }};box-shadow:{{ t.sh }};transition:{{ t.tr }};transition-delay:{{ t.delay }};">
@@ -1205,7 +1205,7 @@
                 </div>
                 <sc-if value="{{ vhWide }}" hint-placeholder-val="{{ false }}">
                 <div id="vhBox" class="vh-frame" data-noflip="1" style="--vh-ring:{{ vhRingC }};position:absolute;left:0;top:0;bottom:80px;width:{{ vhBoxW }};z-index:6;box-sizing:border-box;display:flex;border-radius:16px;border:2px solid transparent;background-image:linear-gradient(180deg,#1a1526 0%,rgba(255,255,255,0) 100%);background-origin:border-box;background-repeat:no-repeat;box-shadow:0 -10px 26px -18px {{ vhRingG }};overflow:hidden;">
-                  <div class="vh-fade" style="flex:none;width:196px;box-sizing:border-box;display:flex;flex-direction:column;gap:6px;padding:14px 10px;overflow-y:auto;scrollbar-width:none;background:linear-gradient(180deg,#1a1526 0%,rgba(248,249,250,0) 100%);border-right:1px solid #1a1526;border-image:linear-gradient(180deg,#1a1526 0%,rgba(241,243,245,0) 100%) 1;">
+                  <div class="vh-fade" style="flex:none;width:196px;box-sizing:border-box;display:flex;flex-direction:column;gap:6px;padding:14px 10px;overflow-y:auto;scrollbar-width:none;background:linear-gradient(180deg,#1a1526 0%,rgba(255,255,255,0) 100%);border-right:1px solid #1a1526;border-image:linear-gradient(180deg,#1a1526 0%,rgba(255,255,255,0) 100%) 1;">
                     <sc-for list="{{ vhRail }}" as="r" hint-placeholder-count="5">
                       <sc-if value="{{ r.isAct }}" hint-placeholder-val="{{ true }}">
                         <div style="display:flex;align-items:center;gap:9px;height:30px;padding:0 6px;font-size:14px;font-weight:{{ r.aW }};color:{{ r.aTxt }};white-space:nowrap;">
@@ -1443,10 +1443,10 @@
               <line x1="130" y1="30" x2="130" y2="150" stroke="#918aac" stroke-width="1.5" stroke-dasharray="6 4"></line>
               <text x="130" y="20" text-anchor="middle" font-size="20" font-style="italic" fill="#a385fa" font-weight="800">b</text>
               <text x="130" y="172" text-anchor="middle" font-size="20" font-style="italic" fill="#a385fa" font-weight="800">a</text>
-              <text x="142" y="94" font-size="20" font-style="italic" fill="#4da3f0" font-weight="800">h</text>
+              <text x="142" y="94" font-size="20" font-style="italic" fill="#e8a53f" font-weight="800">h</text>
             </svg>
             <div style="display:flex;flex-direction:column;gap:26px;">
-              <div style="display:flex;align-items:center;gap:14px;background:#1a1526;border:1px solid #3d3459;padding:16px 28px;border-radius:16px;box-shadow:0 2px 6px -3px rgba(0,0,0,.42);font-size:30px;font-weight:800;letter-spacing:-.015em;line-height:1.2;color:#cdc7de;">Area = <span style="display:inline-flex;flex-direction:column;align-items:center;font-size:20px;font-weight:800;color:#e8a53f;line-height:1.15;"><span style="border-bottom:2px solid #e8a53f;padding:0 6px 3px;">b + a</span><span style="padding-top:3px;">2</span></span> × <span style="color:#4da3f0;">h</span></div>
+              <div style="display:flex;align-items:center;gap:14px;background:#1a1526;border:1px solid #3d3459;padding:16px 28px;border-radius:16px;box-shadow:0 2px 6px -3px rgba(0,0,0,.42);font-size:30px;font-weight:800;letter-spacing:-.015em;line-height:1.2;color:#cdc7de;">Area = <span style="display:inline-flex;flex-direction:column;align-items:center;font-size:20px;font-weight:800;color:#a385fa;line-height:1.15;"><span style="border-bottom:2px solid #a385fa;padding:0 6px 3px;">b + a</span><span style="padding-top:3px;">2</span></span> × <span style="color:#e8a53f;">h</span></div>
               <div style="display:flex;flex-direction:column;gap:14px;font-size:20px;font-weight:500;color:#918aac;">
                 <div style="display:flex;align-items:center;gap:8px;"><span style="width:34px;height:4px;border-radius:999px;background:#e8a53f;"></span>b = top base</div>
                 <div style="display:flex;align-items:center;gap:8px;"><span style="width:34px;height:4px;border-radius:999px;background:#e8a53f;"></span>a = bottom base</div>
@@ -1459,7 +1459,7 @@
         <!-- COMPARE -->
         <sc-if value="{{ isCompare }}" hint-placeholder-val="{{ false }}">
           <div class="bpop" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;gap:20px;overflow:auto;padding:24px 34px 20px;">
-            <h2 style="margin:0;font-size:30px;font-weight:800;letter-spacing:-.015em;line-height:1.2;color:#cdc7de;text-align:center;flex:none;">The transformed triangle has the <span style="color:#e8a53f;">same area</span></h2>
+            <h2 style="margin:0;font-size:30px;font-weight:800;letter-spacing:-.015em;line-height:1.2;color:#cdc7de;text-align:center;flex:none;">The transformed triangle has the <span style="color:#a385fa;">same area</span></h2>
             <div style="display:flex;align-items:center;gap:40px;flex-wrap:wrap;justify-content:center;">
               <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
                 <span style="font-size:14px;font-weight:700;color:#918aac;padding:6px 12px;border-radius:999px;">Original trapezoid</span>
@@ -1471,7 +1471,7 @@
               </div>
               <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
                 <span style="font-size:16px;font-weight:700;color:#918aac;background:#262038;padding:8px 18px;border-radius:999px;">Transformed triangle</span>
-                <svg width="250" height="166" viewBox="0 0 240 160" style="overflow:visible;"><polygon points="20,24 20,140 220,140" fill="#262038" stroke="#e8a53f" stroke-width="2.5" stroke-linejoin="round"></polygon><line x1="20" y1="24" x2="20" y2="140" stroke="#e8a53f" stroke-width="1.8" stroke-dasharray="6 5"></line><text x="120" y="156" text-anchor="middle" font-size="15" fill="#4da3f0" font-style="italic" font-weight="700">a + b</text></svg>
+                <svg width="250" height="166" viewBox="0 0 240 160" style="overflow:visible;"><polygon points="20,24 20,140 220,140" fill="#262038" stroke="#e8a53f" stroke-width="2.5" stroke-linejoin="round"></polygon><line x1="20" y1="24" x2="20" y2="140" stroke="#e8a53f" stroke-width="1.8" stroke-dasharray="6 5"></line><text x="120" y="156" text-anchor="middle" font-size="15" fill="#e8a53f" font-style="italic" font-weight="700">a + b</text></svg>
               </div>
             </div>
           </div>
@@ -1481,7 +1481,7 @@
         <sc-if value="{{ isQuiz }}" hint-placeholder-val="{{ false }}">
           <div class="bpop" style="position:absolute;inset:0;display:flex;flex-direction:column;padding:44px 34px 20px;overflow:auto;">
             <div style="display:flex;align-items:center;justify-content:space-between;flex:none;">
-              <div style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800;letter-spacing:.09em;color:#4da3f0;background:#262038;padding:6px 12px;border-radius:8px;"><i class="ti ti-help-circle"></i></div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800;letter-spacing:.09em;color:#e8a53f;background:#262038;padding:6px 12px;border-radius:8px;"><i class="ti ti-help-circle"></i></div>
               <div style="font-size:14px;font-weight:700;color:#f07171;display:flex;align-items:center;gap:8px;"><i class="ti ti-clock"></i>0:20</div>
             </div>
             <h2 style="margin:14px 0 26px;font-size:30px;font-weight:800;letter-spacing:-.015em;line-height:1.2;color:#cdc7de;line-height:1.25;flex:none;">{{ quizQ }}</h2>
@@ -1527,7 +1527,7 @@
               </div>
             </div>
             <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;font-size:20px;font-weight:700;margin:14px 0 8px;flex:none;">
-              <span style="background:rgba(26,21,38,0.16);padding:9px 16px;border-radius:10px;">Height = 300 ÷ 30</span>
+              <span style="background:rgba(255,255,255,0.1);padding:9px 16px;border-radius:10px;">Height = 300 ÷ 30</span>
               <span>=</span>
               <span style="min-width:80px;text-align:center;padding:10px 18px;border-radius:10px;background:{{ appletBoxBg }};color:{{ appletBoxColor }};">{{ appletValueDisplay }}</span>
               <span>cm</span>
@@ -1547,7 +1547,7 @@
           <div class="vid-frame {{ vidFrameClass }} {{ videoFullClass }}" onMouseMove="{{ vidHover }}">
             <video ref="{{ videoRef }}" src="lesson-video.mp4" preload="metadata" playsinline="{{ true }}" controls="{{ false }}" onClick="{{ vidToggle }}" onTimeUpdate="{{ onVideoTime }}" onPlay="{{ onVideoPlay }}" onPause="{{ onVideoPause }}" onEnded="{{ onVideoEnded }}" style="width:100%;height:100%;object-fit:contain;display:block;background:transparent;border-radius:inherit;cursor:pointer;"></video>
             <sc-if value="{{ vidThumbShow }}" hint-placeholder-val="{{ true }}">
-              <div onClick="{{ vidThumb }}" class="vctl-center" style="background:rgba(163,133,250,.92);border-color:rgba(26,21,38,0.5);"><i class="ti ti-player-play-filled" style="font-size:30px;margin-left:3px;"></i></div>
+              <div onClick="{{ vidThumb }}" class="vctl-center" style="background:rgba(163,133,250,.92);border-color:rgba(255,255,255,0.1);"><i class="ti ti-player-play-filled" style="font-size:30px;margin-left:3px;"></i></div>
             </sc-if>
             <sc-if value="{{ vidCenterShow }}" hint-placeholder-val="{{ false }}">
               <div onClick="{{ vidToggle }}" class="vctl-center"><i class="ti ti-player-play-filled" style="font-size:30px;margin-left:3px;"></i></div>
@@ -2517,7 +2517,7 @@ class Component extends DCLogic {
       base.ixChips=q.items.map((it,k)=>({it,k})).filter(o=>L[o.k]==null).map(({it,k})=>{ const sel=st.qsSel===k;
         return {key:'i'+k, t:'', hasShape:true, pts:it.pts, border: sel ? V : N, bg: sel ? VB : '#1a1526', ink:'#cdc7de', op:1, cur:'pointer', tap:()=>this._ixSortItem(k)}; });
       const any=st.qsSel!=null && !done;
-      base.ixBuckets=q.buckets.map((name,b)=>({ key:'b'+b, name, border: any ? V : '#3d3459', bg: any ? 'rgba(255,255,255,.05)' : '#1a1526', cur: any ? 'pointer' : 'default', tap:()=>this._ixSortBucket(b),
+      base.ixBuckets=q.buckets.map((name,b)=>({ key:'b'+b, name, border: any ? V : '#3d3459', bg: any ? '#1a1526' : '#1a1526', cur: any ? 'pointer' : 'default', tap:()=>this._ixSortBucket(b),
         items: q.items.map((it,k)=>({it,k})).filter(o=>L[o.k]===b).map(({it,k})=>{ const sel=st.qsSel===k; let border = sel ? V : N, bg = sel ? VB : '#1a1526', stroke=V;
           if(done){ const ok=it.b===b; border = ok ? G : R; bg = ok ? GB : RB; stroke = ok ? '#4cbf6e' : '#f07171'; }
           return {key:'bi'+k, pts:it.pts, border, bg, stroke, cur: done ? 'default' : 'pointer', tap:(e)=>{ if(e && e.stopPropagation) e.stopPropagation(); this._ixSortItem(k); }}; }) }));
@@ -3220,7 +3220,7 @@ class Component extends DCLogic {
     });
     const poly=(f)=>rows.map(r=>pt(r.i,f(r)).map(v=>v.toFixed(1)).join(',')).join(' ');
     return {
-      radRings:[0,25,50,75,100].map((p,k)=>({key:'rg'+p, pts:rows.map(r=>pt(r.i,p).map(v=>v.toFixed(1)).join(',')).join(' '), fill: k%2 ? 'rgba(26,21,38,0.55)' : 'rgba(26,21,38,0.25)'})).reverse(),
+      radRings:[0,25,50,75,100].map((p,k)=>({key:'rg'+p, pts:rows.map(r=>pt(r.i,p).map(v=>v.toFixed(1)).join(',')).join(' '), fill: k%2 ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.1)'})).reverse(),
       radAxes: rows.map(r=>{ const [x,y]=pt(r.i,100); return {key:'ax'+r.i, x:x.toFixed(1), y:y.toFixed(1)}; }),
       radBefore: poly(r=>r.before),
       radNow: poly(r=>r.v),
@@ -3646,7 +3646,7 @@ class Component extends DCLogic {
       base.qsImgOpts = q.opts.map((o,i)=>{
         const pick=chosen(i), ans=isAns(i) && (reveal || pick);
         let borderColor='#3d3459', bg='#1a1526', letterBg='#262038', letterColor='#918aac', letterBorder='transparent',
-            mark='', markColor='transparent', stroke='#a385fa', fill='#262038', lineColor='#4da3f0';
+            mark='', markColor='transparent', stroke='#a385fa', fill='#262038', lineColor='#e8a53f';
         if(!done){ if(pick){ borderColor='#a385fa'; bg='#262038'; letterBg='#a385fa'; letterColor='#1a1526'; fill='#1a1526'; } }
         else if(pick && ans){ borderColor='#4cbf6e'; bg='#1a1526'; letterBg='#4cbf6e'; letterColor='#1a1526'; mark='\u2713'; markColor='#4cbf6e'; stroke='#4cbf6e'; fill='#1a1526'; lineColor='#4cbf6e'; }
         else if(pick){ borderColor='#f07171'; bg='#1a1526'; letterBg='#f07171'; letterColor='#1a1526'; mark='\u2715'; markColor='#f07171'; fill='#1a1526'; }
@@ -3759,7 +3759,7 @@ class Component extends DCLogic {
         let border='#3d3459', bg='#1a1526';
         if(done){ const ok = L[i]===q.ans[i]; border = ok?'#4cbf6e':'#f07171'; bg = ok?'#1a1526':'#1a1526'; }
         else if(armed){ border='#a385fa'; bg='#262038'; }
-        else if(joined){ border='#a385fa'; bg='rgba(255,255,255,.05)'; }
+        else if(joined){ border='#a385fa'; bg='#1a1526'; }
         return { key:'ql'+i, label, h:ROW+'px', border, bg, onClick:()=>this._qsMatchLeft(i) };
       });
       const anim = st.qsMatchAnim;
@@ -3778,7 +3778,7 @@ class Component extends DCLogic {
           if(owner!=null){ const ok=L[owner]===q.ans[owner]; border=ok?'#4cbf6e':'#f07171'; bg=ok?'#1a1526':'#1a1526';
             if(!ok && !anim) wig='qsWig'; }
           else if(rowOf[j]<q.left.length){ border='#f07171'; bg='#1a1526'; if(!anim) wig='qsWig'; }
-        } else if(owner!=null){ border='#a385fa'; bg='rgba(255,255,255,.05)'; }
+        } else if(owner!=null){ border='#a385fa'; bg='#1a1526'; }
         return { key:'qr'+j, label, h:ROW+'px', border, bg, wig, z,
           ty: ((rowNow(j)-j)*(ROW+GAP)).toFixed(2)+'px', onClick:()=>this._qsMatchRight(j) };
       });
@@ -3957,7 +3957,7 @@ class Component extends DCLogic {
     });
     const appletHeight = st.appletSolved ? '10' : '?';
     const appletValueDisplay = st.appletValue==='' ? '?' : st.appletValue;
-    const appletBoxBg = st.appletSolved ? '#4cbf6e' : 'rgba(26,21,38,0.16)';
+    const appletBoxBg = st.appletSolved ? '#4cbf6e' : 'rgba(255,255,255,0.1)';
     const appletBoxColor = st.appletSolved ? '#1a1526' : '#1a1526';
     const appletTitle = st.appletSolved ? 'We found the height of the trapezoid!' : 'Find the missing height';
     const appletTitleColor = st.appletSolved ? '#e8a53f' : '#1a1526';
@@ -4028,8 +4028,8 @@ class Component extends DCLogic {
       vidVolIcon: st.vidMuted||st.vidVol<=0 ? 'ti-volume-3' : (st.vidVol<0.5 ? 'ti-volume-2' : 'ti-volume'),
       vidRateLabel: (st.vidRate||1)+'\u00d7',
       vidFullToggle:()=>this._vidFullToggle(), vidFullIcon: st.videoFull?'ti-arrows-minimize':'ti-arrows-maximize',
-      vidVolBg: 'linear-gradient(90deg,#1a1526 '+(Math.round((st.vidMuted?0:(st.vidVol==null?1:st.vidVol))*100))+'%,#1a1526 0%)',
-      vidSeekBg: 'linear-gradient(90deg,#1a1526 '+((st.vidDur? (st.vidCur/st.vidDur*100):0))+'%,#1a1526 0%)',
+      vidVolBg: 'linear-gradient(90deg,#1a1526 '+(Math.round((st.vidMuted?0:(st.vidVol==null?1:st.vidVol))*100))+'%,rgba(255,255,255,0.1) 0%)',
+      vidSeekBg: 'linear-gradient(90deg,#1a1526 '+((st.vidDur? (st.vidCur/st.vidDur*100):0))+'%,rgba(255,255,255,0.1) 0%)',
       vidBreakShow: !!st.vidDur && st.vidDur>69, vidBreakLeft: (st.vidDur? (69/st.vidDur*100):0)+'%',
       vidMaxMsgShow: st.step===this.IDX.video && ((!st.vidStarted && st.showMsgs) || !!st.vidMissedMax),
       vidMaxMsgText: (st.step===this.IDX.video && st.vidMissedMax) ? "No problem, I'll play that part for you." : ((s.msgs&&s.msgs[0]) ? s.msgs[0].t.replace('{name}',name) : ''),
@@ -4091,13 +4091,13 @@ class Component extends DCLogic {
       ftueSkip:()=>{ this._post('byjus-room-complete'); try{ localStorage.setItem('ftueStage','land'); localStorage.setItem('learningFlowSetupStatus','dismissed'); }catch(e){} try{ window.location.href=encodeURI('Chapter Journey - Beta Dark.dc.html'); }catch(e){} },
       celBurstStars: Array.from({length:20},(v,i)=>{ const ang=(i/20)*Math.PI*2; const r=70+((i%3)*26); return { bx:Math.round(Math.cos(ang)*r*1.5)+'px', by:Math.round(Math.sin(ang)*r)+'px', bd:(1.3+((i%4)*0.18)).toFixed(2)+'s', bdl:(0.02*i).toFixed(2)+'s' }; }),
       videoFull:st.videoFull,
-      showCallout, calloutLabel:isSpk?'Spark':'Vyom', calloutIsMax:!isSpk, calloutIsSpark:isSpk, calloutColor:isSpk?'#4da3f0':'#4da3f0', calloutBg:isSpk?'#262038':'#262038', calloutBorder:isSpk?'#262038':'#4da3f0',
+      showCallout, calloutLabel:isSpk?'Spark':'Vyom', calloutIsMax:!isSpk, calloutIsSpark:isSpk, calloutColor:isSpk?'#e8a53f':'#4da3f0', calloutBg:isSpk?'#262038':'#262038', calloutBorder:isSpk?'#262038':'#4da3f0',
       audioMenu:st.audioMenu, flagOpen:st.flagOpen, settingsMenu:st.settingsMenu, flagSent:st.flagSent, flagNotSent:!st.flagSent, flagText:st.flagText||'',
       alwaysChatTrack:st.alwaysChat?'#4da3f0':'#3d3459', alwaysChatKnob:st.alwaysChat?'21px':'3px',
-      setBtnBg:st.settingsMenu?'#1a1526':'#1a1526', setBtnColor:st.settingsMenu?'#4da3f0':'#918aac', setBtnBorder:st.settingsMenu?'#4da3f0':'rgba(255,255,255,.13)',
+      setBtnBg:st.settingsMenu?'#1a1526':'#1a1526', setBtnColor:st.settingsMenu?'#4da3f0':'#918aac', setBtnBorder:st.settingsMenu?'#4da3f0':'#1a1526',
       narratorTrack:st.narratorOn?'#4da3f0':'#3d3459', narratorKnob:st.narratorOn?'21px':'3px', systemTrack:st.systemOn?'#4da3f0':'#3d3459', systemKnob:st.systemOn?'21px':'3px',
-      audioBtnBg:st.audioMenu?'#262038':'transparent', audioBtnColor:st.audioMenu?'#4da3f0':'#918aac', audioBtnBorder:st.audioMenu?'#4da3f0':'rgba(255,255,255,.13)',
-      flagBtnBg:st.flagOpen?'#1a1526':'transparent', flagBtnColor:st.flagOpen?'#f07171':'#918aac', flagBtnBorder:st.flagOpen?'rgba(232,165,63,.15)':'rgba(255,255,255,.13)',
+      audioBtnBg:st.audioMenu?'#262038':'transparent', audioBtnColor:st.audioMenu?'#4da3f0':'#918aac', audioBtnBorder:st.audioMenu?'#4da3f0':'#1a1526',
+      flagBtnBg:st.flagOpen?'#1a1526':'transparent', flagBtnColor:st.flagOpen?'#f07171':'#918aac', flagBtnBorder:st.flagOpen?'rgba(232,165,63,.15)':'#1a1526',
       flagSubmitBg:flagHas?'#4da3f0':'#4da3f0', flagSubmitCursor:flagHas?'pointer':'not-allowed',
       toggleAudioMenu:()=>this.toggleAudioMenu(), toggleFlag:()=>this.toggleFlag(), toggleNarrator:()=>this.toggleNarrator(), toggleSystem:()=>this.toggleSystem(), onFlagText:(e)=>this.onFlagText(e), toggleSettings:()=>this.toggleSettings(), toggleAlwaysChat:()=>this.toggleAlwaysChat(), submitFlag:()=>this.submitFlag(), exitFull:()=>this.exitFull(),
       introInkClass: (st.introFill||0) > 55 ? 'intro-ink' : '',
@@ -4189,7 +4189,7 @@ class Component extends DCLogic {
       calcSubmitState: this._calcEval(st.calcE)==null ? 'disabled' : 'emphasis',
       calcSubmit: ()=>this._calcSubmit(),
       ...(()=>{ const ok=this._calcEval(st.calcE)!=null; return {
-        calcSubmitBg: ok ? '#e8a53f' : 'rgba(26,21,38,0.16)', calcSubmitFg: ok ? '#e8a53f' : 'rgba(26,21,38,0.72)',
+        calcSubmitBg: ok ? '#e8a53f' : 'rgba(255,255,255,0.1)', calcSubmitFg: ok ? '#e8a53f' : 'rgba(255,255,255,0.1)',
         calcSubmitSh: ok ? '0 3px 0 #e8a53f' : 'none', calcSubmitCur: ok ? 'pointer' : 'not-allowed' }; })(),
       calcOutShort: (()=>{ const v=this._calcEval(st.calcE); return v==null ? '' : String(v); })(),
       calcExpr: st.calcE || '',

@@ -1,0 +1,24 @@
+/* The app canvas, dark theme — the counterpart to canvas-bg.css.
+   Keyed to the existing Chapter Journey (dark), which paints html,body #1a1526
+   and raises its cards on #262038. Same variable names as the light sheet, so
+   a page swaps theme by swapping which of the two it links. */
+:root{
+  --cv-top:#201a31;
+  --cv-mid:#1a1526;
+  --cv-bot:#181324;
+  --cv-base:#1a1526;
+
+  --cv-surface:#262038;
+  --cv-line:#3d3459;
+
+  --cv-dot:rgba(205,199,222,.10);
+  --cv-dot-strong:rgba(205,199,222,.16);
+
+  --cv-blob-v:rgba(140,110,230,.16);
+  --cv-blob-w:rgba(232,165,63,.09);
+
+  --cv-linear:linear-gradient(180deg,var(--cv-top) 0%,var(--cv-mid) 46%,var(--cv-bot) 100%);
+  --cv-linear-warm:linear-gradient(180deg,var(--cv-mid) 0%,var(--cv-bot) 100%);
+  --cv-blobs:radial-gradient(18% 28% at 12% 22%,var(--cv-blob-v),transparent 70%),radial-gradient(20% 30% at 86% 78%,var(--cv-blob-w),transparent 70%);
+  --cv-lattice:radial-gradient(var(--cv-dot) 1px, transparent 1px);
+}
