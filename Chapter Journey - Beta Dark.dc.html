@@ -145,7 +145,7 @@
   .glow-done{--glow-color:hsl(160 70% 58% / 1);--glow-color-50:hsl(160 70% 58% / .5);--glow-color-40:hsl(160 70% 58% / .4);--glow-color-30:hsl(160 70% 58% / .3);--glow-color-20:hsl(160 70% 58% / .2);--glow-color-10:hsl(160 70% 58% / .1);}
   .glow-ongoing{--glow-color:hsl(212 90% 64% / 1);--glow-color-50:hsl(212 90% 64% / .5);--glow-color-40:hsl(212 90% 64% / .4);--glow-color-30:hsl(212 90% 64% / .3);--glow-color-20:hsl(212 90% 64% / .2);--glow-color-10:hsl(212 90% 64% / .1);}
   .glow-locked{--glow-color:hsl(245 12% 66% / 1);--glow-color-50:hsl(245 12% 66% / .5);--glow-color-40:hsl(245 12% 66% / .4);--glow-color-30:hsl(245 12% 66% / .3);--glow-color-20:hsl(245 12% 66% / .2);--glow-color-10:hsl(245 12% 66% / .1);}
-  .cj-tip{position:absolute;left:50%;bottom:calc(100% + 16px);transform:translateX(-50%) translateY(6px);background:rgba(77,163,240,.94);border:1px solid rgba(255,255,255,0.1);color:#1a1526;padding:9px 13px;border-radius:13px;text-align:center;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .16s ease,transform .16s ease;box-shadow:0 12px 34px rgba(0,0,0,0.55);z-index:70;}
+  .cj-tip{position:absolute;left:50%;bottom:calc(100% + 16px);transform:translateX(-50%) translateY(6px);background:rgba(77,163,240,.94);border:1px solid rgba(205,199,222,0.16);color:#1a1526;padding:9px 13px;border-radius:13px;text-align:center;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .16s ease,transform .16s ease;box-shadow:0 12px 34px rgba(0,0,0,0.55);z-index:70;}
   .cj-tip.cj-tip-below{bottom:auto;top:calc(100% + 16px);transform:translateX(-50%) translateY(-6px);}
   .cj-planet:hover .cj-tip{opacity:1;transform:translateX(-50%) translateY(0);}
   .cj-shimmer{animation:cjShim 3.6s ease-in-out infinite;}
@@ -166,7 +166,7 @@
   .cj-neb{animation:cjNeb 18s ease-in-out infinite;}
   @keyframes cjNeb{0%,100%{opacity:.82;filter:blur(22px) hue-rotate(0deg)}50%{opacity:1;filter:blur(26px) hue-rotate(-14deg)}}
   .cj-gl{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block;}
-  .cj-comet{position:absolute;height:2px;border-radius:2px;background:linear-gradient(90deg,rgba(255,255,255,0),#262038);transform-origin:right center;opacity:0;will-change:transform,opacity;}
+  .cj-comet{position:absolute;height:2px;border-radius:2px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(205,199,222,0.9));transform-origin:right center;opacity:0;will-change:transform,opacity;}
   .cj-body{will-change:transform;}
   .cj-drift{animation:cjDrift var(--fd,44s) ease-in-out infinite;}
   @keyframes cjDrift{0%,100%{transform:translateY(0)}50%{transform:translateY(30px)}}
@@ -178,7 +178,7 @@
   .cj-spark{position:absolute;pointer-events:none;animation:cjTwinkle var(--td,4s) ease-in-out infinite;}
   .cj-spark i{position:absolute;inset:0;background:linear-gradient(0deg,transparent 46%,#1a1526 49.5%,#1a1526 50.5%,transparent 54%),linear-gradient(90deg,transparent 46%,#1a1526 49.5%,#1a1526 50.5%,transparent 54%);}
   @keyframes cjComet{0%{opacity:0;transform:translate(0,0) rotate(var(--ca,20deg)) scaleX(.6)}2%{opacity:1;transform:translate(calc(var(--cx,600px) * .1),calc(var(--cy,240px) * .1)) rotate(var(--ca,20deg)) scaleX(1)}17%{opacity:1;transform:translate(calc(var(--cx,600px) * .85),calc(var(--cy,240px) * .85)) rotate(var(--ca,20deg)) scaleX(1)}20%{opacity:0;transform:translate(var(--cx,600px),var(--cy,240px)) rotate(var(--ca,20deg)) scaleX(1)}100%{opacity:0;transform:translate(var(--cx,600px),var(--cy,240px)) rotate(var(--ca,20deg)) scaleX(1)}}
-  .cj-shape::after{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,0.1),transparent 70%);}
+  .cj-shape::after{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(circle at 50% 50%,rgba(205,199,222,0.1),transparent 70%);}
   .cj-float{animation:cjFloat var(--fd,16s) ease-in-out infinite;}
   /* ---- the one ambient motif: a warm light that rides the rail at your scroll position ----
      Replaces the star/comet/planet layers. The firefly sits BELOW the island cards, so it ducks
@@ -192,7 +192,7 @@
   .cj-zoomed .cj-fly,.cj-zoomed .cj-wake{opacity:0;}
   /* halo lives on a pseudo-element so its pulse cannot fight the JS transform on the dot itself */
   .cj-fly::after{content:"";position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;
-    background:radial-gradient(circle,rgba(232,165,63,.42),rgba(232,165,63,0) 70%);animation:cjFlyHalo 2.6s ease-in-out infinite;}
+    background:radial-gradient(circle,rgba(232,165,63,.42),rgba(255,169,77,0) 70%);animation:cjFlyHalo 2.6s ease-in-out infinite;}
   @keyframes cjFlyHalo{0%,100%{opacity:.5;transform:scale(.9)}50%{opacity:1;transform:scale(1.2)}}
   /* the field's own dot lattice, repeated in a stronger violet and masked to a soft pool around the
      firefly — same 24px pitch and same background-position, so the bright dots land exactly on the
@@ -214,7 +214,7 @@
   /* dot lattice for texture + a progress wash: green behind what's done, cool grey below it.
      background-attachment:local so the wash spans the scrollable height and tracks real positions. */
   /* same lavender field as the journey: 24px dot lattice over a progress wash, dots on the backmost layer */
-  .cd-right{width:62%;flex:1;overflow-y:auto;overflow-x:hidden;height:100vh;padding:100px 40px 100px 40px;box-sizing:border-box;border-left:1px solid rgba(255,255,255,0.1);box-shadow:-18px 0 44px rgba(0,0,0,0.1);
+  .cd-right{width:62%;flex:1;overflow-y:auto;overflow-x:hidden;height:100vh;padding:100px 40px 100px 40px;box-sizing:border-box;border-left:1px solid rgba(205,199,222,0.55);box-shadow:-18px 0 44px rgba(163,133,250,0.1);
     background-color:var(--cv-base);
     background-image:
       var(--cv-lattice),
@@ -249,7 +249,7 @@
   @keyframes cdFromL{from{opacity:0;transform:translateX(-28px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
   @keyframes cdFromR{from{opacity:0;transform:translateX(28px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
   .cd-sweep{position:absolute;left:-40px;right:-40px;top:-100px;height:100vh;pointer-events:none;background-size:260% 100%;background-repeat:no-repeat;animation:cdSweep .7s cubic-bezier(.4,0,.2,1) both;}
-  .cd-sweep-learn{background-image:linear-gradient(100deg,transparent 35%,rgba(232,165,63,0.22) 50%,transparent 65%);animation-name:cdSweepL;}
+  .cd-sweep-learn{background-image:linear-gradient(100deg,transparent 35%,rgba(163,133,250,0.22) 50%,transparent 65%);animation-name:cdSweepL;}
   .cd-sweep-practice{background-image:linear-gradient(100deg,transparent 35%,rgba(77,163,240,0.22) 50%,transparent 65%);}
   @keyframes cdSweep{0%{background-position:100% 0;opacity:1}80%{opacity:1}100%{background-position:0% 0;opacity:0}}
   @keyframes cdSweepL{0%{background-position:0% 0;opacity:1}80%{opacity:1}100%{background-position:100% 0;opacity:0}}
@@ -258,14 +258,14 @@
   @keyframes cdExpand{from{opacity:.3;transform:scale(.96);}to{opacity:1;transform:none;}}
   @media (max-width:1180px){.cd-sh-visual{display:none !important;}}
   .cd-libsec{margin-bottom:72px;}
-  .cd-mesh{position:absolute;inset:0;border-radius:24px;overflow:hidden;background:rgba(77,163,240,.55);}
-  .cd-mesh::before{content:"";position:absolute;inset:-40%;background:radial-gradient(40% 50% at 20% 30%,#a385fa 0%,transparent 70%),radial-gradient(45% 55% at 80% 20%,rgba(77,163,240,0.05) 0%,transparent 70%),radial-gradient(50% 60% at 60% 90%,#e8a53f 0%,transparent 70%),radial-gradient(35% 45% at 10% 90%,#4da3f0 0%,transparent 70%);animation:cdMesh 14s ease-in-out infinite alternate;}
+  .cd-mesh{position:absolute;inset:0;border-radius:24px;overflow:hidden;background:#a385fa;}
+  .cd-mesh::before{content:"";position:absolute;inset:-40%;background:radial-gradient(40% 50% at 20% 30%,#a385fa 0%,transparent 70%),radial-gradient(45% 55% at 80% 20%,#4da3f0 0%,transparent 70%),radial-gradient(50% 60% at 60% 90%,#a385fa 0%,transparent 70%),radial-gradient(35% 45% at 10% 90%,#2a7bbd 0%,transparent 70%);animation:cdMesh 14s ease-in-out infinite alternate;}
   .cd-mesh::after{content:"";position:absolute;inset:0;opacity:.18;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
   @keyframes cdMesh{0%{transform:translate(0,0) rotate(0deg) scale(1)}50%{transform:translate(4%,-3%) rotate(8deg) scale(1.06)}100%{transform:translate(-3%,4%) rotate(-6deg) scale(1.02)}}
   .cd-orb{position:absolute;left:28px;top:-44px;width:132px;height:132px;pointer-events:none;}
-  .cd-orb-ring{position:absolute;inset:-14px;border-radius:50%;border:1px solid rgba(255,255,255,0.1);animation:cdOrbRing 3.6s ease-out infinite;}
-  .cd-orb-ball{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 32% 28%,#1a1526 0%,#3d3459 14%,#a385fa 38%,#e8a53f 66%,rgba(0,0,0,.42) 100%);box-shadow:inset -10px -14px 24px rgba(0,0,0,0.45),inset 8px 10px 18px rgba(255,255,255,0.1),0 22px 40px -14px rgba(0,0,0,0.7);animation:cdOrbFloat 5s ease-in-out infinite;}
-  .cd-orb-spark{position:absolute;right:-6px;top:6px;width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:#1a1526;color:#a385fa;font-size:20px;box-shadow:0 10px 20px -8px rgba(0,0,0,0.55);transform:rotate(10deg);animation:cdOrbFloat 5s .4s ease-in-out infinite;}
+  .cd-orb-ring{position:absolute;inset:-14px;border-radius:50%;border:1px solid rgba(205,199,222,0.35);animation:cdOrbRing 3.6s ease-out infinite;}
+  .cd-orb-ball{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 32% 28%,#1a1526 0%,#3d3459 14%,#a385fa 38%,#a385fa 66%,#a385fa 100%);box-shadow:inset -10px -14px 24px rgba(61,52,89,0.45),inset 8px 10px 18px rgba(205,199,222,0.35),0 22px 40px -14px rgba(61,52,89,0.7);animation:cdOrbFloat 5s ease-in-out infinite;}
+  .cd-orb-spark{position:absolute;right:-6px;top:6px;width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:#1a1526;color:#a385fa;font-size:20px;box-shadow:0 10px 20px -8px rgba(61,52,89,0.55);transform:rotate(10deg);animation:cdOrbFloat 5s .4s ease-in-out infinite;}
   @keyframes cdOrbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
   @keyframes cdOrbRing{0%{transform:scale(.9);opacity:.6}100%{transform:scale(1.3);opacity:0}}
   @media (prefers-reduced-motion: reduce){.cd-mesh::before,.cd-orb-ball,.cd-orb-spark,.cd-orb-ring{animation:none;}}
@@ -275,9 +275,9 @@
   .cd-plist{display:flex;flex-direction:column;gap:10px;}
   .cd-pcard{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:15px;align-items:center;
     padding:14px 16px;border-radius:16px;background:#1a1526;cursor:pointer;
-    box-shadow:0 1px 2px rgba(0,0,0,0.05),0 8px 20px -16px rgba(0,0,0,0.3);
+    box-shadow:0 1px 2px rgba(61,52,89,0.05),0 8px 20px -16px rgba(61,52,89,0.3);
     transition:box-shadow .18s ease,transform .18s ease;}
-  .cd-pcard:hover{transform:translateY(-1px);box-shadow:0 1px 2px rgba(0,0,0,0.05),0 16px 30px -16px rgba(0,0,0,0.44);}
+  .cd-pcard:hover{transform:translateY(-1px);box-shadow:0 1px 2px rgba(61,52,89,0.05),0 16px 30px -16px rgba(61,52,89,0.44);}
   .cd-pico{width:56px;height:56px;border-radius:14px;display:grid;place-items:center;}
   .cd-pico i{font-size:27px;color:#1a1526;}
   .cd-ptitle{font-size:16px;font-weight:700;color:#4da3f0;line-height:1.25;letter-spacing:-.01em;}
@@ -293,30 +293,30 @@
   .cd-pbtn-q:hover{background:rgba(163,133,250,0.2);color:#4da3f0;}
   .cd-pseg{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#4da3f0;
     margin:0 0 11px;display:flex;align-items:center;gap:9px;}
-  .cd-pbar{width:112px;height:4px;border-radius:999px;background:rgba(77,163,240,0.12);overflow:hidden;}
+  .cd-pbar{width:112px;height:4px;border-radius:999px;background:rgba(61,52,89,0.12);overflow:hidden;}
   .cd-pbar > div{height:100%;border-radius:999px;}
   .cd-score{display:inline-flex;align-items:baseline;gap:2px;font-size:17px;font-weight:800;letter-spacing:-.012em;}
   .cd-score span{font-size:12px;font-weight:700;color:#4da3f0;}
   .cd-snack{position:sticky;bottom:14px;margin-top:18px;align-self:center;display:inline-flex;align-items:center;gap:9px;
-    padding:11px 16px;border-radius:12px;background:rgba(77,163,240,.10);color:#1a1526;font-size:13.5px;font-weight:700;
-    box-shadow:0 14px 30px -12px rgba(0,0,0,0.6);animation:cdFade .2s ease both;}
+    padding:11px 16px;border-radius:12px;background:#3d3459;color:#1a1526;font-size:13.5px;font-weight:700;
+    box-shadow:0 14px 30px -12px rgba(61,52,89,0.6);animation:cdFade .2s ease both;}
   .cd-pgauge > div{height:100%;border-radius:999px;}
   .cd-prow::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;pointer-events:none;
-    background:linear-gradient(90deg,rgba(163,133,250,0),rgba(163,133,250,0.2) 4%,rgba(163,133,250,0.2) 96%,rgba(163,133,250,0));}
+    background:linear-gradient(90deg,rgba(120,90,200,0),rgba(163,133,250,0.2) 4%,rgba(163,133,250,0.2) 96%,rgba(120,90,200,0));}
   .cd-pbtn{flex:none;display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 20px;
     border-radius:10px;background:#4da3f0;color:#1a1526;font-size:14px;font-weight:700;white-space:nowrap;cursor:pointer;transition:background .14s ease;}
   .cd-pbtn:hover{background:#4da3f0;}
   .cd-pbtn-alt{background:#a385fa;}
-  .cd-pbtn-alt:hover{background:rgba(77,163,240,.55);}
+  .cd-pbtn-alt:hover{background:#a385fa;}
   .cd-libhead{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#4da3f0;margin-bottom:16px;}
   .cd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(198px,1fr));gap:16px;}
   /* Time intents are the entry point, so they outrank every other card in the pane. */
   .cd-intents{display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:14px;grid-auto-rows:1fr;}
   .cd-intent{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:0;padding:18px 16px 16px;border-radius:18px;cursor:pointer;
-    background:linear-gradient(158deg,#1a1526 0%,#1a1526 52%,#262038 100%);border:1px solid rgba(255,255,255,0.1);
-    box-shadow:0 1px 2px rgba(0,0,0,0.05),0 10px 24px -18px rgba(0,0,0,0.34);
+    background:linear-gradient(158deg,#1a1526 0%,#1a1526 52%,#262038 100%);border:1px solid rgba(205,199,222,0.9);
+    box-shadow:0 1px 2px rgba(61,52,89,0.05),0 10px 24px -18px rgba(61,52,89,0.34);
     transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;}
-  .cd-intent:hover{transform:translateY(-3px);border-color:#1a1526;box-shadow:0 2px 5px rgba(0,0,0,0.07),0 18px 34px -20px rgba(0,0,0,0.46);}
+  .cd-intent:hover{transform:translateY(-3px);border-color:#1a1526;box-shadow:0 2px 5px rgba(61,52,89,0.07),0 18px 34px -20px rgba(61,52,89,0.46);}
   .cd-intent-mark{position:absolute;right:-14px;bottom:-12px;line-height:0;opacity:.13;pointer-events:none;transform:rotate(-10deg);}
   .cd-intent-mins{position:relative;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1;}
   .cd-intent-name{position:relative;font-size:15px;font-weight:700;color:#4da3f0;margin-top:9px;line-height:1.25;}
@@ -325,18 +325,18 @@
   .cd-intent-bar > div{height:100%;}
   .cd-intent-gear{margin-top:7px;font-size:11px;font-weight:800;letter-spacing:.05em;color:#918aac;}
   .cd-intent-for{position:relative;font-size:12.5px;font-weight:500;color:#918aac;line-height:1.45;margin-top:5px;min-height:36px;text-wrap:pretty;}
-  .cd-tile{border-radius:14px;overflow:hidden;background:#262038;border:1px solid rgba(255,255,255,0.1);cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,0.05),0 8px 20px -16px rgba(0,0,0,0.3);transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease;}
-  .cd-tile:hover{transform:translateY(-3px);border-color:rgba(255,255,255,0.1);box-shadow:0 2px 4px rgba(0,0,0,0.06),0 14px 28px -18px rgba(0,0,0,0.42);}
+  .cd-tile{border-radius:14px;overflow:hidden;background:rgba(205,199,222,0.34);border:1px solid rgba(205,199,222,0.6);cursor:pointer;box-shadow:0 1px 2px rgba(61,52,89,0.05),0 8px 20px -16px rgba(61,52,89,0.3);transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease;}
+  .cd-tile:hover{transform:translateY(-3px);border-color:rgba(205,199,222,0.95);box-shadow:0 2px 4px rgba(61,52,89,0.06),0 14px 28px -18px rgba(61,52,89,0.42);}
   .cd-thumb{position:relative;aspect-ratio:16/9;display:grid;place-items:center;}
   .cd-thumb>i{font-size:30px;color:#1a1526;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.55));}
   .cd-tile-check{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;background:#4cbf6e;display:grid;place-items:center;color:#1a1526;font-size:12px;}
   .cd-tile-body{padding:11px 13px 13px;}
   .cd-tile-title{font-size:14px;font-weight:700;color:#4da3f0;line-height:1.3;margin-bottom:5px;}
   .cd-tile-meta{font-size:12px;font-weight:700;color:#4da3f0;display:flex;align-items:center;gap:6px;}
-  .cd-tile-done{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.1);box-shadow:0 1px 2px rgba(0,0,0,0.04),0 6px 14px -14px rgba(0,0,0,0.22);}
+  .cd-tile-done{background:rgba(205,199,222,0.16);border-color:rgba(205,199,222,0.42);box-shadow:0 1px 2px rgba(61,52,89,0.04),0 6px 14px -14px rgba(61,52,89,0.22);}
   .cd-tile-done .cd-thumb{filter:saturate(.55) opacity(.72);}
-  .cd-tile-done:hover{transform:translateY(-3px);border-color:rgba(255,255,255,0.1);}
-  .cd-tile-score{position:absolute;top:8px;right:8px;padding:3px 9px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap;background:#262038;color:#4da3f0;box-shadow:0 1px 3px rgba(0,0,0,0.36);}
+  .cd-tile-done:hover{transform:translateY(-3px);border-color:rgba(205,199,222,0.8);}
+  .cd-tile-score{position:absolute;top:8px;right:8px;padding:3px 9px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap;background:rgba(205,199,222,0.94);color:#4da3f0;box-shadow:0 1px 3px rgba(0,0,0,0.36);}
   .cd-tile-tag{position:absolute;top:8px;right:8px;padding:3px 8px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,0.34);}
   .cd-tile-bar{display:block;height:5px;border-radius:999px;background:rgba(77,163,240,.10);overflow:hidden;margin:0 0 7px;}
   .cd-tile-cta{display:flex;align-items:center;gap:5px;margin-top:9px;font-size:12px;font-weight:800;letter-spacing:.01em;}
@@ -350,7 +350,7 @@
   .ftue-glow{position:absolute;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(77,163,240,.5),rgba(76,191,110,.18) 45%,transparent 70%);z-index:1;animation:ftueGlowIn .8s ease both;}
   @keyframes ftueGlowIn{from{opacity:0;transform:translate(-50%,-50%) scale(.6)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
   .ftue-ring{position:absolute;width:120px;height:120px;border-radius:50%;border:2.5px solid rgba(77,163,240,.8);z-index:2;animation:ftueRing 1.7s ease-out infinite;}
-  @keyframes ftueRing{0%{transform:translate(-50%,-50%) scale(.5);opacity:.85;border-color:rgba(76,191,110,.9)}100%{transform:translate(-50%,-50%) scale(2.6);opacity:0;border-color:rgba(77,163,240,0)}}
+  @keyframes ftueRing{0%{transform:translate(-50%,-50%) scale(.5);opacity:.85;border-color:rgba(76,191,110,.9)}100%{transform:translate(-50%,-50%) scale(2.6);opacity:0;border-color:rgba(116,192,252,0)}}
   .ftue-vyom-land{position:absolute;width:96px;height:96px;object-fit:contain;z-index:4;filter:drop-shadow(0 12px 20px rgba(0,0,0,0.55));animation:ftueVyomLandC .7s cubic-bezier(.3,1.3,.5,1) both;}
   @keyframes ftueVyomLandC{from{opacity:0;transform:translate(-50%,-50%) translateY(-40px) scale(.7)}to{opacity:1;transform:translate(-50%,-50%) translateY(0) scale(1)}}
   .cj-lockbadge{transition:opacity .3s ease;}
@@ -388,7 +388,7 @@
   .ftue-btn-ghost{padding:13px 22px;border-radius:999px;background:#1a1526;border:1px solid #262038;color:#4da3f0;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s ease;}
   .ftue-btn-ghost:hover{background:#262038;}
   .ftue-vyom-rest{width:84px;height:84px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.55));animation:ftueVyomLand .6s cubic-bezier(.3,1.3,.5,1) both,bob 3.4s ease-in-out 1s infinite;}
-  .ftue-speech{max-width:520px;background:#262038;color:#4da3f0;font-size:24px;font-weight:700;line-height:1.3;letter-spacing:-.01em;padding:16px 26px;border-radius:18px;text-align:center;animation:cdFade .4s ease both;}
+  .ftue-speech{max-width:520px;background:rgba(205,199,222,0.92);color:#4da3f0;font-size:24px;font-weight:700;line-height:1.3;letter-spacing:-.01em;padding:16px 26px;border-radius:18px;text-align:center;animation:cdFade .4s ease both;}
   .ftue-resume{display:inline-flex;align-items:center;gap:9px;padding:15px 30px;border-radius:999px;background:linear-gradient(180deg,#4da3f0,#4da3f0);color:#1a1526;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 10px 24px rgba(0,0,0,0.54);pointer-events:auto;transition:filter .15s ease,transform .15s ease;animation:cdFade .4s ease both;}
   .ftue-resume:hover{filter:brightness(1.07);transform:translateY(-1px);}
   @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
@@ -416,7 +416,7 @@
   .cd-mod-label{position:absolute;top:50%;transform:translateY(-50%);right:auto;box-sizing:border-box;padding:16px 20px 15px;border-radius:20px;background:linear-gradient(158deg,#1a1526 0%,#1a1526 48%,#262038 100%);box-shadow:0 10px 22px -10px rgba(0,0,0,0.42);transition:transform .2s cubic-bezier(.2,.8,.3,1);box-sizing:border-box;overflow:hidden;}
   .cd-mod:hover .cd-mod-label,.cd-mod:focus-visible .cd-mod-label{transform:translateY(-50%) translateY(-4px);}
   .cd-mod-completed .cd-mod-label{background:linear-gradient(158deg,#1a1526 0%,#1a1526 46%,#1a1526 100%);}
-  .cd-mod-active .cd-mod-label{background:linear-gradient(158deg,#1a1526 0%,rgba(36,31,54,.98) 44%,rgba(232,165,63,.15) 100%);}
+  .cd-mod-active .cd-mod-label{background:linear-gradient(158deg,#1a1526 0%,rgba(36,31,54,.98) 44%,#b57a24 100%);}
   .cd-label-handle{display:none;}
   .cd-mod-label-num{font-size:12px;font-weight:var(--fw-heavy);letter-spacing:.1em;color:#918aac;margin-bottom:6px;}
   .cd-mod-label-name{font-size:18px;font-weight:var(--fw-bold);color:#ffffff;line-height:1.26;letter-spacing:-.012em;margin-bottom:6px;}
@@ -426,10 +426,10 @@
   @keyframes cdJugnu{0%,100%{opacity:.85;r:4}50%{opacity:1;r:5}}
   .cd-jugnu{animation:cdJugnu 2.4s ease-in-out infinite;}
   .cd-band{position:absolute;left:-40px;right:-2400px;pointer-events:none;z-index:0;border-radius:0;}
-  .cd-band.alt{background-image:linear-gradient(180deg,rgba(163,133,250,0) 0%,rgba(163,133,250,.06) 22%,rgba(163,133,250,.06) 74%,rgba(163,133,250,0) 100%);}
+  .cd-band.alt{background-image:linear-gradient(180deg,rgba(120,90,200,0) 0%,rgba(163,133,250,.06) 22%,rgba(163,133,250,.06) 74%,rgba(120,90,200,0) 100%);}
   .cd-band .cd-group-label{position:absolute;left:40px;top:16px;}
   .cd-group-label{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#918aac;white-space:nowrap;}
-  .cd-lockmsg{position:absolute;left:calc(100% + 8px);top:50%;transform:translateY(-50%);background:#262038;color:#4da3f0;font-size:12px;font-weight:700;padding:8px 12px;border-radius:10px;white-space:nowrap;z-index:20;animation:cjCardIn .2s ease both;}
+  .cd-lockmsg{position:absolute;left:calc(100% + 8px);top:50%;transform:translateY(-50%);background:rgba(205,199,222,0.9);color:#4da3f0;font-size:12px;font-weight:700;padding:8px 12px;border-radius:10px;white-space:nowrap;z-index:20;animation:cjCardIn .2s ease both;}
   .cd-right-in{animation:cdPanelIn .42s cubic-bezier(.22,.61,.36,1) both;}
   @keyframes cdPanelIn{from{opacity:0;transform:translateX(44px)}to{opacity:1;transform:translateX(0)}}
   .cd-right-out{animation:cdPanelOut .22s ease-in both;}
@@ -475,11 +475,11 @@
   /* beta: light/dark switch in the top-right */
   .cj-themebtn{appearance:none;border:0;padding:0;background:transparent;cursor:pointer;line-height:0;outline:none;border-radius:999px;}
   .cj-themebtn:focus-visible{box-shadow:0 0 0 2px #4da3f0;}
-  .cj-themebtn-track{position:relative;display:block;width:56px;height:30px;border-radius:999px;background:rgba(77,163,240,.10);box-shadow:inset 0 0 0 1px rgba(232,165,63,0.18);transition:background .2s ease;}
-  .cj-themebtn-knob{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#1a1526;color:#918aac;box-shadow:0 2px 6px -1px rgba(0,0,0,0.3);transition:transform .22s cubic-bezier(.2,.8,.3,1),background .2s ease,color .2s ease;}
+  .cj-themebtn-track{position:relative;display:block;width:56px;height:30px;border-radius:999px;background:rgba(77,163,240,.10);box-shadow:inset 0 0 0 1px rgba(163,133,250,0.18);transition:background .2s ease;}
+  .cj-themebtn-knob{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#1a1526;color:#cdc7de;box-shadow:0 2px 6px -1px rgba(61,52,89,0.3);transition:transform .22s cubic-bezier(.2,.8,.3,1),background .2s ease,color .2s ease;}
   .cj-themebtn-knob i{font-size:15px;}
-  .cj-themebtn[aria-checked="true"] .cj-themebtn-track{background:rgba(77,163,240,0.28);}
-  .cj-themebtn[aria-checked="true"] .cj-themebtn-knob{transform:translateX(26px);background:rgba(0,0,0,.48);color:rgba(232,165,63,.15);}
+  .cj-themebtn[aria-checked="true"] .cj-themebtn-track{background:rgba(42,123,189,0.28);}
+  .cj-themebtn[aria-checked="true"] .cj-themebtn-knob{transform:translateX(26px);background:rgba(0,0,0,.48);color:#b57a24;}
   @media (prefers-reduced-motion: reduce){.cj-goal-line{overflow:hidden;text-overflow:ellipsis;animation:none;}}
 </style>
 <script src="./mobile-nav.js"></script>
@@ -544,7 +544,7 @@
 
     <div class="cd-right cj-scroll {{ rightPanelClass }}" style="pointer-events:auto;--cd-wash:{{ cdWashStop }};">
       <div class="cd-modesw" style="position:sticky;z-index:35;height:0;display:flex;align-items:flex-start;justify-content:center;pointer-events:none;">
-        <div role="tablist" aria-label="Mode" style="pointer-events:auto;position:relative;display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:999px;background:#262038;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:inset 0 0 0 1px rgba(232,165,63,0.12),0 8px 22px rgba(0,0,0,0.16);">
+        <div role="tablist" aria-label="Mode" style="pointer-events:auto;position:relative;display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:999px;background:rgba(205,199,222,0.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:inset 0 0 0 1px rgba(163,133,250,0.12),0 8px 22px rgba(163,133,250,0.16);">
           <span aria-hidden="true" style="position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:999px;background:{{ modeKnobBg }};box-shadow:{{ modeKnobGlow }};transform:{{ modeKnobX }};transition:transform .38s cubic-bezier(.34,1.4,.5,1),background .3s ease,box-shadow .3s ease;"></span>
           <div onClick="{{ goLearn }}" role="tab" aria-selected="{{ learnSel }}" tabindex="0" style="position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 22px;border-radius:999px;font-size:15px;font-weight:700;color:{{ learnInk }};cursor:pointer;transition:color .25s ease;white-space:nowrap;"><i class="ti ti-book-2" style="font-size:18px;"></i>Learn</div>
           <div onClick="{{ goPractice }}" role="tab" aria-selected="{{ practiceSel }}" tabindex="0" style="position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 22px;border-radius:999px;font-size:15px;font-weight:700;color:{{ practiceInk }};cursor:pointer;transition:color .25s ease;white-space:nowrap;"><i class="ti ti-trophy" style="font-size:18px;"></i>Practice</div>
@@ -552,7 +552,7 @@
       </div>
       <sc-if value="{{ ch.chLocked }}" hint-placeholder-val="{{ false }}">
         <div style="position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;pointer-events:none;">
-          <div style="width:120px;height:120px;border-radius:50%;background:linear-gradient(158deg,#262038,#1a1526);border:1px solid rgba(255,255,255,0.1);display:grid;place-items:center;box-shadow:0 20px 40px -18px rgba(0,0,0,0.50),inset 0 1px 0 rgba(255,255,255,0.1);"><i class="ti ti-lock" style="font-size:58px;color:#4da3f0;"></i></div>
+          <div style="width:120px;height:120px;border-radius:50%;background:linear-gradient(158deg,rgba(205,199,222,0.72),#1a1526);border:1px solid rgba(205,199,222,0.8);display:grid;place-items:center;box-shadow:0 20px 40px -18px rgba(0,0,0,0.50),inset 0 1px 0 rgba(205,199,222,0.9);"><i class="ti ti-lock" style="font-size:58px;color:#4da3f0;"></i></div>
           <div style="text-align:center;max-width:300px;">
             <div style="font-size:20px;font-weight:700;color:#4da3f0;margin-bottom:8px;">Chapter locked</div>
             <div style="font-size:14px;font-weight:700;color:#4da3f0;line-height:1.5;">Finish the earlier chapters to unlock these lessons.</div>
@@ -604,16 +604,16 @@
                 <div style="min-height:0;overflow:hidden;">
                 <div style="min-height:240px;box-sizing:border-box;padding:28px 32px;display:flex;flex-wrap:wrap;align-items:center;gap:20px 36px;">
                 <div aria-hidden="true" style="position:relative;flex:none;width:160px;height:160px;display:grid;place-items:center;">
-                  <span style="position:absolute;width:280px;height:280px;border-radius:50%;border:1px solid rgba(255,255,255,0.1);"></span>
-                  <span style="position:absolute;width:190px;height:190px;border-radius:50%;border:1px solid rgba(255,255,255,0.1);"></span>
-                  <span style="position:absolute;width:120px;height:120px;border-radius:50%;background:#262038;filter:blur(18px);"></span>
-                  <span style="position:relative;width:96px;height:96px;border-radius:28px;display:grid;place-items:center;background:#1a1526;color:#a385fa;box-shadow:0 14px 28px -12px rgba(0,0,0,0.6);"><i class="ti ti-users-group" style="font-size:46px;"></i></span>
-                  <span style="position:absolute;left:calc(50% + 34px);top:calc(50% - 62px);width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:#e8a53f;color:#1a1526;box-shadow:0 8px 16px -8px rgba(0,0,0,0.55);transform:rotate(8deg);"><i class="ti ti-sparkles" style="font-size:20px;"></i></span>
+                  <span style="position:absolute;width:280px;height:280px;border-radius:50%;border:1px solid rgba(205,199,222,0.16);"></span>
+                  <span style="position:absolute;width:190px;height:190px;border-radius:50%;border:1px solid rgba(205,199,222,0.22);"></span>
+                  <span style="position:absolute;width:120px;height:120px;border-radius:50%;background:rgba(205,199,222,0.28);filter:blur(18px);"></span>
+                  <span style="position:relative;width:96px;height:96px;border-radius:28px;display:grid;place-items:center;background:#1a1526;color:#a385fa;box-shadow:0 14px 28px -12px rgba(61,52,89,0.6);"><i class="ti ti-users-group" style="font-size:46px;"></i></span>
+                  <span style="position:absolute;left:calc(50% + 34px);top:calc(50% - 62px);width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:#e8a53f;color:#1a1526;box-shadow:0 8px 16px -8px rgba(61,52,89,0.55);transform:rotate(8deg);"><i class="ti ti-sparkles" style="font-size:20px;"></i></span>
                 </div>
                 <div style="position:relative;flex:1 1 260px;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:10px;">
                   <span style="font-size:28px;font-weight:700;letter-spacing:-.01em;color:#1a1526;line-height:1.15;">Practice this chapter</span>
                   <span style="font-size:16px;font-weight:500;color:rgba(26,21,38,0.86);line-height:1.45;text-wrap:pretty;max-width:380px;">Vyom picks the questions and helps only when you need it.</span>
-                  <span style="margin-top:10px;display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 24px;border-radius:999px;background:#1a1526;color:#a385fa;font-size:16px;font-weight:700;box-shadow:0 10px 22px -10px rgba(0,0,0,0.55);">Start<i class="ti ti-arrow-right" style="font-size:18px;"></i></span>
+                  <span style="margin-top:10px;display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 24px;border-radius:999px;background:#1a1526;color:#a385fa;font-size:16px;font-weight:700;box-shadow:0 10px 22px -10px rgba(61,52,89,0.55);">Start<i class="ti ti-arrow-right" style="font-size:18px;"></i></span>
                 </div>
                 </div>
                 </div>
@@ -626,7 +626,7 @@
                           <span style="font-size:24px;font-weight:700;line-height:1.2;color:#1a1526;">Practice with Vyom</span>
                           <span style="font-size:15px;font-weight:500;color:rgba(205,199,222,.82);">Tap a topic to skip it</span>
                         </div>
-                        <span onClick="{{ shClose }}" role="button" title="Close" style="width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,0.1);color:#1a1526;cursor:pointer;"><i class="ti ti-x" style="font-size:20px;"></i></span>
+                        <span onClick="{{ shClose }}" role="button" title="Close" style="width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:rgba(205,199,222,0.16);color:#1a1526;cursor:pointer;"><i class="ti ti-x" style="font-size:20px;"></i></span>
                       </div>
                       <div style="flex:1;max-height:calc(100vh - 520px);min-height:160px;overflow-y:auto;padding:2px;margin:-2px;scrollbar-width:thin;-webkit-mask-image:{{ shMask }};mask-image:{{ shMask }};">
                         <div style="display:flex;flex-wrap:wrap;gap:12px;padding-bottom:{{ shPadB }};">
@@ -666,7 +666,7 @@
                           <span style="font-size:24px;font-weight:700;line-height:1.2;color:#4da3f0;">Pen &amp; paper</span>
                           <span style="font-size:15px;font-weight:500;color:#918aac;">Tap a topic to skip it</span>
                         </div>
-                        <span onClick="{{ shClose }}" role="button" title="Close" style="width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:rgba(77,163,240,0.05);color:#4da3f0;cursor:pointer;"><i class="ti ti-x" style="font-size:20px;"></i></span>
+                        <span onClick="{{ shClose }}" role="button" title="Close" style="width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:rgba(61,52,89,0.05);color:#4da3f0;cursor:pointer;"><i class="ti ti-x" style="font-size:20px;"></i></span>
                       </div>
                       <sc-if value="{{ paperIntroOn }}" hint-placeholder-val="{{ false }}">
                         <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;text-align:center;animation:cdFade .3s ease both;">
@@ -709,7 +709,7 @@
             </div>
             <div style="display:none;">
               <sc-for list="{{ cdWays }}" as="w" hint-placeholder-count="0">
-                <div onClick="{{ w.start }}" role="button" tabindex="0" style="position:relative;display:flex;flex-direction:column;border-radius:22px;background:#1a1526;box-shadow:0 1px 2px rgba(0,0,0,0.05),0 16px 32px -20px rgba(0,0,0,.55);cursor:pointer;overflow:hidden;transition:transform .2s cubic-bezier(.2,.8,.3,1),box-shadow .2s ease;" style-hover="transform:translateY(-4px);box-shadow:0 1px 2px rgba(0,0,0,0.06),0 24px 40px -20px rgba(0,0,0,0.5);">
+                <div onClick="{{ w.start }}" role="button" tabindex="0" style="position:relative;display:flex;flex-direction:column;border-radius:22px;background:#1a1526;box-shadow:0 1px 2px rgba(61,52,89,0.05),0 16px 32px -20px rgba(0,0,0,.55);cursor:pointer;overflow:hidden;transition:transform .2s cubic-bezier(.2,.8,.3,1),box-shadow .2s ease;" style-hover="transform:translateY(-4px);box-shadow:0 1px 2px rgba(61,52,89,0.06),0 24px 40px -20px rgba(163,133,250,0.5);">
                   <div style="position:relative;height:150px;display:grid;place-items:center;background:{{ w.art }};overflow:hidden;">
                     <span style="position:absolute;width:220px;height:220px;border-radius:50%;border:1px solid {{ w.ring }};"></span>
                     <span style="position:absolute;width:150px;height:150px;border-radius:50%;border:1px solid {{ w.ring }};"></span>
@@ -739,7 +739,7 @@
               <div class="cd-libhead" style="margin-bottom:16px;">Your practice log · {{ cdDoneCount }}</div>
               <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;">
                 <sc-for list="{{ cdLog }}" as="m" hint-placeholder-count="3">
-                  <div onClick="{{ m.start }}" role="button" tabindex="0" style="display:flex;flex-direction:column;gap:12px;padding:18px 20px;border-radius:18px;background:#262038;box-shadow:inset 0 0 0 1px rgba(232,165,63,0.1);cursor:pointer;transition:background .15s ease;" style-hover="background:#1a1526;">
+                  <div onClick="{{ m.start }}" role="button" tabindex="0" style="display:flex;flex-direction:column;gap:12px;padding:18px 20px;border-radius:18px;background:rgba(205,199,222,0.78);box-shadow:inset 0 0 0 1px rgba(163,133,250,0.1);cursor:pointer;transition:background .15s ease;" style-hover="background:#1a1526;">
                     <div style="display:flex;align-items:center;gap:12px;">
                       <div style="width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:{{ m.soft }};color:{{ m.ink }};"><i class="ti {{ m.icon }}" style="font-size:20px;"></i></div>
                       <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;">
@@ -846,7 +846,7 @@
                 <div class="cd-tile" onClick="{{ m.onClick }}" role="button" tabindex="0" style="opacity:{{ m.tileOp }};">
                   <div class="cd-thumb" style="aspect-ratio:auto;height:120px;display:grid;place-items:center;overflow:hidden;">{{ m.art }}
                     <sc-if value="{{ m.isCompleted }}" hint-placeholder-val="{{ false }}"><div class="cd-tile-check"><i class="ti ti-check"></i></div></sc-if>
-                    <sc-if value="{{ m.isLocked }}" hint-placeholder-val="{{ false }}"><div class="cd-tile-check" style="background:#4da3f0;"><i class="ti ti-lock"></i></div></sc-if>
+                    <sc-if value="{{ m.isLocked }}" hint-placeholder-val="{{ false }}"><div class="cd-tile-check" style="background:rgba(77,163,240,.85);"><i class="ti ti-lock"></i></div></sc-if>
                   </div>
                   <div class="cd-tile-body">
                     <div class="cd-tile-meta">{{ m.numLabel }} · {{ m.statusText }}</div>
@@ -882,7 +882,7 @@
 
 <x-import component-from-global-scope="byjus-rail-beta" from="./nav-rail-beta.js" hint-size="72px,64px" style="position:fixed;left:0;top:0;z-index:60;"></x-import>
 <sc-if value="{{ isMap }}" hint-placeholder-val="{{ true }}">
-<div class="cj-field" style="position:relative;width:100vw;height:100vh;overflow:hidden;background-image:radial-gradient(rgba(77,163,240,0.13) 1px,transparent 1px),linear-gradient(180deg,#262038 0%,#1a1526 46%,rgba(36,31,54,.98) 100%);background-size:24px 24px,100% 100%;">
+<div class="cj-field" style="position:relative;width:100vw;height:100vh;overflow:hidden;background-image:radial-gradient(rgba(163,133,250,0.13) 1px,transparent 1px),linear-gradient(180deg,#262038 0%,#1a1526 46%,rgba(36,31,54,.98) 100%);background-size:24px 24px,100% 100%;">
   <div class="cj-wake" aria-hidden="true"></div>
 
   <sc-if value="{{ ftueModal }}" hint-placeholder-val="{{ false }}">
@@ -1737,14 +1737,14 @@ class Component extends DCLogic {
   get HISTORY_TABLE() {
     return {
       8: [
-        { key:'s1', band:'easy', title:'10-minute sprint', icon:'ti-stopwatch', tint:'linear-gradient(140deg,#4da3f0,#262038)', date:'24 Aug', got:7, of:10 },
+        { key:'s1', band:'easy', title:'10-minute sprint', icon:'ti-stopwatch', tint:'linear-gradient(140deg,#4da3f0,#2a7bbd)', date:'24 Aug', got:7, of:10 },
         { key:'s3', band:'easy', title:'Quick drill', icon:'ti-bolt', tint:'linear-gradient(140deg,#4cbf6e,#4cbf6e)', date:'19 Aug', got:6, of:6 },
         { key:'s4', band:'easy', title:'Quick drill', icon:'ti-bolt', tint:'linear-gradient(140deg,#4cbf6e,#4cbf6e)', date:'16 Aug', got:4, of:6 },
         { key:'s2', band:'hard', title:'Work on paper', icon:'ti-camera', tint:'linear-gradient(140deg,#e8a53f,#e8a53f)', date:'21 Aug', got:16, of:20 },
       ],
       6: [
         { key:'c1', band:'easy', title:'Quick drill', icon:'ti-bolt', tint:'linear-gradient(140deg,#4cbf6e,#4cbf6e)', date:'22 Aug', got:5, of:6 },
-        { key:'c2', band:'easy', title:'10-minute sprint', icon:'ti-stopwatch', tint:'linear-gradient(140deg,#4da3f0,#262038)', date:'18 Aug', got:6, of:10 },
+        { key:'c2', band:'easy', title:'10-minute sprint', icon:'ti-stopwatch', tint:'linear-gradient(140deg,#4da3f0,#2a7bbd)', date:'18 Aug', got:6, of:10 },
       ],
     };
   }
@@ -1825,13 +1825,13 @@ class Component extends DCLogic {
     const close = () => this.setState({ prSheet: null, prSheetSel: null, prPaperIntro: false });
     const go = () => { const s = this.state.prSheet; close(); if (s) this._openPractice(s.mode, s.title); };
     const P = (!sh || sh.mode !== 'paper')
-      ? { accent: '#e8a53f', soft: '#262038', ring: '#a385fa', icon: 'ti-users-group', start: 'linear-gradient(135deg,#e8a53f 0%,#a385fa 100%)', shadow: '0 10px 20px -12px rgba(232,165,63,0.8)' }
-      : { accent: '#e8a53f', soft: '#262038', ring: 'rgba(232,165,63,.15)', icon: 'ti-notebook', start: 'linear-gradient(135deg,#e8a53f 0%,#e8a53f 100%)', shadow: '0 10px 20px -12px rgba(77,163,240,0.75)' };
+      ? { accent: '#e8a53f', soft: '#262038', ring: '#a385fa', icon: 'ti-users-group', start: 'linear-gradient(135deg,#a385fa 0%,#a385fa 100%)', shadow: '0 10px 20px -12px rgba(163,133,250,0.8)' }
+      : { accent: '#e8a53f', soft: '#262038', ring: '#b57a24', icon: 'ti-notebook', start: 'linear-gradient(135deg,#e8a53f 0%,#e8a53f 100%)', shadow: '0 10px 20px -12px rgba(232,165,63,0.75)' };
     const tiles = sh ? (mods || []).map((m, i) => {
       const on = sel.indexOf(i) >= 0;
       return { key: 'sh' + i, name: m.name, sel: on ? 'true' : 'false',
         tap: () => this.setState(st => { const cur = st.prSheetSel == null ? allIdx : st.prSheetSel; return { prSheetSel: cur.indexOf(i) >= 0 ? cur.filter(x => x !== i) : cur.concat(i).sort((a, b) => a - b) }; }),
-        bg: on ? P.soft : '#1a1526', ink: on ? '#4da3f0' : '#918aac', ring: on ? 'none' : 'inset 0 0 0 1px #3d3459', chk: on ? 'block' : 'none',
+        bg: on ? P.soft : '#1a1526', ink: on ? '#3d3459' : '#918aac', ring: on ? 'none' : 'inset 0 0 0 1px #3d3459', chk: on ? 'block' : 'none',
         dotBg: on ? P.accent : 'transparent', dotRing: on ? 'none' : 'inset 0 0 0 1.5px #3d3459' };
     }) : [];
     const long = n > 24;
@@ -1839,8 +1839,8 @@ class Component extends DCLogic {
     const mk = (on, dark) => (sh && on ? tiles : []).map(t => {
       const s = t.sel === 'true';
       return Object.assign({}, t, dark
-        ? { bg: s ? '#1a1526' : 'rgba(255,255,255,0.1)', ink: s ? 'rgba(77,163,240,.44)' : 'rgba(255,255,255,0.1)', ring: s ? '0 6px 14px -8px rgba(77,163,240,0.5)' : 'inset 0 0 0 1px rgba(255,255,255,0.1)', dotBg: s ? '#a385fa' : 'transparent', dotRing: s ? 'none' : 'inset 0 0 0 1.5px rgba(255,255,255,0.1)', chkInk: '#1a1526', chkOp: s ? 1 : 0 }
-        : { bg: s ? '#262038' : '#1a1526', ink: s ? '#4da3f0' : '#918aac', ring: s ? 'none' : 'inset 0 0 0 1px #3d3459', dotBg: s ? '#e8a53f' : 'transparent', dotRing: s ? 'none' : 'inset 0 0 0 1.5px #3d3459', chkInk: '#1a1526', chkOp: s ? 1 : 0 });
+        ? { bg: s ? '#1a1526' : 'rgba(205,199,222,0.1)', ink: s ? '#a385fa' : 'rgba(205,199,222,0.72)', ring: s ? '0 6px 14px -8px rgba(61,52,89,0.5)' : 'inset 0 0 0 1px rgba(205,199,222,0.28)', dotBg: s ? '#a385fa' : 'transparent', dotRing: s ? 'none' : 'inset 0 0 0 1.5px rgba(205,199,222,0.6)', chkInk: '#1a1526', chkOp: s ? 1 : 0 }
+        : { bg: s ? '#262038' : '#1a1526', ink: s ? '#3d3459' : '#918aac', ring: s ? 'none' : 'inset 0 0 0 1px #3d3459', dotBg: s ? '#4da3f0' : 'transparent', dotRing: s ? 'none' : 'inset 0 0 0 1.5px #3d3459', chkInk: '#1a1526', chkOp: s ? 1 : 0 });
     });
     const card = (id, base, dark) => {
       const open = which === id, gone = !!which && !open;
@@ -1850,9 +1850,9 @@ class Component extends DCLogic {
       o[id + 'Op'] = gone ? 0 : 1;
       o[id + 'MaxH'] = gone ? '0px' : '1200px';
       o[id + 'Align'] = gone ? 'flex-start' : 'stretch';
-      o[id + 'Shadow'] = gone ? 'none' : (id === 'hero' ? '0 1px 2px rgba(77,163,240,0.08),0 24px 44px -22px rgba(77,163,240,0.75)' : '0 1px 2px rgba(77,163,240,0.05),0 16px 32px -20px rgba(77,163,240,0.4)');
+      o[id + 'Shadow'] = gone ? 'none' : (id === 'hero' ? '0 1px 2px rgba(61,52,89,0.08),0 24px 44px -22px rgba(163,133,250,0.75)' : '0 1px 2px rgba(61,52,89,0.05),0 16px 32px -20px rgba(163,133,250,0.4)');
       o[id + 'Cur'] = open ? 'default' : 'pointer';
-      o[id + 'Hover'] = which ? '' : (id === 'hero' ? 'transform:translateY(-4px);box-shadow:0 1px 2px rgba(0,0,0,0.08),0 32px 56px -22px rgba(0,0,0,0.85);' : 'transform:translateY(-4px);box-shadow:0 1px 2px rgba(0,0,0,0.06),0 24px 40px -20px rgba(0,0,0,0.5);');
+      o[id + 'Hover'] = which ? '' : (id === 'hero' ? 'transform:translateY(-4px);box-shadow:0 1px 2px rgba(61,52,89,0.08),0 32px 56px -22px rgba(163,133,250,0.85);' : 'transform:translateY(-4px);box-shadow:0 1px 2px rgba(61,52,89,0.06),0 24px 40px -20px rgba(163,133,250,0.5);');
       o[id + 'BodyRows'] = open ? '0fr' : '1fr';
       o[id + 'BodyOp'] = open ? 0 : 1;
       o[id + 'BodyFlex'] = open ? '0 0 auto' : '1 1 auto';
@@ -1860,9 +1860,9 @@ class Component extends DCLogic {
       o[id + 'TopOp'] = open ? 1 : 0;
       o[id + 'TopDelay'] = open ? '.2s' : '0s';
       o[id + 'Tiles'] = mk(open, dark);
-      o[id + 'StartBg'] = k ? (dark ? '#1a1526' : 'linear-gradient(135deg,#e8a53f 0%,#e8a53f 100%)') : (dark ? 'rgba(255,255,255,0.1)' : '#3d3459');
-      o[id + 'StartInk'] = k ? (dark ? '#a385fa' : '#1a1526') : (dark ? 'rgba(255,255,255,0.1)' : '#918aac');
-      o[id + 'StartShadow'] = k ? (dark ? '0 12px 22px -12px rgba(77,163,240,0.6)' : '0 10px 20px -12px rgba(77,163,240,0.75)') : 'none';
+      o[id + 'StartBg'] = k ? (dark ? '#1a1526' : 'linear-gradient(135deg,#e8a53f 0%,#e8a53f 100%)') : (dark ? 'rgba(205,199,222,0.18)' : '#3d3459');
+      o[id + 'StartInk'] = k ? (dark ? '#a385fa' : '#1a1526') : (dark ? 'rgba(205,199,222,0.55)' : '#918aac');
+      o[id + 'StartShadow'] = k ? (dark ? '0 12px 22px -12px rgba(61,52,89,0.6)' : '0 10px 20px -12px rgba(232,165,63,0.75)') : 'none';
       return o;
     };
     return Object.assign(card('hero', '2 1 520px', true), card('paper', '1 1 280px', false), { prRowGap: which ? '0px' : '18px',
@@ -1878,34 +1878,34 @@ class Component extends DCLogic {
       shTiles: tiles, shStart: () => { if (!k) return; if (sh && sh.mode === 'paper' && !this.state.prPaperIntro) { this.setState({ prPaperIntro: true }); return; } go(); },
       paperIntroOn: !!(sh && sh.mode === 'paper' && this.state.prPaperIntro), paperPickOn: !(sh && sh.mode === 'paper' && this.state.prPaperIntro),
       paperIntroBack: () => this.setState({ prPaperIntro: false }), paperContinue: () => go(),
-      paperSteps: [['ti-pencil','Solve on paper'],['ti-camera','Scan'],['ti-scan','Read by OCR'],['ti-bulb','Solution and guidance']].map(([icon, label], i, a) => ({ key: 'pps' + i, icon, label, arrow: i < a.length - 1 ? 'block' : 'none', bg: i === a.length - 1 ? '#e8a53f' : '#262038', ink: i === a.length - 1 ? '#1a1526' : '#e8a53f', shadow: i === a.length - 1 ? '0 12px 22px -12px rgba(77,163,240,0.7)' : 'none' })),
+      paperSteps: [['ti-pencil','Solve on paper'],['ti-camera','Scan'],['ti-scan','Read by OCR'],['ti-bulb','Solution and guidance']].map(([icon, label], i, a) => ({ key: 'pps' + i, icon, label, arrow: i < a.length - 1 ? 'block' : 'none', bg: i === a.length - 1 ? '#e8a53f' : '#262038', ink: i === a.length - 1 ? '#1a1526' : '#4da3f0', shadow: i === a.length - 1 ? '0 12px 22px -12px rgba(232,165,63,0.7)' : 'none' })),
       shStartCur: k ? 'pointer' : 'not-allowed',
     });
   }
   _sheetDead() {
     const mesh = true;
     const T = mesh ? {
-      cardBg: '#a385fa', cardShadow: '0 1px 2px rgba(77,163,240,0.08),0 28px 52px -24px rgba(77,163,240,0.8)',
-      ink: '#1a1526', sub: 'rgba(255,255,255,0.1)', accent: '#e8a53f', icon: 'ti-users-group', closeBg: 'rgba(255,255,255,0.1)',
+      cardBg: '#a385fa', cardShadow: '0 1px 2px rgba(61,52,89,0.08),0 28px 52px -24px rgba(163,133,250,0.8)',
+      ink: '#1a1526', sub: 'rgba(205,199,222,0.86)', accent: '#e8a53f', icon: 'ti-users-group', closeBg: 'rgba(205,199,222,0.16)',
       optA: '#1a1526', optAInk: '#a385fa', optAIconBg: '#262038',
-      optB: 'rgba(255,255,255,0.1)', optBRing: 'inset 0 0 0 1.5px rgba(255,255,255,0.1)', optBInk: '#1a1526', optBIconBg: 'rgba(255,255,255,0.1)',
-      tOn: '#1a1526', tOnInk: 'rgba(77,163,240,.44)', tOnRing: 'none', tOff: 'rgba(255,255,255,0.1)', tOffInk: '#1a1526', tOffRing: 'inset 0 0 0 1px rgba(255,255,255,0.1)',
-      dotOn: '#a385fa', dotOffRing: 'inset 0 0 0 2px rgba(255,255,255,0.1)',
-      startOn: '#1a1526', startOnInk: '#a385fa', startOff: 'rgba(255,255,255,0.1)', startOffInk: 'rgba(255,255,255,0.1)', startShadow: '0 12px 22px -12px rgba(77,163,240,0.6)',
+      optB: 'rgba(205,199,222,0.14)', optBRing: 'inset 0 0 0 1.5px rgba(205,199,222,0.35)', optBInk: '#1a1526', optBIconBg: 'rgba(205,199,222,0.18)',
+      tOn: '#1a1526', tOnInk: '#a385fa', tOnRing: 'none', tOff: 'rgba(205,199,222,0.12)', tOffInk: '#1a1526', tOffRing: 'inset 0 0 0 1px rgba(205,199,222,0.28)',
+      dotOn: '#a385fa', dotOffRing: 'inset 0 0 0 2px rgba(205,199,222,0.55)',
+      startOn: '#1a1526', startOnInk: '#a385fa', startOff: 'rgba(205,199,222,0.18)', startOffInk: 'rgba(205,199,222,0.6)', startShadow: '0 12px 22px -12px rgba(61,52,89,0.6)',
     } : {
-      cardBg: 'linear-gradient(160deg,#262038 0%,#1a1526 46%)', cardShadow: '0 1px 2px rgba(77,163,240,0.06),0 24px 44px -24px rgba(232,165,63,0.45)',
-      ink: '#4da3f0', sub: '#918aac', accent: '#e8a53f', icon: 'ti-notebook', closeBg: 'rgba(77,163,240,0.06)',
-      optA: 'linear-gradient(135deg,#e8a53f 0%,#e8a53f 100%)', optAInk: '#1a1526', optAIconBg: 'rgba(255,255,255,0.1)',
+      cardBg: 'linear-gradient(160deg,#262038 0%,#1a1526 46%)', cardShadow: '0 1px 2px rgba(61,52,89,0.06),0 24px 44px -24px rgba(232,165,63,0.45)',
+      ink: '#3d3459', sub: '#3d3459', accent: '#e8a53f', icon: 'ti-notebook', closeBg: 'rgba(61,52,89,0.06)',
+      optA: 'linear-gradient(135deg,#e8a53f 0%,#e8a53f 100%)', optAInk: '#1a1526', optAIconBg: 'rgba(205,199,222,0.22)',
       optB: '#1a1526', optBRing: 'inset 0 0 0 1.5px rgba(232,165,63,0.25)', optBInk: '#e8a53f', optBIconBg: '#262038',
       tOn: '#262038', tOnInk: '#e8a53f', tOnRing: 'inset 0 0 0 2px #e8a53f', tOff: '#1a1526', tOffInk: '#918aac', tOffRing: 'inset 0 0 0 1px #3d3459',
-      dotOn: '#e8a53f', dotOffRing: 'inset 0 0 0 2px #3d3459',
-      startOn: 'linear-gradient(135deg,#e8a53f 0%,#e8a53f 100%)', startOnInk: '#1a1526', startOff: '#3d3459', startOffInk: '#918aac', startShadow: '0 12px 22px -12px rgba(77,163,240,0.7)',
+      dotOn: '#4da3f0', dotOffRing: 'inset 0 0 0 2px #3d3459',
+      startOn: 'linear-gradient(135deg,#e8a53f 0%,#e8a53f 100%)', startOnInk: '#1a1526', startOff: '#3d3459', startOffInk: '#918aac', startShadow: '0 12px 22px -12px rgba(232,165,63,0.7)',
     };
     tiles.forEach(t => { const on = t.sel === 'true'; t.bg = on ? T.tOn : T.tOff; t.ink = on ? T.tOnInk : T.tOffInk; t.ring = on ? T.tOnRing : T.tOffRing; t.dotBg = on ? T.dotOn : 'transparent'; t.dotRing = on ? 'none' : T.dotOffRing; });
     const n = (mods || []).length;
     const P = (!sh || sh.mode !== 'paper')
-      ? { accent: '#e8a53f', soft: '#262038', ring: '#a385fa', icon: 'ti-users-group', start: 'linear-gradient(135deg,#e8a53f 0%,#a385fa 100%)', shadow: '0 10px 20px -12px rgba(232,165,63,0.8)' }
-      : { accent: '#e8a53f', soft: '#262038', ring: 'rgba(232,165,63,.15)', icon: 'ti-notebook', start: 'linear-gradient(135deg,#e8a53f 0%,#e8a53f 100%)', shadow: '0 10px 20px -12px rgba(77,163,240,0.75)' };
+      ? { accent: '#e8a53f', soft: '#262038', ring: '#a385fa', icon: 'ti-users-group', start: 'linear-gradient(135deg,#a385fa 0%,#a385fa 100%)', shadow: '0 10px 20px -12px rgba(163,133,250,0.8)' }
+      : { accent: '#e8a53f', soft: '#262038', ring: '#b57a24', icon: 'ti-notebook', start: 'linear-gradient(135deg,#e8a53f 0%,#e8a53f 100%)', shadow: '0 10px 20px -12px rgba(232,165,63,0.75)' };
     tiles.forEach(t => { const on = t.sel === 'true'; t.bg = on ? P.soft : '#1a1526'; t.ink = on ? P.accent : '#918aac'; t.ring = on ? 'inset 0 0 0 1px ' + P.ring : 'none'; t.chk = on ? 'inline-block' : 'none'; });
     const long = n > 18;
     return {
@@ -1940,8 +1940,8 @@ class Component extends DCLogic {
     const has = i => sel.indexOf(i) >= 0;
     const put = patch => this.setState(Object.assign({ prChap: chap, prPart: part, prSel: st.prSel }, patch));
     const pill = (k, on, icon, title, pick) => ({ key: k, icon, title, pick, sel: on ? 'true' : 'false',
-      bg: on ? '#a385fa' : 'transparent', ink: on ? '#1a1526' : '#918aac',
-      ring: on ? '0 6px 14px -8px rgba(232,165,63,0.75)' : 'none' });
+      bg: on ? '#a385fa' : 'transparent', ink: on ? '#1a1526' : '#3d3459',
+      ring: on ? '0 6px 14px -8px rgba(163,133,250,0.75)' : 'none' });
     const prScopes = [
       pill('whole', !part, 'ti-circle-filled', 'Whole chapter', () => put({ prPart: false })),
       pill('part', part, 'ti-circle-half-2', 'Part of it', () => put({ prPart: true })),
@@ -1955,12 +1955,12 @@ class Component extends DCLogic {
         bg: on ? '#4da3f0' : '#1a1526', ink: on ? '#1a1526' : '#918aac',
         ring: on ? 'none' : 'inset 0 0 0 2px #3d3459',
         iconShow: on ? 'block' : 'none', numShow: on ? 'none' : 'block',
-        fw: on ? 700 : 600, labelInk: on ? '#4da3f0' : '#918aac' };
+        fw: on ? 700 : 600, labelInk: on ? '#3d3459' : '#918aac' };
     });
     const k = sel.length;
     const allOn = !part || k === n;
     const chip = (key, name, on, tap) => ({ key, name, tap, sel: on ? 'true' : 'false',
-      bg: on ? '#262038' : 'rgba(255,255,255,0.1)', ink: on ? '#4da3f0' : '#4da3f0',
+      bg: on ? '#262038' : 'rgba(205,199,222,0.75)', ink: on ? '#4da3f0' : '#4da3f0',
       ring: on ? 'inset 0 0 0 2px #4da3f0' : 'inset 0 0 0 1px rgba(163,133,250,0.14)',
       dotBg: on ? '#4da3f0' : 'transparent', dotRing: on ? 'none' : 'inset 0 0 0 2px #3d3459', dotOp: on ? 1 : 0 });
     const prChips = [chip('all', 'All topics', allOn, () => put({ prPart: false, prSel: null }))].concat(list.map(t => {
@@ -2005,8 +2005,8 @@ class Component extends DCLogic {
 
     const VI = '#a385fa';
     const scopeCard = (k, on, icon, title, sub, pick) => ({ key: k, icon, title, sub, pick, sel: on ? 'true' : 'false',
-      bg: on ? '#1a1526' : 'rgba(255,255,255,0.1)',
-      ring: on ? 'inset 0 0 0 2px ' + VI + ',0 14px 28px -18px rgba(232,165,63,0.6)' : 'inset 0 0 0 1px rgba(163,133,250,0.12)',
+      bg: on ? '#1a1526' : 'rgba(205,199,222,0.6)',
+      ring: on ? 'inset 0 0 0 2px ' + VI + ',0 14px 28px -18px rgba(163,133,250,0.6)' : 'inset 0 0 0 1px rgba(163,133,250,0.12)',
       iconBg: on ? '#262038' : '#262038', iconInk: on ? VI : '#918aac',
       dotBg: on ? VI : 'transparent', dotRing: on ? 'none' : 'inset 0 0 0 2px #3d3459', dotOp: on ? 1 : 0 });
     const prScopes = [
@@ -2027,13 +2027,13 @@ class Component extends DCLogic {
         bg: on ? '#4da3f0' : '#1a1526', ink: on ? '#1a1526' : '#918aac',
         ring: on ? (end ? '0 0 0 5px rgba(77,163,240,0.18)' : 'none') : 'inset 0 0 0 2px #3d3459',
         icon: 'ti-check', iconShow: on && !end ? 'block' : 'none', numShow: on && !end ? 'none' : 'block',
-        fw: on ? 700 : 600, labelInk: on ? '#4da3f0' : '#918aac' };
+        fw: on ? 700 : 600, labelInk: on ? '#3d3459' : '#918aac' };
     });
     const prTiles = list.map(t => {
       const on = has(t.i);
       return { key: 'tl' + t.i, name: t.name, num: t.i + 1, sel: on ? 'true' : 'false',
         toggle: () => { const base = sel.slice(); const next = on ? base.filter(x => x !== t.i) : base.concat(t.i); if (!next.length) return; put({ prMode: 'own', prSel: next.sort((a, b) => a - b) }); },
-        bg: on ? '#262038' : 'rgba(255,255,255,0.1)', ring: on ? 'inset 0 0 0 2px #4da3f0' : 'inset 0 0 0 1px #3d3459',
+        bg: on ? '#262038' : 'rgba(205,199,222,0.9)', ring: on ? 'inset 0 0 0 2px #4da3f0' : 'inset 0 0 0 1px #3d3459',
         ink: on ? '#4da3f0' : '#918aac', numBg: on ? '#4da3f0' : '#3d3459', numInk: on ? '#1a1526' : '#918aac',
         dotBg: on ? '#4da3f0' : 'transparent', dotRing: on ? 'none' : 'inset 0 0 0 2px #3d3459', dotOp: on ? 1 : 0, scale: on ? 'scale(1.02)' : 'scale(1)' };
     });
@@ -2438,11 +2438,11 @@ class Component extends DCLogic {
     // the shells share the rail's exact curve (same cY, just pushed down), so the timeline always
     // rides parallel to the waves — they scroll with the stage rather than parallaxing away from it
     const shellSpec = [
-      { drop: 0.10, open: true, wob: (x) => 34 * Math.sin(x * 0.00096 + 0.4) + 14 * Math.sin(x * 0.00287 + 2.9), fill: 'none', stroke: 'rgba(255,255,255,0.1)', sw: 2 },
-      { drop: 0.58, open: true, wob: (x) => 28 * Math.sin(x * 0.00141 + 3.8) + 11 * Math.sin(x * 0.00392 + 1.2), fill: 'none', stroke: 'rgba(255,255,255,0.1)', sw: 2 },
-      { drop: 0.85, wob: null, fill: 'rgba(255,255,255,0.1)', stroke: 'rgba(255,255,255,0.1)', sw: 2 },
-      { drop: 0.90, wob: (x) => 22 * Math.sin(x * 0.00185 + 2.6) + 9 * Math.sin(x * 0.0043 + 0.9), fill: 'rgba(255,255,255,0.1)', stroke: 'rgba(255,255,255,0.1)', sw: 2 },
-      { drop: 0.95, wob: (x) => 26 * Math.sin(x * 0.00078 + 1.7) + 17 * Math.sin(x * 0.00251 + 4.9) + 8 * Math.sin(x * 0.0061 + 2.2), fill: '#262038', stroke: 'rgba(255,255,255,0.1)', sw: 10 },
+      { drop: 0.10, open: true, wob: (x) => 34 * Math.sin(x * 0.00096 + 0.4) + 14 * Math.sin(x * 0.00287 + 2.9), fill: 'none', stroke: 'rgba(205,199,222,0.3)', sw: 2 },
+      { drop: 0.58, open: true, wob: (x) => 28 * Math.sin(x * 0.00141 + 3.8) + 11 * Math.sin(x * 0.00392 + 1.2), fill: 'none', stroke: 'rgba(205,199,222,0.24)', sw: 2 },
+      { drop: 0.85, wob: null, fill: 'rgba(205,199,222,0.32)', stroke: 'rgba(205,199,222,0.62)', sw: 2 },
+      { drop: 0.90, wob: (x) => 22 * Math.sin(x * 0.00185 + 2.6) + 9 * Math.sin(x * 0.0043 + 0.9), fill: 'rgba(205,199,222,0.52)', stroke: 'rgba(205,199,222,0.78)', sw: 2 },
+      { drop: 0.95, wob: (x) => 26 * Math.sin(x * 0.00078 + 1.7) + 17 * Math.sin(x * 0.00251 + 4.9) + 8 * Math.sin(x * 0.0061 + 2.2), fill: '#262038', stroke: 'rgba(205,199,222,0.9)', sw: 10 },
     ];
     // drops are fractions of the space BELOW the rail, so short viewports keep every shell on screen
     // crest sits at a fraction of (vh - 40) measured from the top, carrying the rail's curve shape
@@ -2534,21 +2534,21 @@ class Component extends DCLogic {
       const glass = {
         done: {
           bg: 'linear-gradient(158deg,#1a1526 0%,#1a1526 46%,#1a1526 100%)',
-          shadow: '0 30px 58px -22px rgba(77,163,240,.44),0 4px 12px rgba(77,163,240,.14),inset 0 1px 0 rgba(255,255,255,0.1)',
+          shadow: '0 30px 58px -22px rgba(77,163,240,.44),0 4px 12px rgba(77,163,240,.14),inset 0 1px 0 rgba(205,199,222,0.92)',
           accent: 'linear-gradient(90deg,#4cbf6e,#4cbf6e)',
-          bloom: 'radial-gradient(circle,rgba(76,191,110,.30) 0%,rgba(76,191,110,.10) 52%,rgba(76,191,110,0) 72%)',
+          bloom: 'radial-gradient(circle,rgba(76,191,110,.30) 0%,rgba(76,191,110,.10) 52%,rgba(47,158,68,0) 72%)',
         },
         ongoing: {
-          bg: 'linear-gradient(158deg,#1a1526 0%,rgba(36,31,54,.98) 44%,rgba(232,165,63,.15) 100%)',
-          shadow: '0 38px 70px -24px rgba(232,165,63,.5),0 5px 14px rgba(163,133,250,.16),inset 0 1px 0 rgba(255,255,255,0.1)',
+          bg: 'linear-gradient(158deg,#1a1526 0%,rgba(36,31,54,.98) 44%,#b57a24 100%)',
+          shadow: '0 38px 70px -24px rgba(232,165,63,.5),0 5px 14px rgba(163,133,250,.16),inset 0 1px 0 rgba(205,199,222,0.95)',
           accent: 'linear-gradient(90deg,#e8a53f,#e8a53f)',
-          bloom: 'radial-gradient(circle,rgba(232,165,63,.30) 0%,rgba(232,165,63,.11) 52%,rgba(232,165,63,0) 72%)',
+          bloom: 'radial-gradient(circle,rgba(232,165,63,.30) 0%,rgba(232,165,63,.11) 52%,rgba(247,103,7,0) 72%)',
         },
         new: {
           bg: 'linear-gradient(158deg,#1a1526 0%,#1a1526 48%,#262038 100%)',
-          shadow: '0 20px 40px -18px rgba(77,163,240,.34),0 2px 8px rgba(77,163,240,.1),inset 0 1px 0 rgba(255,255,255,0.1)',
+          shadow: '0 20px 40px -18px rgba(77,163,240,.34),0 2px 8px rgba(77,163,240,.1),inset 0 1px 0 rgba(205,199,222,0.72)',
           accent: 'linear-gradient(90deg,rgba(77,163,240,.9),rgba(77,163,240,.9))',
-          bloom: 'radial-gradient(circle,rgba(77,163,240,.20) 0%,rgba(77,163,240,.07) 52%,rgba(77,163,240,0) 72%)',
+          bloom: 'radial-gradient(circle,rgba(77,163,240,.20) 0%,rgba(77,163,240,.07) 52%,rgba(122,110,196,0) 72%)',
         },
       }[p.status];
       p.islBg = glass.bg; p.islShadow = glass.shadow; p.accent = glass.accent; p.bloom = glass.bloom;
@@ -2796,9 +2796,9 @@ class Component extends DCLogic {
       // the island's badge art and status bloom, so the hero reads as the same object enlarged
       ch.iconUrl = "url('icons/sm-" + (({ 1:'Realnumbers', 2:'Polynomials', 3:'Pair-of-Linear-equations', 7:'Triangle', 14:'Statistics' })[ch.id] || 'Pair-of-Linear-equations') + ".png')";
       ch.bloom = {
-        done:    'radial-gradient(circle,rgba(76,191,110,.30) 0%,rgba(76,191,110,.10) 52%,rgba(76,191,110,0) 72%)',
-        ongoing: 'radial-gradient(circle,rgba(232,165,63,.30) 0%,rgba(232,165,63,.11) 52%,rgba(232,165,63,0) 72%)',
-        new:     'radial-gradient(circle,rgba(77,163,240,.20) 0%,rgba(77,163,240,.07) 52%,rgba(77,163,240,0) 72%)',
+        done:    'radial-gradient(circle,rgba(76,191,110,.30) 0%,rgba(76,191,110,.10) 52%,rgba(47,158,68,0) 72%)',
+        ongoing: 'radial-gradient(circle,rgba(232,165,63,.30) 0%,rgba(232,165,63,.11) 52%,rgba(247,103,7,0) 72%)',
+        new:     'radial-gradient(circle,rgba(77,163,240,.20) 0%,rgba(77,163,240,.07) 52%,rgba(122,110,196,0) 72%)',
       }[ch.status];
       const built = this.buildModules(ch, cdPathW);
       cdModules = built.mods; cdSegments = built.segs; cdPathH = built.pathH; cdThreads = built.threads; cdModuleCount = built.mods.length;
@@ -2853,22 +2853,22 @@ class Component extends DCLogic {
     const MODES = [
       { key:'warm', band:'easy', going: warmDone > 0, title:'Quick drill', icon:'ti-bolt',
         tint:'linear-gradient(140deg,#4cbf6e,#4cbf6e)', hasBar:true,
-        pct: Math.round((warmDone / 24) * 100) + '%', fill:'linear-gradient(90deg,rgba(76,191,110,.18),#4cbf6e)',
+        pct: Math.round((warmDone / 24) * 100) + '%', fill:'linear-gradient(90deg,#4cbf6e,#4cbf6e)',
         meta: warmDone + ' of 24 done', cta: warmDone > 0 ? 'Continue' : 'Start' },
       { key:'sprint', band:'easy', going: !!bestSprint, title:'10-minute sprint', icon:'ti-stopwatch',
-        tint:'linear-gradient(140deg,#4da3f0,#262038)',
+        tint:'linear-gradient(140deg,#4da3f0,#2a7bbd)',
         meta:'10 questions', hasChip: !!bestSprint, chip: bestSprint ? ('Best ' + bestSprint.got + '/' + bestSprint.of) : '',
         chipBg:'#262038', chipFg:'#4da3f0', cta: bestSprint ? 'Go again' : 'Start' },
       { key:'facts', band:'easy', going:false, title:'Did you know?', icon:'ti-sparkles',
-        tint:'linear-gradient(140deg,#4da3f0,#262038)', meta:'5 cards \u00b7 2 min', cta:'Read', btnCls:'cd-pbtn-q' },
+        tint:'linear-gradient(140deg,#4da3f0,#2a7bbd)', meta:'5 cards \u00b7 2 min', cta:'Read', btnCls:'cd-pbtn-q' },
       { key:'paper', band:'hard', going: !!paperPast, title:'Work on paper', icon:'ti-camera',
         tint:'linear-gradient(140deg,#e8a53f,#e8a53f)', meta:'6 problems',
-        hasChip: !!paperPast, chip:'1 marked', chipBg:'#262038', chipFg:'rgba(0,0,0,0.55)', cta:'Snap it' },
+        hasChip: !!paperPast, chip:'1 marked', chipBg:'#262038', chipFg:'#b57a24', cta:'Snap it' },
       { key:'deep', band:'hard', going:false, title:'Hard problems', icon:'ti-mountain',
-        tint:'linear-gradient(140deg,#e8a53f,rgba(0,0,0,.52))', meta:'18 questions', cta:'Start' },
+        tint:'linear-gradient(140deg,#a385fa,#a385fa)', meta:'18 questions', cta:'Start' },
       { key:'test', band:'hard', going:false, title:'Chapter test', icon:'ti-file-check',
-        tint:'linear-gradient(140deg,#f07171,#e8a53f)', hasBar:true, pct: covered + '%',
-        fill: covered >= 75 ? 'linear-gradient(90deg,rgba(76,191,110,.18),#4cbf6e)' : 'linear-gradient(90deg,#e8a53f,#e8a53f)',
+        tint:'linear-gradient(140deg,#f07171,#f07171)', hasBar:true, pct: covered + '%',
+        fill: covered >= 75 ? 'linear-gradient(90deg,#4cbf6e,#4cbf6e)' : 'linear-gradient(90deg,#e8a53f,#e8a53f)',
         meta: covered + '% ready', cta:'Take it', btnCls: covered >= 45 ? '' : 'cd-pbtn-q' },
     ].map(m => ({ ...m, btnCls: m.btnCls || '',
       ctaFg: m.btnCls === 'cd-pbtn-q' ? '#4da3f0' : '#4da3f0',
@@ -2876,7 +2876,7 @@ class Component extends DCLogic {
 
     const BAND_OF = (p) => p >= 85 ? { word:'Great', bg:'#1a1526', fg:'#4cbf6e' }
       : p >= 65 ? { word:'Good', bg:'#262038', fg:'#4da3f0' }
-      : p >= 45 ? { word:'Okay', bg:'#262038', fg:'rgba(0,0,0,0.55)' }
+      : p >= 45 ? { word:'Okay', bg:'#262038', fg:'#b57a24' }
       : { word:'Try again', bg:'#1a1526', fg:'#f07171' };
 
     /* Seconds a format costs a student. The question COUNT is derived from the time budget
@@ -2922,7 +2922,7 @@ class Component extends DCLogic {
         base:[.7,.3,0], blurb:'A gentle restart. Mostly things you already know.' },
       { key:'sprint', name:'Sprint', mins:20, icon:'ti-bolt', fg:'#4da3f0',
         base:[.4,.45,.15], blurb:'Steady practice across the whole chapter.' },
-      { key:'endurance', name:'Endurance', mins:40, icon:'ti-flame', fg:'rgba(232,165,63,.5)',
+      { key:'endurance', name:'Endurance', mins:40, icon:'ti-flame', fg:'#e8a53f',
         base:[.25,.45,.3], blurb:'Longer questions, and the topics you keep slipping on.' },
       { key:'marathon', name:'Marathon', mins:60, icon:'ti-mountain', fg:'#a385fa',
         base:[.2,.4,.4], blurb:'Everything, exam style. No easy runs.' },
@@ -2946,17 +2946,17 @@ class Component extends DCLogic {
 
     const sessions = (ch ? (HISTORY[ch.id] || []) : []).map(x => {
       const pct = Math.round((x.got / x.of) * 100), b = BAND_OF(pct);
-      return { ...x, score:String(x.got), scoreFg: pct >= 65 ? '#4cbf6e' : 'rgba(232,165,63,.5)',
+      return { ...x, score:String(x.got), scoreFg: pct >= 65 ? '#4cbf6e' : '#e8a53f',
         mark: b.word, bandBg: b.bg, bandFg: b.fg, scoreLabel: x.got + '/' + x.of,
         start: () => this._openPractice('review', x.title, x.key) };
     });
     const cdDone = sessions;
     const cdHasDone = sessions.length > 0;
     const WAYS = [
-      { key:'ido', tag:'VYOM SHOWS', title:'Show me how', desc:'Vyom solves one step by step. You watch, then try one.', icon:'ti-chalkboard', badge:'ti-player-play-filled', ink:'#e8a53f', soft:'#262038', art:'linear-gradient(160deg,#1a1526 0%,#3d3459 100%)', ring:'rgba(163,133,250,0.16)', glow:'rgba(163,133,250,0.45)', shadow:'rgba(232,165,63,0.55)', vy:3 },
-      { key:'wedo', tag:'VYOM HELPS', title:'Let\u2019s do it together', desc:'You lead. Vyom steps in with a nudge when you\u2019re stuck.', icon:'ti-users-group', badge:'ti-bulb-filled', ink:'#4da3f0', soft:'#262038', art:'linear-gradient(160deg,#262038 0%,#262038 100%)', ring:'rgba(77,163,240,0.16)', glow:'rgba(77,163,240,0.45)', shadow:'rgba(77,163,240,0.55)', vy:2 },
-      { key:'youdo', tag:'JUST YOU', title:'I\u2019ve got this', desc:'Just you and the questions. See your score the moment you finish.', icon:'ti-device-laptop', badge:'ti-bolt-filled', ink:'#4cbf6e', soft:'#1a1526', art:'linear-gradient(160deg,#1a1526 0%,#3d3459 100%)', ring:'rgba(76,191,110,0.16)', glow:'rgba(76,191,110,0.45)', shadow:'rgba(76,191,110,0.55)', vy:0 },
-      { key:'paper', tag:'JUST YOU', title:'Pen & paper', desc:'Solve in your notebook, snap a photo, get your report.', icon:'ti-notebook', badge:'ti-camera-filled', ink:'#e8a53f', soft:'#262038', art:'linear-gradient(160deg,#262038 0%,rgba(232,165,63,.15) 100%)', ring:'rgba(232,165,63,0.16)', glow:'rgba(232,165,63,0.45)', shadow:'rgba(232,165,63,0.55)', vy:0 },
+      { key:'ido', tag:'VYOM SHOWS', title:'Show me how', desc:'Vyom solves one step by step. You watch, then try one.', icon:'ti-chalkboard', badge:'ti-player-play-filled', ink:'#e8a53f', soft:'#262038', art:'linear-gradient(160deg,#1a1526 0%,#3d3459 100%)', ring:'rgba(163,133,250,0.16)', glow:'rgba(163,133,250,0.45)', shadow:'rgba(163,133,250,0.55)', vy:3 },
+      { key:'wedo', tag:'VYOM HELPS', title:'Let\u2019s do it together', desc:'You lead. Vyom steps in with a nudge when you\u2019re stuck.', icon:'ti-users-group', badge:'ti-bulb-filled', ink:'#4da3f0', soft:'#262038', art:'linear-gradient(160deg,#262038 0%,#2a7bbd 100%)', ring:'rgba(77,163,240,0.16)', glow:'rgba(77,163,240,0.45)', shadow:'rgba(77,163,240,0.55)', vy:2 },
+      { key:'youdo', tag:'JUST YOU', title:'I\u2019ve got this', desc:'Just you and the questions. See your score the moment you finish.', icon:'ti-device-laptop', badge:'ti-bolt-filled', ink:'#4cbf6e', soft:'#1a1526', art:'linear-gradient(160deg,#1a1526 0%,#1a1526 100%)', ring:'rgba(76,191,110,0.16)', glow:'rgba(76,191,110,0.45)', shadow:'rgba(76,191,110,0.55)', vy:0 },
+      { key:'paper', tag:'JUST YOU', title:'Pen & paper', desc:'Solve in your notebook, snap a photo, get your report.', icon:'ti-notebook', badge:'ti-camera-filled', ink:'#e8a53f', soft:'#262038', art:'linear-gradient(160deg,#262038 0%,#b57a24 100%)', ring:'rgba(232,165,63,0.16)', glow:'rgba(232,165,63,0.45)', shadow:'rgba(232,165,63,0.55)', vy:0 },
     ];
     const cdWays = WAYS.map(w => ({ ...w, pips: [0,1,2].map(k => ({ key: 'p' + k, c: k < w.vy ? w.ink : '#3d3459' })), start: () => this._askScope(w.key, w.title) }));
     const _own = e => { const t = e && e.target && e.target.closest ? e.target.closest('[role]') : null; return !t || t === e.currentTarget; };
@@ -3216,9 +3216,9 @@ class Component extends DCLogic {
       ...this._prVals(cdModules),
       modeKnobX: isPractice ? 'translateX(100%)' : 'translateX(0)',
       learnSel: isPractice ? 'false' : 'true', practiceSel: isPractice ? 'true' : 'false',
-      learnInk: isPractice ? '#918aac' : '#1a1526', practiceInk: isPractice ? '#1a1526' : '#918aac',
-      modeKnobBg: isPractice ? 'linear-gradient(135deg,#4da3f0 0%,#4da3f0 100%)' : 'linear-gradient(135deg,#e8a53f 0%,#a385fa 100%)',
-      modeKnobGlow: isPractice ? '0 1px 0 rgba(255,255,255,0.1) inset,0 8px 18px -8px rgba(77,163,240,0.75)' : '0 1px 0 rgba(255,255,255,0.1) inset,0 8px 18px -8px rgba(232,165,63,0.75)',
+      learnInk: isPractice ? '#3d3459' : '#1a1526', practiceInk: isPractice ? '#1a1526' : '#3d3459',
+      modeKnobBg: isPractice ? 'linear-gradient(135deg,#4da3f0 0%,#4da3f0 100%)' : 'linear-gradient(135deg,#a385fa 0%,#a385fa 100%)',
+      modeKnobGlow: isPractice ? '0 1px 0 rgba(205,199,222,0.35) inset,0 8px 18px -8px rgba(77,163,240,0.75)' : '0 1px 0 rgba(205,199,222,0.35) inset,0 8px 18px -8px rgba(163,133,250,0.75)',
       modeBtnIcon: isPractice ? 'ti-book-2' : 'ti-trophy',
       back: () => { if (this.state.active != null) this.setState({ zoomPhase: 'out' }); },
       // step between chapter detail views without returning to the map
