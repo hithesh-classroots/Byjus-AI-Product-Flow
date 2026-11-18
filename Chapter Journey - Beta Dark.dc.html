@@ -461,6 +461,11 @@
   .cj-themebtn-knob i{font-size:15px;}
   .cj-themebtn[aria-checked="true"] .cj-themebtn-track{background:rgba(42,123,189,0.28);}
   .cj-themebtn[aria-checked="true"] .cj-themebtn-knob{transform:translateX(26px);background:rgba(0,0,0,.48);color:#b57a24;}
+  /* beta: student avatar, sits to the right of the light/dark switch */
+  .cj-profilebtn{flex:none;width:34px;height:34px;border-radius:11px;overflow:hidden;display:block;text-decoration:none;background:#261f37;box-shadow:0 1px 3px rgba(0,0,0,.45);transition:transform .16s ease,box-shadow .16s ease;}
+  .cj-profilebtn:hover{transform:translateY(-1px);box-shadow:0 4px 10px -3px rgba(0,0,0,.6);}
+  .cj-profilebtn:focus-visible{outline:none;box-shadow:0 0 0 2px rgba(0,0,0,0.45);}
+  .cj-profilebtn img{width:100%;height:100%;object-fit:cover;display:block;}
   @media (prefers-reduced-motion: reduce){.cj-goal-line{overflow:hidden;text-overflow:ellipsis;animation:none;}}
 </style>
 <script src="./mobile-nav.js"></script>
@@ -965,6 +970,7 @@
     <button class="cj-themebtn" type="button" role="switch" aria-checked="{{ isDark }}" aria-label="{{ themeLabel }}" title="{{ themeLabel }}" onClick="{{ toggleTheme }}">
       <span class="cj-themebtn-track"><span class="cj-themebtn-knob"><i class="ti ti-{{ themeIcon }}"></i></span></span>
     </button>
+    <a class="cj-profilebtn" href="Profile - Beta Dark.dc.html" title="Profile settings" aria-label="Profile settings"><img src="aarav-avatar.png" alt="Aarav"></a>
   </div>
 
     

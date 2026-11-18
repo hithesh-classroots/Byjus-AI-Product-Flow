@@ -8,7 +8,8 @@
   var PAIRS = {
     'Chapter Journey - Beta.dc.html':            'Chapter Journey - Beta Dark.dc.html',
     'Teaching Room - Beta.dc.html':              'Teaching Room - Beta Dark.dc.html',
-    'Practice Room - Guided Retry Beta.dc.html': 'Practice Room - Guided Retry Beta Dark.dc.html'
+    'Practice Room - Guided Retry Beta.dc.html': 'Practice Room - Guided Retry Beta Dark.dc.html',
+    'Profile - Beta.dc.html':                    'Profile - Beta Dark.dc.html'
   };
   var BACK = {}; for (var k in PAIRS) BACK[PAIRS[k]] = k;
 

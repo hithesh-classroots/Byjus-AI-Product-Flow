@@ -1,7 +1,8 @@
 /* Byjus.AI beta — the pared-back rail.
    The beta ships without Goal and Home, so the shared rail's nav buttons are
-   gone. What stays is the mark, which points at Chapter Journey (the beta's
-   landing screen), and the student avatar, which opens profile settings.
+   gone and only the mark stays, pointing at Chapter Journey, the beta's
+   landing screen. The student avatar lives in the header instead, beside the
+   light/dark switch.
    Geometry matches nav-rail.js: rail 72px, logo 40px at top 24px, 52px avatar.
 
    Note: the avatar opens the main Profile page, which is not part of the beta
@@ -28,10 +29,6 @@
 '<nav aria-label="Main" style="display:flex;flex-direction:column;align-items:center;">',
   '<a href="' + home + '" title="Byjus.AI" style="pointer-events:auto;margin-top:24px;width:40px;height:40px;flex:none;border-radius:8px;overflow:hidden;display:grid;place-items:center;">',
     '<img src="logo.png" alt="Byjus.AI" style="width:100%;height:100%;object-fit:contain;">',
-  '</a>',
-  '<span aria-hidden="true" style="display:block;margin-top:16px;width:28px;height:1px;flex:none;background:' + T.line + ';border-radius:1px;"></span>',
-  '<a href="Profile.dc.html" title="Profile settings" aria-label="Profile settings" style="pointer-events:auto;margin-top:16px;width:52px;height:52px;flex:none;border-radius:14px;overflow:hidden;display:block;background:' + T.def + ';text-decoration:none;">',
-    '<img src="aarav-avatar.png" alt="Aarav" style="width:100%;height:100%;object-fit:cover;display:block;">',
   '</a>',
 '</nav>'].join('');
     }

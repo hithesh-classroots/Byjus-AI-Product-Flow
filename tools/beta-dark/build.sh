@@ -17,4 +17,5 @@ python3 -I "$T/lift.py"       "Chapter Journey - Beta Dark.dc.html" "Chapter Jou
 python3 -I "$T/liftjs.py"     "Chapter Journey - Beta Dark.dc.html" "Chapter Journey - Dark.dc.html" "const glass"
 python3 -I "$T/components.py" "Chapter Journey - Beta Dark.dc.html"
 python3 -I "$T/components.py" "Practice Room - Guided Retry Beta Dark.dc.html"
+python3 -I "$T/components.py" "Profile - Beta Dark.dc.html"
 python3 -I "$T/relink.py"

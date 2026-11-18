@@ -45,6 +45,9 @@ RECIPES = {
     ".cd-intent:hover": {"box-shadow": SHADOW_H, "transform": "translateY(-3px)", "border-color": "transparent"},
     ".cd-snack":        {"background": CARD, "border": "1px solid " + LINE, "color": INK, "box-shadow": SHADOW},
     ".ftue-speech":     {"background": BUBBLE, "color": INK},
+    # the header avatar, beside the light/dark switch
+    ".cj-profilebtn":   {"background": "#261f37", "box-shadow": "0 1px 3px rgba(0,0,0,.45)"},
+    ".cj-profilebtn:hover": {"box-shadow": "0 4px 10px -3px rgba(0,0,0,.6)"},
     ".cd-tile-done":    {"background": "rgba(255,255,255,.08)", "border-color": LINE},
     ".cd-tile-score":   {"background": "rgba(255,255,255,.10)", "color": INK},
 }
