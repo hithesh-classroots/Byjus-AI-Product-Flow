@@ -237,6 +237,16 @@ def apply(path):
         # near-black label on the faint disabled veil
         ("calcSubmitFg: ok ? '#b57a24' : '#262038'",
          "calcSubmitFg: ok ? '#1a1526' : 'rgba(205,199,222,.45)'"),
+        # The calculator and the answer composer are tinted by a full-bleed
+        # overlay -- in light a teal gradient, which converted to a bright blue
+        # and made the panel read as a solid colour block on a dark page. They
+        # take the raised-card gradient instead. The small accent button that
+        # shares the hue is matched separately, by its cursor/colour, so it
+        # keeps its blue.
+        ("inset:0;background:linear-gradient(45deg,#2a7bbd,#4da3f0)",
+         "inset:0;background:linear-gradient(45deg,#262038,#2e2745)"),
+        ("inset:0;background:linear-gradient(160deg,#2a7bbd,#2a7bbd)",
+         "inset:0;background:linear-gradient(160deg,#211c31,#262038)"),
         # the working-card check label on its #3d3459 chip
         ("vhCheckInk:(v.num && (S.den||v.den) && !v.locked) ? '#1a1526' : '#918aac'",
          "vhCheckInk:(v.num && (S.den||v.den) && !v.locked) ? '#1a1526' : '" + INK + "'"),
