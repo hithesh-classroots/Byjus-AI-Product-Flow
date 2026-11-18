@@ -233,6 +233,35 @@ def apply(path):
                "sh: (eq||util) ? 'none' : '0 2px 0 rgba(0,0,0,.35)'")
     s, keypad = _kp.subn(_kp_new, s)
 
+    # Four things no automated pass could reach, each for its own reason.
+    spot = 0
+    for old_s, new_s in [
+        # the Vyom help pill sits on the composer card, so its label must be ink
+        ('color:#1a1526;font-size:14px;font-weight:700;white-space:nowrap;"><i class="ti ti-message-2"',
+         'color:' + INK + ';font-size:14px;font-weight:700;white-space:nowrap;"><i class="ti ti-message-2"'),
+        # the calculator's running result, near-black on the near-black display
+        ('font-weight:700;color:#1a1526;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums;',
+         'font-weight:700;color:' + INK + ';line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums;'),
+        # the rule between numerator and denominator: dark-on-light became
+        # dark-on-dark, so the fractions lost their bar
+        ('align-self:stretch;height:3px;margin:2px 0;border-radius:2px;background:rgba(8,6,14,.68);',
+         'align-self:stretch;height:3px;margin:2px 0;border-radius:2px;background:' + INK + ';'),
+    ]:
+        if old_s in s: s = s.replace(old_s, new_s); spot += 1
+
+    # The quiz Submit is a design-system button, styled from _ds, which is
+    # shared with every non-beta page and so cannot be touched. Overridden
+    # locally instead, to match the Learn/Practice toggle in Chapter Journey
+    # (dark): .cd-seg-btn.on is #1a1526 on a flat #4da3f0.
+    css = ("\n<style>\n"
+           "  .cc-button.pq-btn{background:#4da3f0 !important;color:#1a1526 !important;box-shadow:none !important;}\n"
+           "  .cc-button.pq-btn:hover{background:#6cb4f3 !important;}\n"
+           "  .cc-button.pq-btn[data-state=\"disabled\"]{background:rgba(255,255,255,.10) !important;color:" + DIM + " !important;}\n"
+           "</style>\n")
+    if ".cc-button.pq-btn{" not in s:
+        i = s.find("</head>")
+        if i != -1: s = s[:i] + css + s[i:]; spot += 1
+
     # JS-computed style objects. The Practice-with-Vyom panel is built from one
     # of these, which is why it came out a bright purple fill with near-black
     # type -- no stylesheet is involved at all.
@@ -289,10 +318,10 @@ def apply(path):
         if old in s: s = s.replace(old, new); hero += 1
 
     io.open(path, "w", encoding="utf-8").write(s)
-    return recipes, contrast, hero, log, js, rings, inline, keypad
+    return recipes, contrast, hero, log, js, rings, inline, keypad, spot
 
 if __name__ == "__main__":
-    r, c, h, lg, j, rg, inl, kp = apply(sys.argv[1])
+    r, c, h, lg, j, rg, inl, kp, sp = apply(sys.argv[1])
     print(f"  recipes: {len(r)} -> {', '.join(r)}")
     print(f"  contrast fixes (dark text on a dark surface): {len(c)} -> {', '.join(sorted(set(c))[:10])}")
-    print(f"  hero inline type: {h}   practice-log cards: {lg}   js style objects: {j}   decorative rings removed: {rg}   inline contrast fixes: {inl}   keypad: {kp}")
+    print(f"  hero inline type: {h}   practice-log cards: {lg}   js style objects: {j}   decorative rings removed: {rg}   inline contrast fixes: {inl}   keypad: {kp}   spot fixes: {sp}")
