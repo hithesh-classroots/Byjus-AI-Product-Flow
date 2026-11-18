@@ -4199,9 +4199,7 @@ class Component extends DCLogic {
         return { key:'ck'+t, t, press:()=>this._calcKey(t),
           /* digits: white, the most-pressed tier · operators: cyan-1 on cyan-9 · clear/back: dark
              veil · = : the darkest solid, so it reads as the result key */
-          bg: eq ? '#2a7bbd' : op ? '#2a7bbd' : util ? 'rgba(205,199,222,0.26)' : '#1a1526',
-          fg: eq ? '#1a1526' : op ? '#2a7bbd' : util ? '#1a1526' : '#2a7bbd',
-          sh: (eq||util) ? 'none' : '0 2px 0 rgba(205,199,222,0.14)' }; }),
+          bg: eq ? '#4da3f0' : op ? '#3d3459' : util ? 'rgba(255,255,255,.10)' : '#262038', fg: eq ? '#1a1526' : op ? '#cdc7de' : util ? '#cdc7de' : '#cdc7de', sh: (eq||util) ? 'none' : '0 2px 0 rgba(0,0,0,.35)' }; }),
       next:()=>this.next(), back:()=>this.back(), submitQuiz:()=>this.submitQuiz(), gotItClick:()=>this.gotItClick(),
       checkApplet:()=>this.checkApplet(), startOver:()=>this.startOver(), onClose:()=>{ this._post('byjus-room-exit'); (function(f){try{var r=document.referrer;if(r){var u=new URL(r);if(u.origin===location.origin&&u.pathname!==location.pathname&&history.length>1){history.back();return;}}}catch(e){}location.href=encodeURI(f);})('Chapter Journey - Beta Dark.dc.html'); },
     };

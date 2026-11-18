@@ -217,6 +217,22 @@ def apply(path):
     ]:
         if span in s: s = s.replace(span, ""); rings += 1
 
+    # The calculator keypad is coloured by one ternary chain. Converting it
+    # collapsed equals and operators onto the same blue AND gave the operators
+    # that same blue as their label, so the glyphs were invisible; the number
+    # keys got the same blue on near-black. Rebuilt as a hierarchy from the
+    # dark palette: equals is the accent, operators a raised surface, numbers
+    # the card, all on the ink colour.
+    keypad = 0
+    _kp = re.compile(
+        r"bg:\s*eq\s*\?\s*'[^']*'\s*:\s*op\s*\?\s*'[^']*'\s*:\s*util\s*\?\s*'[^']*'\s*:\s*'[^']*',"
+        r"\s*fg:\s*eq\s*\?\s*'[^']*'\s*:\s*op\s*\?\s*'[^']*'\s*:\s*util\s*\?\s*'[^']*'\s*:\s*'[^']*',"
+        r"\s*sh:\s*\(eq\|\|util\)\s*\?\s*'none'\s*:\s*'[^']*'")
+    _kp_new = ("bg: eq ? '#4da3f0' : op ? '#3d3459' : util ? 'rgba(255,255,255,.10)' : '#262038', "
+               "fg: eq ? '#1a1526' : op ? '" + INK + "' : util ? '" + INK + "' : '" + INK + "', "
+               "sh: (eq||util) ? 'none' : '0 2px 0 rgba(0,0,0,.35)'")
+    s, keypad = _kp.subn(_kp_new, s)
+
     # JS-computed style objects. The Practice-with-Vyom panel is built from one
     # of these, which is why it came out a bright purple fill with near-black
     # type -- no stylesheet is involved at all.
@@ -273,10 +289,10 @@ def apply(path):
         if old in s: s = s.replace(old, new); hero += 1
 
     io.open(path, "w", encoding="utf-8").write(s)
-    return recipes, contrast, hero, log, js, rings, inline
+    return recipes, contrast, hero, log, js, rings, inline, keypad
 
 if __name__ == "__main__":
-    r, c, h, lg, j, rg, inl = apply(sys.argv[1])
+    r, c, h, lg, j, rg, inl, kp = apply(sys.argv[1])
     print(f"  recipes: {len(r)} -> {', '.join(r)}")
     print(f"  contrast fixes (dark text on a dark surface): {len(c)} -> {', '.join(sorted(set(c))[:10])}")
-    print(f"  hero inline type: {h}   practice-log cards: {lg}   js style objects: {j}   decorative rings removed: {rg}   inline contrast fixes: {inl}")
+    print(f"  hero inline type: {h}   practice-log cards: {lg}   js style objects: {j}   decorative rings removed: {rg}   inline contrast fixes: {inl}   keypad: {kp}")
