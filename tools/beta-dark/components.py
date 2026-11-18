@@ -244,8 +244,11 @@ def apply(path):
          'font-weight:700;color:' + INK + ';line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums;'),
         # the rule between numerator and denominator: dark-on-light became
         # dark-on-dark, so the fractions lost their bar
-        ('align-self:stretch;height:3px;margin:2px 0;border-radius:2px;background:rgba(8,6,14,.68);',
-         'align-self:stretch;height:3px;margin:2px 0;border-radius:2px;background:' + INK + ';'),
+        # every fraction rule, not just the question's: the Vyom-help fractions
+        # and the working card use the same span. The video-control bar shares
+        # the colour but not this shape, so it keeps its translucent dark.
+        ('border-radius:2px;background:rgba(8,6,14,.68);',
+         'border-radius:2px;background:' + INK + ';'),
     ]:
         if old_s in s: s = s.replace(old_s, new_s); spot += 1
 
