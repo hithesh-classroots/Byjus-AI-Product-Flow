@@ -53,7 +53,7 @@
     font-size:14.5px;font-weight:700;white-space:nowrap;color:#918aac;transition:background .14s ease,color .14s ease;}
   .pf-nav i{flex:none;font-size:20px;}
   .pf-nav:hover{color:#cdc7de;background:#262038;}
-  .pf-nav-on,.pf-nav-on:hover{background:rgba(38,32,56,0.9);color:#2a7bbd;}
+  .pf-nav-on,.pf-nav-on:hover{background:rgba(38,32,56,0.9);color:#4da3f0;}
   /* One row grammar for every list. The action track is PINNED, not auto: an auto track
      sizes to each row's own label, which makes every gauge a different length. */
   /* Rows are surfaces, not entries in a ruled ledger: separation comes from the gap between
@@ -71,7 +71,7 @@
     background:#4da3f0;color:#1a1526;font-size:13.5px;font-weight:700;white-space:nowrap;cursor:pointer;transition:background .14s ease;}
   .pf-btn:hover{background:#4da3f0;}
   .pf-btn-q{background:rgba(163,133,250,0.12);color:#918aac;}
-  .pf-btn-q:hover{background:rgba(163,133,250,0.2);color:#4da3f0;}
+  .pf-btn-q:hover{background:rgba(163,133,250,0.2);color:#e8a53f;}
   .pf-link{font-size:13.5px;font-weight:700;white-space:nowrap;color:#4da3f0;cursor:pointer;background:none;border:0;padding:0;font-family:inherit;}
   .pf-link:hover{color:#2a7bbd;text-decoration:underline;text-underline-offset:3px;}
   .pf-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:800;white-space:nowrap;}
@@ -88,7 +88,7 @@
   .pf-chip{display:inline-flex;align-items:center;height:34px;padding:0 14px;border-radius:9px;border:1px solid #3d3459;
     background:#1a1526;font-size:13.5px;font-weight:700;white-space:nowrap;color:#918aac;cursor:pointer;transition:border-color .14s ease,color .14s ease,background .14s ease;}
   .pf-chip:hover{border-color:#2a7bbd;color:#2a7bbd;}
-  .pf-chip-on,.pf-chip-on:hover{border-color:#4da3f0;background:#262038;color:#2a7bbd;}
+  .pf-chip-on,.pf-chip-on:hover{border-color:#4da3f0;background:#262038;color:#4da3f0;}
   .pf-lab{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#4da3f0;}
   .pf-av-sm{position:relative;width:44px;height:44px;flex:none;border-radius:50%;overflow:hidden;background:#262038;cursor:pointer;outline:none;box-shadow:0 4px 12px -6px rgba(0,0,0,.55);}
   .pf-av-sm:focus-visible{box-shadow:0 0 0 3px #4da3f0;}
@@ -105,19 +105,19 @@
   .pf-up{position:relative;display:flex;align-items:center;justify-content:center;gap:9px;width:64px;height:64px;flex:none;
     border-radius:50%;border:1px dashed #4da3f0;color:#918aac;cursor:pointer;transition:border-color .14s ease,color .14s ease;}
   .pf-up:hover{border-color:#4da3f0;color:#2a7bbd;}
-  .pf-up-on,.pf-up-on:hover{border-style:solid;border-color:#4da3f0;color:#2a7bbd;background:#262038;}
+  .pf-up-on,.pf-up-on:hover{border-style:solid;border-color:#4da3f0;color:#4da3f0;background:#262038;}
   .pf-up:focus-within{border-color:#4da3f0;box-shadow:0 0 0 3px rgba(0,0,0,0.3);}
   .pf-ch{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:9px;border:1px solid #3d3459;
     background:#1a1526;font-size:13px;font-weight:700;color:#918aac;cursor:pointer;transition:border-color .14s ease,color .14s ease,background .14s ease;}
   .pf-ch:hover{border-color:#2a7bbd;color:#2a7bbd;}
-  .pf-ch-on,.pf-ch-on:hover{border-color:#4da3f0;background:#262038;color:#2a7bbd;}
+  .pf-ch-on,.pf-ch-on:hover{border-color:#4da3f0;background:#262038;color:#4da3f0;}
   .pf-ch-box{width:15px;height:15px;flex:none;border-radius:4px;border:1.5px solid #262038;display:grid;place-items:center;font-size:11px;color:transparent;}
   .pf-ch-on .pf-ch-box{border-color:#4da3f0;background:#4da3f0;color:#1a1526;}
   .pf-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;max-width:336px;}
   .pf-cal-h{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#4da3f0;text-align:center;padding-bottom:4px;}
   .pf-cal-d{position:relative;aspect-ratio:1;border-radius:9px;display:grid;place-items:center;
     font-size:13px;font-weight:700;color:#918aac;}
-  .pf-cal-on{background:#4cbf6e;color:#4cbf6e;font-weight:800;}
+  .pf-cal-on{background:#4cbf6e;color:#1a1526;font-weight:800;}
   .pf-cal-today{background:linear-gradient(180deg,#e8a53f,#e8a53f);color:#1a1526;font-weight:800;
     box-shadow:0 4px 12px -4px rgba(0,0,0,0.55);}
   .pf-cal-off{color:#4da3f0;}
@@ -161,15 +161,15 @@
      between them is a light band, so the window reads as a shape not two dates. */
   .pf-pick-h{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#4da3f0;text-align:center;padding-bottom:2px;}
   .pf-pick-d{height:34px;border-radius:8px;display:grid;place-items:center;font-size:13px;font-weight:700;color:#918aac;cursor:pointer;transition:background .12s ease,color .12s ease;}
-  .pf-pick-d:hover{background:#262038;color:#2a7bbd;}
-  .pf-pick-in,.pf-pick-in:hover{background:#262038;color:#2a7bbd;}
+  .pf-pick-d:hover{background:#262038;color:#4da3f0;}
+  .pf-pick-in,.pf-pick-in:hover{background:#262038;color:#4da3f0;}
   .pf-pick-on,.pf-pick-on:hover{background:#4da3f0;color:#1a1526;font-weight:800;}
   .pf-pick-mute{color:#918aac;cursor:default;}
   .pf-pick-mute:hover{background:transparent;color:#918aac;}
   .pf-pick-blank{height:34px;}
   .pf-step{display:inline-flex;align-items:center;gap:2px;padding:4px;border-radius:11px;border:1px solid #3d3459;background:#1a1526;}
   .pf-step-b{width:34px;height:34px;flex:none;border-radius:8px;display:grid;place-items:center;font-size:18px;color:#918aac;cursor:pointer;transition:background .12s ease,color .12s ease;}
-  .pf-step-b:hover{background:#262038;color:#2a7bbd;}
+  .pf-step-b:hover{background:#262038;color:#4da3f0;}
   .pf-step-b[aria-disabled="true"]{color:#262038;cursor:default;background:transparent;}
   .pf-step-v{min-width:92px;text-align:center;font-size:15px;font-weight:800;letter-spacing:-.01em;color:#4da3f0;}
   .pf-note{display:flex;align-items:flex-start;gap:9px;padding:12px 14px;border-radius:10px;font-size:13px;font-weight:600;line-height:1.5;text-wrap:pretty;}
@@ -462,7 +462,7 @@
                 </div>
                 <div class="pf-card-b">
                   <sc-if value="{{ b.on }}" hint-placeholder-val="{{ false }}">
-                    <span class="pf-badge" style="align-self:flex-start;background:#262038;color:#2a7bbd;">In use</span>
+                    <span class="pf-badge" style="align-self:flex-start;background:#262038;color:#4da3f0;">In use</span>
                   </sc-if>
                   <div class="pf-card-n">{{ b.note }}</div>
                   <sc-if value="{{ b.off }}" hint-placeholder-val="{{ true }}">
@@ -516,7 +516,7 @@
                   <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">
                     <span style="font-size:15.5px;font-weight:700;color:#4da3f0;line-height:1.35;">{{ p.name }}</span>
                     <sc-if value="{{ p.me }}" hint-placeholder-val="{{ false }}">
-                      <span class="pf-badge" style="flex:none;background:#262038;color:#2a7bbd;">You</span>
+                      <span class="pf-badge" style="flex:none;background:#262038;color:#4da3f0;">You</span>
                     </sc-if>
                   </div>
                   <div class="pf-meta" style="margin-top:5px;">

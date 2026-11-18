@@ -102,7 +102,7 @@
   .cj-zoomed .cj-planet:hover .cj-tip{opacity:0 !important;}
   /* The CTA is the project's primary blue (Mantine blue-5 → blue-7) — the one saturated element on the
      tile. One third of the card's width. */
-  .cj-isl-play{width:33.33%;height:48px;flex:none;border-radius:11px;background:linear-gradient(180deg,#4da3f0,#4da3f0);color:#cdc7de;display:flex;align-items:center;justify-content:center;font-size:17px;transition:transform .18s cubic-bezier(.2,.8,.3,1);}
+  .cj-isl-play{width:33.33%;height:48px;flex:none;border-radius:11px;background:linear-gradient(180deg,#4da3f0,#4da3f0);color:#1a1526;display:flex;align-items:center;justify-content:center;font-size:17px;transition:transform .18s cubic-bezier(.2,.8,.3,1);}
   .cj-planet:hover .cj-isl-play{transform:scale(1.08);}
   .cj-isl-locked{width:48px;height:48px;flex:none;display:flex;align-items:center;justify-content:center;font-size:18px;color:#4da3f0;}
   /* completed chapters show what was earned instead of an action */
@@ -145,7 +145,7 @@
   .glow-done{--glow-color:hsl(160 70% 58% / 1);--glow-color-50:hsl(160 70% 58% / .5);--glow-color-40:hsl(160 70% 58% / .4);--glow-color-30:hsl(160 70% 58% / .3);--glow-color-20:hsl(160 70% 58% / .2);--glow-color-10:hsl(160 70% 58% / .1);}
   .glow-ongoing{--glow-color:hsl(212 90% 64% / 1);--glow-color-50:hsl(212 90% 64% / .5);--glow-color-40:hsl(212 90% 64% / .4);--glow-color-30:hsl(212 90% 64% / .3);--glow-color-20:hsl(212 90% 64% / .2);--glow-color-10:hsl(212 90% 64% / .1);}
   .glow-locked{--glow-color:hsl(245 12% 66% / 1);--glow-color-50:hsl(245 12% 66% / .5);--glow-color-40:hsl(245 12% 66% / .4);--glow-color-30:hsl(245 12% 66% / .3);--glow-color-20:hsl(245 12% 66% / .2);--glow-color-10:hsl(245 12% 66% / .1);}
-  .cj-tip{position:absolute;left:50%;bottom:calc(100% + 16px);transform:translateX(-50%) translateY(6px);background:rgba(77,163,240,.94);border:1px solid rgba(255,255,255,.16);color:#cdc7de;padding:9px 13px;border-radius:13px;text-align:center;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .16s ease,transform .16s ease;box-shadow:0 12px 34px rgba(0,0,0,0.55);z-index:70;}
+  .cj-tip{position:absolute;left:50%;bottom:calc(100% + 16px);transform:translateX(-50%) translateY(6px);background:rgba(77,163,240,.94);border:1px solid rgba(255,255,255,.16);color:#1a1526;padding:9px 13px;border-radius:13px;text-align:center;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .16s ease,transform .16s ease;box-shadow:0 12px 34px rgba(0,0,0,0.55);z-index:70;}
   .cj-tip.cj-tip-below{bottom:auto;top:calc(100% + 16px);transform:translateX(-50%) translateY(-6px);}
   .cj-planet:hover .cj-tip{opacity:1;transform:translateX(-50%) translateY(0);}
   .cj-shimmer{animation:cjShim 3.6s ease-in-out infinite;}
@@ -278,7 +278,7 @@
     cursor:pointer;transition:background .14s ease;}
   .cd-pbtn:hover{background:#4da3f0;}
   .cd-pbtn-q{background:rgba(163,133,250,0.12);color:#918aac;}
-  .cd-pbtn-q:hover{background:rgba(163,133,250,0.2);color:#4da3f0;}
+  .cd-pbtn-q:hover{background:rgba(163,133,250,0.2);color:#e8a53f;}
   .cd-pseg{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#4da3f0;
     margin:0 0 11px;display:flex;align-items:center;gap:9px;}
   .cd-pbar{width:112px;height:4px;border-radius:999px;background:rgba(61,52,89,0.12);overflow:hidden;}
@@ -612,7 +612,7 @@
                           <span style="font-size:24px;font-weight:700;line-height:1.2;color:#cdc7de;">Practice with Vyom</span>
                           <span style="font-size:15px;font-weight:500;color:rgba(205,199,222,.82);">Tap a topic to skip it</span>
                         </div>
-                        <span onClick="{{ shClose }}" role="button" title="Close" style="width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:rgba(205,199,222,0.16);color:#1a1526;cursor:pointer;"><i class="ti ti-x" style="font-size:20px;"></i></span>
+                        <span onClick="{{ shClose }}" role="button" title="Close" style="width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:rgba(205,199,222,0.16);color:#cdc7de;cursor:pointer;"><i class="ti ti-x" style="font-size:20px;"></i></span>
                       </div>
                       <div style="flex:1;max-height:calc(100vh - 520px);min-height:160px;overflow-y:auto;padding:2px;margin:-2px;scrollbar-width:thin;-webkit-mask-image:{{ shMask }};mask-image:{{ shMask }};">
                         <div style="display:flex;flex-wrap:wrap;gap:12px;padding-bottom:{{ shPadB }};">

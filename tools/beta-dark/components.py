@@ -75,6 +75,65 @@ def _lum(c):
     if not r: return None
     return (0.2126*r[0] + 0.7152*r[1] + 0.0722*r[2]) / 255
 
+PAGE_LUM = 0.09          # #1a1526, what every beta dark page sits on
+DARK_ACCENTS = ["#4da3f0", "#4cbf6e", "#f07171", "#e8a53f", "#a385fa"]
+
+def _alpha(c):
+    import re as _re
+    m = _re.match(r"rgba\(([^)]*)\)", c.strip().lower())
+    if not m: return 1.0
+    parts = [x.strip() for x in m.group(1).split(",")]
+    try: return float(parts[3]) if len(parts) > 3 else 1.0
+    except (ValueError, IndexError): return 1.0
+
+def _eff_lum(c, under=PAGE_LUM):
+    """Luminance as actually seen: a translucent colour is blended with what
+       sits behind it, which on these pages is the dark canvas."""
+    L = _lum(c)
+    if L is None: return None
+    a = _alpha(c)
+    return a * L + (1 - a) * under
+
+def _contrast(bg, fg):
+    lb, lf = _eff_lum(bg), _eff_lum(fg)
+    if lb is None or lf is None: return None
+    hi, lo = max(lb, lf), min(lb, lf)
+    return (hi + 0.05) / (lo + 0.05)
+
+def _chroma_of(c):
+    r = _rgb(c)
+    if not r: return 0.0
+    rr, gg, bb = (x/255 for x in r[:3])
+    return max(rr, gg, bb) - min(rr, gg, bb)
+
+def _hue_of(c):
+    r = _rgb(c)
+    if not r: return None
+    rr, gg, bb = (x/255 for x in r[:3])
+    mx, mn = max(rr,gg,bb), min(rr,gg,bb)
+    d = mx - mn
+    if d == 0: return None
+    if   mx == rr: h = ((gg-bb)/d) % 6
+    elif mx == gg: h = (bb-rr)/d + 2
+    else:          h = (rr-gg)/d + 4
+    return h * 60
+
+def _readable_on(bg, fg):
+    """A text colour that carries on this surface. Neutral text takes the ink
+       colour; a real colour keeps its hue and moves to the dark palette's
+       member of that family."""
+    if _chroma_of(fg) < 0.15:
+        return INK if (_eff_lum(bg) or 0) < 0.45 else "#1a1526"
+    hf = _hue_of(fg)
+    best = None
+    for cand in DARK_ACCENTS:
+        hc = _hue_of(cand)
+        gap = 180 if (hf is None or hc is None) else min(abs(hf-hc) % 360, 360 - abs(hf-hc) % 360)
+        con = _contrast(bg, cand) or 0
+        if con >= 3.0 and (best is None or gap < best[0]):
+            best = (gap, cand)
+    return best[1] if best else (INK if (_eff_lum(bg) or 0) < 0.45 else "#1a1526")
+
 def _decls(body):
     out, depth, cur = [], 0, ""
     for ch in body:
@@ -90,6 +149,14 @@ def _set(body, prop, val):
     if pat.search(body):
         return pat.sub(lambda m: (m.group(1) or "") + prop + ":" + val, body, count=1)
     return body.rstrip().rstrip(";") + ";" + prop + ":" + val
+
+def _own_background(body):
+    for d in _decls(body):
+        p = d.split(":", 1)[0].strip().lower()
+        if p in ("background", "background-color"):
+            cols = HEX.findall(d)
+            if cols: return cols[0]
+    return None
 
 def _surface_lum(body):
     """Mean luminance of whatever this rule paints as its own background."""
@@ -113,16 +180,32 @@ def apply(path):
         if sel in RECIPES:
             for p, v in RECIPES[sel].items(): body = _set(body, p, v)
             recipes.append(sel)
-        bgL = _surface_lum(body)
-        if bgL is not None and bgL < 0.38:
-            cm = re.search(r"(^|;)\s*color\s*:\s*([^;]+)", body)
-            if cm:
-                cl = _lum(cm.group(2).strip())
-                if cl is not None and cl < 0.40:
-                    body = _set(body, "color", INK); contrast.append(sel)
+        bg = _own_background(body)
+        cm = re.search(r"(^|;)\s*color\s*:\s*([^;]+)", body)
+        if bg and cm:
+            fg = cm.group(2).strip()
+            con = _contrast(bg, fg)
+            if con is not None and con < 3.0:
+                body = _set(body, "color", _readable_on(bg, fg)); contrast.append(sel)
         return m.group("sel") + "{" + body + "}"
 
     s = RULE.sub(repl, s)
+
+    # Inline styles get the same check. The calculator is built this way, which
+    # is why its keys and tabs kept near-black labels on near-black surfaces.
+    inline = 0
+    def fix_inline(m):
+        nonlocal inline
+        body = m.group(1)
+        bg = _own_background(body)
+        cm = re.search(r"(^|;)\s*color\s*:\s*([^;]+)", body)
+        if not (bg and cm): return m.group(0)
+        fg = cm.group(2).strip()
+        con = _contrast(bg, fg)
+        if con is None or con >= 3.0: return m.group(0)
+        inline += 1
+        return 'style="' + _set(body, "color", _readable_on(bg, fg)) + '"'
+    s = re.sub(r'style="([^"]{0,600})"', fix_inline, s)
 
     # The practice icon carries three decorative rings as aria-hidden spans --
     # two hairline circles and a blurred glow. They are dropped here.
@@ -150,6 +233,13 @@ def apply(path):
          "bg: s ? '#1a1526' : 'rgba(255,255,255,.08)'"),
         ("ink: s ? '#a385fa' : 'rgba(205,199,222,0.72)'",
          "ink: s ? '#a385fa' : '" + INK + "'"),
+        # the calculator's Submit: amber label on an amber button, and a
+        # near-black label on the faint disabled veil
+        ("calcSubmitFg: ok ? '#b57a24' : '#262038'",
+         "calcSubmitFg: ok ? '#1a1526' : 'rgba(205,199,222,.45)'"),
+        # the working-card check label on its #3d3459 chip
+        ("vhCheckInk:(v.num && (S.den||v.den) && !v.locked) ? '#1a1526' : '#918aac'",
+         "vhCheckInk:(v.num && (S.den||v.den) && !v.locked) ? '#1a1526' : '" + INK + "'"),
     ]:
         if old_s in s: s = s.replace(old_s, new_s); js += 1
     # the practice-log cards are inline-styled, so no rule reaches them either.
@@ -173,10 +263,10 @@ def apply(path):
         if old in s: s = s.replace(old, new); hero += 1
 
     io.open(path, "w", encoding="utf-8").write(s)
-    return recipes, contrast, hero, log, js, rings
+    return recipes, contrast, hero, log, js, rings, inline
 
 if __name__ == "__main__":
-    r, c, h, lg, j, rg = apply(sys.argv[1])
+    r, c, h, lg, j, rg, inl = apply(sys.argv[1])
     print(f"  recipes: {len(r)} -> {', '.join(r)}")
     print(f"  contrast fixes (dark text on a dark surface): {len(c)} -> {', '.join(sorted(set(c))[:10])}")
-    print(f"  hero inline type: {h}   practice-log cards: {lg}   js style objects: {j}   decorative rings removed: {rg}")
+    print(f"  hero inline type: {h}   practice-log cards: {lg}   js style objects: {j}   decorative rings removed: {rg}   inline contrast fixes: {inl}")

@@ -176,7 +176,7 @@
   .vctl-vol{max-width:84px;flex:none;width:84px;}
   .vctl-play{width:44px;height:44px;}
   .vctl-seekrow{display:flex;align-items:center;gap:12px;}
-  .vctl-speed{min-width:40px;height:30px;padding:0 11px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#1a1526;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;background:rgba(205,199,222,0.14);transition:background .14s ease;}
+  .vctl-speed{min-width:40px;height:30px;padding:0 11px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#cdc7de;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;background:rgba(205,199,222,0.14);transition:background .14s ease;}
   .vctl-speed:hover{background:rgba(205,199,222,.26);}
   .vc-lift{bottom:98px !important;}
   @keyframes vpause-in{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}22%{opacity:1;transform:translate(-50%,-50%) scale(1)}78%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.12)}}
@@ -263,7 +263,7 @@
   .vh-grow .vh-fade{animation:vhFade .75s ease both;}
   @keyframes vhShake{0%,100%{transform:none}20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
   .vh-shake{animation:vhShake .42s ease both;}
-  .vh-tipbox{position:absolute;top:calc(100% + 8px);right:0;z-index:30;padding:7px 11px;border-radius:9px;background:rgba(0,0,0,.48);color:#1a1526;font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;transform:translateY(-3px);pointer-events:none;transition:opacity .15s ease,transform .15s ease;}
+  .vh-tipbox{position:absolute;top:calc(100% + 8px);right:0;z-index:30;padding:7px 11px;border-radius:9px;background:rgba(0,0,0,.48);color:#cdc7de;font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;transform:translateY(-3px);pointer-events:none;transition:opacity .15s ease,transform .15s ease;}
   .vh-tip:hover .vh-tipbox,.vh-tip:focus-visible .vh-tipbox{opacity:1;transform:none;transition-delay:.12s;}
   @keyframes vhFill{from{width:0}to{width:100%}}
   .vh-fill{animation-name:vhFill;animation-timing-function:linear;animation-fill-mode:forwards;}
@@ -393,7 +393,7 @@
                 <div onClick="{{ m.pick }}" role="button" style="padding:5px 10px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;background:{{ m.bg }};color:{{ m.fg }};">{{ m.t }}</div>
               </sc-for>
               <sc-if value="{{ calcSci }}" hint-placeholder-val="{{ false }}">
-                <div onClick="{{ calcAngleToggle }}" role="button" title="Angle unit" style="padding:5px 8px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:800;letter-spacing:.04em;background:rgba(26,21,38,0.18);color:#1a1526;">{{ calcAngle }}</div>
+                <div onClick="{{ calcAngleToggle }}" role="button" title="Angle unit" style="padding:5px 8px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:800;letter-spacing:.04em;background:rgba(26,21,38,0.18);color:#cdc7de;">{{ calcAngle }}</div>
                 <div title="Root index for the n\u221a key" style="display:flex;align-items:center;gap:2px;padding:2px;border-radius:8px;background:rgba(26,21,38,0.18);">
                   <div onClick="{{ calcNDown }}" role="button" aria-label="Decrease n" style="width:22px;height:22px;border-radius:6px;display:grid;place-items:center;cursor:pointer;color:#1a1526;"><i class="ti ti-minus" style="font-size:13px;"></i></div>
                   <span style="min-width:34px;text-align:center;font-size:12px;font-weight:800;color:#1a1526;white-space:nowrap;">n = {{ calcN }}</span>
@@ -404,7 +404,7 @@
               <div onClick="{{ calcToggle }}" role="button" aria-label="Close calculator" style="width:28px;height:28px;border-radius:8px;display:grid;place-items:center;cursor:pointer;color:#1a1526;"><i class="ti ti-x" style="font-size:16px;"></i></div>
             </div>
             <sc-if value="{{ calcOff }}" hint-placeholder-val="{{ false }}">
-              <div style="margin:-4px 0 10px;padding:6px 10px;border-radius:8px;background:rgba(26,21,38,0.28);color:#1a1526;font-size:12px;font-weight:700;text-align:center;">Not needed for this question</div>
+              <div style="margin:-4px 0 10px;padding:6px 10px;border-radius:8px;background:rgba(26,21,38,0.28);color:#cdc7de;font-size:12px;font-weight:700;text-align:center;">Not needed for this question</div>
             </sc-if>
             <div style="padding:10px 14px;margin-bottom:14px;border-radius:12px;background:rgba(26,21,38,0.22);text-align:right;">
               <div style="min-height:16px;font-size:12px;font-weight:600;color:#2a7bbd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ calcExpr }}</div>
@@ -414,7 +414,7 @@
               <sc-if value="{{ calcSci }}" hint-placeholder-val="{{ false }}">
                 <div style="flex:3 1 0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-right:14px;border-right:1px solid rgba(205,199,222,0.22);">
                   <sc-for list="{{ calcSciKeys }}" as="k" hint-placeholder-count="15">
-                    <div onClick="{{ k.press }}" role="button" title="{{ k.tip }}" style="height:36px;border-radius:10px;display:grid;place-items:center;cursor:pointer;user-select:none;font-size:14px;font-weight:700;background:rgba(26,21,38,0.2);color:#1a1526;transition:filter .1s ease;" style-active="filter:brightness(.92);">{{ k.t }}</div>
+                    <div onClick="{{ k.press }}" role="button" title="{{ k.tip }}" style="height:36px;border-radius:10px;display:grid;place-items:center;cursor:pointer;user-select:none;font-size:14px;font-weight:700;background:rgba(26,21,38,0.2);color:#cdc7de;transition:filter .1s ease;" style-active="filter:brightness(.92);">{{ k.t }}</div>
                   </sc-for>
                 </div>
               </sc-if>
@@ -782,7 +782,7 @@
                         <span style="font-size:18px;font-weight:700;color:#4da3f0;">Level up before {{ qsBrNextShort }}</span>
                         <span style="font-size:14px;color:#918aac;">{{ qsBrGapSub }}</span>
                       </div>
-                      <button onClick="{{ qsBrLearn }}" style="flex:none;display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border:none;border-radius:10px;background:#3d3459;color:#a385fa;font:inherit;font-size:15px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s ease;" style-hover="background:#3d3459;"><i class="ti ti-player-play" style="font-size:16px;"></i>Learn</button>
+                      <button onClick="{{ qsBrLearn }}" style="flex:none;display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border:none;border-radius:10px;background:#3d3459;color:#cdc7de;font:inherit;font-size:15px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s ease;" style-hover="background:#3d3459;"><i class="ti ti-player-play" style="font-size:16px;"></i>Learn</button>
                     </div>
                   </sc-if>
                 </div>
@@ -1508,7 +1508,7 @@
 
         <!-- APPLET -->
         <sc-if value="{{ isApplet }}" hint-placeholder-val="{{ false }}">
-          <div class="bpop" style="position:absolute;inset:0;background:radial-gradient(130% 120% at 20% 0%,#262038,#1a1526);display:flex;flex-direction:column;padding:22px 32px 18px;color:#1a1526;overflow:auto;">
+          <div class="bpop" style="position:absolute;inset:0;background:radial-gradient(130% 120% at 20% 0%,#262038,#1a1526);display:flex;flex-direction:column;padding:22px 32px 18px;color:#cdc7de;overflow:auto;">
             <div style="position:absolute;top:16px;left:18px;display:flex;align-items:center;gap:7px;font-size:20px;font-weight:800;letter-spacing:.09em;color:#e8a53f;background:rgba(232,165,63,.14);padding:6px 12px;border-radius:8px;"><i class="ti ti-square-root-2"></i></div>
             <div style="text-align:center;font-size:24px;font-weight:800;color:{{ appletTitleColor }};margin:2px 0 16px;flex:none;">{{ appletTitle }}</div>
             <div style="flex:1;display:flex;align-items:center;justify-content:safe center;gap:36px;flex-wrap:wrap;">
@@ -3008,7 +3008,7 @@ class Component extends DCLogic {
       vhKeys:['1','2','3','4','5','6','7','8','9','0','del','swap'].map(k=>({ k, label: /\d/.test(k)?k:'', isIcon: !/\d/.test(k),
         icon: k==='del' ? 'ti-backspace' : (v.box==='den' ? 'ti-arrow-up' : 'ti-arrow-down'),
         op: k==='swap' && (S.den || S.input==='num' || S.input==='work') ? '.3' : '1', go:()=>this._vhKeyPress(k) })),
-      vhCheck:()=>this._vhCheck(), vhCheckBg: (v.num && (S.den||v.den) && !v.locked) ? '#a385fa' : '#3d3459', vhCheckInk:(v.num && (S.den||v.den) && !v.locked) ? '#1a1526' : '#918aac', vhCheckSh:(v.num && (S.den||v.den) && !v.locked) ? '0 10px 20px -10px rgba(163,133,250,0.8)' : 'none',
+      vhCheck:()=>this._vhCheck(), vhCheckBg: (v.num && (S.den||v.den) && !v.locked) ? '#a385fa' : '#3d3459', vhCheckInk:(v.num && (S.den||v.den) && !v.locked) ? '#1a1526' : '#cdc7de', vhCheckSh:(v.num && (S.den||v.den) && !v.locked) ? '0 10px 20px -10px rgba(163,133,250,0.8)' : 'none',
       vhPadPE: v.locked ? 'none' : 'auto', vhPadOp: (v.locked && !v.demo) ? '.55' : '1',
       vhPlayIcon: v.ended ? 'ti-rotate-clockwise' : v.playing ? 'ti-player-pause-filled' : 'ti-player-play-filled',
       vhPlayLabel: v.ended ? 'Replay' : v.playing ? 'Pause' : 'Play', vhCtrlDisp: v.ended ? 'none' : 'flex',
@@ -4189,7 +4189,7 @@ class Component extends DCLogic {
       calcSubmitState: this._calcEval(st.calcE)==null ? 'disabled' : 'emphasis',
       calcSubmit: ()=>this._calcSubmit(),
       ...(()=>{ const ok=this._calcEval(st.calcE)!=null; return {
-        calcSubmitBg: ok ? '#e8a53f' : 'rgba(205,199,222,0.16)', calcSubmitFg: ok ? '#b57a24' : '#262038',
+        calcSubmitBg: ok ? '#e8a53f' : 'rgba(205,199,222,0.16)', calcSubmitFg: ok ? '#1a1526' : 'rgba(205,199,222,.45)',
         calcSubmitSh: ok ? '0 3px 0 #e8a53f' : 'none', calcSubmitCur: ok ? 'pointer' : 'not-allowed' }; })(),
       calcOutShort: (()=>{ const v=this._calcEval(st.calcE); return v==null ? '' : String(v); })(),
       calcExpr: st.calcE || '',

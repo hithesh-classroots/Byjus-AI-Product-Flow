@@ -12,6 +12,16 @@
 <body>
 <iframe id="f" allow="autoplay; fullscreen; microphone"></iframe>
 <script>
+/* the frame around the page follows the remembered theme, so a dark page is
+   not banded by a light stage */
+(function(){try{
+  var dark = localStorage.getItem('byjusTheme')==='dark'
+          || /%20Dark\.dc\.html|-\s?Dark\.dc\.html/i.test(location.search);
+  if(dark){document.documentElement.style.background='#1a1526';
+           document.addEventListener('DOMContentLoaded',function(){document.body.style.background='#1a1526';});}
+}catch(e){}})();
+</script>
+<script>
 /* Scale-to-fit stage: shows one fixed-size screen (default 1280x720) scaled to fit the window.
    If the screen navigates to a page that is not a fixed-layout one, leave the stage and open it normally. */
 var q = new URLSearchParams(location.search);
