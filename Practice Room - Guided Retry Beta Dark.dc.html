@@ -381,8 +381,8 @@
 
       <sc-if value="{{ calcShow }}" hint-placeholder-val="{{ false }}">
         <div data-calc-box className="{{ calcBoxCls }}" style="pointer-events:auto;position:fixed;left:{{ calcX }};top:{{ calcY }};z-index:95;filter:{{ calcFilt }};width:{{ calcBoxW }};height:{{ calcBoxH }};max-height:calc(100vh - 96px);border-radius:{{ calcBoxR }};overflow:hidden;background:{{ calcBoxBg }};border:1px solid {{ calcBoxBd }};box-shadow:{{ calcBoxSh }};transition:width .38s cubic-bezier(.34,1.12,.5,1),height .38s cubic-bezier(.34,1.12,.5,1),border-radius .38s ease,box-shadow .3s ease,filter .25s ease{{ calcPosTr }};">
-          <div style="position:absolute;inset:0;background:linear-gradient(45deg,#262038,#2e2745);opacity:{{ calcTealOp }};pointer-events:none;transition:opacity .28s ease;"></div>
-          <div style="position:absolute;inset:0;background:linear-gradient(160deg,#211c31,#262038);opacity:{{ calcBodyOp }};pointer-events:none;transition:opacity .28s ease;"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(160deg,#3d3459,#2e2745);opacity:{{ calcTealOp }};pointer-events:none;transition:opacity .28s ease;"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(160deg,#2e2745,#262038);opacity:{{ calcBodyOp }};pointer-events:none;transition:opacity .28s ease;"></div>
           <div onPointerDown="{{ calcDragBtn }}" title="{{ calcBtnTitle }}" role="button" aria-label="Calculator" aria-disabled="{{ calcOff }}" style="position:absolute;left:0;top:0;width:{{ calcBtnSz }};height:{{ calcBtnSz }};display:grid;place-items:center;cursor:{{ calcBtnCur }};touch-action:none;color:{{ calcIconInk }};opacity:{{ calcIconOp }};pointer-events:{{ calcBtnPE }};transition:width .3s cubic-bezier(.34,1.3,.5,1),height .3s cubic-bezier(.34,1.3,.5,1),opacity .2s ease;">
             <i class="ti ti-calculator" style="font-size:{{ calcIconFs }};transition:font-size .3s ease;"></i>
           </div>
@@ -394,7 +394,7 @@
           </sc-if>
           <div class="cc-theme" style="position:absolute;left:0;top:0;width:{{ calcW }};padding:16px;box-sizing:border-box;background:transparent;opacity:{{ calcBodyOp }};pointer-events:{{ calcBodyPE }};transition:opacity .22s ease {{ calcBodyDelay }};">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-              <div onPointerDown="{{ calcDrag }}" title="Drag to move" style="width:20px;height:28px;margin-left:-6px;display:grid;place-items:center;cursor:grab;color:rgba(26,21,38,0.85);touch-action:none;"><i class="ti ti-grip-vertical" style="font-size:16px;"></i></div>
+              <div onPointerDown="{{ calcDrag }}" title="Drag to move" style="width:20px;height:28px;margin-left:-6px;display:grid;place-items:center;cursor:grab;color:rgba(205,199,222,.85);touch-action:none;"><i class="ti ti-grip-vertical" style="font-size:16px;"></i></div>
               <sc-for list="{{ calcModes }}" as="m" hint-placeholder-count="2">
                 <div onClick="{{ m.pick }}" role="button" style="padding:5px 10px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;background:{{ m.bg }};color:{{ m.fg }};">{{ m.t }}</div>
               </sc-for>
@@ -407,12 +407,12 @@
                 </div>
               </sc-if>
               <div onPointerDown="{{ calcDrag }}" title="Drag to move" style="flex:1;align-self:stretch;min-width:12px;cursor:grab;touch-action:none;"></div>
-              <div onClick="{{ calcToggle }}" role="button" aria-label="Close calculator" style="width:28px;height:28px;border-radius:8px;display:grid;place-items:center;cursor:pointer;color:#1a1526;"><i class="ti ti-x" style="font-size:16px;"></i></div>
+              <div onClick="{{ calcToggle }}" role="button" aria-label="Close calculator" style="width:28px;height:28px;border-radius:8px;display:grid;place-items:center;cursor:pointer;color:#cdc7de;"><i class="ti ti-x" style="font-size:16px;"></i></div>
             </div>
             <sc-if value="{{ calcOff }}" hint-placeholder-val="{{ false }}">
               <div style="margin:-4px 0 10px;padding:6px 10px;border-radius:8px;background:rgba(26,21,38,0.28);color:#cdc7de;font-size:12px;font-weight:700;text-align:center;">Not needed for this question</div>
             </sc-if>
-            <div style="padding:10px 14px;margin-bottom:14px;border-radius:12px;background:rgba(26,21,38,0.22);text-align:right;">
+            <div style="padding:10px 14px;margin-bottom:14px;border-radius:12px;background:rgba(0,0,0,.38);text-align:right;">
               <div style="min-height:16px;font-size:12px;font-weight:600;color:#2a7bbd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ calcExpr }}</div>
               <div style="font-size:22px;font-weight:700;color:#cdc7de;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums;">{{ calcOut }}</div>
             </div>
@@ -459,7 +459,7 @@
         </sc-if>
       </div>
       <div id="dockPill" class="{{ dockPillClass }}" style="pointer-events:auto;position:absolute;left:72px;bottom:6px;height:48px;width:{{ composerW }};border-radius:14px;overflow:hidden;background:#1a1526;border:1px solid {{ composerBorder }};box-shadow:{{ composerShadow }};transition:width .44s cubic-bezier(.34,1.12,.5,1),box-shadow .4s ease,border-color .4s ease,transform .72s cubic-bezier(.5,0,.2,1);">
-          <div style="position:absolute;inset:0;background:linear-gradient(45deg,#262038,#2e2745);opacity:{{ composerTealOp }};transition:opacity .4s ease;pointer-events:none;"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(160deg,#3d3459,#2e2745);opacity:{{ composerTealOp }};transition:opacity .4s ease;pointer-events:none;"></div>
           <div style="position:absolute;inset:0;display:flex;align-items:center;opacity:{{ closedOp }};pointer-events:{{ closedPE }};transition:opacity .26s ease;">
             <div onClick="{{ openChatMsg }}" title="{{ chatLockTitle }}" aria-disabled="{{ chatLocked }}" style="flex:1;height:48px;display:flex;align-items:center;justify-content:center;gap:9px;cursor:{{ chatLockCur }};opacity:{{ chatLockOp }};color:#cdc7de;font-size:14px;font-weight:700;white-space:nowrap;"><i class="ti ti-message-2" style="font-size:20px;"></i>Take help from Vyom</div>
           </div>
@@ -4168,9 +4168,9 @@ class Component extends DCLogic {
           calcBoxW: open ? (st.calcSci ? '480px' : '280px') : (((q && (q.type==='numeric'||q.calc)) ? 55 : 48)+'px'),
           calcBoxH: open ? (sub ? '424px' : ((q && q.type!=='numeric' && !q.calc) ? '398px' : '366px')) : (((q && (q.type==='numeric'||q.calc)) ? 55 : 48)+'px'),
           calcBoxR: open ? '16px' : (((q && (q.type==='numeric'||q.calc)) ? 16 : 14)+'px'),
-          calcBoxBd: 'transparent',
-          calcBoxSh: open ? '0 1px 3px rgba(205,199,222,0.08),0 22px 44px -14px rgba(42,123,189,0.55)' : '0 3px 0 #3d3459',
-          calcTealOp: open ? '1' : '0', calcBoxBg: open ? '#1a1526' : '#262038', calcIconInk: open ? '#1a1526' : '#918aac', calcIconOp: open ? '0' : '1', calcBtnPE: open ? 'none' : 'auto',
+          calcBoxBd: '#3d3459',
+          calcBoxSh: open ? '0 1px 0 rgba(255,255,255,.07) inset,0 28px 64px -18px rgba(0,0,0,.78)' : '0 3px 0 #3d3459',
+          calcTealOp: open ? '1' : '0', calcBoxBg: open ? '#2e2745' : '#262038', calcIconInk: open ? '#1a1526' : '#918aac', calcIconOp: open ? '0' : '1', calcBtnPE: open ? 'none' : 'auto',
           calcBodyOp: open ? '1' : '0', calcBodyPE: open ? 'auto' : 'none', calcBodyDelay: open ? '.16s' : '0s',
           chatListOp: (open && st.chatCollapsed) ? '0' : '1' }; })(),
       calcAngle: st.calcAngle || 'DEG',
@@ -4205,7 +4205,7 @@ class Component extends DCLogic {
         return { key:'ck'+t, t, press:()=>this._calcKey(t),
           /* digits: white, the most-pressed tier · operators: cyan-1 on cyan-9 · clear/back: dark
              veil · = : the darkest solid, so it reads as the result key */
-          bg: eq ? '#4da3f0' : op ? '#3d3459' : util ? 'rgba(255,255,255,.10)' : '#262038', fg: eq ? '#1a1526' : op ? '#cdc7de' : util ? '#cdc7de' : '#cdc7de', sh: (eq||util) ? 'none' : '0 2px 0 rgba(0,0,0,.35)' }; }),
+          bg: eq ? '#4da3f0' : op ? '#262038' : util ? 'rgba(255,255,255,.10)' : '#1a1526', fg: eq ? '#1a1526' : op ? '#cdc7de' : util ? '#cdc7de' : '#cdc7de', sh: (eq||util) ? 'none' : '0 2px 0 rgba(0,0,0,.35)' }; }),
       next:()=>this.next(), back:()=>this.back(), submitQuiz:()=>this.submitQuiz(), gotItClick:()=>this.gotItClick(),
       checkApplet:()=>this.checkApplet(), startOver:()=>this.startOver(), onClose:()=>{ this._post('byjus-room-exit'); (function(f){try{var r=document.referrer;if(r){var u=new URL(r);if(u.origin===location.origin&&u.pathname!==location.pathname&&history.length>1){history.back();return;}}}catch(e){}location.href=encodeURI(f);})('Chapter Journey - Beta Dark.dc.html'); },
     };

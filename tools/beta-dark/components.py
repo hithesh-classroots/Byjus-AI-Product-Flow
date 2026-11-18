@@ -265,6 +265,38 @@ def apply(path):
         i = s.find("</head>")
         if i != -1: s = s[:i] + css + s[i:]; spot += 1
 
+    # ---- the calculator, lifted off the page -------------------------------
+    # calcBoxBg was `open ? '#1a1526'`, exactly the page colour, so the open
+    # panel had no edges at all. In light it is pure white on a tinted page,
+    # which is what gave it its lift. Rebuilt with a real edge and depth, and
+    # a key hierarchy that reads against the lifted shell.
+    calc = 0
+    for old_s, new_s in [
+        # (the shell gradients are set by the overlay pass below, which runs
+        #  after this one and would otherwise overwrite them)
+        # an actual border, and depth instead of the light build's teal glow
+        ("calcBoxBd: 'transparent'", "calcBoxBd: '#3d3459'"),
+        ("calcBoxSh: open ? '0 1px 3px rgba(205,199,222,0.08),0 22px 44px -14px rgba(42,123,189,0.55)' : '0 3px 0 #3d3459'",
+         "calcBoxSh: open ? '0 1px 0 rgba(255,255,255,.07) inset,0 28px 64px -18px rgba(0,0,0,.78)' : '0 3px 0 #3d3459'"),
+        ("calcBoxBg: open ? '#1a1526' : '#262038'",
+         "calcBoxBg: open ? '#2e2745' : '#262038'"),
+        # keys: numbers sit deepest, operators a step above, equals the accent
+        ("bg: eq ? '#4da3f0' : op ? '#3d3459' : util ? 'rgba(255,255,255,.10)' : '#262038'",
+         "bg: eq ? '#4da3f0' : op ? '#262038' : util ? 'rgba(255,255,255,.10)' : '#1a1526'"),
+        # the display reads as a well cut into the shell
+        ("border-radius:12px;background:rgba(26,21,38,0.22);text-align:right;",
+         "border-radius:12px;background:rgba(0,0,0,.38);text-align:right;"),
+        # the drag handle was near-black at 85% on a dark panel
+        ("cursor:grab;color:rgba(26,21,38,0.85);",
+         "cursor:grab;color:rgba(205,199,222,.85);"),
+    ]:
+        if old_s in s: s = s.replace(old_s, new_s); calc += 1
+
+    # the calculator's own close mark, #fff in light, so near-black here
+    s, n_x = re.subn(r'color:#1a1526;([^"]{0,90})"([^>]{0,40})><i class="ti ti-x"',
+                     r'color:' + INK + r';\1"\2><i class="ti ti-x"', s)
+    calc += n_x
+
     # JS-computed style objects. The Practice-with-Vyom panel is built from one
     # of these, which is why it came out a bright purple fill with near-black
     # type -- no stylesheet is involved at all.
@@ -292,9 +324,9 @@ def apply(path):
         # shares the hue is matched separately, by its cursor/colour, so it
         # keeps its blue.
         ("inset:0;background:linear-gradient(45deg,#2a7bbd,#4da3f0)",
-         "inset:0;background:linear-gradient(45deg,#262038,#2e2745)"),
+         "inset:0;background:linear-gradient(160deg,#3d3459,#2e2745)"),
         ("inset:0;background:linear-gradient(160deg,#2a7bbd,#2a7bbd)",
-         "inset:0;background:linear-gradient(160deg,#211c31,#262038)"),
+         "inset:0;background:linear-gradient(160deg,#2e2745,#262038)"),
         # the working-card check label on its #3d3459 chip
         ("vhCheckInk:(v.num && (S.den||v.den) && !v.locked) ? '#1a1526' : '#918aac'",
          "vhCheckInk:(v.num && (S.den||v.den) && !v.locked) ? '#1a1526' : '" + INK + "'"),
@@ -321,10 +353,10 @@ def apply(path):
         if old in s: s = s.replace(old, new); hero += 1
 
     io.open(path, "w", encoding="utf-8").write(s)
-    return recipes, contrast, hero, log, js, rings, inline, keypad, spot
+    return recipes, contrast, hero, log, js, rings, inline, keypad, spot, calc
 
 if __name__ == "__main__":
-    r, c, h, lg, j, rg, inl, kp, sp = apply(sys.argv[1])
+    r, c, h, lg, j, rg, inl, kp, sp, cl = apply(sys.argv[1])
     print(f"  recipes: {len(r)} -> {', '.join(r)}")
     print(f"  contrast fixes (dark text on a dark surface): {len(c)} -> {', '.join(sorted(set(c))[:10])}")
-    print(f"  hero inline type: {h}   practice-log cards: {lg}   js style objects: {j}   decorative rings removed: {rg}   inline contrast fixes: {inl}   keypad: {kp}   spot fixes: {sp}")
+    print(f"  hero inline type: {h}   practice-log cards: {lg}   js style objects: {j}   decorative rings removed: {rg}   inline contrast fixes: {inl}   keypad: {kp}   spot fixes: {sp}   calculator: {cl}")
